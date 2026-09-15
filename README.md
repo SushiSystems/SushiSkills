@@ -1,4 +1,4 @@
-# SushiSystemsProgramming
+# SushiSkills
 
 The engineering discipline shared by every Sushi Systems repository, written as skills that any
 AI coding agent, or any person, can load. It fixes how a repository is laid out, how code is
@@ -14,7 +14,7 @@ a `name` and a `description` saying when to load it.
 
 | Skill | Covers |
 | --- | --- |
-| `sushisystemsprogramming` | The doctrine and a map to every other skill; load it first |
+| `sushiskills` | The doctrine and a map to every other skill; load it first |
 | `humanizer` | Prose in English and Turkish: documents, comments, commits, replies |
 | `repository-layout` | The root, single-module and multi-module trees, module rules |
 | `cpp-code-style` | C++ formatting, naming, files, includes, class shape, errors |
@@ -50,7 +50,7 @@ above wins.
 **Codex, Gemini CLI, Copilot CLI.** Link or copy them into `~/.agents/skills/`, which these
 tools read.
 
-**Any other agent.** Point it at `skills/sushisystemsprogramming/SKILL.md` from the repository's
+**Any other agent.** Point it at `skills/sushiskills/SKILL.md` from the repository's
 `AGENTS.md`; that file names the others.
 
 Inside a Sushi Systems repository, `AGENTS.md` and `CLAUDE.md` live at the repository root,
