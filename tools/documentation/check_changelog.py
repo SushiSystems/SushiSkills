@@ -22,7 +22,7 @@ K_LENGTH_CEILING = 240
 K_CITED_PATH_CEILING = 5
 K_LIVE_RELEASE_CEILING = 1
 K_ENTRY_SHAPE = re.compile(r"^- \d{4}-\d{2}-\d{2} — [a-z0-9_-]+: [A-Z][a-z]+ .+\.$")
-K_SECTION = re.compile(r"^## (Unreleased|\S+ — \d{4}-\d{2}-\d{2})$")
+K_SECTION = re.compile(r"^## (Unreleased|v\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)? — \d{4}-\d{2}-\d{2})$")
 K_SECOND_SENTENCE = re.compile(r"[.!?] +[A-Z]")
 K_NESTED_BULLET = re.compile(r"^\s+[-*+] ")
 K_CITED_PATH = re.compile(r"`[^`]+`")
@@ -67,7 +67,7 @@ def rule_entry_shape(entry: Entry) -> Iterator[Issue]:
     """Yields an issue when an entry or heading does not follow the changelog shape."""
     if entry.is_section:
         if not K_SECTION.match(entry.text):
-            yield Issue(entry.path, entry.number, "heading must read '## Unreleased' or '## <version> — YYYY-MM-DD'")
+            yield Issue(entry.path, entry.number, "heading must read '## Unreleased' or '## vX.Y.Z — YYYY-MM-DD'")
     elif not K_NESTED_BULLET.match(entry.text) and not K_ENTRY_SHAPE.match(entry.text):
         yield Issue(entry.path, entry.number, "entry must read '- YYYY-MM-DD — scope: Verbed what (`where`).'")
 
