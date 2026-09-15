@@ -21,7 +21,7 @@ cmake/  cli/  tools/  modules/  tests/  applications/  third_party/  docs/
 | --- | --- |
 | `README.md` | What the project is, one build line, a link to `docs/README.md` |
 | `CMakeLists.txt` | `project()`, options and `add_subdirectory`; no logic |
-| `AGENTS.md`, `CLAUDE.md` | One line each, pointing at `docs/CLAUDE.md` |
+| `AGENTS.md`, `CLAUDE.md` | Agent instructions and skill declarations; names the skills the repository follows |
 | `cmake/` | Every CMake function and the layer table |
 | `cli/` | The project CLI package, with its own `pyproject.toml` |
 | `tools/` | Manual checkers; see `project-tools` |

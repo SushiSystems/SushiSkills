@@ -17,7 +17,6 @@ docs/
     README.md                     manual index; every document reachable from here
     CONTRIBUTING.md               what must be documented, how a change lands
     DOCUMENTATION_STYLE_GUIDE.md
-    CLAUDE.md  AGENTS.md          the agent entry point (root files only point here)
     getting_started/  architecture/  guides/
     reference/
         CHANGELOG.md  GLOSSARY.md  KNOWN_ISSUES.md

@@ -53,8 +53,8 @@ tools read.
 **Any other agent.** Point it at `skills/sushisystemsprogramming/SKILL.md` from the repository's
 `AGENTS.md`; that file names the others.
 
-Inside a Sushi Systems repository, the root `AGENTS.md` and `CLAUDE.md` are one line each,
-pointing at `docs/CLAUDE.md`, which names the skills the repository follows.
+Inside a Sushi Systems repository, `AGENTS.md` and `CLAUDE.md` live at the repository root,
+naming the skills the repository follows.
 
 ## Changing a rule
 
