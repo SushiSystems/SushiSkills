@@ -3,7 +3,7 @@
 The rules below come from the classic style authorities (Strunk, Orwell, Williams, Zinsser,
 Pinker), the institutional guides (GOV.UK, Microsoft, Google developer docs, digital.gov), the
 corpus studies of LLM vocabulary (Kobak et al. 2024, Liang et al. 2024, Juzek & Ward 2025) and
-the Wikipedia "Signs of AI writing" catalogue. Sources are in `research/english_sources.md`.
+the Wikipedia "Signs of AI writing" catalogue. Sources are in `research/generic_english_sources.md`.
 
 Three rules subsume most of the rest. If you keep nothing else, keep these:
 

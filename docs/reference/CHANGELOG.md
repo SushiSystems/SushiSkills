@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-09-16 — humanizer: Renamed the language files to `generic_english.md` and `generic_turkish.md`.
+
 ## v0.1.0 — 2026-09-16
 
 - 2026-09-16 — skills: Renamed repository and doctrine to SushiSkills (`README.md`, `SKILL.md`).

@@ -1,6 +1,6 @@
 # Devrik cümle: araştırma notu
 
-Tarama 2026-09-05. `../turkish.md` içindeki "Devrik cümle" bölümü bu nota dayanır. Kural
+Tarama 2026-09-05. `../generic_turkish.md` içindeki "Devrik cümle" bölümü bu nota dayanır. Kural
 bir cümledir: teknik ve iş metninde yüklem sonda durur. Bu not kuralın gerekçesini, devrik
 cümlenin nasıl tanındığını ve devrik kurmadan vurgu ile ritmin nasıl sağlandığını toplar.
 
@@ -102,7 +102,7 @@ Sık biçimler ve onarımı:
 | "ki" yan cümlesi sonda | Gördük ki önbellek işe yaramıyor. | Önbelleğin işe yaramadığını gördük. |
 | Ünlem başta | Kalktı bütün ekip ayağa. | Bütün ekip ayağa kalktı. |
 
-"ki" biçimi ayrıca `turkish.md` "ki bağlacı" maddesinde: nesne cümlesi -dığını ile kurulur.
+"ki" biçimi ayrıca `generic_turkish.md` "ki bağlacı" maddesinde: nesne cümlesi -dığını ile kurulur.
 
 ## 7. Devrik kurmadan vurgu ve ritim
 

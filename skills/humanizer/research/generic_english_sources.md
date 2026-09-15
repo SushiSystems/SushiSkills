@@ -1,6 +1,6 @@
 # English sources
 
-Literature review run 2026-08-28. The rules in `../english.md` cite these.
+Literature review run 2026-08-28. The rules in `../generic_english.md` cite these.
 
 ## Style authorities
 1. Strunk, *The Elements of Style* — gutenberg.org/files/37134/37134-h/37134-h.htm
