@@ -19,6 +19,7 @@ a `name` and a `description` saying when to load it.
 | `repository-layout` | The root, single-module and multi-module trees, module rules |
 | `cpp-code-style` | C++ formatting, naming, files, includes, class shape, errors |
 | `python-code-style` | Python layout, formatting, naming, class shape, errors, logging, tests |
+| `typescript-code-style` | TypeScript layout, brace symmetry, naming, class shape, errors, tests |
 | `source-comments` | License block, Doxygen file and symbol blocks, docstrings, what is forbidden |
 | `logging` | Categories, levels, what is and is not logged, silent failures |
 | `documentation` | The `docs/` tree, placement, design documents, agent work lifecycle, archive |
