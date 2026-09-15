@@ -50,6 +50,7 @@ Each rule set is its own skill. Load the one your task touches.
 | Any file under `docs/` or a module README | `documentation` |
 | More than one agent on one piece of work | `multi-agent-work` |
 | A commit message or pull request | `commits` |
+| A version number, a tag, a release | `versioning-and-release` |
 | The checkers under `tools/` | `project-tools` |
 
 ## Language

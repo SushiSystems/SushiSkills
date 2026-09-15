@@ -11,6 +11,7 @@ A commit history is read as a changelog of intent. Every subject line follows on
 
 ```
 type(scope): sentence in lower case, present tense, no trailing period
+type(scope)!: the same, for a change that breaks a public interface, file format or CLI
 ```
 
 | Type | For |
@@ -22,12 +23,14 @@ type(scope): sentence in lower case, present tense, no trailing period
 | `test` | Tests only |
 | `docs` | Documentation only |
 | `build` | CMake, CLI, checkers, toolchain |
-| `chore` | Release bumps, housekeeping with no behaviour |
+| `chore` | Releases (`chore(release): v0.3.2`), housekeeping with no behaviour |
 
 - `scope` is the module or subsystem folder name: `matter`, `interop`, `cli`, `layering`.
 - The sentence says what the change does, as a full clause, under 72 characters:
   `feat(matter): reserve the neighbour list at tick start`.
 - A change that needs two scopes is usually two commits.
+- The type decides the next version: see `versioning-and-release`. A breaking change without
+  `!` hides a MAJOR bump.
 
 ## Body
 

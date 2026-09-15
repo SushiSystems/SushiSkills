@@ -25,6 +25,7 @@ a `name` and a `description` saying when to load it.
 | `documentation` | The `docs/` tree, placement, design documents, agent work lifecycle, archive |
 | `multi-agent-work` | Orchestrator and workers, wave planning, dispatch, accepting reports |
 | `commits` | Commit subject grammar, body, staging |
+| `versioning-and-release` | Semantic versions, `vX.Y.Z` tags, when a release is due, how it is cut |
 | `project-tools` | The four checkers every repository carries and their shared contract |
 
 ## Using the skills
