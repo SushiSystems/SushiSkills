@@ -22,17 +22,20 @@ The vocabulary tells decay every year or so. The three rules underneath them do 
 
 ## Language files
 
-Read the file for the language you are writing in before the draft, not after. They are not
-translations of each other; each language has its own tells.
+Read the file for the language and register you are writing in before the draft, not after.
+They are not translations of each other; each language and register has its own tells. The
+generic file is the default. Use another register only when the owner or the task asks for it.
 
-- **English:** `generic_english.md` — sentence construction, adjectives, the measured word list,
-  discourse structure, punctuation (em dash density), record types.
-- **Türkçe:** `generic_turkish.md` — cümle kurgusu, devrik cümle (yüklem sonda; tanıma testi ve
-  onarımı), çatı ve kip (-mektedir tekdüzeliği), dolgu fiiller ve ilgeçler, söylem, noktalama
-  (uzun çizgi yalnız konuşma çizgisidir), terim seçimi, kayıt türleri.
+| File | Language | Register |
+| --- | --- | --- |
+| `generic_english.md` | English | Default: documentation, commits, PRs, design notes, chat replies |
+| `plain_english.md` | English | CEFR B1–B2, international readers, plain and organic |
+| `hood_english.md` | English | Informal street and internet English |
+| `generic_turkish.md` | Türkçe | Varsayılan: belge, commit, PR, tasarım notu, sohbet yanıtı |
+| `hood_turkish.md` | Türkçe | Sokak, argo ve internet Türkçesi |
 
-Both files end with before/after pairs. Sources and the corpus evidence behind the word lists
-are in `research/`.
+Every file ends with before/after pairs. Sources and the corpus evidence behind the word lists
+are in `research/`, one sources file per register.
 
 ## The pass
 
@@ -73,7 +76,9 @@ guide speaks to *you*, an architecture chapter describes what *the renderer* doe
 above apply everywhere; how much polish a piece gets scales with its formality. Do not
 over-craft a one-line status.
 
-Never inject forced personality, slang, or "casual" texture to compensate. The goal is not to
+In the generic registers, never inject forced personality, slang, or "casual" texture to
+compensate. The hood registers exist for when informal speech is the job, and their own files
+say how to do it without caricature. The goal is not to
 sound human; it is to say the true thing once, in the plainest words that carry it, so that
 nothing stands between the reader and the point.
 

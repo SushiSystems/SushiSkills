@@ -15,7 +15,7 @@ a `name` and a `description` saying when to load it.
 | Skill | Covers |
 | --- | --- |
 | `sushiskills` | The doctrine and a map to every other skill; load it first |
-| `humanizer` | Prose in English and Turkish: documents, comments, commits, replies |
+| `humanizer` | Prose in English and Turkish: documents, comments, commits, replies. Five registers: generic, plain B1–B2 English, informal English and Turkish |
 | `repository-layout` | The root, single-module and multi-module trees, module rules |
 | `cpp-code-style` | C++ formatting, naming, files, includes, class shape, errors |
 | `python-code-style` | Python layout, formatting, naming, class shape, errors, logging, tests |
