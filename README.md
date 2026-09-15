@@ -27,6 +27,15 @@ a `name` and a `description` saying when to load it.
 | `commits` | Commit subject grammar, body, staging |
 | `versioning-and-release` | Semantic versions, `vX.Y.Z` tags, when a release is due, how it is cut |
 | `project-tools` | The four checkers every repository carries and their shared contract |
+| `testing` | What each change must test, bug fix order, determinism, golden files |
+| `dependencies` | Licences, where libraries come from, keeping them private |
+| `api-stability` | Public surfaces, deprecation, exports, cross-repository upgrades |
+| `performance` | Hot path defaults, measured optimisation, benchmarks |
+| `debugging` | Known issues first, temporary instrumentation, root causes |
+| `file-formats` | `snake_case` keys, `format_version`, upgrading readers |
+| `git-workflow` | `main` and short branches, pushing, conflicts, shared trees |
+| `continuous-integration` | What CI runs on Windows and Linux, red builds |
+| `platform-portability` | Platform adapters, export macros, paths and text |
 
 ## Using the skills
 

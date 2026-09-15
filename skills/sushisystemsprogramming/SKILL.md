@@ -52,6 +52,15 @@ Each rule set is its own skill. Load the one your task touches.
 | A commit message or pull request | `commits` |
 | A version number, a tag, a release | `versioning-and-release` |
 | The checkers under `tools/` | `project-tools` |
+| Tests a change must carry, bug fix order, determinism, goldens | `testing` |
+| Adding, vendoring or upgrading a third-party library | `dependencies` |
+| Changing or removing a public surface, cross-repository upgrades | `api-stability` |
+| Optimising, benchmarks, perf claims | `performance` |
+| A bug, a crash, a wrong value | `debugging` |
+| A persistent file format | `file-formats` |
+| Branches, pushing, conflicts | `git-workflow` |
+| CI workflows and CI failures | `continuous-integration` |
+| Windows and Linux differences, exports, paths | `platform-portability` |
 
 ## Language
 
