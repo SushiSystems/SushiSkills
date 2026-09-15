@@ -1,9 +1,9 @@
 ---
-name: sushisystemsprogramming
+name: sushiskills
 description: Use when starting any work in a Sushi Systems repository (existing or new), or when unsure which Sushi rule covers a file, a name, a comment, a log line, a document or a commit.
 ---
 
-# Sushi Systems Programming
+# SushiSkills
 
 One discipline for every Sushi Systems repository, so that a person or an agent who knows one
 repository already knows them all. Maintenance cost is the thing being minimised; every rule
