@@ -19,8 +19,10 @@ from common.checker import Checker, Issue, run  # noqa: E402
 
 K_CHANGELOG = Path("docs/reference/CHANGELOG.md")
 K_LENGTH_CEILING = 240
-K_CITED_PATH_CEILING = 3
-K_ENTRY_SHAPE = re.compile(r"^- \d{4}-\d{2}-\d{2} — [A-Z][a-z]+ .+\.$")
+K_CITED_PATH_CEILING = 5
+K_LIVE_RELEASE_CEILING = 1
+K_ENTRY_SHAPE = re.compile(r"^- \d{4}-\d{2}-\d{2} — [a-z0-9_-]+: [A-Z][a-z]+ .+\.$")
+K_SECTION = re.compile(r"^## (Unreleased|\S+ — \d{4}-\d{2}-\d{2})$")
 K_SECOND_SENTENCE = re.compile(r"[.!?] +[A-Z]")
 K_NESTED_BULLET = re.compile(r"^\s+[-*+] ")
 K_CITED_PATH = re.compile(r"`[^`]+`")
@@ -28,11 +30,16 @@ K_CITED_PATH = re.compile(r"`[^`]+`")
 
 @dataclass(frozen=True, slots=True)
 class Entry:
-    """Holds one bullet line of the changelog."""
+    """Holds one bullet or section heading line of the changelog."""
 
     path: Path
     number: int
     text: str
+
+    @property
+    def is_section(self) -> bool:
+        """Returns whether the line is a `##` heading."""
+        return self.text.startswith("## ")
 
 
 def collect(paths: list[Path]) -> Iterable[Entry]:
@@ -46,7 +53,7 @@ def collect(paths: list[Path]) -> Iterable[Entry]:
         for index, line in enumerate(changelog.read_text(encoding="utf-8").splitlines()):
             if line.lstrip().startswith("```"):
                 in_fence = not in_fence
-            elif not in_fence and re.match(r"^\s*[-*+] ", line):
+            elif not in_fence and (re.match(r"^\s*[-*+] ", line) or line.startswith("## ")):
                 entries.append(Entry(changelog, index + 1, line.rstrip()))
     return entries
 
@@ -57,9 +64,24 @@ def _code_free(text: str) -> str:
 
 
 def rule_entry_shape(entry: Entry) -> Iterator[Issue]:
-    """Yields an issue when an entry is not `- date — Verb what, ending in a period`."""
-    if not K_NESTED_BULLET.match(entry.text) and not K_ENTRY_SHAPE.match(entry.text):
-        yield Issue(entry.path, entry.number, "entry must read '- YYYY-MM-DD — Verbed what (`where`).'")
+    """Yields an issue when an entry or heading does not follow the changelog shape."""
+    if entry.is_section:
+        if not K_SECTION.match(entry.text):
+            yield Issue(entry.path, entry.number, "heading must read '## Unreleased' or '## <version> — YYYY-MM-DD'")
+    elif not K_NESTED_BULLET.match(entry.text) and not K_ENTRY_SHAPE.match(entry.text):
+        yield Issue(entry.path, entry.number, "entry must read '- YYYY-MM-DD — scope: Verbed what (`where`).'")
+
+
+def rule_live_releases(entry: Entry) -> Iterator[Issue]:
+    """Yields an issue at each release heading beyond the ones the live file keeps."""
+    if not entry.is_section or entry.text == "## Unreleased":
+        return
+    headings = [
+        line for line in entry.path.read_text(encoding="utf-8").splitlines()
+        if line.startswith("## ") and line != "## Unreleased"
+    ]
+    if headings.index(entry.text) >= K_LIVE_RELEASE_CEILING:
+        yield Issue(entry.path, entry.number, "older release; move it to docs/archive/changelog/")
 
 
 def rule_length(entry: Entry) -> Iterator[Issue]:
@@ -92,6 +114,7 @@ K_CHECKER = Checker(
     collect=collect,
     rules={
         "rule_entry_shape": rule_entry_shape,
+        "rule_live_releases": rule_live_releases,
         "rule_length": rule_length,
         "rule_single_sentence": rule_single_sentence,
         "rule_no_nesting": rule_no_nesting,
