@@ -37,6 +37,12 @@ a `name` and a `description` saying when to load it.
 | `continuous-integration` | What CI runs on Windows and Linux, red builds |
 | `platform-portability` | Platform adapters, export macros, paths and text |
 
+## Third-party skills
+
+`third_party/superpowers/` holds the MIT-licensed superpowers skill library, unchanged. Its
+`README.md` names the version and the licence. Where it disagrees with a skill above, the skill
+above wins.
+
 ## Using the skills
 
 **Claude Code.** Link or copy each folder under `skills/` into `~/.claude/skills/`.
