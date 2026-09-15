@@ -21,17 +21,20 @@ manual, `CHANGELOG.md` or `REMAINING_WORK.md`, and never commits unless the disp
 
 ## Planning
 
-A plan is ordered twice:
+Every plan puts hierarchy first: interfaces and the bricks they depend on come before their
+callers, and a module boundary is fixed, with its build edges committed, before anything on
+either side is written. A task needs one acceptance criterion and one build; a task needing two
+builds is two tasks.
 
-1. **Hierarchy first.** Interfaces and the bricks they depend on come before their callers. A
-   module boundary is fixed, and its build edges committed, before anything on either side is
-   written.
-2. **Width second.** Within what the hierarchy allows, tasks are grouped into waves of
-   independent work with disjoint file sets.
+The owner chooses how the plan runs.
 
-Every wave lists: the tasks, each task's files, what each waits on, and the build that closes
-the wave. A task needs one acceptance criterion and one build; a task needing two builds is two
-tasks. A single serial chain where the dependency graph allows width is a defect in the plan.
+| Mode | Shape |
+| --- | --- |
+| Inline | One session implements the tasks in hierarchy order, without workers |
+| Waves | Tasks the hierarchy leaves independent are grouped into waves with disjoint file sets, one worker per task |
+
+A wave plan lists, per wave: the tasks, each task's files, what each waits on, and the build that
+closes the wave.
 
 ## Dispatch
 

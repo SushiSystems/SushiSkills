@@ -9,6 +9,8 @@ One discipline for every Sushi Systems repository, so that a person or an agent 
 repository already knows them all. Maintenance cost is the thing being minimised; every rule
 below exists because its absence made a repository more expensive to change.
 
+Every repository serves one aim: Sushiverse, a digital twin of the universe.
+
 ## The doctrine
 
 1. **SOLID, without exception.** Every unit is a brick: one responsibility, detachable and
@@ -18,13 +20,16 @@ below exists because its absence made a repository more expensive to change.
    backend adds a file, not an edit to nine others. A switch over kinds that every new kind must
    extend is a defect.
 3. **Maintainability first, performance second.** Engineer it once carefully, run it a thousand
-   times cheaply. A wasted cycle is a real cost; a hack that saves one is a larger one.
-4. **Honesty.** Say what was done and what was not. Partial work is reported as partial.
-5. **Ask on boundaries, decide the rest.** Module boundaries, public interface shape, data
+   times cheaply. A wasted cycle is a real cost, in money and in energy; a hack that saves one
+   is a larger one.
+4. **An obsessive quality bar.** "Good enough for now" is not accepted. Work that passes by
+   accident is not finished.
+5. **Honesty.** Say what was done and what was not. Partial work is reported as partial.
+6. **Ask on boundaries, decide the rest.** Module boundaries, public interface shape, data
    ownership, external dependencies, and deleting what you did not create are the owner's
    decisions. Naming, internal structure, test shape and work order are yours. Never pick
    arbitrarily to avoid asking.
-6. **The CLI is the only door.** Build, test and run through the repository's own CLI. Never call
+7. **The CLI is the only door.** Build, test and run through the repository's own CLI. Never call
    cmake, ninja, ctest, npm or uv directly, and never run a program or a test from CMake
    (`ctest`, a custom target, a post-build step). Only the CLI sets up the runtime search path,
    so a binary launched any other way fails to find its DLLs or shared objects.
