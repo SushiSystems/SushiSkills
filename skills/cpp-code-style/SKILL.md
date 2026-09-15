@@ -20,6 +20,7 @@ The repository's `.clang-format` is authoritative; it encodes these rules.
 | Column limit | 100 |
 | Braces | Allman: every `{` on its own line, for namespaces, classes, functions, control flow, lambdas with bodies |
 | Single-statement bodies | Braces optional; the statement goes on its own line, never on the `if` line |
+| Empty bodies | `{` and `}` on their own lines with one blank line between them, never `{}` |
 | Access specifiers | Indented one level inside the class, members one level further |
 | Pointers and references | Bind to the type: `const Buffer& buffer`, `Node* parent` |
 | Include order | Not auto-sorted; grouped by hand (see Includes) |
