@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "path": "skills"
+    },
+    {
+      "path": "third_party/superpowers/skills"
+    }
+  ]
+}
