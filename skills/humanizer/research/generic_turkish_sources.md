@@ -1,6 +1,6 @@
 # Türkçe kaynaklar
 
-Literatür taraması 2026-08-28. `../turkish.md` içindeki kurallar bunlara dayanır.
+Literatür taraması 2026-08-28. `../generic_turkish.md` içindeki kurallar bunlara dayanır.
 
 ## TDK ve mevzuat
 1. TDK, Noktalama İşaretleri — tdk.gov.tr/icerik/yazim-kurallari/noktalama-isaretleri-aciklamalar/ (uzun çizgi yalnız konuşma çizgisi; virgülün konmadığı yerler; kısa çizgi bitişik ara söz)

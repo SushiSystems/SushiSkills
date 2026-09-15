@@ -25,9 +25,9 @@ The vocabulary tells decay every year or so. The three rules underneath them do 
 Read the file for the language you are writing in before the draft, not after. They are not
 translations of each other; each language has its own tells.
 
-- **English:** `english.md` — sentence construction, adjectives, the measured word list,
+- **English:** `generic_english.md` — sentence construction, adjectives, the measured word list,
   discourse structure, punctuation (em dash density), record types.
-- **Türkçe:** `turkish.md` — cümle kurgusu, devrik cümle (yüklem sonda; tanıma testi ve
+- **Türkçe:** `generic_turkish.md` — cümle kurgusu, devrik cümle (yüklem sonda; tanıma testi ve
   onarımı), çatı ve kip (-mektedir tekdüzeliği), dolgu fiiller ve ilgeçler, söylem, noktalama
   (uzun çizgi yalnız konuşma çizgisidir), terim seçimi, kayıt türleri.
 
@@ -57,7 +57,7 @@ The cross-language checklist, in the order the tells are usually found:
 | Inverted sentence | (n/a) | predicate not last; an object or adverbial after the verb |
 | Empty preposition frame | in terms of, with regard to | kapsamında / çerçevesinde / noktasında / -e yönelik |
 | Participial opinion tail | …, highlighting the importance of | …na katkıda bulunarak, …ni gözler önüne sererek |
-| Em dash as tic | more than one per ~300 words, or two in a paragraph | any em dash at all outside dialogue; repair recipe in `turkish.md` |
+| Em dash as tic | more than one per ~300 words, or two in a paragraph | any em dash at all outside dialogue; repair recipe in `generic_turkish.md` |
 | Semicolon + connective | rare | "; bununla birlikte" |
 | Closing | In conclusion; Let me know if… | Sonuç olarak; Umarım faydalı olmuştur |
 | Flat rhythm | every sentence 15–25 words | every sentence same length, same ending |

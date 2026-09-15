@@ -4,7 +4,7 @@ Kurallar TDK yazım kılavuzu ve noktalama sayfalarından, Resmî Yazışmalar Y
 Alpay / Aksoy / Hepçilingirler / Özdemir İnce çizgisindeki dil eleştirisinden, Türkçe okuma
 deneylerinden (Aydın & Cedden, Özge, Mutlu vd.), Bayat'ın paragraf ölçümünden ve Barış Özkul'un
 yapay zekâ Türkçesi üzerine editörlük gözlemlerinden çıkarıldı. Kaynaklar
-`research/turkish_sources.md` dosyasında.
+`research/generic_turkish_sources.md` dosyasında.
 
 İngilizce tik listeleri Türkçeye doğrudan çevrilmez. Türkçe LLM metninin imzası üç yerde
 toplanır: ek morfolojisi (-mektedir tekdüzeliği), bürokratik bağlaç zinciri, İngilizce retorik
