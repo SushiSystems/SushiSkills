@@ -80,14 +80,35 @@ The manual is never archived; it is kept true.
 
 ## Changelog
 
-One line per change: date, past-tense verb, what changed, where in backticks.
+One file, `docs/reference/CHANGELOG.md`, grouped by release, newest first.
 
 ```
-- 2026-08-28 — Fixed the star field's exposure (`star.vert`, `StarPass`).
+# Changelog
+
+## Unreleased
+
+- 2026-09-15 — matter: Reserved the neighbour list at tick start (`neighbour_list.hpp`).
+- 2026-09-14 — interop: Logged every refused share (`interop_share.cpp`, `ShareGate`).
+
+## 0.3.0 — 2026-09-01
+
+- 2026-08-28 — render: Fixed the star field's exposure (`star.vert`, `StarPass`).
 ```
 
-Never over 240 characters, never a second sentence, never a nested bullet, never why. A change
-that cites more than three files is more than one line.
+| Part | Rule |
+| --- | --- |
+| Headings | `## Unreleased` on top, then `## <version> — <YYYY-MM-DD>` per release |
+| Entry | `- <YYYY-MM-DD> — <scope>: <Past-tense verb> <what changed> (<where>).` |
+| Scope | The commit scope, so one module's history is one search |
+| Where | At most five backticked files or symbols |
+| Order | Newest first inside each section |
+| Length | At most 240 characters, one sentence, no nested bullet, never why |
+
+A change that needs more than five places is more than one entry.
+
+**Release.** When a version ships, `## Unreleased` is renamed to `## <version> — <date>` and a new
+empty `## Unreleased` opens above it. The live file keeps `Unreleased` and the latest release;
+every older release section moves, unchanged, to `docs/archive/changelog/<version>.md`.
 
 ## Names
 
