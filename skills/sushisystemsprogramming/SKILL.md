@@ -43,7 +43,8 @@ Each rule set is its own skill. Load the one your task touches.
 | Prose of any kind, in English or Turkish | `humanizer` |
 | Where a file or folder goes | `repository-layout` |
 | C++ formatting, naming, class shape, errors | `cpp-code-style` |
-| Python formatting, naming, CLI shape | `python-code-style` |
+| Python layout, formatting, naming, class shape | `python-code-style` |
+| TypeScript layout, brace symmetry, naming, class shape | `typescript-code-style` |
 | Doxygen headers and comments in source | `source-comments` |
 | Log calls, categories, levels | `logging` |
 | Any file under `docs/` or a module README | `documentation` |

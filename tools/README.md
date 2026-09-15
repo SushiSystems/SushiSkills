@@ -6,7 +6,7 @@ repository copies this folder whole; a rule is fixed here first and copied out.
 | Path | Checks | Takes |
 | --- | --- | --- |
 | `common/checker.py` | Nothing itself; runs a checker's rule table and prints findings | |
-| `documentation/check_source_comments.py` | File header, block ceiling, `//` and `#` runs, separators, history words, `@date` | Files or folders |
+| `documentation/check_source_comments.py` | C++, GLSL, TypeScript and Python: file header, block ceiling, `//` and `#` runs, separators, history words, `@date` | Files or folders |
 | `documentation/check_docs_layout.py` | `docs/` entries, document names, work folders, status lines, design ceiling, links, module READMEs, archive candidates | Repository root |
 | `documentation/check_changelog.py` | Entry shape, length, one sentence, nesting, cited places | Repository root |
 | `layering/check_layering.py` | Declared tiers, upward includes, reaches into another module's `source/` | Repository root |

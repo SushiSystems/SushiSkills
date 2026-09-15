@@ -1,6 +1,6 @@
 # Copyright (c) 2026-present Mustafa Garip & Sushi Systems
 # Licensed under the Apache License, Version 2.0. See LICENSE.
-"""Checks C++, GLSL and Python source against the source-comments skill.
+"""Checks C++, GLSL, TypeScript and Python source against the source-comments skill.
 
 Usage: python tools/documentation/check_source_comments.py [paths...] [--report] [--rule NAME]
 """
@@ -18,7 +18,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from common.checker import Checker, Issue, run  # noqa: E402
 
-K_C_SUFFIXES = frozenset({".h", ".hpp", ".cpp", ".glsl", ".comp", ".vert", ".frag"})
+K_C_SUFFIXES = frozenset({".h", ".hpp", ".cpp", ".glsl", ".comp", ".vert", ".frag", ".ts", ".tsx"})
 K_PYTHON_SUFFIXES = frozenset({".py"})
 K_SKIPPED_FOLDERS = frozenset({".git", "third_party", "build", "__pycache__", "node_modules"})
 K_FILE_HEADER_CEILING = 6

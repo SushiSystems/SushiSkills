@@ -1,6 +1,6 @@
 ---
 name: source-comments
-description: Use when writing or reviewing a comment, a Doxygen block, a file header, a docstring or a license block in C++, GLSL or Python source in a Sushi Systems repository.
+description: Use when writing or reviewing a comment, a Doxygen block, a file header, a docstring or a license block in C++, GLSL, TypeScript or Python source in a Sushi Systems repository.
 ---
 
 # Source Comments
