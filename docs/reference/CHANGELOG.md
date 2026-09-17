@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-09-17 — marketing-copy: Added the skill banning AI-style marketing copy, with English and Turkish files (`skills/marketing-copy`).
+
 ## v0.1.1 — 2026-09-16
 
 - 2026-09-16 — humanizer: Renamed the language files to `generic_english.md` and `generic_turkish.md`.

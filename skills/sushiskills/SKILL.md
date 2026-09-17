@@ -41,6 +41,7 @@ Each rule set is its own skill. Load the one your task touches.
 | Task touches | Skill |
 | --- | --- |
 | Prose of any kind, in English or Turkish | `humanizer` |
+| Website, pitch, product or social copy for outsiders | `marketing-copy` |
 | Where a file or folder goes | `repository-layout` |
 | C++ formatting, naming, class shape, errors | `cpp-code-style` |
 | Python layout, formatting, naming, class shape | `python-code-style` |
