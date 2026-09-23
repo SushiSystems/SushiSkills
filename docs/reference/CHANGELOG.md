@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-09-24 — claude: Added the global Claude Code instructions (`claude/CLAUDE.md`).
 - 2026-09-17 — marketing-copy: Added the skill banning AI-style marketing copy, with English and Turkish files (`skills/marketing-copy`).
 
 ## v0.1.1 — 2026-09-16
