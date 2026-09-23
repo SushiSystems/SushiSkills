@@ -51,6 +51,12 @@ above wins.
 **Codex, Gemini CLI, Copilot CLI.** Link or copy them into `~/.agents/skills/`, which these
 tools read.
 
+**Global instructions.** `claude/CLAUDE.md` holds the owner's instructions for every project:
+language, quality, documentation, delegation and the model per dispatch. Make
+`~/.claude/CLAUDE.md` a single import line pointing at it, so each machine reads the same file:
+`@D:/Projects/sushiskills/claude/CLAUDE.md` on Windows, `@~/Projects/sushiskills/claude/CLAUDE.md`
+on Linux, adjusted to where the repository is cloned.
+
 **Any other agent.** Point it at `skills/sushiskills/SKILL.md` from the repository's
 `AGENTS.md`; that file names the others.
 
