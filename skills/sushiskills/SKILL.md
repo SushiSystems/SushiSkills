@@ -62,6 +62,7 @@ Each rule set is its own skill. Load the one your task touches.
 | Branches, pushing, conflicts | `git-workflow` |
 | CI workflows and CI failures | `continuous-integration` |
 | Windows and Linux differences, exports, paths | `platform-portability` |
+| Scratch files, temp output, copies, downloads, anything that writes to disk | `storage-discipline` |
 
 ## Language
 
