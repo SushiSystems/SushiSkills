@@ -37,6 +37,7 @@ a `name` and a `description` saying when to load it.
 | `git-workflow` | `main` and short branches, pushing, conflicts, shared trees |
 | `continuous-integration` | What CI runs on Windows and Linux, red builds |
 | `platform-portability` | Platform adapters, export macros, paths and text |
+| `storage-discipline` | Scratchpad budget, no binaries or copies in scratch, bounded output capture, cleanup before reporting |
 
 ## Third-party skills
 

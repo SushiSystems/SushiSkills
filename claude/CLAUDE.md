@@ -77,7 +77,7 @@ choice, ask rather than guess.
 ## Delegation
 
 A subagent reads CLAUDE.md but not my memory, so nothing in memory reaches it unless the prompt
-carries it. Every subagent prompt, whatever the task, opens with the same four lines, verbatim:
+carries it. Every subagent prompt, whatever the task, opens with the same six lines, verbatim:
 
 1. SOLID, without exception. Every unit is a brick: one responsibility, detachable and
    re-attachable without touching its neighbours, rebuildable on its own. Siblings that do the
@@ -91,6 +91,8 @@ carries it. Every subagent prompt, whatever the task, opens with the same four l
 5. Before reporting, syntax-check what you wrote without building: C++ through
    `compile_commands.json` with `clang -fsyntax-only`, GLSL through `shader_compiler.exe`.
    Paste the command and its output.
+6. Write scratch only to the scratchpad, never binaries or copies, under 100 MB; delete what you
+   made and report the scratchpad size (`storage-discipline` skill).
 
 Model per dispatch: every subagent runs on `opus` (Opus 5.5); only the effort changes. An
 implementer, explorer or mechanical checker runs at `low`; a reviewer runs at `medium`; work
@@ -102,7 +104,7 @@ on every dispatch, never left to inherit.
 Effort caps at `high`; never `xhigh` or `max`. `low` and `medium` are the right choice for
 mechanical work and are not a compromise.
 
-A report that comes back without evidence of 1, 2 and 5 is sent back, not accepted. Reviewer
+A report that comes back without evidence of 1, 2, 5 and 6 is sent back, not accepted. Reviewer
 dispatches check SOLID shape and humanizer register explicitly, as named items, not as "quality".
 
 ## Planning
