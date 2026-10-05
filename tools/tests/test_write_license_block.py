@@ -30,7 +30,11 @@ from licensing.write_license_block import (  # noqa: E402
 )
 
 K_PROJECT = "SushiRuntime - https://github.com/SushiSystems/SushiRuntime"
-K_HEADER = Header(K_PROJECT, K_LICENSE_LINES)
+K_LINES = (
+    "Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.",
+    "Commercial use requires a licence from Sushi Systems.",
+)
+K_HEADER = Header(K_PROJECT, K_LINES)
 K_EDGE = "/" + "*" * 64 + "/"
 K_BOX = "\n".join(
     [
@@ -158,7 +162,7 @@ class RewriteTest(unittest.TestCase):
     def test_appends_upstream_lines(self) -> None:
         """Appends a ported file's upstream notice below the Sushi lines."""
         upstream = ("Portions Copyright (c) 2012 Tomas Kazmar", "BSD-2-Clause")
-        header = Header(K_PROJECT, K_LICENSE_LINES, {"source/lapjv.cpp": upstream})
+        header = Header(K_PROJECT, K_LINES, {"source/lapjv.cpp": upstream})
         rows = rewrite("source/lapjv.cpp", K_DOC, header, 2026).splitlines()
         self.assertEqual(rows[1].strip("/* "), "lapjv.cpp")
         self.assertEqual([row.strip("/* ") for row in rows[6:8]], list(upstream))
@@ -167,13 +171,13 @@ class RewriteTest(unittest.TestCase):
     def test_keeps_upstream_lines_on_a_plain_rerun(self) -> None:
         """Keeps a ported file's upstream rows when a later run names no upstream for it."""
         upstream = ("Portions Copyright (c) 2012 Tomas Kazmar", "BSD-2-Clause")
-        ported = Header(K_PROJECT, K_LICENSE_LINES, {"lapjv.cpp": upstream})
+        ported = Header(K_PROJECT, K_LINES, {"lapjv.cpp": upstream})
         for name, body in (("lapjv.cpp", K_DOC), ("lapjv.py", K_DOCSTRING)):
-            first = rewrite(name, body, Header(K_PROJECT, K_LICENSE_LINES, {name: upstream}), 2026)
+            first = rewrite(name, body, Header(K_PROJECT, K_LINES, {name: upstream}), 2026)
             self.assertIn("Tomas Kazmar", first)
             self.assertEqual(rewrite(name, first, K_HEADER, 2026), first)
         replaced = rewrite("lapjv.cpp", rewrite("lapjv.cpp", K_DOC, ported, 2026),
-                           Header(K_PROJECT, K_LICENSE_LINES, {"lapjv.cpp": ("MIT",)}), 2026)
+                           Header(K_PROJECT, K_LINES, {"lapjv.cpp": ("MIT",)}), 2026)
         self.assertNotIn("Tomas Kazmar", replaced)
         self.assertIn("/* MIT ", replaced)
 
@@ -196,7 +200,7 @@ class RewriteTest(unittest.TestCase):
 
     def test_widens_the_box_for_a_long_line(self) -> None:
         """Keeps every row and both edges the same width when a line is long."""
-        header = Header("SushiRuntime - " + "x" * 80, K_LICENSE_LINES)
+        header = Header("SushiRuntime - " + "x" * 80, K_LINES)
         rows = rewrite("graph.hpp", K_DOC, header, 2026).split("\n\n")[0].splitlines()
         self.assertEqual(len({len(row) for row in rows}), 1)
 
@@ -209,7 +213,7 @@ class RewriteTest(unittest.TestCase):
         for name, text in (("graph.hpp", K_DOC), ("graph.py", K_DOCSTRING)):
             with tempfile.TemporaryDirectory() as folder:
                 path = Path(folder) / name
-                path.write_text(_write(name, text), encoding="utf-8")
+                path.write_text(rewrite(name, text, Header(K_PROJECT, K_LICENSE_LINES), 2026), encoding="utf-8")
                 issues = [issue for source in collect([path]) for issue in rule_license_block(source)]
                 self.assertEqual(issues, [])
 
