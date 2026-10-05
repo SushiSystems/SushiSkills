@@ -1,6 +1,6 @@
 # Rules unification
 
-**Status:** Open — spec approved by the owner on 2026-10-05; plan in `PLAN.md`.
+**Status:** Shipped — implemented and reviewed on 2026-10-05; see `REPORT.md`.
 
 Programme 1 of 5 in the estate refactor. The estate audit of 2026-10-05
 (`docs/agent/2026_10_05_ESTATE_AUDIT/REPORT.md`) found that this repository states several rules
@@ -33,7 +33,7 @@ All taken on 2026-10-05.
 The working tree holds uncommitted rule changes that are already live on this machine through
 symlinks: `README.md`, `claude/CLAUDE.md`, `docs/reference/CHANGELOG.md`,
 `skills/sushiskills/SKILL.md` and the untracked `skills/storage-discipline/`. Met: the owner
-approved and they were committed as they were in `ef442df` on 2026-10-05. The `claude:`
+approved and they were committed as they were on 2026-10-05 (`7fef7ae` after the history rebuild). The `claude:`
 changelog entry for the delegation change is still owed and lands with the first task.
 
 ## Design
