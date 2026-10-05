@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 import subprocess
+from datetime import date
 import sys
 import tempfile
 import unittest
@@ -260,6 +261,16 @@ class RepositoryTest(unittest.TestCase):
             self.assertEqual((root / "third_party" / "vendored.py").read_text(encoding="utf-8"), "x = 1\n")
             self.assertEqual(main([*arguments, "--report"]), 0)
 
+
+    def test_writes_a_file_that_is_staged_and_not_yet_committed(self) -> None:
+        """Gives a newly added file its block, dated this year."""
+        with tempfile.TemporaryDirectory() as folder:
+            root = self._repository(folder)
+            (root / "fresh.py").write_text(K_DOCSTRING, encoding="utf-8")
+            _git(root, "add", "fresh.py")
+            self.assertEqual(main([str(root), "--project", K_PROJECT]), 0)
+            written = (root / "fresh.py").read_text(encoding="utf-8")
+            self.assertIn(f"Copyright (c) {date.today().year} Sushi Systems", written)
 
     def test_skips_a_tracked_file_deleted_from_the_working_tree(self) -> None:
         """Leaves out a tracked file the working tree no longer holds."""

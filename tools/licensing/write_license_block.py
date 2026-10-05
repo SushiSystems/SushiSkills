@@ -18,6 +18,7 @@ import subprocess
 import sys
 from collections.abc import Iterator, Mapping
 from dataclasses import dataclass, field
+from datetime import date
 from pathlib import Path, PurePosixPath
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -161,7 +162,7 @@ def _git(root: Path, *arguments: str) -> str:
 
 
 def first_years(root: Path) -> dict[str, int]:
-    """Returns the year each tracked file was first added, following renames."""
+    """Returns the year each committed file was first added, following renames."""
     current = {path: path for path in _git(root, "ls-files").splitlines()}
     years: dict[str, int] = {}
     year = 0
@@ -187,15 +188,15 @@ def _is_skipped(path: str, globs: list[str]) -> bool:
 def pending(root: Path, header: Header, globs: list[str]) -> Iterator[tuple[Path, str]]:
     """Yields each source file whose text differs from what the writer produces, with that text."""
     years = first_years(root)
-    latest = max(years.values(), default=0)
-    for path in sorted(years):
+    this_year = date.today().year
+    for path in sorted(_git(root, "ls-files").splitlines()):
         if not is_source(path) or _is_skipped(path, globs):
             continue
         target = root / path
         if not target.is_file():
             continue
         text = target.read_bytes().decode("utf-8", errors="surrogateescape")
-        wanted = rewrite(path, text, header, years.get(path, latest))
+        wanted = rewrite(path, text, header, years.get(path, this_year))
         if wanted != text:
             yield target, wanted
 
