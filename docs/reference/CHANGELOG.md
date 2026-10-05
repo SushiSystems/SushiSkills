@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-05 — tools: Covered configure templates, include fragments and indented old boxes in the license block writer, and skipped tracked files that are deleted (`write_license_block.py`).
 - 2026-10-05 — tools: Kept a ported file's upstream lines when the writer runs again without naming them (`write_license_block.py`, `Header.kept_rows`).
 - 2026-10-05 — tools: Added the writer that puts the license block into every tracked source file (`tools/licensing/write_license_block.py`, `skills/project-tools/SKILL.md`, `skills/source-comments/SKILL.md`).
 - 2026-10-05 — tools: Rejected foreign licence lines in the license block, read byte order marks and encoding lines, and kept reachability inside the manual (`rule_license_block`, `_relative_links`, `_reachable`).
