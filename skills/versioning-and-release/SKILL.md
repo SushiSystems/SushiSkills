@@ -19,6 +19,7 @@ against it.
 | C++ | `project(<Name> VERSION x.y.z)` in the root `CMakeLists.txt`; `version.hpp` is generated from it |
 | Python | `version` in `pyproject.toml` |
 | TypeScript | `version` in the root `package.json` |
+| No build manifest (a skills or documentation repository) | The latest `## vX.Y.Z` heading in `docs/reference/CHANGELOG.md` |
 
 The tag is `v` plus that number. The changelog heading is the tag.
 
