@@ -13,7 +13,7 @@ repository. They are run by hand or through the project's CLI; they never build 
 | Checker | Enforces |
 | --- | --- |
 | `tools/documentation/check_source_comments.py` | Every rule in `source-comments` |
-| `tools/documentation/check_docs_layout.py` | The tree, names, work folder contents, status lines, broken links and 90-day archive candidates from `documentation` |
+| `tools/documentation/check_docs_layout.py` | The tree, required documents, names, work folder contents, status lines, broken links, reachability from the index and 90-day archive candidates from `documentation` |
 | `tools/documentation/check_changelog.py` | One line, 240 characters, one sentence, no nesting |
 | `tools/layering/check_layering.py` | Module dependencies follow the declared tier order; nothing reaches into another module's private `source/` |
 
