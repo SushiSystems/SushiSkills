@@ -29,6 +29,11 @@ K_DOCS_ENTRIES = frozenset(
     }
 )
 K_DESIGN_INDEXES = frozenset({"README.md", "REMAINING_WORK.md"})
+K_REQUIRED_ENTRIES = (
+    "README.md", "CONTRIBUTING.md", "DOCUMENTATION_STYLE_GUIDE.md",
+    "reference/CHANGELOG.md", "reference/GLOSSARY.md", "reference/KNOWN_ISSUES.md",
+    "design/README.md", "design/REMAINING_WORK.md",
+)
 K_WORK_FILES = frozenset({"SPEC.md", "PLAN.md", "REPORT.md"})
 K_WORK_FOLDER = re.compile(r"^\d{4}_\d{2}_\d{2}_[A-Z0-9]+(?:_[A-Z0-9]+)*$")
 K_DOCUMENT_NAME = re.compile(r"^[A-Z0-9]+(?:_[A-Z0-9]+)*\.md$")
@@ -102,6 +107,37 @@ def _last_commit_age_days(repository: Repository, path: Path) -> float | None:
     return (time.time() - int(stamp)) / K_SECONDS_PER_DAY if stamp else None
 
 
+def _relative_links(path: Path) -> Iterator[tuple[int, str]]:
+    """Yields the line number and anchor-free target of each relative link outside code."""
+    in_fence = False
+    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        if line.lstrip().startswith("```"):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
+        for target in K_LINK.findall(K_CODE_SPAN.sub("", line)):
+            if re.match(r"^[a-z][a-z0-9+.-]*:", target) or target.startswith("#"):
+                continue
+            yield number, target.split("#", 1)[0]
+
+
+def _reachable(index: Path) -> set[Path]:
+    """Returns every Markdown file reachable from an index through relative links."""
+    reached: set[Path] = set()
+    pending = [index.resolve()]
+    while pending:
+        path = pending.pop()
+        if path in reached or not path.is_file():
+            continue
+        reached.add(path)
+        for _, target in _relative_links(path):
+            linked = (path.parent / target).resolve()
+            if linked.suffix == ".md":
+                pending.append(linked)
+    return reached
+
+
 def rule_docs_entries(repository: Repository) -> Iterator[Issue]:
     """Yields an issue for each entry directly under docs/ that the tree does not name."""
     for entry in sorted(repository.docs.iterdir()):
@@ -150,18 +186,28 @@ def rule_design_ceiling(repository: Repository) -> Iterator[Issue]:
 def rule_links(repository: Repository) -> Iterator[Issue]:
     """Yields an issue for each relative link in a live document that does not resolve."""
     for path in repository.live_documents():
-        in_fence = False
-        for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
-            if line.lstrip().startswith("```"):
-                in_fence = not in_fence
-                continue
-            if in_fence:
-                continue
-            for target in K_LINK.findall(K_CODE_SPAN.sub("", line)):
-                if re.match(r"^[a-z][a-z0-9+.-]*:", target) or target.startswith("#"):
-                    continue
-                if not (path.parent / target.split("#", 1)[0]).exists():
-                    yield Issue(path, number, f"link target does not exist: {target}")
+        for number, target in _relative_links(path):
+            if not (path.parent / target).exists():
+                yield Issue(path, number, f"link target does not exist: {target}")
+
+
+def rule_required_entries(repository: Repository) -> Iterator[Issue]:
+    """Yields an issue for each required document missing from docs/."""
+    for name in K_REQUIRED_ENTRIES:
+        if not (repository.docs / name).is_file():
+            yield Issue(repository.docs / name, 1, "required document is missing")
+
+
+def rule_reachable_from_index(repository: Repository) -> Iterator[Issue]:
+    """Yields an issue for each live document outside agent/ that docs/README.md does not reach."""
+    index = repository.docs / "README.md"
+    if not index.is_file():
+        return
+    reached = _reachable(index)
+    agent = repository.docs / "agent"
+    for path in repository.live_documents():
+        if agent not in path.parents and path.resolve() not in reached:
+            yield Issue(path, 1, "not reachable from docs/README.md")
 
 
 def rule_module_readmes(repository: Repository) -> Iterator[Issue]:
@@ -192,11 +238,13 @@ K_CHECKER = Checker(
     collect=collect,
     rules={
         "rule_docs_entries": rule_docs_entries,
+        "rule_required_entries": rule_required_entries,
         "rule_document_names": rule_document_names,
         "rule_work_folders": rule_work_folders,
         "rule_status_lines": rule_status_lines,
         "rule_design_ceiling": rule_design_ceiling,
         "rule_links": rule_links,
+        "rule_reachable_from_index": rule_reachable_from_index,
         "rule_module_readmes": rule_module_readmes,
         "rule_archive_candidates": rule_archive_candidates,
     },
