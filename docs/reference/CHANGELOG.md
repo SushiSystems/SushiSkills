@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- 2026-10-05 — continuous-integration: Named the push workflow `ci.yml`, allowed direct checker calls without a CLI and gave manifest-free repositories a version source (`skills/continuous-integration/SKILL.md`, `skills/versioning-and-release/SKILL.md`).
+- 2026-10-05 — docs: Built the documentation skeleton and moved install and rule-change text out of the front door (`docs/README.md`, `docs/getting_started/INSTALL.md`, `skills/README.md`, `AGENTS.md`).
+- 2026-10-05 — continuous-integration: Named the push workflow `ci.yml` and allowed direct checker calls in a repository without a CLI (`skills/continuous-integration/SKILL.md`).
+- 2026-10-05 — versioning-and-release: Gave a repository without a build manifest its version source (`skills/versioning-and-release/SKILL.md`).
 - 2026-10-05 — tools: Added the required-document and reachability rules to the docs layout checker (`check_docs_layout.py`, `rule_required_entries`, `rule_reachable_from_index`).
 - 2026-10-05 — licence: Moved the repository from Apache-2.0 to PolyForm Noncommercial 1.0.0 (`LICENSE`, `COMMERCIAL.md`, `NOTICE.md`, `README.md`).
 - 2026-10-05 — dependencies: Accepted first-party repositories and added the ported code and notices rules (`skills/dependencies/SKILL.md`, `skills/repository-layout/SKILL.md`).
