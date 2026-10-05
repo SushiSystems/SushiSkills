@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-05 — source-comments: Replaced the Apache license block with the PolyForm Noncommercial block and added the rule that checks it (`skills/source-comments/SKILL.md`, `check_source_comments.py`, `rule_license_block`).
 - 2026-10-05 — claude: Reduced the documentation, source comment and planning sections to citations of their skills and added the file-set line to the dispatch block (`claude/CLAUDE.md`).
 - 2026-10-05 — multi-agent-work: Removed the second dispatch block and the model table in favour of the global instructions (`skills/multi-agent-work/SKILL.md`).
 - 2026-10-05 — sushiskills: Mapped superpowers specs and plans onto the work folder (`skills/sushiskills/SKILL.md`).
