@@ -64,6 +64,12 @@ Each rule set is its own skill. Load the one your task touches.
 | Windows and Linux differences, exports, paths | `platform-portability` |
 | Scratch files, temp output, copies, downloads, anything that writes to disk | `storage-discipline` |
 
+## Third-party skills
+
+The vendored superpowers skills name their own paths. In a Sushi repository a superpowers spec
+is `SPEC.md` and a superpowers plan is `PLAN.md` in the work folder
+`docs/agent/<YYYY_MM_DD>_<WORK_NAME>/`. Nothing is written under `docs/superpowers/`.
+
 ## Language
 
 Chat in the owner's language. Code, comments, documentation, commits and pull requests are in

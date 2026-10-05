@@ -38,17 +38,9 @@ closes the wave.
 
 ## Dispatch
 
-Every dispatch opens with this block, verbatim, whatever the task:
-
-```
-1. SOLID, without exception. Every unit is a brick: one responsibility, detachable and
-   re-attachable without touching its neighbours, rebuildable on its own. Siblings that do the
-   same kind of thing are shaped the same. No quick hacks that happen to pass.
-2. Before writing any prose, apply the `humanizer` skill in the language of the prose.
-3. Do not run the build system or edit build configuration unless this task says so.
-4. Write only to the files listed below and to docs/agent/<work folder>/.
-5. Report what was done and what was not. Paste the output of every verification you claim.
-```
+Every dispatch opens with the dispatch block, verbatim, whatever the task. The block lives in
+the owner's global instructions, `claude/CLAUDE.md` in SushiSkills, section "Delegation", and
+nowhere else; copy it from there.
 
 Then: the task, its file list, its acceptance criterion, the skills it must load
 (`cpp-code-style`, `source-comments`, ...), and the work folder path.
@@ -58,12 +50,8 @@ dispatch.
 
 ## Choosing a model
 
-| Work | Tier |
-| --- | --- |
-| Implementation, exploration, mechanical checks | Fast, capable model |
-| Review, architecture, anything that fixes an interface | Strongest reasoning model |
-
-The model is set on every dispatch, never inherited by default.
+The model and the effort for each kind of dispatch are set in the same "Delegation" section.
+Both are set on every dispatch, never inherited by default.
 
 ## Accepting a report
 

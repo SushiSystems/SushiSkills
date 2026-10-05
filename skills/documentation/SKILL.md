@@ -14,7 +14,7 @@ the current truth.
 
 ```
 docs/
-    README.md                     manual index; every document reachable from here
+    README.md                     manual index; every document outside agent/ reachable from here
     CONTRIBUTING.md               what must be documented, how a change lands
     DOCUMENTATION_STYLE_GUIDE.md
     getting_started/  architecture/  guides/
