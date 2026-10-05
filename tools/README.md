@@ -18,7 +18,7 @@ line or in angle brackets. It does not read reference-style links or a link arou
 
 `write_license_block.py` is the one tool here that writes files. It takes its licence lines
 from `check_source_comments.py`, `--closed` for a closed repository, `--skip GLOB` for generated
-files and `--upstream PATH=LINE;LINE` for a ported file. A `--report` run that prints nothing
+files and `--upstream PATH=LINE;LINE` for a ported file; a later run without it keeps those lines. A `--report` run that prints nothing
 proves a repository's headers are in place.
 
 Every checker takes `--report` and `--rule NAME`, exits 1 on findings, 0 when clean or
