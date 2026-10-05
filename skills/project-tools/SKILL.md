@@ -19,6 +19,10 @@ repository. They are run by hand or through the project's CLI; they never build 
 
 A repository may add checkers; it may not rename or drop these four.
 
+One tool beside them writes: `tools/licensing/write_license_block.py` puts the license block of
+`source-comments` into every tracked source file. It is run when a repository is created, when
+its licence changes, and with `--report` to prove the blocks are in place.
+
 ## Contract
 
 Every checker has the same shape.
