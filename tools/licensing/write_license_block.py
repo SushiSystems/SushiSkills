@@ -53,11 +53,18 @@ class Header:
     license_lines: tuple[str, ...]
     upstream: Mapping[str, tuple[str, ...]] = field(default_factory=dict)
 
-    def rows(self, path: str, year: int) -> list[str]:
-        """Returns the block's rows for the file at a repository-relative path."""
+    def rows(self, path: str, year: int, kept: tuple[str, ...] = ()) -> list[str]:
+        """Returns the block's rows for a file, with the upstream rows named for it or kept."""
         name = PurePosixPath(path).name
         own = [name, self.project, f"Copyright (c) {year} {K_HOLDER}", *self.license_lines]
-        return own + list(self.upstream.get(path, ()))
+        return own + list(self.upstream.get(path, kept))
+
+    def kept_rows(self, old: list[str]) -> tuple[str, ...]:
+        """Returns the rows an old block carries below this repository's own licence lines."""
+        if not all(line in old for line in self.license_lines):
+            return ()
+        last = max(old.index(line) for line in self.license_lines)
+        return tuple(old[last + 1:])
 
 
 def is_hash_family(path: str) -> bool:
@@ -84,8 +91,14 @@ def _render_hashed(rows: list[str]) -> list[str]:
     return [f"# {row}" for row in rows]
 
 
-def _split_boxed(lines: list[str]) -> tuple[list[str], list[str]]:
-    """Returns an empty preamble and the lines left once an old C-family block is dropped."""
+def _texts(block: list[str], marker: str) -> list[str]:
+    """Returns the rows of an old block without comment markers or box edges."""
+    texts = [line.strip().removeprefix(marker).removesuffix("*/").strip() for line in block]
+    return [text for text in texts if text and set(text) != {"*"}]
+
+
+def _split_boxed(lines: list[str]) -> tuple[list[str], list[str], list[str]]:
+    """Returns an empty preamble, the rows of an old C-family block and the lines below it."""
     for pattern, marker in ((K_BOXED_ROW, "/*"), (re.compile(r"^//"), "//")):
         end = 0
         while end < len(lines) and pattern.match(lines[end]):
@@ -93,20 +106,21 @@ def _split_boxed(lines: list[str]) -> tuple[list[str], list[str]]:
         run = lines[:end]
         is_box = marker == "/*" and bool(run) and bool(K_BOX_EDGE.match(run[0]))
         if run and (is_box or any("Copyright" in line for line in run)):
-            return [], lines[end:]
-    return [], lines
+            return [], _texts(run, marker), lines[end:]
+    return [], [], lines
 
 
-def _split_hashed(lines: list[str]) -> tuple[list[str], list[str]]:
-    """Returns the shebang and encoding lines, and the lines left once an old block is dropped."""
+def _split_hashed(lines: list[str]) -> tuple[list[str], list[str], list[str]]:
+    """Returns the shebang and encoding lines, the rows of an old block and the lines below it."""
     start = 0
     while start < len(lines) and K_HASH_PREAMBLE.match(lines[start]):
         start += 1
     end = start
     while end < len(lines) and lines[end].startswith("#"):
         end += 1
-    has_marker = any(K_HASH_MARKER.search(line) for line in lines[start:end])
-    return lines[:start], lines[end if has_marker else start:]
+    if any(K_HASH_MARKER.search(line) for line in lines[start:end]):
+        return lines[:start], _texts(lines[start:end], "#"), lines[end:]
+    return lines[:start], [], lines[start:]
 
 
 def rewrite(path: str, text: str, header: Header, year: int) -> str:
@@ -115,10 +129,10 @@ def rewrite(path: str, text: str, header: Header, year: int) -> str:
     newline = "\r\n" if "\r\n" in text else "\n"
     lines = text[len(mark):].replace("\r\n", "\n").split("\n")
     hashed = is_hash_family(path)
-    preamble, rest = _split_hashed(lines) if hashed else _split_boxed(lines)
+    preamble, old, rest = _split_hashed(lines) if hashed else _split_boxed(lines)
     while rest and not rest[0].strip():
         rest = rest[1:]
-    rows = header.rows(path, year)
+    rows = header.rows(path, year, header.kept_rows(old))
     block = _render_hashed(rows) if hashed else _render_boxed(rows)
     joined = hashed and bool(rest) and bool(K_DOCSTRING.match(rest[0]))
     gap = [] if joined or not rest else [""]

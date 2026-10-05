@@ -163,6 +163,23 @@ class RewriteTest(unittest.TestCase):
         self.assertEqual([row.strip("/* ") for row in rows[6:8]], list(upstream))
         self.assertNotIn("Tomas", rewrite("source/other.cpp", K_DOC, header, 2026))
 
+    def test_keeps_upstream_lines_on_a_plain_rerun(self) -> None:
+        """Keeps a ported file's upstream rows when a later run names no upstream for it."""
+        upstream = ("Portions Copyright (c) 2012 Tomas Kazmar", "BSD-2-Clause")
+        ported = Header(K_PROJECT, K_LICENSE_LINES, {"lapjv.cpp": upstream})
+        for name, body in (("lapjv.cpp", K_DOC), ("lapjv.py", K_DOCSTRING)):
+            first = rewrite(name, body, Header(K_PROJECT, K_LICENSE_LINES, {name: upstream}), 2026)
+            self.assertIn("Tomas Kazmar", first)
+            self.assertEqual(rewrite(name, first, K_HEADER, 2026), first)
+        replaced = rewrite("lapjv.cpp", rewrite("lapjv.cpp", K_DOC, ported, 2026),
+                           Header(K_PROJECT, K_LICENSE_LINES, {"lapjv.cpp": ("MIT",)}), 2026)
+        self.assertNotIn("Tomas Kazmar", replaced)
+        self.assertIn("/* MIT ", replaced)
+
+    def test_drops_foreign_rows_of_an_old_block(self) -> None:
+        """Carries nothing over from a block that lacks this repository's licence lines."""
+        self.assertNotIn("This file is part of", _write("graph.hpp", f"{K_OLD_BOX}\n\n{K_DOC}"))
+
     def test_widens_the_box_for_a_long_line(self) -> None:
         """Keeps every row and both edges the same width when a line is long."""
         header = Header("SushiRuntime - " + "x" * 80, K_LICENSE_LINES)
