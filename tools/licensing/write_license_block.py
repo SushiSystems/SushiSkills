@@ -184,6 +184,8 @@ def pending(root: Path, header: Header, globs: list[str]) -> Iterator[tuple[Path
         if not is_source(path) or _is_skipped(path, globs):
             continue
         target = root / path
+        if not target.is_file():
+            continue
         text = target.read_bytes().decode("utf-8", errors="surrogateescape")
         wanted = rewrite(path, text, header, years.get(path, latest))
         if wanted != text:

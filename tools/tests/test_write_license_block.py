@@ -243,5 +243,13 @@ class RepositoryTest(unittest.TestCase):
             self.assertEqual(main([*arguments, "--report"]), 0)
 
 
+    def test_skips_a_tracked_file_deleted_from_the_working_tree(self) -> None:
+        """Leaves out a tracked file the working tree no longer holds."""
+        with tempfile.TemporaryDirectory() as folder:
+            root = self._repository(folder)
+            (root / "graph.py").unlink()
+            self.assertEqual(main([str(root), "--project", K_PROJECT, "--report"]), 0)
+
+
 if __name__ == "__main__":
     unittest.main()
