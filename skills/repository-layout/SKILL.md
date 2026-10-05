@@ -12,7 +12,7 @@ Every repository has the same tree, so a file's path says what it is before it i
 The root holds only what a tool refuses to find anywhere else.
 
 ```
-README.md  LICENSE  CMakeLists.txt  AGENTS.md  CLAUDE.md
+README.md  LICENSE  NOTICE.md  COMMERCIAL.md  CMakeLists.txt  AGENTS.md  CLAUDE.md
 .clang-format  .editorconfig  .gitignore  .gitattributes
 cmake/  cli/  tools/  modules/  tests/  applications/  third_party/  docs/
 ```
@@ -20,6 +20,8 @@ cmake/  cli/  tools/  modules/  tests/  applications/  third_party/  docs/
 | Entry | Holds |
 | --- | --- |
 | `README.md` | What the project is, one build line, a link to `docs/README.md` |
+| `NOTICE.md` | Third-party components, ported files and redistributed binaries; see `dependencies` |
+| `COMMERCIAL.md` | How a company obtains a commercial licence |
 | `CMakeLists.txt` | `project()`, options and `add_subdirectory`; no logic |
 | `AGENTS.md`, `CLAUDE.md` | Agent instructions and skill declarations; names the skills the repository follows |
 | `cmake/` | Every CMake function and the layer table |
@@ -33,6 +35,9 @@ cmake/  cli/  tools/  modules/  tests/  applications/  third_party/  docs/
 
 Forbidden in the root: `ARCHITECTURE.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`,
 `Doxyfile`, `pyproject.toml`, build output, object files, scratch files. Each has a home above.
+
+A repository that holds skills and no code has `skills/` and `claude/` in place of `cmake/`,
+`cli/`, `modules/`, `tests/` and `applications/`. Each skill folder is a module.
 
 ## One module or many
 
