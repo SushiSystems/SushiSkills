@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-10-05 — ci: Added the workflow that runs the four checkers and the checker tests on Windows and Linux (`.github/workflows/ci.yml`).
+- 2026-10-05 — marketing-copy: Named the licence wording copy must use and removed the open source claim from the examples (`skills/marketing-copy/SKILL.md`, `english.md`).
 - 2026-10-05 — docs: Built the documentation skeleton and moved install and rule-change text out of the front door (`docs/README.md`, `docs/getting_started/INSTALL.md`, `skills/README.md`, `AGENTS.md`).
 - 2026-10-05 — continuous-integration: Named the push workflow `ci.yml` and allowed direct checker calls in a repository without a CLI (`skills/continuous-integration/SKILL.md`).
 - 2026-10-05 — versioning-and-release: Gave a repository without a build manifest its version source (`skills/versioning-and-release/SKILL.md`).

@@ -21,7 +21,7 @@ Delete on sight, or replace with the fact the word was hiding.
 ## Structures
 
 - **Stacked declaratives.** "We simulate the world at real scale. Our engine draws on the WGS84
-  ellipsoid at true scale. The four libraries beneath it are open source." Three sentences, one
+  ellipsoid at true scale. The four libraries beneath it are on GitHub." Three sentences, one
   shape, one piece of jargon, nothing a reader can picture. Merge into one sentence that carries
   a fact.
 - **"Not just X, but Y".** Say Y.
@@ -39,7 +39,7 @@ as a human writing.
 ## Before and after
 
 > Before: We simulate the world at real scale. Our engine draws on the WGS84 ellipsoid at true
-> scale. The four libraries beneath it are open source and anyone can read the code.
+> scale. The four libraries beneath it are on GitHub and anyone can read the code.
 > After: In SushiEngine you can travel from Pluto to Mercury in milliseconds. [video]
 
 > Before: A next-generation simulation platform empowering industries and gamers to unlock

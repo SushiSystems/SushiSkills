@@ -56,6 +56,13 @@ Copy containing any of these does not ship.
 7. **One category first.** Name the one thing the company is. Other lines of work appear as
    evidence for it, not as equal headlines.
 
+## Naming the licence
+
+Sushi Systems libraries are source-available: free for non-commercial use, with a paid licence
+for commercial use. Copy says exactly that. It never says "open source" or "açık kaynak" about
+a Sushi product, because those words promise commercial use. SushiEngine and the website are
+closed, and copy that mentions their source says so.
+
 ## Language files
 
 Read the file for the language before drafting. Each lists that language's marketing clichés and
