@@ -28,11 +28,13 @@ K_CLOSED_LINES = ("All rights reserved. No licence is granted.",)
 K_HOLDER = "Sushi Systems"
 K_HASH_SUFFIXES = frozenset({".py", ".cmake", ".sh"})
 K_HASH_NAMES = frozenset({"CMakeLists.txt"})
+K_FRAGMENT_SUFFIXES = frozenset({".inc"})
+K_TEMPLATE_SUFFIX = ".in"
 K_SKIPPED_FOLDERS = frozenset({"third_party", "node_modules", "build"})
 K_BOX_FIELD = 60
 K_BYTE_ORDER_MARK = "﻿"
-K_BOXED_ROW = re.compile(r"^/\*.*\*/\s*$")
-K_BOX_EDGE = re.compile(r"^/\*{5,}/\s*$")
+K_BOXED_ROW = re.compile(r"^\s*/\*.*\*/\s*$")
+K_BOX_EDGE = re.compile(r"^\s*/\*{5,}/\s*$")
 K_HASH_PREAMBLE = re.compile(r"^#(!|.*coding[:=])")
 K_HASH_MARKER = re.compile(r"Copyright|Licensed under|All rights reserved")
 K_DOCSTRING = re.compile(r"^[rRuUbB]{0,2}(\"\"\"|''')")
@@ -67,16 +69,22 @@ class Header:
         return tuple(old[last + 1:])
 
 
+def _generated_name(path: str) -> PurePosixPath:
+    """Returns a path's file name with the configure-template suffix removed."""
+    pure = PurePosixPath(path)
+    return PurePosixPath(pure.stem) if pure.suffix == K_TEMPLATE_SUFFIX else PurePosixPath(pure.name)
+
+
 def is_hash_family(path: str) -> bool:
     """Returns whether a file takes the `#` form of the block."""
-    pure = PurePosixPath(path)
-    return pure.suffix in K_HASH_SUFFIXES or pure.name in K_HASH_NAMES
+    name = _generated_name(path)
+    return name.suffix in K_HASH_SUFFIXES or name.name in K_HASH_NAMES
 
 
 def is_source(path: str) -> bool:
     """Returns whether the writer gives a file a license block."""
-    pure = PurePosixPath(path)
-    return is_hash_family(path) or pure.suffix in K_C_SUFFIXES
+    suffix = _generated_name(path).suffix
+    return is_hash_family(path) or suffix in K_C_SUFFIXES or suffix in K_FRAGMENT_SUFFIXES
 
 
 def _render_boxed(rows: list[str]) -> list[str]:

@@ -24,6 +24,7 @@ from licensing.write_license_block import (  # noqa: E402
     K_CLOSED_LINES,
     Header,
     first_years,
+    is_source,
     main,
     rewrite,
 )
@@ -179,6 +180,19 @@ class RewriteTest(unittest.TestCase):
     def test_drops_foreign_rows_of_an_old_block(self) -> None:
         """Carries nothing over from a block that lacks this repository's licence lines."""
         self.assertNotIn("This file is part of", _write("graph.hpp", f"{K_OLD_BOX}\n\n{K_DOC}"))
+
+    def test_reads_templates_and_include_fragments_as_c_family(self) -> None:
+        """Gives a configure template and an include fragment the block of the file they become."""
+        for name in ("version.hpp.in", "kernels.inc", "config.h.in"):
+            self.assertTrue(is_source(name), msg=name)
+            self.assertTrue(_write(name, K_DOC).startswith("/***"), msg=name)
+        self.assertTrue(_write("settings.py.in", K_DOCSTRING).startswith("# settings.py.in"))
+        self.assertFalse(is_source("notes.txt.in"))
+
+    def test_replaces_an_indented_old_box(self) -> None:
+        """Replaces an old boxed block whose rows are indented."""
+        indented = "\n".join("  " + row for row in K_OLD_BOX.splitlines())
+        self.assertEqual(_write("graph.hpp", f"{indented}\n\n{K_DOC}"), f"{K_BOX}\n\n{K_DOC}")
 
     def test_widens_the_box_for_a_long_line(self) -> None:
         """Keeps every row and both edges the same width when a line is long."""

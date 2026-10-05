@@ -17,7 +17,7 @@ repository copies this folder whole; a rule is fixed here first and copied out.
 line or in angle brackets. It does not read reference-style links or a link around an image.
 
 `write_license_block.py` is the one tool here that writes files. It takes its licence lines
-from `check_source_comments.py`, `--closed` for a closed repository, `--skip GLOB` for generated
+from `check_source_comments.py`, covers `.in` templates and `.inc` fragments by the file they become, `--closed` for a closed repository, `--skip GLOB` for generated
 files and `--upstream PATH=LINE;LINE` for a ported file; a later run without it keeps those lines. A `--report` run that prints nothing
 proves a repository's headers are in place.
 
