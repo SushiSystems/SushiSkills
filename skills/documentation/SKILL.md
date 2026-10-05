@@ -14,7 +14,7 @@ the current truth.
 
 ```
 docs/
-    README.md                     manual index; every document outside agent/ reachable from here
+    README.md                     manual index; reaches every document outside agent/ and archive/
     CONTRIBUTING.md               what must be documented, how a change lands
     DOCUMENTATION_STYLE_GUIDE.md
     getting_started/  architecture/  guides/
@@ -32,6 +32,10 @@ docs/
 ```
 
 No other folder under `docs/`. No other file names inside a work folder.
+
+Required in every repository: `README.md`, `CONTRIBUTING.md`, `DOCUMENTATION_STYLE_GUIDE.md`,
+the three files under `reference/` and the two under `design/`. The other folders appear when
+they have content.
 
 ## Placement
 
@@ -73,7 +77,7 @@ The manual is never archived; it is kept true.
 
 | Writer | May write |
 | --- | --- |
-| Agent doing one piece of work | Its own work folder; the README of a module it changed |
+| Agent doing one piece of work | Its own work folder; the README of a module it changed, when its dispatch lists that file |
 | Orchestrator (the session that dispatched the work) | Everything above, plus `design/`, the manual, `CHANGELOG.md`, `REMAINING_WORK.md` |
 | Anyone | Nothing in `archive/` except moving a folder in |
 

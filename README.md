@@ -21,12 +21,14 @@ To install the skills, read [`docs/getting_started/INSTALL.md`](docs/getting_sta
 ## Third-party skills
 
 `third_party/superpowers/` holds the MIT-licensed superpowers skill library, unchanged. Its
-`README.md` names the version and the licence. Where it disagrees with a skill above, the skill
-above wins.
+`README.md` names the version and the licence. Where it disagrees with a Sushi Systems skill, the
+Sushi Systems skill wins.
 
 ## Licence
 
 Source-available, free for non-commercial use, under the PolyForm Noncommercial License 1.0.0;
 see `LICENSE`. Commercial use needs a licence from Sushi Systems; see `COMMERCIAL.md`.
-Third-party material keeps its own licence; see `NOTICE.md`. Commits up to `8000083` were made
-under Apache-2.0 and stay under it.
+Third-party material keeps its own licence; see `NOTICE.md`.
+
+v0.2.0 is the first version under this licence. v0.1.1 and earlier, the commits up to `f5dbf69`,
+were published under Apache-2.0 and stay under it.

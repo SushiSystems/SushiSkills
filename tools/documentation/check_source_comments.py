@@ -35,6 +35,8 @@ K_LICENSE_LINES = (
     "Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.",
     "Commercial use requires a licence from Sushi Systems.",
 )
+K_RESERVED_LINE = re.compile(r"^(Licensed under|All rights reserved)|Sushi Systems")
+K_PYTHON_PREAMBLE = re.compile(r"^#(!|.*coding[:=])")
 
 
 @dataclass(frozen=True, slots=True)
@@ -77,7 +79,7 @@ def _license_end_python(lines: list[str]) -> int:
 
 def _read_source(path: Path) -> SourceFile:
     """Returns a source file with its license block located."""
-    lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+    lines = path.read_text(encoding="utf-8-sig", errors="replace").splitlines()
     end = _license_end_python(lines) if path.suffix in K_PYTHON_SUFFIXES else _license_end_c(lines)
     return SourceFile(path, lines, end)
 
@@ -154,17 +156,22 @@ def _slash_runs(source: SourceFile, marker: str) -> Iterator[tuple[int, int]]:
             index += 1
 
 
+def _license_texts_c(source: SourceFile) -> list[str]:
+    """Returns the boxed license block's rows without comment markers or box edges."""
+    texts = [line.strip()[2:-2].strip() for line in source.lines[:source.body_start]]
+    return [text for text in texts if text and set(text) != {"*"}]
+
+
+def _license_texts_python(source: SourceFile) -> list[str]:
+    """Returns the `#` license block's rows without markers, a shebang or an encoding line."""
+    rows = [line.strip() for line in source.lines[:source.body_start]]
+    texts = [row[1:].strip() for row in rows if not K_PYTHON_PREAMBLE.match(row)]
+    return [text for text in texts if text]
+
+
 def _license_texts(source: SourceFile) -> list[str]:
-    """Returns the license block's lines without comment markers, box edges or a shebang."""
-    texts: list[str] = []
-    for line in source.lines[:source.body_start]:
-        stripped = line.strip()
-        if source.is_python and stripped.startswith("#!"):
-            continue
-        text = stripped[1:].strip() if source.is_python else stripped[2:-2].strip()
-        if text and set(text) != {"*"}:
-            texts.append(text)
-    return texts
+    """Returns the license block's rows of a file in either language."""
+    return _license_texts_python(source) if source.is_python else _license_texts_c(source)
 
 
 def rule_license_block(source: SourceFile) -> Iterator[Issue]:
@@ -180,6 +187,12 @@ def rule_license_block(source: SourceFile) -> Iterator[Issue]:
     for expected in K_LICENSE_LINES:
         if expected not in texts:
             yield Issue(source.path, 1, f"license block lacks '{expected}'")
+    for text in texts:
+        if text in K_LICENSE_LINES or K_COPYRIGHT_LINE.match(text):
+            continue
+        if K_RESERVED_LINE.search(text):
+            message = "license block carries a line this repository's licence does not allow"
+            yield Issue(source.path, 1, f"{message}: '{text}'")
 
 
 def rule_file_header(source: SourceFile) -> Iterator[Issue]:

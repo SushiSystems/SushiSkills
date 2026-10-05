@@ -13,6 +13,19 @@ The single backlog of this repository.
   READMEs and paths cited in backticks.
 - `rule_module_readmes` covers `modules/<tier>/<module>/` only; a single-module repository and
   a skills repository are not checked.
+- `rule_license_block` reads C-family and Python files only; shell and CMake files carry the
+  `#` block unchecked.
+- `rule_license_block` cannot tell a second personal copyright line from an upstream notice; it
+  rejects only lines that name Sushi Systems or state a licence.
+- `rule_links` and `rule_reachable_from_index` do not read reference-style links or a link
+  around an image.
+
+## Open decisions
+
+- `ci.yml` gates on `rule_archive_candidates`, which compares commit dates with the clock. From
+  2027-01-03 a push fails on the oldest work folder until it is archived. The owner decides
+  whether that is the intended nudge or whether the rule leaves the gate.
+- Whether contributions from outside are accepted, and under which contributor agreement.
 
 ## Estate programmes
 

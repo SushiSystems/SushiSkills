@@ -52,15 +52,16 @@ never add a new package cache, virtual environment or conda environment without 
   what you created; another session's folder is not yours.
 - Before reporting a task finished, measure the scratchpad and state the result in the report:
   `du -sh <scratchpad>` (Bash) or the sum of `Get-ChildItem -Recurse -File` lengths
-  (PowerShell). A report that omits the number is incomplete.
+  (PowerShell).
 - If the scratchpad is over budget, empty it before reporting, then say what was removed.
 - Old session folders and caches you find already on disk are listed to the owner with their
   sizes. Mass deletion of them waits for the owner's word.
 
 ## Delegation
 
-A subagent does not inherit this rule. Every dispatch carries one line: write scratch only to the
-scratchpad, no binaries or copies, keep it under 100 MB, delete what you made, report its size.
+A subagent does not inherit this rule. Line 7 of the dispatch block carries it, and the
+evidence rule beside the block sends back a report without the scratchpad size. The block is in
+`claude/CLAUDE.md`, section "Delegation".
 
 ## Red flags
 

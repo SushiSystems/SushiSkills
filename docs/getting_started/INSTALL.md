@@ -1,7 +1,7 @@
 # Installing
 
-Clone the repository, then link it into each agent. Linking, not copying, keeps every machine
-on the revision that is checked out.
+Clone the repository, then link it into each agent. A linked install stays on the revision
+that is checked out; a copied one goes stale.
 
 | Agent | Step |
 | --- | --- |
@@ -16,7 +16,7 @@ per platform is in [`claude/README.md`](../../claude/README.md).
 
 ## What a linked install runs
 
-A symlinked install reads the working tree, not a commit. An uncommitted edit to a skill is
+A symlinked install reads the working tree. An uncommitted edit to a skill is
 live the moment it is saved, and a half-finished one is live too. Commit rule changes before
 leaving them.
 
