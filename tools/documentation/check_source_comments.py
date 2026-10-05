@@ -1,5 +1,8 @@
-# Copyright (c) 2026-present Mustafa Garip & Sushi Systems
-# Licensed under the Apache License, Version 2.0. See LICENSE.
+# check_source_comments.py
+# SushiSkills - https://github.com/SushiSystems/SushiSkills
+# Copyright (c) 2026 Sushi Systems
+# Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.
+# Commercial use requires a licence from Sushi Systems.
 """Checks C++, GLSL, TypeScript and Python source against the source-comments skill.
 
 Usage: python tools/documentation/check_source_comments.py [paths...] [--report] [--rule NAME]
@@ -27,6 +30,11 @@ K_SEPARATOR = re.compile(r"[-=*_~#]{5,}")
 K_HISTORY = re.compile(r"\b(TODO|FIXME|HACK|XXX)\b|\b(previously|formerly|fixed in)\b", re.IGNORECASE)
 K_DATE_TAG = re.compile(r"@date\b")
 K_LICENSE_LINE = re.compile(r"^/\*.*\*/\s*$")
+K_COPYRIGHT_LINE = re.compile(r"^Copyright \(c\) \d{4} Sushi Systems$")
+K_LICENSE_LINES = (
+    "Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.",
+    "Commercial use requires a licence from Sushi Systems.",
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -146,6 +154,34 @@ def _slash_runs(source: SourceFile, marker: str) -> Iterator[tuple[int, int]]:
             index += 1
 
 
+def _license_texts(source: SourceFile) -> list[str]:
+    """Returns the license block's lines without comment markers, box edges or a shebang."""
+    texts: list[str] = []
+    for line in source.lines[:source.body_start]:
+        stripped = line.strip()
+        if source.is_python and stripped.startswith("#!"):
+            continue
+        text = stripped[1:].strip() if source.is_python else stripped[2:-2].strip()
+        if text and set(text) != {"*"}:
+            texts.append(text)
+    return texts
+
+
+def rule_license_block(source: SourceFile) -> Iterator[Issue]:
+    """Yields an issue when the file does not open with the repository's license block."""
+    texts = _license_texts(source)
+    if not texts:
+        yield Issue(source.path, 1, "file must open with the license block")
+        return
+    if texts[0] != source.path.name:
+        yield Issue(source.path, 1, f"license block must open with {source.path.name}")
+    if not any(K_COPYRIGHT_LINE.match(text) for text in texts):
+        yield Issue(source.path, 1, "license block lacks 'Copyright (c) <year> Sushi Systems'")
+    for expected in K_LICENSE_LINES:
+        if expected not in texts:
+            yield Issue(source.path, 1, f"license block lacks '{expected}'")
+
+
 def rule_file_header(source: SourceFile) -> Iterator[Issue]:
     """Yields an issue when the file does not open with its `@file` block or module docstring."""
     if source.is_python:
@@ -235,6 +271,7 @@ K_CHECKER = Checker(
     description="Checks source comments against the source-comments skill.",
     collect=collect,
     rules={
+        "rule_license_block": rule_license_block,
         "rule_file_header": rule_file_header,
         "rule_block_ceiling": rule_block_ceiling,
         "rule_comment_runs": rule_comment_runs,

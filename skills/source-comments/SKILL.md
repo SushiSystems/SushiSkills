@@ -15,26 +15,28 @@ Every source file opens with the license block, a blank line, then the `@file` b
 block is at most six lines and has exactly these tags.
 
 ```cpp
-/**************************************************************************/
-/* physics_world.hpp                                                      */
-/**************************************************************************/
-/*                          This file is part of:                         */
-/*                                <Project>                               */
-/*              https://github.com/<organisation>/<Project>               */
-/*                          https://<organisation site>                   */
-/**************************************************************************/
-/* Copyright (c) <year>-present <Owner> & <Organisation>                  */
-/* ... Apache-2.0 notice ...                                              */
-/**************************************************************************/
+/**************************************************************/
+/* graph.hpp                                                    */
+/* SushiRuntime - https://github.com/SushiSystems/SushiRuntime  */
+/* Copyright (c) 2026 Sushi Systems                             */
+/* Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.    */
+/* Commercial use requires a licence from Sushi Systems.        */
+/**************************************************************/
 
 /**
- * @file physics_world.hpp
- * @brief Declares the world that owns rigid bodies and advances them in time.
+ * @file graph.hpp
+ * @brief Declares the task graph and the nodes it owns.
  * @author <Full Name>
  */
 ```
 
-- The first line of the license block is the file name.
+- The first line of the license block is the file name; the second is the project and its URL.
+- The holder is `Sushi Systems`. The year is the year the file was first written and is never
+  updated.
+- A closed repository replaces the two licence lines with
+  `All rights reserved. No licence is granted.`
+- A file ported from third-party code keeps the upstream copyright line and licence name inside
+  the block, below the Sushi lines. See `dependencies`.
 - `@file` repeats the file name; `@brief` is one sentence starting with a verb; `@author` names
   a person. No `@date`, no version, no history.
 
@@ -96,7 +98,20 @@ Two `//` lines in a row are a paragraph, and a paragraph belongs in a document.
 
 ## Python
 
-A module docstring of at most six lines opens every file after the license block. Functions
+A module docstring of at most six lines opens every file after the license block. The license
+block is the same five lines, each behind `#`, with no box; a shebang, when present, comes
+first.
+
+```python
+# graph.py
+# SushiRuntime - https://github.com/SushiSystems/SushiRuntime
+# Copyright (c) 2026 Sushi Systems
+# Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.
+# Commercial use requires a licence from Sushi Systems.
+"""Builds the task graph from a module manifest."""
+```
+
+Functions
 and classes carry Google-style docstrings: a one-sentence summary starting with its verb, then
 `Args:`, `Returns:`, `Raises:` only when they state a rule. `#` follows the `//` rule: one line,
 alone, an invariant.
