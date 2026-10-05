@@ -25,12 +25,25 @@ Then the agent asks and waits.
 | Licence | Decision |
 | --- | --- |
 | MIT, BSD, Apache-2.0, Zlib, ISC, public domain | Accepted |
+| A Sushi Systems repository, under its own licence | Accepted |
 | LGPL | Only linked dynamically, and only after asking |
 | GPL, AGPL, SSPL | Rejected |
-| Non-commercial, source-available, field-of-use limits | Rejected |
+| Third-party non-commercial, source-available, field-of-use limits | Rejected |
 | Vendor SDK licences that require marks, notices to the vendor, or restrict redistribution | Rejected |
 
 A dependency's own dependencies are held to the same table.
+
+## Ported code
+
+Code translated or adapted from a third-party source is that source's work, whatever language
+it ends up in. The file keeps the upstream copyright line and licence name in its license
+block, and `NOTICE.md` lists it. The owner's licence covers the changes, not the original.
+
+## Notices
+
+`NOTICE.md` at the repository root lists every third-party component, every ported file and
+every redistributed binary: its name, source URL, version, licence and where it sits in the
+tree. A component that is not listed is not shipped.
 
 ## Where it comes from
 

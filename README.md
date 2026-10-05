@@ -69,6 +69,9 @@ naming the skills the repository follows.
 A rule changes here first, in its own skill, and every repository follows it from then on. A
 skill stays one rule set: a new concern is a new folder, not a new section in an existing one.
 
-## License
+## Licence
 
-Apache License 2.0. See `LICENSE`.
+Source-available, free for non-commercial use, under the PolyForm Noncommercial License 1.0.0;
+see `LICENSE`. Commercial use needs a licence from Sushi Systems; see `COMMERCIAL.md`.
+Third-party material keeps its own licence; see `NOTICE.md`. Commits up to `8000083` were made
+under Apache-2.0 and stay under it.
