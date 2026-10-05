@@ -139,6 +139,10 @@ class PythonCommentTest(unittest.TestCase):
             path.write_text(_hashed("sample.py").rstrip("\n") + "\n" + body, encoding="utf-8")
             return [issue.line for source in collect([path]) for issue in rule_comment_runs(source)]
 
+    def _head_lines(self) -> int:
+        """Returns how many lines the license block and the docstring take."""
+        return len(_hashed("sample.py").splitlines())
+
     def test_hash_lines_inside_a_string_are_not_comments(self) -> None:
         """Reports nothing for lines that start with # inside a string literal."""
         body = 'K_EXAMPLE = """\n#include <stdio.h>\n#include "api.h"\nint main(void);\n"""\n'
@@ -147,12 +151,12 @@ class PythonCommentTest(unittest.TestCase):
     def test_a_real_run_of_comments_is_still_reported(self) -> None:
         """Reports two comment lines in a row, on the line of the first."""
         body = "x = 1\n# first reason\n# second reason\ny = 2\n"
-        self.assertEqual(self._runs(body), [8])
+        self.assertEqual(self._runs(body), [self._head_lines() + 2])
 
     def test_a_file_that_does_not_tokenize_falls_back_to_the_line_test(self) -> None:
         """Still reports a comment run in a file with an unclosed bracket."""
         body = "# first reason\n# second reason\nx = (1,\n"
-        self.assertEqual(self._runs(body), [7])
+        self.assertEqual(self._runs(body), [self._head_lines() + 1])
 
 
 if __name__ == "__main__":
