@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-05 — tools: Stopped reading a `#` line inside a Python string literal as a comment (`check_source_comments.py`, `_python_comment_indexes`).
 - 2026-10-05 — tools: Covered files that are staged and not yet committed in the license block writer (`write_license_block.py`).
 - 2026-10-05 — tools: Covered configure templates, include fragments and indented old boxes in the license block writer, and skipped tracked files that are deleted (`write_license_block.py`).
 - 2026-10-05 — tools: Kept a ported file's upstream lines when the writer runs again without naming them (`write_license_block.py`, `Header.kept_rows`).
