@@ -1,7 +1,7 @@
 # SushiSkills manual
 
 The rules live in `skills/` and are described in [`skills/README.md`](../skills/README.md).
-This tree records how the repository is installed, changed and released.
+This tree records how the repository is installed and changed.
 
 | Document | Holds |
 | --- | --- |

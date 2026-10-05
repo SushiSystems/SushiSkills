@@ -15,13 +15,13 @@ Every source file opens with the license block, a blank line, then the `@file` b
 block is at most six lines and has exactly these tags.
 
 ```cpp
-/**************************************************************/
+/****************************************************************/
 /* graph.hpp                                                    */
 /* SushiRuntime - https://github.com/SushiSystems/SushiRuntime  */
 /* Copyright (c) 2026 Sushi Systems                             */
 /* Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.    */
 /* Commercial use requires a licence from Sushi Systems.        */
-/**************************************************************/
+/****************************************************************/
 
 /**
  * @file graph.hpp
@@ -99,8 +99,8 @@ Two `//` lines in a row are a paragraph, and a paragraph belongs in a document.
 ## Python
 
 A module docstring of at most six lines opens every file after the license block. The license
-block is the same five lines, each behind `#`, with no box; a shebang, when present, comes
-first.
+block is the same lines, each behind `#`, with no box; a shebang, when present, comes first.
+Shell and CMake files carry the same `#` lines.
 
 ```python
 # graph.py
@@ -111,8 +111,7 @@ first.
 """Builds the task graph from a module manifest."""
 ```
 
-Functions
-and classes carry Google-style docstrings: a one-sentence summary starting with its verb, then
+Functions and classes carry Google-style docstrings: a one-sentence summary starting with its verb, then
 `Args:`, `Returns:`, `Raises:` only when they state a rule. `#` follows the `//` rule: one line,
 alone, an invariant.
 

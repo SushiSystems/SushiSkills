@@ -12,6 +12,9 @@ repository copies this folder whole; a rule is fixed here first and copied out.
 | `layering/check_layering.py` | Declared tiers, upward includes, reaches into another module's `source/` | Repository root |
 | `tests/` | Unit tests for the checker rules; run `python -m unittest discover -s tools/tests` | |
 
+`check_docs_layout.py` reads inline Markdown links, with or without a title, wrapped over a
+line or in angle brackets. It does not read reference-style links or a link around an image.
+
 Every checker takes `--report` and `--rule NAME`, exits 1 on findings, 0 when clean or
 reporting, 2 on a bad path. Python 3.11, standard library only.
 

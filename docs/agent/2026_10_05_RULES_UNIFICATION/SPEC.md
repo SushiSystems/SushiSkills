@@ -75,7 +75,7 @@ working tree rules, and says where the block is.
   spec or plan is written as `SPEC.md` or `PLAN.md` in the work folder, never under
   `docs/superpowers/`.
 - `check_docs_layout.py` gains two rules, one function and one table row each:
-  `rule_required_entries` (the required files and folders exist) and `rule_reachable_from_index`
+  `rule_required_entries` (the required documents exist; folders appear with content) and `rule_reachable_from_index`
   (every live document is linked from `docs/README.md`, directly or through an index it links).
 - `tools/README.md` states the checkers' real coverage; its list of unbuilt checks moves to
   `docs/design/REMAINING_WORK.md`.
@@ -88,13 +88,13 @@ the file name, the second the project and its URL.
 Non-commercial repositories:
 
 ```cpp
-/**************************************************************/
+/****************************************************************/
 /* graph.hpp                                                    */
 /* SushiRuntime - https://github.com/SushiSystems/SushiRuntime  */
 /* Copyright (c) 2026 Sushi Systems                             */
 /* Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.    */
 /* Commercial use requires a licence from Sushi Systems.        */
-/**************************************************************/
+/****************************************************************/
 ```
 
 Closed repositories (`sushiengine`, `sushiweb`) replace the two licence lines with:

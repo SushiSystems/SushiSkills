@@ -28,10 +28,6 @@ the tree. Load that skill before writing or moving anything under `docs/` or a m
 It holds the tree, the placement questions and the changelog entry shape;
 `tools/documentation/check_docs_layout.py` and `check_changelog.py` enforce it.
 
-A manual page that stops being true is a defect in the change that made it false. The
-documentation update is part of the same commit as the code; a change without its README,
-design status or changelog entry is not finished.
-
 On first entering a repository that lacks this shape: measure it, report the gaps, and get
 approval before building the skeleton. The build-out is its own task.
 

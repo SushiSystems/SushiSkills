@@ -18,7 +18,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from common.checker import Issue  # noqa: E402
 from documentation.check_docs_layout import (  # noqa: E402
     K_REQUIRED_ENTRIES,
+    K_CHECKER,
     Repository,
+    rule_links,
     rule_reachable_from_index,
     rule_required_entries,
 )
@@ -41,6 +43,11 @@ def _names(issues: Iterable[Issue]) -> list[str]:
 
 class RequiredEntriesTest(unittest.TestCase):
     """Checks that each required document is demanded."""
+
+    def test_is_registered(self) -> None:
+        """Runs both rules as part of the checker's rule table."""
+        self.assertIs(K_CHECKER.rules["rule_required_entries"], rule_required_entries)
+        self.assertIs(K_CHECKER.rules["rule_reachable_from_index"], rule_reachable_from_index)
 
     def test_reports_every_missing_document(self) -> None:
         """Reports all required documents for a docs/ tree that holds none."""
@@ -96,6 +103,51 @@ class ReachabilityTest(unittest.TestCase):
         }
         with tempfile.TemporaryDirectory() as folder:
             self.assertEqual(list(rule_reachable_from_index(_repository(folder, files))), [])
+
+    def test_reads_titled_wrapped_bracketed_and_queried_links(self) -> None:
+        """Reaches targets written with a title, a wrapped text, angle brackets or a query."""
+        files = {
+            "README.md": (
+                '# Manual\n[a](guides/A.md "the title")\n[a link whose text\nwraps](guides/B.md)\n'
+                "[c](<guides/C.md>)\n[d](guides/D.md?plain=1)\n[e](guides/MY%20E.md)\n"
+            ),
+            "guides/A.md": "# A\n",
+            "guides/B.md": "# B\n",
+            "guides/C.md": "# C\n",
+            "guides/D.md": "# D\n",
+            "guides/MY E.md": "# E\n",
+        }
+        with tempfile.TemporaryDirectory() as folder:
+            repository = _repository(folder, files)
+            self.assertEqual(_names(rule_reachable_from_index(repository)), [])
+            self.assertEqual(_names(rule_links(repository)), [])
+
+    def test_reports_a_broken_titled_link_on_its_line(self) -> None:
+        """Reports a titled link whose target is missing, with the line it starts on."""
+        files = {"README.md": '# Manual\n\n[a](guides/GONE.md "the title")\n'}
+        with tempfile.TemporaryDirectory() as folder:
+            issues = list(rule_links(_repository(folder, files)))
+            self.assertEqual([(issue.line, issue.message) for issue in issues],
+                             [(3, "link target does not exist: guides/GONE.md")])
+
+    def test_does_not_reach_through_a_file_outside_docs(self) -> None:
+        """Reports a guide the index reaches only by way of the root README."""
+        files = {"README.md": "# Manual\n[front](../README.md)\n", "guides/A.md": "# A\n"}
+        with tempfile.TemporaryDirectory() as folder:
+            repository = _repository(folder, files)
+            (Path(folder) / "README.md").write_text("[a](docs/guides/A.md)\n", encoding="utf-8")
+            self.assertEqual(_names(rule_reachable_from_index(repository)), ["guides/A.md"])
+
+    def test_does_not_reach_through_a_work_folder(self) -> None:
+        """Reports a guide linked only from an agent work folder the index links."""
+        files = {
+            "README.md": "# Manual\n[spec](agent/2026_10_05_WORK/SPEC.md)\n",
+            "agent/2026_10_05_WORK/SPEC.md": "# Spec\n[a](../../guides/A.md)\n",
+            "guides/A.md": "# A\n",
+        }
+        with tempfile.TemporaryDirectory() as folder:
+            issues = rule_reachable_from_index(_repository(folder, files))
+            self.assertEqual(_names(issues), ["guides/A.md"])
 
     def test_is_silent_without_an_index(self) -> None:
         """Reports nothing when docs/README.md is absent; the required-entry rule owns that."""

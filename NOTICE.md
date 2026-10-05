@@ -20,5 +20,5 @@ The full list of works the humanizer rules cite is in `skills/humanizer/research
 
 ## Earlier versions
 
-Commits up to and including `8000083` were made under the Apache License 2.0, and the copies of
-them already published stay available under it.
+v0.1.1 and earlier, the commits up to and including `f5dbf69`, were published under the Apache
+License 2.0 and stay available under it. v0.2.0 is the first version under the licence above.

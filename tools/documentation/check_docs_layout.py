@@ -17,6 +17,7 @@ import time
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from pathlib import Path
+from urllib.parse import unquote
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -42,7 +43,10 @@ K_SHIPPED = re.compile(r"^\*\*Status:\*\* Shipped")
 K_DESIGN_LINE_CEILING = 1500
 K_ARCHIVE_AFTER_DAYS = 90
 K_SECONDS_PER_DAY = 86_400
-K_LINK = re.compile(r"(?<!!)\[[^\]]*\]\(([^)\s]+)\)")
+K_LINK = re.compile(r'(?<!!)\[[^\]]*\]\(\s*<?([^)\s>]+)>?(?:\s+"[^"]*")?\s*\)')
+K_LINK_SUFFIX = re.compile(r"[#?]")
+K_SCHEME = re.compile(r"^[a-z][a-z0-9+.-]*:")
+K_FENCE = re.compile(r"^(`{3,}|~{3,})(.*)$")
 K_CODE_SPAN = re.compile(r"`[^`]*`")
 
 
@@ -64,6 +68,11 @@ class Repository:
             path for path in sorted(self.docs.rglob("*.md"))
             if archive not in path.parents
         ]
+
+    def manual_documents(self) -> list[Path]:
+        """Returns every live document outside the agent work folders."""
+        agent = self.docs / "agent"
+        return [path for path in self.live_documents() if agent not in path.parents]
 
     def design_documents(self) -> list[Path]:
         """Returns every design document, counting a split topic's README as its document."""
@@ -107,34 +116,45 @@ def _last_commit_age_days(repository: Repository, path: Path) -> float | None:
     return (time.time() - int(stamp)) / K_SECONDS_PER_DAY if stamp else None
 
 
+def _prose(path: Path) -> str:
+    """Returns a document's text with fenced blocks and code spans blanked, lines kept."""
+    kept: list[str] = []
+    fence = ""
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
+        opener = K_FENCE.match(line.lstrip())
+        if fence:
+            fence = "" if opener and opener.group(1).startswith(fence) else fence
+            kept.append("")
+        elif opener and opener.group(1)[0] not in opener.group(2):
+            fence = opener.group(1)
+            kept.append("")
+        else:
+            kept.append(K_CODE_SPAN.sub("", line))
+    return "\n".join(kept)
+
+
 def _relative_links(path: Path) -> Iterator[tuple[int, str]]:
-    """Yields the line number and anchor-free target of each relative link outside code."""
-    in_fence = False
-    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
-        if line.lstrip().startswith("```"):
-            in_fence = not in_fence
+    """Yields the line number and the path part of each relative link outside code."""
+    text = _prose(path)
+    for match in K_LINK.finditer(text):
+        if K_SCHEME.match(match.group(1)):
             continue
-        if in_fence:
-            continue
-        for target in K_LINK.findall(K_CODE_SPAN.sub("", line)):
-            if re.match(r"^[a-z][a-z0-9+.-]*:", target) or target.startswith("#"):
-                continue
-            yield number, target.split("#", 1)[0]
+        target = unquote(K_LINK_SUFFIX.split(match.group(1), maxsplit=1)[0])
+        if target:
+            yield text.count("\n", 0, match.start()) + 1, target
 
 
-def _reachable(index: Path) -> set[Path]:
-    """Returns every Markdown file reachable from an index through relative links."""
+def _reachable(repository: Repository) -> set[Path]:
+    """Returns the manual documents docs/README.md reaches without leaving the manual."""
+    manual = {path.resolve() for path in repository.manual_documents()}
     reached: set[Path] = set()
-    pending = [index.resolve()]
+    pending = [(repository.docs / "README.md").resolve()]
     while pending:
         path = pending.pop()
-        if path in reached or not path.is_file():
+        if path in reached or path not in manual:
             continue
         reached.add(path)
-        for _, target in _relative_links(path):
-            linked = (path.parent / target).resolve()
-            if linked.suffix == ".md":
-                pending.append(linked)
+        pending += [(path.parent / target).resolve() for _, target in _relative_links(path)]
     return reached
 
 
@@ -199,14 +219,12 @@ def rule_required_entries(repository: Repository) -> Iterator[Issue]:
 
 
 def rule_reachable_from_index(repository: Repository) -> Iterator[Issue]:
-    """Yields an issue for each live document outside agent/ that docs/README.md does not reach."""
-    index = repository.docs / "README.md"
-    if not index.is_file():
+    """Yields an issue for each manual document that docs/README.md does not reach."""
+    if not (repository.docs / "README.md").is_file():
         return
-    reached = _reachable(index)
-    agent = repository.docs / "agent"
-    for path in repository.live_documents():
-        if agent not in path.parents and path.resolve() not in reached:
+    reached = _reachable(repository)
+    for path in repository.manual_documents():
+        if path.resolve() not in reached:
             yield Issue(path, 1, "not reachable from docs/README.md")
 
 

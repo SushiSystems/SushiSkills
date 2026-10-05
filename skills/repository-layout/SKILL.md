@@ -21,7 +21,7 @@ cmake/  cli/  tools/  modules/  tests/  applications/  third_party/  docs/
 | --- | --- |
 | `README.md` | What the project is, one build line, a link to `docs/README.md` |
 | `NOTICE.md` | Third-party components, ported files and redistributed binaries; see `dependencies` |
-| `COMMERCIAL.md` | How a company obtains a commercial licence |
+| `COMMERCIAL.md` | How a company obtains a commercial licence; absent from a closed repository |
 | `CMakeLists.txt` | `project()`, options and `add_subdirectory`; no logic |
 | `AGENTS.md`, `CLAUDE.md` | Agent instructions and skill declarations; names the skills the repository follows |
 | `cmake/` | Every CMake function and the layer table |
@@ -36,8 +36,9 @@ cmake/  cli/  tools/  modules/  tests/  applications/  third_party/  docs/
 Forbidden in the root: `ARCHITECTURE.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`,
 `Doxyfile`, `pyproject.toml`, build output, object files, scratch files. Each has a home above.
 
-A repository that holds skills and no code has `skills/` and `claude/` in place of `cmake/`,
-`cli/`, `modules/`, `tests/` and `applications/`. Each skill folder is a module.
+A repository that holds skills and no modules has `skills/` and `claude/` in place of `cmake/`,
+`cli/`, `modules/`, `tests/` and `applications/`. Each skill folder is a module whose `SKILL.md`
+is its README.
 
 ## One module or many
 

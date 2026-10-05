@@ -14,7 +14,7 @@ must carry its evidence.
 | Role | Does | Writes |
 | --- | --- | --- |
 | Orchestrator | Plans, dispatches, reviews reports, integrates, commits | Code, design, manual, changelog, backlog |
-| Worker | One task with one acceptance criterion | The task's files, its module README, its work folder under `docs/agent/` |
+| Worker | One task with one acceptance criterion | The files its dispatch lists, the module README among them when the task changes the module, and the work folder under `docs/agent/` |
 
 A worker never edits a file outside its assigned set, never writes to `docs/design/`, the
 manual, `CHANGELOG.md` or `REMAINING_WORK.md`, and never commits unless the dispatch says so.
@@ -33,8 +33,8 @@ The owner chooses how the plan runs.
 | Inline | One session implements the tasks in hierarchy order, without workers |
 | Waves | Tasks the hierarchy leaves independent are grouped into waves with disjoint file sets, one worker per task |
 
-A wave plan lists, per wave: the tasks, each task's files, what each waits on, and the build that
-closes the wave.
+A wave plan lists, per wave: the tasks, each task's files, what each waits on, and the build the
+owner runs to close the wave.
 
 ## Dispatch
 
@@ -48,20 +48,18 @@ Then: the task, its file list, its acceptance criterion, the skills it must load
 A worker does not see the orchestrator's memory or conversation. Anything it needs is in the
 dispatch.
 
+In a wave, a worker returns its report as its reply and the orchestrator writes `REPORT.md`;
+the work folder holds one report, and two workers never hold one file.
+
 ## Choosing a model
 
 The model and the effort for each kind of dispatch are set in the same "Delegation" section.
-Both are set on every dispatch, never inherited by default.
 
 ## Accepting a report
 
-A report is sent back, not accepted, when it lacks any of:
-
-- the list of files changed, matching the assigned set;
-- pasted output of every check it claims (syntax check, tests, checkers);
-- what was not done.
-
-Reviewer dispatches check SOLID shape and prose register as named items.
+The evidence a report must carry, and what a reviewer dispatch checks by name, are in the same
+"Delegation" section. The orchestrator checks one thing more: the list of files changed matches
+the assigned set.
 
 ## Shared working tree
 

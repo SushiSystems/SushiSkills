@@ -18,7 +18,4 @@ that does not hold the rule names the one that does.
 
 ## Contributions from outside
 
-SushiSkills is licensed for non-commercial use and Sushi Systems sells commercial licences. A
-contribution from outside Sushi Systems is merged only after its author has signed a
-contributor agreement that lets Sushi Systems license the contribution on both terms. Ask
-before opening a pull request.
+Contributions from outside Sushi Systems are not accepted yet.
