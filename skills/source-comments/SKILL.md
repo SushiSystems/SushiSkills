@@ -117,4 +117,5 @@ alone, an invariant.
 
 ## Checking
 
-`tools/documentation/check_source_comments.py` enforces every rule above. See `project-tools`.
+`tools/documentation/check_source_comments.py` enforces every rule above, and
+`tools/licensing/write_license_block.py` writes the license block. See `project-tools`.
