@@ -15,13 +15,26 @@ Every source file opens with the license block, a blank line, then the `@file` b
 block is at most six lines and has exactly these tags.
 
 ```cpp
-/****************************************************************/
-/* graph.hpp                                                    */
-/* SushiRuntime - https://github.com/SushiSystems/SushiRuntime  */
-/* Copyright (c) 2026 Sushi Systems                             */
-/* Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.    */
-/* Commercial use requires a licence from Sushi Systems.        */
-/****************************************************************/
+/**************************************************************************/
+/* graph.hpp                                                              */
+/**************************************************************************/
+/*                          This file is part of:                         */
+/*                              SushiRuntime                              */
+/*              https://github.com/SushiSystems/SushiRuntime              */
+/*                         https://sushisystems.io                        */
+/**************************************************************************/
+/* Copyright (c) 2026-present Mustafa Garip & Sushi Systems               */
+/*                                                                        */
+/* Licensed under the PolyForm Noncommercial License 1.0.0 (the           */
+/* "License"); you may not use this file except in compliance with the    */
+/* License. You may obtain a copy of the License at                       */
+/*                                                                        */
+/*     https://polyformproject.org/licenses/noncommercial/1.0.0           */
+/*                                                                        */
+/* Noncommercial use is free. Commercial use requires a separate licence  */
+/* from Sushi Systems; see COMMERCIAL.md. The software is provided        */
+/* "as is", without warranty of any kind.                                 */
+/**************************************************************************/
 
 /**
  * @file graph.hpp
@@ -30,13 +43,15 @@ block is at most six lines and has exactly these tags.
  */
 ```
 
-- The first line of the license block is the file name; the second is the project and its URL.
-- The holder is `Sushi Systems`. The year is the year the file was first written and is never
-  updated.
-- A closed repository replaces the two licence lines with
-  `All rights reserved. No licence is granted.`
+- The box is 76 columns wide and has three sections: the file name; `This file is part of:`,
+  the project and its addresses, centred; the copyright line and the licence text.
+- The holder is `Mustafa Garip & Sushi Systems`. The year is the year the file was first
+  written, followed by `-present`.
+- A closed repository replaces the licence text with `All rights reserved.` and the paragraph
+  the writer's `--closed` flag produces, and names `https://sushisystems.io` alone.
 - A file ported from third-party code keeps the upstream copyright line and licence name inside
-  the block, below the Sushi lines. See `dependencies`.
+  the box, below the Sushi licence text. See `dependencies`.
+- Nobody types the box. `tools/licensing/write_license_block.py` writes it.
 - `@file` repeats the file name; `@brief` is one sentence starting with a verb; `@author` names
   a person. No `@date`, no version, no history.
 
@@ -99,13 +114,14 @@ Two `//` lines in a row are a paragraph, and a paragraph belongs in a document.
 ## Python
 
 A module docstring of at most six lines opens every file after the license block. The license
-block is the same lines, each behind `#`, with no box; a shebang, when present, comes first.
-Shell and CMake files carry the same `#` lines.
+block is five `#` lines with no box: the file name, the project and its address, the copyright
+line of the box, and two licence lines. A shebang, when present, comes first. Shell and CMake
+files carry the same `#` lines.
 
 ```python
 # graph.py
 # SushiRuntime - https://github.com/SushiSystems/SushiRuntime
-# Copyright (c) 2026 Sushi Systems
+# Copyright (c) 2026-present Mustafa Garip & Sushi Systems
 # Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.
 # Commercial use requires a licence from Sushi Systems.
 """Builds the task graph from a module manifest."""
