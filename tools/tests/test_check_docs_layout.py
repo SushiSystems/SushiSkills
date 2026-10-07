@@ -20,6 +20,7 @@ from documentation.check_docs_layout import (  # noqa: E402
     K_REQUIRED_ENTRIES,
     K_CHECKER,
     Repository,
+    rule_docs_entries,
     rule_links,
     rule_reachable_from_index,
     rule_required_entries,
@@ -154,6 +155,18 @@ class ReachabilityTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             repository = _repository(folder, {"guides/X.md": "# X\n"})
             self.assertEqual(list(rule_reachable_from_index(repository)), [])
+
+
+class DocsEntriesTest(unittest.TestCase):
+    """Checks which entries may sit directly under docs/."""
+
+    def test_accepts_the_publish_list(self) -> None:
+        """Accepts docs/publish.toml and still reports any other loose file."""
+        with tempfile.TemporaryDirectory() as folder:
+            repository = _repository(
+                folder, {"README.md": "# R\n", "publish.toml": "", "notes.txt": ""},
+            )
+            self.assertEqual(_names(rule_docs_entries(repository)), ["notes.txt"])
 
 
 if __name__ == "__main__":

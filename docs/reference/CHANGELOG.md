@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-07 — documentation: Named `docs/publish.toml` in the docs tree and accepted it in the layout checker (`skills/documentation/SKILL.md`, `check_docs_layout.py`, `K_DOCS_ENTRIES`).
 - 2026-10-07 — licence: Named Mustafa Garip and Sushi Systems as the copyright holders in the licence and notice files (`LICENSE`, `NOTICE.md`).
 - 2026-10-06 — licence: Restored the three-section license box and named both holders in the copyright line of every source file (`tools/licensing/write_license_block.py`, `tools/documentation/check_source_comments.py`).
 - 2026-10-05 — tools: Stopped reading a `#` line inside a Python string literal as a comment (`check_source_comments.py`, `_python_comment_indexes`).

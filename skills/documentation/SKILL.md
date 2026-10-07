@@ -17,6 +17,7 @@ docs/
     README.md                     manual index; reaches every document outside agent/ and archive/
     CONTRIBUTING.md               what must be documented, how a change lands
     DOCUMENTATION_STYLE_GUIDE.md
+    publish.toml                  what the repository publishes to docs.sushisystems.io
     getting_started/  architecture/  guides/
     reference/
         CHANGELOG.md  GLOSSARY.md  KNOWN_ISSUES.md
