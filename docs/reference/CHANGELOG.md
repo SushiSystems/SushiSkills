@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-07 — licence: Named Mustafa Garip and Sushi Systems as the copyright holders in the licence and notice files (`LICENSE`, `NOTICE.md`).
 - 2026-10-06 — licence: Restored the three-section license box and named both holders in the copyright line of every source file (`tools/licensing/write_license_block.py`, `tools/documentation/check_source_comments.py`).
 - 2026-10-05 — tools: Stopped reading a `#` line inside a Python string literal as a comment (`check_source_comments.py`, `_python_comment_indexes`).
 - 2026-10-05 — tools: Covered files that are staged and not yet committed in the license block writer (`write_license_block.py`).
