@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-08 — repository-layout: Added the Unity tree, the feature assembly rules, the large-file folder and PascalCase names (`skills/repository-layout/UNITY.md`, `skills/repository-layout/SKILL.md`).
 - 2026-10-08 — model-routing: Named Haiku 5.5 as the haiku seat and marked the effort on Haiku as unverified (`skills/model-routing/SKILL.md`).
 - 2026-10-08 — model-routing: Added the skill that routes each session seat and dispatch to a model and an effort on the 5.5 stack, with the escalation ladder and the report line (`skills/model-routing/SKILL.md`).
 - 2026-10-08 — claude: Replaced the Opus-everywhere rule with the owner's limits and a citation of `model-routing` (`claude/CLAUDE.md`).

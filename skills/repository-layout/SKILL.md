@@ -40,6 +40,9 @@ A repository that holds skills and no modules has `skills/` and `claude/` in pla
 `cli/`, `modules/`, `tests/` and `applications/`. Each skill folder is a module whose `SKILL.md`
 is its README.
 
+A Unity repository keeps these rules with a different tree and PascalCase names; read `UNITY.md`
+in this folder before laying one out.
+
 ## One module or many
 
 The predicate is the module count.
