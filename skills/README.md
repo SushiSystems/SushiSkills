@@ -17,6 +17,7 @@ agent reads the descriptions first and loads a skill only when its task matches.
 | `logging` | Categories, levels, what is and is not logged, silent failures |
 | `documentation` | The `docs/` tree, placement, design documents, agent work lifecycle, archive |
 | `multi-agent-work` | Orchestrator and workers, wave planning, dispatch, accepting reports |
+| `model-routing` | Model and effort per session seat and per dispatch, the escalation ladder, inline or subagent, what a report records |
 | `commits` | Commit subject grammar, body, staging |
 | `versioning-and-release` | Semantic versions, `vX.Y.Z` tags, when a release is due, how it is cut |
 | `project-tools` | The four checkers every repository carries and their shared contract |

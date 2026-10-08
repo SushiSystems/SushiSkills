@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- 2026-10-08 — model-routing: Named Haiku 5.5 as the haiku seat and marked the effort on Haiku as unverified (`skills/model-routing/SKILL.md`).
+- 2026-10-08 — model-routing: Added the skill that routes each session seat and dispatch to a model and an effort on the 5.5 stack, with the escalation ladder and the report line (`skills/model-routing/SKILL.md`).
+- 2026-10-08 — claude: Replaced the Opus-everywhere rule with the owner's limits and a citation of `model-routing` (`claude/CLAUDE.md`).
+- 2026-10-08 — multi-agent-work: Pointed model choice at `model-routing` (`skills/multi-agent-work/SKILL.md`, `skills/sushiskills/SKILL.md`, `skills/README.md`).
 - 2026-10-07 — documentation: Named `docs/publish.toml` in the docs tree and accepted it in the layout checker (`skills/documentation/SKILL.md`, `check_docs_layout.py`, `K_DOCS_ENTRIES`).
 - 2026-10-07 — licence: Named Mustafa Garip and Sushi Systems as the copyright holders in the licence and notice files (`LICENSE`, `NOTICE.md`).
 - 2026-10-06 — licence: Restored the three-section license box and named both holders in the copyright line of every source file (`tools/licensing/write_license_block.py`, `tools/documentation/check_source_comments.py`).

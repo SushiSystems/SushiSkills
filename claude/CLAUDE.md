@@ -64,12 +64,13 @@ carries it. Every subagent prompt, whatever the task, opens with the same seven 
 7. Write scratch only to the scratchpad, never binaries or copies, under 100 MB; delete what you
    made and report the scratchpad size (`storage-discipline` skill).
 
-Model per dispatch: every subagent runs on `opus` (Opus 5.5); only the effort changes. An
-implementer, explorer or mechanical checker runs at `low`; a reviewer runs at `medium`; work
-that needs real reasoning (an architect, a public interface, data ownership, a numeric kernel,
-a merge across streams) runs at `high`, and only after I have approved it: ask me before any
-`high` dispatch. `sonnet` and `fable` are not used. The `model` field and the effort are set
-on every dispatch, never left to inherit.
+Model per dispatch: the `model-routing` skill chooses the model and the effort for each kind
+of dispatch, by phase and by task, and holds the escalation ladder for a failed task. The limits
+it works within, for Claude 5.5 models only: the session runs on `opus` at `medium`; `fable` and `sonnet`
+are not used; every `opus` dispatch runs at `low`; `haiku` takes spec-complete and mechanical
+work at `medium` or `high`, by task; `high` on `opus` is the exception, about five dispatches
+in a hundred, and only after I have approved it: ask me before any `high` dispatch. The `model`
+field and the effort are set on every dispatch, never left to inherit.
 
 Effort caps at `high`; never `xhigh` or `max`. `low` and `medium` are the right choice for
 mechanical work and are not a compromise.

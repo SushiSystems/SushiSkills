@@ -53,7 +53,8 @@ the work folder holds one report, and two workers never hold one file.
 
 ## Choosing a model
 
-The model and the effort for each kind of dispatch are set in the same "Delegation" section.
+The `model-routing` skill chooses the model and the effort for each dispatch, by phase and by
+task, within the limits the same "Delegation" section sets.
 
 ## Accepting a report
 
