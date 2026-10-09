@@ -13,8 +13,8 @@ The root holds only what a tool refuses to find anywhere else.
 
 ```
 README.md  LICENSE  NOTICE.md  COMMERCIAL.md  CMakeLists.txt  AGENTS.md  CLAUDE.md
-.clang-format  .editorconfig  .gitignore  .gitattributes
-cmake/  cli/  tools/  modules/  tests/  applications/  third_party/  docs/
+sushi-module.toml  .clang-format  .editorconfig  .gitignore  .gitattributes
+.config/  .github/  cmake/  cli/  tools/  modules/  tests/  applications/  third_party/  docs/
 ```
 
 | Entry | Holds |
@@ -24,6 +24,9 @@ cmake/  cli/  tools/  modules/  tests/  applications/  third_party/  docs/
 | `COMMERCIAL.md` | How a company obtains a commercial licence; absent from a closed repository |
 | `CMakeLists.txt` | `project()`, options and `add_subdirectory`; no logic |
 | `AGENTS.md`, `CLAUDE.md` | Agent instructions and skill declarations; names the skills the repository follows |
+| `sushi-module.toml` | The module manifest the stack's tooling reads from the root |
+| `.config/` | Configuration a flag or a key can point a tool at, such as `doxygen/Doxyfile` and `docker/Dockerfile`; its `README.md` has one row per file, naming the tool and the call site that passes the path |
+| `.github/` | What GitHub resolves by name: workflows, `SECURITY.md`, `CODE_OF_CONDUCT.md` |
 | `cmake/` | Every CMake function and the layer table |
 | `cli/` | The project CLI package, with its own `pyproject.toml` |
 | `tools/` | Manual checkers; see `project-tools` |
@@ -35,6 +38,10 @@ cmake/  cli/  tools/  modules/  tests/  applications/  third_party/  docs/
 
 Forbidden in the root: `ARCHITECTURE.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`,
 `Doxyfile`, `pyproject.toml`, build output, object files, scratch files. Each has a home above.
+
+A dotfile stays in the root only when its tool refuses to find it anywhere else: clang-format and
+EditorConfig walk up from the file being edited, and git reads `.gitignore` and `.gitattributes`
+for the folder they sit in. A file a flag can redirect goes to `.config/`.
 
 A repository that holds skills and no modules has `skills/` and `claude/` in place of `cmake/`,
 `cli/`, `modules/`, `tests/` and `applications/`. Each skill folder is a module whose `SKILL.md`
@@ -68,6 +75,24 @@ modules/<tier>/<module>/
 
 A project that grows from one module to two moves `include/` and `source/` under
 `modules/<tier>/<module>/` and changes nothing else.
+
+A header that nothing outside the module includes is private and lives under `source/`, beside
+the code that uses it. A private tree of headers, such as a library's kernels, is a folder under
+`source/`, never a top-level folder.
+
+## Tests
+
+`unit/`, `integration/`, `regression/` and `common/` sit directly under `tests/`, with no level
+between. A test kind that builds a different program gets its own folder beside them:
+
+| Folder | Holds |
+| --- | --- |
+| `tests/benchmark/` | Benchmark programs; see `testing` and `performance` |
+| `tests/package/` | An out-of-tree consumer that builds against the installed package |
+| `tests/<kind>/fixtures/` | Input data of one test kind |
+| `tests/goldens/` | Reference outputs a regression test compares against |
+
+Any other folder under `tests/` names the program it builds and has a `README.md`.
 
 ## Module rules
 
