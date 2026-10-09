@@ -80,6 +80,12 @@ A header that nothing outside the module includes is private and lives under `so
 the code that uses it. A private tree of headers, such as a library's kernels, is a folder under
 `source/`, never a top-level folder.
 
+A header that another module of the same repository includes, and a consumer must not, cannot
+stay under `source/`: rule 3 below forbids the reach. It goes to the `include/` tree of an
+internal module. An internal module is marked so in its `CMakeLists.txt`, its headers are never
+installed, and its README says so in the first paragraph. A module's `include/` root is installed
+whole or not at all, so headers of both kinds are two modules.
+
 ## Tests
 
 `unit/`, `integration/`, `regression/` and `common/` sit directly under `tests/`, with no level
@@ -94,16 +100,36 @@ between. A test kind that builds a different program gets its own folder beside 
 
 Any other folder under `tests/` names the program it builds and has a `README.md`.
 
+With more than one module, a test of one module lives in that module's `tests/` folder and the
+root `tests/` holds only the tests that cross modules.
+
+- Each module with tests builds one test program, through the same build function as the root
+  program, so every program is linked, labelled and placed the same way.
+- A module test may include the umbrella header of the library: it is what a consumer includes,
+  and a test that goes through it tests it too. A test that names a header of a higher-tier
+  module by its own path crosses modules and belongs under the root `tests/`.
+- The umbrella hides a header that forgot one of its own includes. The module's sources, compiled
+  with the include roots the module declared, are what catches that, so a header-only module
+  needs one test that includes each of its headers first and alone.
+- The notes of a test follow the test: a module's `tests/README.md` holds them, and the root one
+  holds what the tests share.
+
 ## Module rules
 
 1. A module owns one responsibility, named by its folder.
 2. A module's public surface is its `include/` tree. `source/` is private to it.
 3. Dependencies point down the tier order declared in `cmake/`. Never sideways into another
-   module's `source/`, never up a tier.
+   module's `source/`, never up a tier. An edge between two modules of one tier is listed in the
+   same `cmake/` table, and the build refuses one that is not.
 4. A module is added by creating its folder and one line in its tier's list. If adding it
    requires editing another module, the boundary is wrong.
 5. Every module carries `README.md` stating what it owns, what it depends on and its public
    entry points.
+6. A module names every module it includes in its build declaration, and is compiled with the
+   include roots of those modules only. An include of a module it did not declare then fails to
+   compile, which is what makes the boundary real.
+7. The tier order is stated once, in `cmake/`. Where a checker needs its own copy, a test
+   compares the two.
 
 ## Names
 
@@ -117,6 +143,8 @@ Any other folder under `tests/` names the program it builds and has a `README.md
 | Mistake | Fix |
 | --- | --- |
 | A `utils/` or `common/` module | Name the responsibility; split it by what each part does |
+| A `utils.hpp` header | The same: one header per responsibility, each in the lowest module that uses it |
+| Two modules of one tier sharing a header of one of them | Move the header down a tier, into a module both depend on |
 | Test data beside the source | `tests/<kind>/fixtures/` |
 | A second CLI or script folder | Everything runnable goes through `cli/` or lives in `tools/` |
 | New top-level folder "for now" | It is not allowed; pick a home from the table |

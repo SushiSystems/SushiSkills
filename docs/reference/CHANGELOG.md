@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-09 — repository-layout: Added the internal module, the rules of a module's tests, the declared include roots and the single tier table (`skills/repository-layout/SKILL.md`).
 - 2026-10-09 — repository-layout: Named `.config/`, `.github/` and `sushi-module.toml` in the root, the home of a private header, and the test folders beside the four kinds (`skills/repository-layout/SKILL.md`).
 - 2026-10-08 — repository-layout: Added the Unity tree, the feature assembly rules, the large-file folder and PascalCase names (`skills/repository-layout/UNITY.md`, `skills/repository-layout/SKILL.md`).
 - 2026-10-08 — model-routing: Named Haiku 5.5 as the haiku seat and marked the effort on Haiku as unverified (`skills/model-routing/SKILL.md`).
