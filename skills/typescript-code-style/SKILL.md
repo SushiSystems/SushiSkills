@@ -76,7 +76,7 @@ export enum LookupStatus
 
 export class AssetRegistry
 {
-    private readonly records_ = new Map<AssetId, AssetRecord>();
+    private readonly records_ = new Map<AssetID, AssetRecord>();
 
     public constructor(private readonly capacity_: number = K_MAX_ASSETS)
     {
@@ -92,7 +92,7 @@ export class AssetRegistry
     }
 }
 
-export function findOversized(records: AssetRecord[], limit: number): AssetId[]
+export function findOversized(records: AssetRecord[], limit: number): AssetID[]
 {
     return records
         .filter((record) =>

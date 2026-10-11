@@ -62,7 +62,7 @@ void PhysicsWorld::step(double seconds)
 | File, folder | `snake_case` | `physics_world.hpp` |
 | Namespace | `PascalCase`, project root first | `Project::Physics` |
 | Internal namespace | `Detail` | `Project::Physics::Detail` |
-| Class, struct, alias | `PascalCase` | `PhysicsWorld`, `BodyId` |
+| Class, struct, alias | `PascalCase` | `PhysicsWorld`, `BodyID` |
 | Enum | `enum class PascalCase` with a sized underlying type | `enum class ShaderStage : std::uint8_t` |
 | Enumerator | `PascalCase` | `ShaderStage::Vertex` |
 | Function, method | `snake_case`, verb first | `add_body`, `read_wave_file` |
@@ -74,6 +74,9 @@ void PhysicsWorld::step(double seconds)
 | Macro | `<PREFIX>_UPPER_SNAKE` | `PR_ASSERT`, `PR_LOG_WARN` |
 
 - A query that returns a bool reads as a question: `is_empty`, `has_backward_rule`.
+- An acronym keeps its capitals inside a `PascalCase` name: `BodyID`, `USMKind`, `TCPTransport`,
+  `BLAS::fold`, never `BodyId`, `UsmKind` or `Blas`. A plural adds a small `s`: `TaskIDs`. In
+  `snake_case` it is lower case like any other word: `body_id`, `usm_kind.hpp`.
 - No `I` prefix on interfaces, no `m_`, no Hungarian notation, no abbreviations a newcomer
   cannot expand.
 
@@ -131,7 +134,7 @@ forward-declares what it only names by pointer or reference.
 - Pass cheap types by value, everything else by `const&`; sinks by value then move.
 - No allocation, virtual dispatch through a map, or logging inside a per-element hot loop.
 - Reserve containers whose size is known.
-- Prefer contiguous storage and handles (`BodyId`) over pointer graphs.
+- Prefer contiguous storage and handles (`BodyID`) over pointer graphs.
 
 ## Common mistakes
 
