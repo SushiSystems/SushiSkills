@@ -59,8 +59,15 @@ task, within the limits the same "Delegation" section sets.
 ## Accepting a report
 
 The evidence a report must carry, and what a reviewer dispatch checks by name, are in the same
-"Delegation" section. The orchestrator checks one thing more: the list of files changed matches
-the assigned set.
+"Delegation" section. The orchestrator checks two things more.
+
+1. The list of files changed matches the assigned set.
+2. A report on work that changed a public name, a signature, a header path, a CLI command or a
+   documented behaviour carries the output of `tools/documentation/check_docs_truth.py` and the
+   pages and lines the change made false. Without both, the report is sent back.
+
+Closing a piece of work includes correcting every page a worker reported, in the commit that
+closes it. A reported page left false is the orchestrator's defect (see `documentation`).
 
 ## Shared working tree
 
