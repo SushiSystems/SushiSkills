@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-12 — repository-layout: Added `assets/`, `CMakePresets.json`, `applications/examples/`, the header-only module and the name of a free function header (`skills/repository-layout/SKILL.md`).
 - 2026-10-12 — tools: Accepted `docs/.docs_truth_allow` in the layout checker and ran the docs truth checker in the workflow (`check_docs_layout.py`, `ci.yml`, `AGENTS.md`).
 - 2026-10-12 — claude: Named the docs truth checker among the tools that enforce the documentation skill (`claude/CLAUDE.md`).
 - 2026-10-12 — sushiskills: Sent a change to a name, path or command a page describes to the documentation skill (`skills/sushiskills/SKILL.md`).

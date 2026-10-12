@@ -12,9 +12,10 @@ Every repository has the same tree, so a file's path says what it is before it i
 The root holds only what a tool refuses to find anywhere else.
 
 ```
-README.md  LICENSE  NOTICE.md  COMMERCIAL.md  CMakeLists.txt  AGENTS.md  CLAUDE.md
-sushi-module.toml  .clang-format  .editorconfig  .gitignore  .gitattributes
-.config/  .github/  cmake/  cli/  tools/  modules/  tests/  applications/  third_party/  docs/
+README.md  LICENSE  NOTICE.md  COMMERCIAL.md  CMakeLists.txt  CMakePresets.json  AGENTS.md
+CLAUDE.md  sushi-module.toml  .clang-format  .editorconfig  .gitignore  .gitattributes
+.config/  .github/  cmake/  cli/  tools/  modules/  tests/  applications/  assets/  third_party/
+docs/
 ```
 
 | Entry | Holds |
@@ -23,6 +24,7 @@ sushi-module.toml  .clang-format  .editorconfig  .gitignore  .gitattributes
 | `NOTICE.md` | Third-party components, ported files and redistributed binaries; see `dependencies` |
 | `COMMERCIAL.md` | How a company obtains a commercial licence; absent from a closed repository |
 | `CMakeLists.txt` | `project()`, options and `add_subdirectory`; no logic |
+| `CMakePresets.json` | The configure presets, when the project has them; CMake reads them from the root only |
 | `AGENTS.md`, `CLAUDE.md` | Agent instructions and skill declarations; names the skills the repository follows |
 | `sushi-module.toml` | The module manifest the stack's tooling reads from the root |
 | `.config/` | Configuration a flag or a key can point a tool at, such as `doxygen/Doxyfile` and `docker/Dockerfile`; its `README.md` has one row per file, naming the tool and the call site that passes the path |
@@ -32,7 +34,8 @@ sushi-module.toml  .clang-format  .editorconfig  .gitignore  .gitattributes
 | `tools/` | Manual checkers; see `project-tools` |
 | `modules/` | Source, one tree per module |
 | `tests/` | Tests that cross module boundaries only |
-| `applications/` | Executables |
+| `applications/` | Executables, one folder each; example programs under `applications/examples/` |
+| `assets/` | Content an application loads at run time and the package ships; absent when there is none |
 | `third_party/` | Vendored code, outside this discipline |
 | `docs/` | Everything written in prose; see `documentation` |
 
@@ -79,6 +82,10 @@ A project that grows from one module to two moves `include/` and `source/` under
 A header that nothing outside the module includes is private and lives under `source/`, beside
 the code that uses it. A private tree of headers, such as a library's kernels, is a folder under
 `source/`, never a top-level folder.
+
+A module whose code is all templates and inline functions has no `source/` folder. It is declared
+as a header-only target, it still names every module it includes, and it carries the test that
+includes each of its headers first and alone (see Tests).
 
 A header that another module of the same repository includes, and a consumer must not, cannot
 stay under `source/`: rule 3 below forbids the reach. It goes to the `include/` tree of an
@@ -135,6 +142,8 @@ root `tests/` holds only the tests that cross modules.
 
 - Folders and files: `snake_case`. One primary symbol per header, file named after it
   (`physics_world.hpp` holds `PhysicsWorld`).
+- A header of free functions holds one family and is named after what the family computes
+  (`substep_demand.hpp` holds the terms of the substep demand), never after one of its functions.
 - Include path: `<Project>/<module>/<name>.hpp`, always with angle brackets.
 - Documents under `docs/` are the exception: `UPPER_SNAKE_CASE.md`.
 
@@ -148,3 +157,5 @@ root `tests/` holds only the tests that cross modules.
 | Test data beside the source | `tests/<kind>/fixtures/` |
 | A second CLI or script folder | Everything runnable goes through `cli/` or lives in `tools/` |
 | New top-level folder "for now" | It is not allowed; pick a home from the table |
+| A `samples/` or `examples/` folder in the root | `applications/examples/` |
+| Test input under `assets/` | `tests/<kind>/fixtures/`; `assets/` holds what ships |
