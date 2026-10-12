@@ -48,7 +48,7 @@ Each rule set is its own skill. Load the one your task touches.
 | TypeScript layout, brace symmetry, naming, class shape | `typescript-code-style` |
 | Doxygen headers and comments in source | `source-comments` |
 | Log calls, categories, levels | `logging` |
-| Any file under `docs/` or a module README | `documentation` |
+| Any file under `docs/` or a module README, or a name, path or command a page describes | `documentation` |
 | More than one agent on one piece of work | `multi-agent-work` |
 | Which model and effort a session or a dispatch runs on | `model-routing` |
 | A commit message or pull request | `commits` |

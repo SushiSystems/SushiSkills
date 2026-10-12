@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-12 — sushiskills: Sent a change to a name, path or command a page describes to the documentation skill (`skills/sushiskills/SKILL.md`).
 - 2026-10-12 — project-tools: Named the docs truth checker as the fifth checker and its allow-list as the one configuration file (`skills/project-tools/SKILL.md`).
 - 2026-10-12 — versioning-and-release: Added the reading of the whole manual by a second reviewer before a release and the manual search when a breaking entry is written (`skills/versioning-and-release/SKILL.md`).
 - 2026-10-12 — multi-agent-work: Required the docs truth checker's output in a report on a public change and made the orchestrator correct every page a worker reports (`skills/multi-agent-work/SKILL.md`).
