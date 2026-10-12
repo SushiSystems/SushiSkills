@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-12 — tools: Matched an include to a module only when that module's include tree holds the path, so a dependency's module of the same name is not a finding (`check_layering.py`).
 - 2026-10-12 — repository-layout: Added `assets/`, `CMakePresets.json`, `applications/examples/`, the header-only module and the name of a free function header (`skills/repository-layout/SKILL.md`).
 - 2026-10-12 — tools: Accepted `docs/.docs_truth_allow` in the layout checker and ran the docs truth checker in the workflow (`check_docs_layout.py`, `ci.yml`, `AGENTS.md`).
 - 2026-10-12 — claude: Named the docs truth checker among the tools that enforce the documentation skill (`claude/CLAUDE.md`).
