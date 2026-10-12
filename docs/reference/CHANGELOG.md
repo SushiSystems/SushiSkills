@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-12 — claude: Named the docs truth checker among the tools that enforce the documentation skill (`claude/CLAUDE.md`).
 - 2026-10-12 — sushiskills: Sent a change to a name, path or command a page describes to the documentation skill (`skills/sushiskills/SKILL.md`).
 - 2026-10-12 — project-tools: Named the docs truth checker as the fifth checker and its allow-list as the one configuration file (`skills/project-tools/SKILL.md`).
 - 2026-10-12 — versioning-and-release: Added the reading of the whole manual by a second reviewer before a release and the manual search when a breaking entry is written (`skills/versioning-and-release/SKILL.md`).
