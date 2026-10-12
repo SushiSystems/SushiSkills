@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-12 — documentation: Added the rules that keep the manual true in the commit that changes the code, replace old text, cap page length and give each fact one home (`skills/documentation/SKILL.md`).
 - 2026-10-11 — cpp-code-style: Added the rule that an acronym keeps its capitals inside a PascalCase name, and changed the examples to `BodyID` and `AssetID` (`SKILL.md`).
 - 2026-10-09 — repository-layout: Added the internal module, the rules of a module's tests, the declared include roots and the single tier table (`skills/repository-layout/SKILL.md`).
 - 2026-10-09 — repository-layout: Named `.config/`, `.github/` and `sushi-module.toml` in the root, the home of a private header, and the test folders beside the four kinds (`skills/repository-layout/SKILL.md`).
