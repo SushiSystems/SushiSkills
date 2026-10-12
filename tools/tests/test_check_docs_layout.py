@@ -171,8 +171,7 @@ class DocsEntriesTest(unittest.TestCase):
     def test_accepts_the_docs_truth_allow_list(self) -> None:
         """Accepts docs/.docs_truth_allow, the one configuration file a checker reads."""
         with tempfile.TemporaryDirectory() as folder:
-            repository = _repository(folder, {"README.md": "# R
-", ".docs_truth_allow": ""})
+            repository = _repository(folder, {"README.md": "# R\n", ".docs_truth_allow": ""})
             self.assertEqual(_names(rule_docs_entries(repository)), [])
 
 
