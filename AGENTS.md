@@ -13,6 +13,7 @@ Check before reporting work as finished:
 python tools/documentation/check_source_comments.py .
 python tools/documentation/check_docs_layout.py .
 python tools/documentation/check_changelog.py .
+python tools/documentation/check_docs_truth.py .
 python tools/layering/check_layering.py .
 python -m unittest discover -s tools/tests
 ```

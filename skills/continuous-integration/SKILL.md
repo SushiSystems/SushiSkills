@@ -12,7 +12,7 @@ that "it works here" is not the only evidence.
 
 | Trigger | Jobs |
 | --- | --- |
-| Every push and pull request | The four checkers from `project-tools`; build and every test that needs no device, through the project CLI |
+| Every push and pull request | The five checkers from `project-tools`; build and every test that needs no device, through the project CLI |
 | A `vX.Y.Z` tag push | Everything above, then the packaging build |
 
 - Platforms: Windows and Linux, both on every trigger.
