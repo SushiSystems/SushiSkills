@@ -15,9 +15,10 @@ repository. They are run by hand or through the project's CLI; they never build 
 | `tools/documentation/check_source_comments.py` | Every rule in `source-comments` |
 | `tools/documentation/check_docs_layout.py` | The tree, required documents, names, work folder contents, status lines, broken links, reachability from the index and 90-day archive candidates from `documentation` |
 | `tools/documentation/check_changelog.py` | One line, 240 characters, one sentence, no nesting |
+| `tools/documentation/check_docs_truth.py` | The manual against the source, from `documentation`: every name and path a page writes in code exists, every example cites the file it is taken from, no history words, the page ceilings, no paragraph in two pages, no em dash in prose, a reason on every allow-list entry |
 | `tools/layering/check_layering.py` | Module dependencies follow the declared tier order; nothing reaches into another module's private `source/` |
 
-A repository may add checkers; it may not rename or drop these four.
+A repository may add checkers; it may not rename or drop these five.
 
 One tool beside them writes: `tools/licensing/write_license_block.py` puts the license block of
 `source-comments` into every tracked source file. It is run when a repository is created, when
@@ -35,7 +36,7 @@ Every checker has the same shape.
 | `--report` | Counts per rule; exit 0 |
 | `--rule NAME` | Runs one rule only |
 | Rules | One function per rule, `rule_<what>`, registered in one table |
-| Configuration | `K_` constants at the top of the file; no configuration files |
+| Configuration | `K_` constants at the top of the file; no configuration files, except the allow-list `docs/.docs_truth_allow` that `check_docs_truth.py` reads |
 | Side effects | None. A checker reads; it never rewrites a file |
 
 ```python
@@ -50,7 +51,8 @@ Adding a rule adds one function and one table row. Nothing else in the checker c
 | Moment | Run |
 | --- | --- |
 | Before reporting a task finished | The checkers covering the files touched |
-| Before a commit touching `docs/` | `check_docs_layout.py` and `check_changelog.py` |
-| Periodically, or on request | All four with `--report`; act on the archive candidates |
+| Before a commit touching `docs/` | `check_docs_layout.py`, `check_changelog.py` and `check_docs_truth.py` |
+| Before a commit that adds, renames or removes a public name, a header path or a CLI command | `check_docs_truth.py` |
+| Periodically, or on request | All five with `--report`; act on the archive candidates |
 
 A claim that a checker passed carries the command and its pasted output.
