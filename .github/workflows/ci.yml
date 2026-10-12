@@ -23,6 +23,8 @@ jobs:
         run: python tools/documentation/check_docs_layout.py .
       - name: python tools/documentation/check_changelog.py .
         run: python tools/documentation/check_changelog.py .
+      - name: python tools/documentation/check_docs_truth.py .
+        run: python tools/documentation/check_docs_truth.py .
       - name: python tools/layering/check_layering.py .
         run: python tools/layering/check_layering.py .
       - name: python -m unittest discover -s tools/tests

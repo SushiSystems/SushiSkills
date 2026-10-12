@@ -26,7 +26,7 @@ from common.checker import Checker, Issue, run  # noqa: E402
 K_DOCS_ENTRIES = frozenset(
     {
         "README.md", "CONTRIBUTING.md", "DOCUMENTATION_STYLE_GUIDE.md", "publish.toml",
-        "getting_started", "architecture", "guides", "reference", "design", "agent", "archive",
+        ".docs_truth_allow", "getting_started", "architecture", "guides", "reference", "design", "agent", "archive",
     }
 )
 K_DESIGN_INDEXES = frozenset({"README.md", "REMAINING_WORK.md"})
