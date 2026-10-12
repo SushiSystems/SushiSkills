@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-12 — versioning-and-release: Added the reading of the whole manual by a second reviewer before a release and the manual search when a breaking entry is written (`skills/versioning-and-release/SKILL.md`).
 - 2026-10-12 — multi-agent-work: Required the docs truth checker's output in a report on a public change and made the orchestrator correct every page a worker reports (`skills/multi-agent-work/SKILL.md`).
 - 2026-10-12 — tools: Added the checker that reads the manual against the source for stale names, missing paths, uncited examples, history words, length, repeated paragraphs and em dashes (`tools/documentation/check_docs_truth.py`).
 - 2026-10-12 — documentation: Added the rules that keep the manual true in the commit that changes the code, replace old text, cap page length and give each fact one home (`skills/documentation/SKILL.md`).
