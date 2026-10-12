@@ -26,7 +26,8 @@ Every repository, whatever its size, carries the documentation tree the `documen
 defines, so that what exists, what is done, what is left and what is planned can be read from
 the tree. Load that skill before writing or moving anything under `docs/` or a module README.
 It holds the tree, the placement questions and the changelog entry shape;
-`tools/documentation/check_docs_layout.py` and `check_changelog.py` enforce it.
+`tools/documentation/check_docs_layout.py`, `check_changelog.py` and `check_docs_truth.py`
+enforce it.
 
 On first entering a repository that lacks this shape: measure it, report the gaps, and get
 approval before building the skeleton. The build-out is its own task.
