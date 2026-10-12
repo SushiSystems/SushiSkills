@@ -45,7 +45,8 @@ highest bump any of them demands.
 The agent keeps the release state current without being asked.
 
 1. After every commit that adds a changelog entry, compute the next version from the table
-   above.
+   above. When the entry is a breaking change, search the manual for every name it changed as
+   the entry is written, and correct the hits in that commit (see `documentation`).
 2. When closing a piece of work, report one line: `Next release: v0.3.3 (patch), 4 entries
    since v0.3.2.`
 3. Propose a release when any of these holds:
@@ -62,7 +63,10 @@ The agent keeps the release state current without being asked.
 Once the owner approves, in this order:
 
 1. Run every checker under `tools/` and the full test suite through the project CLI. A finding
-   or a failure stops the release.
+   or a failure stops the release. Then a reviewer who did not write the manual reads it from
+   start to finish against the code: `check_docs_truth.py` catches a stale name or path, and
+   only a reader catches a sentence that describes behaviour the code has lost. A false
+   sentence stops the release too.
 2. Set the version in the source of truth.
 3. In the changelog, rename `## Unreleased` to `## vX.Y.Z — YYYY-MM-DD`, open a new empty
    `## Unreleased` above it, and move every older release section to
@@ -84,3 +88,5 @@ Once the owner approves, in this order:
 - "I will retag the release to include this fix." → a new PATCH.
 - "The version in `package.json` and the tag can differ for now." → one source of truth.
 - "The owner will notice it is time to release." → tracking is the agent's job.
+- "The checkers pass, so the manual is ready." → a checker reads names and paths; a reviewer
+  reads the sentences.
