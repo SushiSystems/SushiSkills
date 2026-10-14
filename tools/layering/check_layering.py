@@ -19,8 +19,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.checker import Checker, Issue, run  # noqa: E402
+from settings import K_TIER_ORDER  # noqa: E402
 
-K_TIER_ORDER: tuple[str, ...] = ()
+K_SETTINGS = Path(__file__).resolve().parents[1] / "settings.py"
 K_SOURCE_SUFFIXES = frozenset({".h", ".hpp", ".cpp", ".glsl", ".comp", ".vert", ".frag"})
 K_ANGLE_INCLUDE = re.compile(r'^\s*#\s*include\s*<([^/>]+)/([^/>]+)/[^>]+>')
 K_QUOTED_INCLUDE = re.compile(r'^\s*#\s*include\s*"([^"]+)"')
@@ -86,7 +87,7 @@ def _source_lines(module: Module) -> Iterator[tuple[Path, int, str]]:
 def rule_declared_tiers(tree: ModuleTree) -> Iterator[Issue]:
     """Yields an issue for each tier folder missing from the declared order."""
     if not tree.tier_order:
-        yield Issue(Path(__file__), 1, "K_TIER_ORDER is empty; declare the repository's tiers")
+        yield Issue(K_SETTINGS, 1, "K_TIER_ORDER is empty; declare the repository's tiers")
         return
     for tier in sorted({module.tier for module in tree.modules.values()}):
         if tree.rank(tier) is None:

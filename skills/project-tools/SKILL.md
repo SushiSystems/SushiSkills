@@ -39,7 +39,7 @@ Every checker has the same shape.
 | `--report` | Counts per rule; exit 0 |
 | `--rule NAME` | Runs one rule only |
 | Rules | One function per rule, `rule_<what>`, registered in one table |
-| Configuration | `K_` constants at the top of the file; no configuration files, except the allow-list `docs/.docs_truth_allow` that `check_docs_truth.py` reads |
+| Configuration | `K_` constants at the top of the file. What differs between repositories is read from `tools/settings.py`; no other configuration file, except the allow-list `docs/.docs_truth_allow` that `check_docs_truth.py` reads |
 | Side effects | None. A checker reads; it never rewrites a file |
 
 ```python
@@ -48,6 +48,21 @@ def rule_block_ceiling(lines: list[str]) -> Iterator[Finding]:
 ```
 
 Adding a rule adds one function and one table row. Nothing else in the checker changes.
+
+## Shared and own tools
+
+The files git tracks under SushiSkills' `tools/` are shared. A repository holds them as
+SushiSkills ships them, under its own license block, and never edits them. A shared checker that
+needs to change is changed in SushiSkills first.
+
+- `tools/settings.py` is shared by name only. It holds what differs between repositories, such
+  as the tier order, and the copy never overwrites it.
+- Every other file under a repository's `tools/` is its own tool, at any path SushiSkills does
+  not use. The copy never touches it.
+
+`python tools/checking/copy_shared_tools.py ROOT --from SUSHISKILLS` copies the shared files;
+with `--report` it lists the ones that differ and exits 1. A repository runs it after a checker
+changes upstream, and a report that lists a file is a local edit to move upstream or drop.
 
 ## When to run
 

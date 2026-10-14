@@ -1,12 +1,15 @@
 # tools
 
-Reference implementations of the six checkers every Sushi Systems repository carries. A
-repository copies this folder whole; a rule is fixed here first and copied out.
+Reference implementations of the six checkers every Sushi Systems repository carries. A rule is
+fixed here first and copied out with `checking/copy_shared_tools.py`; which files that copies and
+which it keeps is in the `project-tools` skill.
 
 | Path | Checks | Takes |
 | --- | --- | --- |
 | `check_all.py` | Nothing itself; runs the six checkers and the tests, prints only what failed | Repository root |
 | `checking/checker.py` | Nothing itself; runs a checker's rule table and prints findings | |
+| `checking/copy_shared_tools.py` | Nothing; copies these files into a repository, keeping its license blocks, `settings.py` and its own tools, or lists the files that differ with `--report` | Repository root, `--from` |
+| `settings.py` | Nothing; holds the settings that differ between repositories | |
 | `checking/ignored_paths.py` | Nothing itself; names the files and folders git ignores, which no checker reads | |
 | `documentation/check_source_comments.py` | C++, GLSL, TypeScript and Python: license block, file header, block ceiling, `//` and `#` runs, separators, history words, `@date` | Files or folders |
 | `documentation/check_docs_layout.py` | `docs/` entries, required documents, document names, work folders, status lines, design ceiling, links under `docs/`, reachability from `docs/README.md`, READMEs under `modules/<tier>/`, archive candidates | Repository root |
@@ -40,10 +43,11 @@ reporting, 2 on a bad path. Python 3.11, standard library only.
 
 ## Per-repository settings
 
-`K_` constants at the top of each checker. `check_layering.py` does nothing until
-`K_TIER_ORDER` lists the repository's tiers, lowest first. `K_COPYRIGHT_LINE` and
-`K_LICENSE_LINES` in `check_source_comments.py` hold the repository's licence lines; a closed
-repository sets `K_LICENSE_LINES` to `("All rights reserved. No licence is granted.",)`.
-`check_docs_truth.py` takes a repository's macro prefixes from the source unless
-`K_MACRO_PREFIXES` names them, and its page ceilings from `K_LINE_CEILINGS`, which a test
-compares with the table in the `documentation` skill.
+`settings.py` holds them. `check_layering.py` does nothing until `K_TIER_ORDER` lists the
+repository's tiers, lowest first. `K_CLOSED` makes
+`check_source_comments.py` expect the closed licence lines. `check_docs_truth.py` takes a
+repository's macro prefixes from the source unless `K_MACRO_PREFIXES` names them.
+
+Every other `K_` constant sits at the top of its checker and is the same in every repository.
+`K_LINE_CEILINGS` in `check_docs_truth.py` is compared by a test with the table in the
+`documentation` skill.
