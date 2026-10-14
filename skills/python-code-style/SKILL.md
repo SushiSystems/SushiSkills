@@ -21,7 +21,7 @@ source/<package>/
     __init__.py           re-exports the public surface, nothing else
     <area>/<name>.py
     py.typed
-tests/{unit,integration,regression,common}/
+tests/<area>/<name>_test.py
 ```
 
 **More than one module:**
@@ -33,7 +33,7 @@ modules/<tier>/<module>/
     source/<package>_<module>/
         __init__.py
         <name>.py
-    tests/
+tests/<tier>/<module>/<name>_test.py
 ```
 
 - A module's public surface is what its `__init__.py` re-exports. Anything else is private and
@@ -115,7 +115,8 @@ K_LOGGER.warning(
 
 ## Tests
 
-- `pytest`. One test file per source file: `test_<name>.py`, mirroring the source path.
+- `pytest`. One test file per source file, `<name>_test.py`, at the path `TESTS.md` in
+  `repository-layout` gives it.
 - Test functions: `test_<behaviour>_<condition>`, e.g. `test_step_rejects_negative_time`.
 - Checkers under `tools/` use the standard library only, so they run without installing
   anything (see `project-tools`).

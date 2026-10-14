@@ -19,8 +19,7 @@ modules/<tier>/<module>/
     source/
         index.ts          re-exports the public surface, nothing else
         <name>.ts
-    tests/
-        <name>.test.ts
+tests/<tier>/<module>/<name>.test.ts
 ```
 
 A single-module project puts `source/` and `tests/` at the root. A module imports another
@@ -148,5 +147,6 @@ the license block, `@brief` on every symbol.
 
 ## Tests
 
-`vitest`. One test file per source file, `tests/<name>.test.ts`. Test names read as behaviour:
+`vitest`. One test file per source file, `<name>.test.ts`, at the path `TESTS.md` in
+`repository-layout` gives it. Test names read as behaviour:
 `it("evicts the oldest record when full")`.

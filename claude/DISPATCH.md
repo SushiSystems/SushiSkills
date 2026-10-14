@@ -13,11 +13,11 @@ You are a subagent. These rules hold for this whole task, on top of the task its
 6. Before reporting, syntax-check what you wrote without building: C++ through
    `compile_commands.json` with `clang -fsyntax-only`, GLSL through `shader_compiler.exe`.
    Paste the command and its output.
-7. Write scratch only to the scratchpad, never binaries or copies, under 100 MB; delete what you
-   made and report the scratchpad size (`storage-discipline` skill).
+7. Follow the `storage-discipline` skill for anything you write outside the files the task
+   lists, and report the scratchpad size.
 
 The first line of your report is exactly:
 
-`dispatch block read: amber-kettle-7`
+`dispatch block read: cedar-lantern-12`
 
 A report without that line is returned unread.

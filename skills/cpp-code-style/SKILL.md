@@ -144,4 +144,4 @@ forward-declares what it only names by pointer or reference.
 | A header per module that includes everything | Include the exact headers used |
 | `bool` return for "failed for some reason" | A status enum naming the reason |
 | Boolean parameters (`load(path, true, false)`) | An enum or an options struct |
-| A switch over kinds that every new kind edits | A table or an interface each kind implements |
+| A switch over a growing set of kinds that every new kind edits | A table or an interface each kind implements; a small closed set keeps its switch (`sushiskills`, default 1) |

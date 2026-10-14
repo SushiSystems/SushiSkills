@@ -1,11 +1,11 @@
 # tools
 
-Reference implementations of the five checkers every Sushi Systems repository carries. A
+Reference implementations of the six checkers every Sushi Systems repository carries. A
 repository copies this folder whole; a rule is fixed here first and copied out.
 
 | Path | Checks | Takes |
 | --- | --- | --- |
-| `check_all.py` | Nothing itself; runs the five checkers and the tests, prints only what failed | Repository root |
+| `check_all.py` | Nothing itself; runs the six checkers and the tests, prints only what failed | Repository root |
 | `checking/checker.py` | Nothing itself; runs a checker's rule table and prints findings | |
 | `checking/ignored_paths.py` | Nothing itself; names the files and folders git ignores, which no checker reads | |
 | `documentation/check_source_comments.py` | C++, GLSL, TypeScript and Python: license block, file header, block ceiling, `//` and `#` runs, separators, history words, `@date` | Files or folders |
@@ -13,6 +13,7 @@ repository copies this folder whole; a rule is fixed here first and copied out.
 | `documentation/check_changelog.py` | Headings and entry shape, releases kept live, length, one sentence, nesting, cited places | Repository root |
 | `documentation/check_docs_truth.py` | The manual against the source: named symbols, cited paths, example sources, history words, page length, duplicated passages, em dashes, the allow-list | Repository root, `--source` |
 | `layering/check_layering.py` | Declared tiers, upward includes, reaches into another module's `source/` | Repository root |
+| `testing/check_test_mirror.py` | `tests/` mirrors the public headers: one `<name>_test.cpp` per header, no test without a header, no folder without a counterpart | Repository root |
 | `licensing/write_license_block.py` | Nothing; writes the license block of `source-comments` into every tracked source file, or lists the files that lack it with `--report` | Repository root, `--project` |
 | `routing/summarize_dispatches.py` | Nothing; sums the dispatch lines of every `REPORT.md` per model and effort, for `model-routing` | Repository root |
 | `tests/` | Unit tests for the checker rules; run `python -m unittest discover -s tools/tests` | |

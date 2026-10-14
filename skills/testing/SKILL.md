@@ -22,33 +22,38 @@ a brick that wants its own module.
 
 ## Bug fix order
 
-1. Write the regression test under `tests/regression/`, named after the defect.
+1. Write the regression test in the test file of the unit the defect lives in, labelled
+   `regression`, its name naming the defect.
 2. Run it through the project CLI and see it fail for the reason the defect describes.
 3. Fix the code.
 4. Run it again and see it pass, with the rest of the module's tests.
 
 A fix whose test was never seen failing is not verified.
 
-## Layout and names
+## Kinds and names
 
-| Kind | Place | Proves |
-| --- | --- | --- |
-| Unit | Beside the module, `tests/` | One brick's behaviour in isolation |
-| Integration | Root `tests/integration/` | Two or more modules working through their public surfaces |
-| Regression | Root `tests/regression/` | A defect stays fixed |
-| Golden | Root `tests/golden/` | An output (image, file, numeric table) stays identical |
-| Benchmark | Root `tests/benchmark/` | A measurement; never pass or fail |
+Where a test file lives is `TESTS.md` in `repository-layout`: the test tree mirrors the source.
+The kind of a test is a label, never a folder.
 
-- Files: `test_<subject>` in the language's extension.
+| Label | Proves |
+| --- | --- |
+| `unit` | One brick's behaviour in isolation |
+| `integration` | Two or more modules working through their public surfaces |
+| `regression` | A defect stays fixed |
+| `golden` | An output (image, file, numeric table) stays identical |
+| `benchmark` | A measurement; never pass or fail |
+| `device` | Needs a GPU or another device; see Determinism |
+
 - Names read as behaviour: `StepRejectsNegativeTime`, `test_step_rejects_negative_time`,
   `it("rejects a negative time step")`.
+- A test's name starts with the unit it tests, so a failing name leads to its file.
 
 ## Determinism
 
 1. Every random source takes a fixed seed written in the test.
 2. Every floating-point comparison states its tolerance in the test, absolute and relative,
    never a bare `==`.
-3. Tests that need a GPU or another device carry a device label. Without the device they are
+3. Tests that need a GPU or another device carry the `device` label. Without the device they are
    reported as skipped, never as passed.
 4. No test depends on wall-clock time, test order, network or a file outside the repository.
 5. A test that fails intermittently is fixed the day it is seen, or quarantined with an entry in
