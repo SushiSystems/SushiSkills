@@ -9,7 +9,7 @@ A rule changes here first, in its own skill, and every repository follows it fro
 2. If a checker under `tools/` enforces the rule, change the checker and its test in the same
    commit.
 3. Add one changelog line under `## Unreleased`, with the skill's folder name as its scope.
-4. Run the five checkers and the tests; see [`tools/README.md`](../tools/README.md).
+4. Run `python tools/check_all.py .`; see [`tools/README.md`](../tools/README.md).
 
 Sibling repositories copy `tools/` whole after a checker changes.
 

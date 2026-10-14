@@ -24,7 +24,8 @@ from typing import final
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from common.checker import K_EXIT_CLEAN, Checker, Issue, run  # noqa: E402
+from checking.checker import K_EXIT_CLEAN, Checker, Issue, run  # noqa: E402
+from checking.ignored_paths import ignored_folders  # noqa: E402
 
 
 class PageKind(Enum):
@@ -270,10 +271,15 @@ def read_allow_list(path: Path) -> tuple[AllowEntry, ...]:
     return tuple(entries)
 
 
-def _walk(folder: Path) -> Iterator[tuple[Path, list[str], list[str]]]:
-    """Yields each folder below a path with its entries, without entering skipped folders."""
+def _walk(
+    folder: Path, ignored: frozenset[Path] = frozenset()
+) -> Iterator[tuple[Path, list[str], list[str]]]:
+    """Yields each folder below a path with its entries, without entering skipped or ignored folders."""
     for current, folders, files in os.walk(folder):
-        folders[:] = sorted(name for name in folders if name not in K_SKIPPED_FOLDERS)
+        folders[:] = sorted(
+            name for name in folders
+            if name not in K_SKIPPED_FOLDERS and (Path(current) / name).resolve() not in ignored
+        )
         yield Path(current), folders, sorted(files)
 
 
@@ -292,8 +298,13 @@ class SourceTree:
             if entry.is_file():
                 yield entry
         for folder in self.folders:
-            for current, _, names in _walk(folder):
+            for current, _, names in _walk(folder, self.ignored):
                 yield from (current / name for name in names)
+
+    @cached_property
+    def ignored(self) -> frozenset[Path]:
+        """Returns the folders git ignores, which the index never enters."""
+        return ignored_folders(self.root)
 
     @cached_property
     def words(self) -> frozenset[str]:
@@ -325,7 +336,10 @@ class SourceTree:
         """Returns every file and folder of the repository and each trailing part of its path."""
         tails: set[str] = set()
         for current, folders, files in os.walk(self.root):
-            folders[:] = [name for name in folders if name not in K_BUILD_FOLDERS]
+            folders[:] = [
+                name for name in folders
+                if name not in K_BUILD_FOLDERS and (Path(current) / name).resolve() not in self.ignored
+            ]
             for name in (*folders, *files):
                 parts = (Path(current) / name).relative_to(self.root).parts
                 tails.update("/".join(parts[index:]) for index in range(len(parts)))
@@ -371,7 +385,7 @@ class Manual:
             design = docs / "design" in path.parents
             found.append((path, PageKind.DESIGN_DOCUMENT if design else PageKind.MANUAL_PAGE))
         for folder in self.source.folders:
-            for current, _, names in _walk(folder):
+            for current, _, names in _walk(folder, self.source.ignored):
                 if K_PAGE_NAME in names:
                     found.append((current / K_PAGE_NAME, PageKind.MODULE_README))
         return tuple(read_page(path, kind) for path, kind in found)
