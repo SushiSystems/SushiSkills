@@ -48,7 +48,8 @@ the owner's folder.
 
 No other folder sits under `tests/`: no `unit/`, `integration/`, `regression/`, `common/` or
 scenario folder. Code that the tests of several modules share is a module of its own, mirrored
-like any other.
+like any other. It is an internal module (see `INTERNAL_MODULES.md`), named by module rule 1 in
+`SKILL.md`, and each part sits in the lowest tier its dependencies allow.
 
 `cli/` and `tools/` are packaged or copied whole, so their tests travel with them: `cli/tests/`
 mirrors `cli/` by the same table, and `tools/tests/` holds the checker tests.

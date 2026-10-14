@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-14 — repository-layout: Ruled out a module name that fits any code, `testing` and `test_support` among them, and placed shared test code by that rule (`SKILL.md`, `TESTS.md`).
 - 2026-10-14 — repository-layout: Made `Assets/<Product>/Tests/` in a Unity repository a mirror of the product, with `<Name>Tests.cs` and one test assembly per code folder (`UNITY.md`, `TESTS.md`).
 - 2026-10-14 — tools: Checked the Unity test mirror when `ProjectSettings/` is present (`check_test_mirror.py`, `discover_unity`).
 - 2026-10-14 — tools: Reported a paragraph that one skill or instruction file copies from another (`check_docs_truth.py`, `rule_duplicated_passages`).
