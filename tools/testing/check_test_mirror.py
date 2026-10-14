@@ -127,22 +127,27 @@ def _units(folder: Path, language: Language) -> Iterator[Path]:
         )
 
 
-def _strip(relative: Path, language: Language, module: str | None) -> Path:
-    """Returns a unit's path below its project or package folder and its module folder."""
+def _strip(relative: Path, language: Language, owner: Path) -> Path:
+    """Returns a unit's path below its project or package folder and its module folder.
+
+    The module folder is `<module>` or `<tier>/<module>`; the longer one that the path opens with is
+    stripped.
+    """
     parts = relative.parts
     if language.has_project_folder and len(parts) > 1:
         parts = parts[1:]
-    if module is not None and len(parts) > 1 and parts[0] == module:
-        parts = parts[1:]
+    for prefix in (owner.parts, owner.parts[-1:]):
+        if prefix and len(parts) > len(prefix) and parts[:len(prefix)] == prefix:
+            return Path(*parts[len(prefix):])
     return Path(*parts)
 
 
-def _add_owner(expected: dict[Path, Path], tests: Path, owner: Path, folder: Path, module: str | None) -> None:
+def _add_owner(expected: dict[Path, Path], tests: Path, owner: Path, folder: Path) -> None:
     """Adds the expected test of every unit in a module, application or single-module root."""
     for language in K_LANGUAGES:
         base = folder / language.folder
         for unit in _units(base, language):
-            relative = _strip(unit.relative_to(base), language, module)
+            relative = _strip(unit.relative_to(base), language, owner)
             test = tests / owner / relative.parent / language.test_name(unit)
             expected[test] = unit
 
@@ -157,9 +162,9 @@ def discover(root: Path) -> TestMirror:
         for tier in sorted(entry for entry in modules.iterdir() if entry.is_dir()):
             for module in sorted(entry for entry in tier.iterdir() if entry.is_dir()):
                 owners.add(tests / tier.name / module.name)
-                _add_owner(expected, tests, Path(tier.name) / module.name, module, module.name)
+                _add_owner(expected, tests, Path(tier.name) / module.name, module)
     else:
-        _add_owner(expected, tests, Path(), root, None)
+        _add_owner(expected, tests, Path(), root)
     applications = root / K_APPLICATIONS_FOLDER
     if applications.is_dir():
         for application in sorted(entry for entry in applications.iterdir() if entry.is_dir()):

@@ -116,7 +116,9 @@ nothing else.
   (`physics_world.hpp` holds `PhysicsWorld`).
 - A header of free functions holds one family and is named after what the family computes
   (`substep_demand.hpp` holds the terms of the substep demand), never after one of its functions.
-- Include path: `<Project>/<module>/<name>.hpp`, always with angle brackets.
+- Include path: `<Project>/<module>/<name>.hpp` or `<Project>/<tier>/<module>/<name>.hpp`, always
+  with angle brackets. A repository uses one of the two for every module. With the tier in the
+  path, a module's name is unique within its tier, so two tiers may each hold a `training`.
 - Documents under `docs/` are the exception: `UPPER_SNAKE_CASE.md`.
 
 ## Common mistakes
