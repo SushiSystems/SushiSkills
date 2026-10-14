@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- 2026-10-14 — claude: Replaced the restated SOLID rule in the quality section and the first dispatch line with a citation of the `sushiskills` doctrine (`claude/CLAUDE.md`).
+- 2026-10-14 — tools: Skipped the files git ignores in the source comment checker (`tools/common/ignored_paths.py`, `drop_ignored`, `check_source_comments.py`).
+- 2026-10-14 — sushiskills: Split the doctrine into boundaries that hold without exception and defaults that name when they do not apply (`skills/sushiskills/SKILL.md`).
+- 2026-10-14 — contributing: Required every rule to be a boundary or a default with its rule, its reason and its exceptions (`docs/CONTRIBUTING.md`).
+- 2026-10-14 — sushiskills: Removed the line naming the aim every repository serves, which no rule acted on (`skills/sushiskills/SKILL.md`).
 - 2026-10-12 — tools: Reported a link whose anchor names no heading of the document it reaches (`check_docs_layout.py`, `rule_link_anchors`, `skills/project-tools/SKILL.md`).
 - 2026-10-12 — tools: Matched an include to a module only when that module's include tree holds the path, so a dependency's module of the same name is not a finding (`check_layering.py`).
 - 2026-10-12 — repository-layout: Added `assets/`, `CMakePresets.json`, `applications/examples/`, the header-only module and the name of a free function header (`skills/repository-layout/SKILL.md`).

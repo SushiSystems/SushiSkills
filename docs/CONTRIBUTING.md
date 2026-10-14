@@ -16,6 +16,18 @@ Sibling repositories copy `tools/` whole after a checker changes.
 A rule is stated in one file. `claude/CLAUDE.md` and a skill never restate each other; the one
 that does not hold the rule names the one that does.
 
+## Boundaries and defaults
+
+Every rule is one of two kinds, and its text shows which.
+
+- A **boundary** holds without exception. It is written as "never" or "always", and a checker
+  enforces it when a checker can.
+- A **default** carries three lines: **Rule**, **Why** and **Not when**. The "not when" line names
+  the cases where following the rule costs more than it saves. A default without one is either
+  a boundary or not yet thought through.
+
+See the doctrine in [`skills/sushiskills/SKILL.md`](../skills/sushiskills/SKILL.md) for both kinds.
+
 ## Contributions from outside
 
 Contributions from outside Sushi Systems are not accepted yet.

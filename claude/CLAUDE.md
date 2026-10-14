@@ -10,10 +10,9 @@ the `humanizer` skill in the language it is written in.
 
 ## Quality
 
-SOLID, without exception. Every unit is a brick: one responsibility, detachable and
-re-attachable without touching its neighbours, rebuildable on its own. Siblings that do the
-same kind of thing are shaped the same. Engineer it once carefully, run it a thousand times
-cheaply. No quick hacks that happen to pass.
+The doctrine in the `sushiskills` skill holds the quality rules: its boundaries, SOLID first,
+hold without exception, and its defaults hold unless their "not when" line applies. Load it
+before any work.
 
 Ask before deciding module boundaries, public interface shape, data ownership, external
 dependencies, and before deleting or overwriting anything you did not create. Decide naming,
@@ -49,10 +48,8 @@ choice, ask rather than guess.
 A subagent reads CLAUDE.md but not my memory, so nothing in memory reaches it unless the prompt
 carries it. Every subagent prompt, whatever the task, opens with the same seven lines, verbatim:
 
-1. SOLID, without exception. Every unit is a brick: one responsibility, detachable and
-   re-attachable without touching its neighbours, rebuildable on its own. Siblings that do the
-   same kind of thing are shaped the same. Engineer it once carefully, run it a thousand times
-   cheaply. No quick hacks that happen to pass.
+1. Invoke the `sushiskills` skill and follow its doctrine: the boundaries, SOLID first, without
+   exception; the defaults unless their "not when" line applies.
 2. Before writing any prose (a comment that explains, a commit message, a report, a reply),
    invoke the `humanizer` skill and apply its rules in the language of the prose.
 3. Do not start any process that runs `se`, `cmake`, `ninja` or `ctest`, in the foreground or

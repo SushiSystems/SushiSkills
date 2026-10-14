@@ -9,30 +9,45 @@ One discipline for every Sushi Systems repository, so that a person or an agent 
 repository already knows them all. Maintenance cost is the thing being minimised; every rule
 below exists because its absence made a repository more expensive to change.
 
-Every repository serves one aim: Sushiverse, a digital twin of the universe.
-
 ## The doctrine
 
-1. **SOLID, without exception.** Every unit is a brick: one responsibility, detachable and
-   re-attachable without touching its neighbours, rebuildable on its own. Siblings that do the
-   same kind of thing are shaped the same.
-2. **Grow without reshaping.** A structure is chosen so that adding the tenth module, level or
-   backend adds a file, not an edit to nine others. A switch over kinds that every new kind must
-   extend is a defect.
-3. **Maintainability first, performance second.** Engineer it once carefully, run it a thousand
-   times cheaply. A wasted cycle is a real cost, in money and in energy; a hack that saves one
-   is a larger one.
-4. **An obsessive quality bar.** "Good enough for now" is not accepted. Work that passes by
+The doctrine has two kinds of rule. A boundary holds without exception; breaking one is a defect
+however good the reason looks. A default holds unless its own "not when" line applies; it says
+why it exists so that a case it did not foresee is judged by its purpose.
+
+### Boundaries
+
+1. **SOLID.** Every unit is a brick: one responsibility, detachable and re-attachable without
+   touching its neighbours, rebuildable on its own. Siblings that do the same kind of thing are
+   shaped the same. Code depends on the abstraction it needs, never on a neighbour's internals.
+2. **Honesty.** Say what was done and what was not. Partial work is reported as partial.
+3. **An obsessive quality bar.** "Good enough for now" is not accepted. Work that passes by
    accident is not finished.
-5. **Honesty.** Say what was done and what was not. Partial work is reported as partial.
-6. **Ask on boundaries, decide the rest.** Module boundaries, public interface shape, data
+4. **Maintainability before performance.** Engineer it once carefully, run it a thousand times
+   cheaply. A wasted cycle is a real cost, in money and in energy; a hack that saves one is a
+   larger one.
+5. **The owner decides the boundaries.** Module boundaries, public interface shape, data
    ownership, external dependencies, and deleting what you did not create are the owner's
    decisions. Naming, internal structure, test shape and work order are yours. Never pick
    arbitrarily to avoid asking.
-7. **The CLI is the only door.** Build, test and run through the repository's own CLI. Never call
-   cmake, ninja, ctest, npm or uv directly, and never run a program or a test from CMake
-   (`ctest`, a custom target, a post-build step). Only the CLI sets up the runtime search path,
-   so a binary launched any other way fails to find its DLLs or shared objects.
+
+### Defaults
+
+1. **Grow without reshaping.**
+   **Rule:** a set of kinds that grows gets one type per kind behind one interface, so adding
+   the tenth module, level or backend adds a file, not an edit to nine others.
+   **Why:** a switch over kinds that every new kind must extend is the edit that spreads.
+   **Not when:** the set is closed by its meaning and small, such as the states of one machine
+   or a `std::variant` visited in one place. A switch there is clearer and faster, and an
+   interface with a factory around it is a cost with no return.
+2. **The CLI is the only door.**
+   **Rule:** build, test and run through the repository's own CLI. Never call cmake, ninja,
+   ctest, npm or uv directly, and never run a program or a test from CMake (`ctest`, a custom
+   target, a post-build step).
+   **Why:** only the CLI sets up the runtime search path, so a binary launched any other way
+   fails to find its DLLs or shared objects.
+   **Not when:** a debugger launches one test or program with the environment the CLI prints
+   for it. The result of that run is not a test result; the CLI run is.
 
 ## The bricks
 
