@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-10-14 — documentation: Moved design documents, agent work and the changelog format to files read only for those tasks (`AGENT_WORK.md`, `CHANGELOG_FORMAT.md`, `SKILL.md`).
+- 2026-10-14 — repository-layout: Moved private headers, internal modules and test folders to files read only for those tasks (`INTERNAL_MODULES.md`, `TESTS.md`, `SKILL.md`).
 - 2026-10-14 — tools: Added the one command that runs every checker and the tests and prints only what failed, and ran it in the workflow (`tools/check_all.py`, `ci.yml`, `skills/project-tools/SKILL.md`).
 - 2026-10-14 — tools: Kept the docs truth checker out of the folders git ignores, so a name found only there is reported (`check_docs_truth.py`, `ignored_folders`).
 - 2026-10-14 — tools: Renamed the shared checker package after what it does (`tools/checking/`).

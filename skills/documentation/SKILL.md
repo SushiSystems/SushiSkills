@@ -49,77 +49,12 @@ Ask in order, stop at the first yes.
 4. Is it about work that is finished and untouched for 90 days? → `docs/archive/`.
 5. Otherwise → the manual: `getting_started/`, `architecture/`, `guides/` or `reference/`.
 
-## One topic, one design document
+## Read before
 
-- `docs/design/README.md` maps every topic to exactly one document. Before writing, look the
-  topic up there. If a document exists, extend it; never open a second one on the same topic.
-- Every design document's second line is its status:
-  `**Status:** Open — phase 2 of 4` or `**Status:** Shipped`.
-- A design document above its ceiling (see "Size and one home") is split into `<TOPIC>/` with a
-  `README.md` and one file per phase, and the map is updated in the same commit.
-- `REMAINING_WORK.md` is the only backlog. No TODO lists anywhere else.
-
-## Agent work lifecycle
-
-1. **Open.** One folder: `docs/agent/<YYYY_MM_DD>_<WORK_NAME>/`. Before opening, check that no
-   open folder already covers the work; if one does, continue it.
-2. **Work.** The folder holds at most `SPEC.md`, `PLAN.md` and `REPORT.md`. Each is rewritten
-   in place as the work moves. A second review round replaces the first `REPORT.md`; it is not
-   a new file.
-3. **Close.** The orchestrator, in one commit: writes the changelog line, updates the design
-   status and `REMAINING_WORK.md`, updates the module READMEs and manual pages the work made
-   false.
-4. **Archive.** A work folder or a shipped design document with no commit for 90 days moves to
-   `docs/archive/` as it is, keeping its path below `docs/`. `check_docs_layout.py` lists the
-   candidates.
-
-The manual is never archived; it is kept true.
-
-## Who writes where
-
-| Writer | May write |
+| Task | File in this folder |
 | --- | --- |
-| Agent doing one piece of work | Its own work folder; the README of a module it changed, when its dispatch lists that file |
-| Orchestrator (the session that dispatched the work) | Everything above, plus `design/`, the manual, `CHANGELOG.md`, `REMAINING_WORK.md` |
-| Anyone | Nothing in `archive/` except moving a folder in |
-
-A worker whose change makes a page outside its write list false reports the page and the exact
-lines. The orchestrator corrects them in the commit that closes that piece of work. Reported is
-not corrected.
-
-## Changelog
-
-One file, `docs/reference/CHANGELOG.md`, grouped by release, newest first.
-
-```
-# Changelog
-
-## Unreleased
-
-- 2026-09-15 — matter: Reserved the neighbour list at tick start (`neighbour_list.hpp`).
-- 2026-09-14 — interop: Logged every refused share (`interop_share.cpp`, `ShareGate`).
-
-## v0.3.0 — 2026-09-01
-
-- 2026-08-28 — render: Fixed the star field's exposure (`star.vert`, `StarPass`).
-```
-
-| Part | Rule |
-| --- | --- |
-| Headings | `## Unreleased` on top, then `## vX.Y.Z — YYYY-MM-DD` per release, the heading being the tag |
-| Entry | `- <YYYY-MM-DD> — <scope>: <Past-tense verb> <what changed> (<where>).` |
-| Scope | The commit scope, so one module's history is one search |
-| Where | At most five backticked files or symbols |
-| Order | Newest first inside each section |
-| Length | At most 240 characters, one sentence, no nested bullet, never why |
-| Breaking change | The entry names what breaks, e.g. "cli: Removed the --legacy flag" |
-
-A change that needs more than five places is more than one entry.
-
-**Release.** When a version ships, `## Unreleased` is renamed to `## vX.Y.Z — YYYY-MM-DD` and a
-new empty `## Unreleased` opens above it. The live file keeps `Unreleased` and the latest
-release; every older release section moves, unchanged, to `docs/archive/changelog/vX.Y.Z.md`.
-When and how a release is cut is in `versioning-and-release`.
+| Opening or extending a design document, opening or closing a work folder under `docs/agent/` | `AGENT_WORK.md` |
+| Writing a changelog entry or moving a release section | `CHANGELOG_FORMAT.md` |
 
 ## Names
 
