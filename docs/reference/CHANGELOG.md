@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-10-14 — repository-layout: Reported a test that includes a private header under `source/` (`TESTS.md`, `check_test_mirror.py`, `rule_private_include`).
+
 - 2026-10-14 — repository-layout: Put an umbrella header at the include root, `<Project>/<Project>.hpp` for the project and `<Project>/<tier>.hpp` for a tier (`SKILL.md`, `TESTS.md`).
 
 - 2026-10-14 — project-tools: Kept a repository's settings in `tools/settings.py` and its own tools beside the shared ones, which it copies and never edits (`skills/project-tools/SKILL.md`).
