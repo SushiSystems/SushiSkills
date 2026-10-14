@@ -3,6 +3,7 @@
 ## Unreleased
 
 - 2026-10-14 — repository-layout: Let a unit keep its tests in a folder `test_<name>/` of aspect files when one file cannot hold them (`TESTS.md`, `check_test_mirror.py`).
+- 2026-10-14 — repository-layout: Allowed `<Project>/<tier>/<module>/` as a repository's include path, mirrored to the same `tests/<tier>/<module>/` (`SKILL.md`, `TESTS.md`, `check_test_mirror.py`).
 - 2026-10-14 — repository-layout: Ruled out a module name that fits any code, `testing` and `test_support` among them, and placed shared test code by that rule (`SKILL.md`, `TESTS.md`).
 - 2026-10-14 — repository-layout: Made `Assets/<Product>/Tests/` in a Unity repository a mirror of the product, with `<Name>Tests.cs` and one test assembly per code folder (`UNITY.md`, `TESTS.md`).
 - 2026-10-14 — tools: Checked the Unity test mirror when `ProjectSettings/` is present (`check_test_mirror.py`, `discover_unity`).

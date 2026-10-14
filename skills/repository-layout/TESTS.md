@@ -19,6 +19,9 @@ at the path its owner's folders give it under `tests/`:
 | Python | `source/<package>/<area>/<name>.py` | `tests/<area>/test_<name>.py` |
 | TypeScript | `source/<area>/<name>.ts` | `tests/<area>/<name>.test.ts` |
 
+A header under `include/<Project>/<tier>/<module>/` (see Names in `SKILL.md`) mirrors to the same
+`tests/<tier>/<module>/test_<name>.cpp`.
+
 A Unity repository mirrors under `Assets/<Product>/Tests/`; `UNITY.md` gives that tree.
 
 A test file is named for what it is of: `test_<name>`, and a benchmark `benchmark_<name>`.

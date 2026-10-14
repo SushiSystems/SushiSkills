@@ -63,6 +63,12 @@ class MultiModuleTest(unittest.TestCase):
         _touch(self.root, "tests/unit/test_physics_world.cpp")
         self.assertEqual(_names(rule_mirror_folders(discover(self.root))), ["unit"])
 
+    def test_an_include_path_with_the_tier_mirrors_like_one_without(self) -> None:
+        _touch(self.root, "modules/vision/training/include/Sushi/vision/training/trainer.hpp")
+        _touch(self.root, "tests/vision/training/test_trainer.cpp")
+        self.assertEqual(_names(rule_untested_unit(discover(self.root))), ["contact_solver.hpp"])
+        self.assertEqual(list(rule_orphan_test(discover(self.root))), [])
+
     def test_a_folder_of_aspect_files_stands_for_the_unit_test(self) -> None:
         _touch(self.root, "tests/physics/rigid_body/test_contact_solver/test_friction.cpp")
         _touch(self.root, "tests/physics/rigid_body/test_contact_solver/test_restitution.cpp")
