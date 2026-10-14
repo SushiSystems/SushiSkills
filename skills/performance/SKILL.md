@@ -35,7 +35,7 @@ An optimisation that costs readability must buy a measured gain worth that cost.
 
 ## Benchmarks
 
-- Live beside the tests of the unit they measure, `<name>_benchmark.cpp` (see `TESTS.md` in
+- Live beside the tests of the unit they measure, `benchmark_<name>.cpp` (see `TESTS.md` in
   `repository-layout`), in the module's benchmark program, labelled `benchmark`.
 - Run through the project CLI, never from CMake.
 - Print numbers; they never pass or fail a test run.

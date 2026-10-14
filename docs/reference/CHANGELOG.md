@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-14 — repository-layout: Named a test file `test_<name>` and a benchmark `benchmark_<name>`, keeping `<name>.test.ts` in TypeScript (`TESTS.md`, `check_test_mirror.py`).
 - 2026-10-14 — repository-layout: Made `tests/` a mirror of the source, one test file per unit, with kinds as labels (`TESTS.md`, `SKILL.md`).
 - 2026-10-14 — testing: Replaced the kind folders with labels and put a regression test in its unit's test file (`skills/testing/SKILL.md`).
 - 2026-10-14 — tools: Added the checker that `tests/` mirrors the headers and sources of a repository (`tools/testing/check_test_mirror.py`, `check_all.py`).

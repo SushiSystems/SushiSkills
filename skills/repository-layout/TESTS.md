@@ -13,11 +13,14 @@ at the path its owner's folders give it under `tests/`:
 
 | Repository | Unit | Test |
 | --- | --- | --- |
-| One module | `include/<Project>/<area>/<name>.hpp` | `tests/<area>/<name>_test.cpp` |
-| Many modules | `modules/<tier>/<module>/include/<Project>/<module>/<name>.hpp` | `tests/<tier>/<module>/<name>_test.cpp` |
-| Application | `applications/<app>/<path>/<name>.hpp` | `tests/applications/<app>/<path>/<name>_test.cpp` |
-| Python | `source/<package>/<area>/<name>.py` | `tests/<area>/<name>_test.py` |
+| One module | `include/<Project>/<area>/<name>.hpp` | `tests/<area>/test_<name>.cpp` |
+| Many modules | `modules/<tier>/<module>/include/<Project>/<module>/<name>.hpp` | `tests/<tier>/<module>/test_<name>.cpp` |
+| Application | `applications/<app>/<path>/<name>.hpp` | `tests/applications/<app>/<path>/test_<name>.cpp` |
+| Python | `source/<package>/<area>/<name>.py` | `tests/<area>/test_<name>.py` |
 | TypeScript | `source/<area>/<name>.ts` | `tests/<area>/<name>.test.ts` |
+
+A test file is named for what it is of: `test_<name>`, and a benchmark `benchmark_<name>`.
+TypeScript keeps `<name>.test.ts`, the name vitest finds without configuration.
 
 A Python or TypeScript module is mirrored the same way under `tests/<tier>/<module>/`. A header
 with no area, such as the umbrella `include/<Project>/<project>.hpp`, has its test directly under
@@ -37,7 +40,7 @@ the owner's folder.
 | --- | --- |
 | `tests/<owner>/fixtures/<name>/` | Input data of the tests in `<name>`'s test file |
 | `tests/<owner>/goldens/<name>/` | Reference outputs those tests compare against; see `testing` |
-| `tests/<owner>/<name>_benchmark.cpp` | The benchmark of a unit, built into the module's benchmark program; see `performance` |
+| `tests/<owner>/benchmark_<name>.cpp` | The benchmark of a unit, built into the module's benchmark program; see `performance` |
 | `tests/package/` | An out-of-tree consumer that builds against the installed package |
 | `tests/<owner>/README.md` | Notes the tests of one owner share |
 

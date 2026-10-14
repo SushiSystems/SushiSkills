@@ -31,18 +31,26 @@ class Language:
 
     folder: str
     suffixes: frozenset[str]
+    test_prefix: str
     test_suffix: str
     skipped_names: frozenset[str]
     has_project_folder: bool
 
+    def test_name(self, unit: Path) -> str:
+        """Returns the name of the test file of a unit."""
+        return f"{self.test_prefix}{unit.stem}{self.test_suffix}"
 
-K_CPP = Language("include", frozenset({".h", ".hpp"}), "_test.cpp", frozenset(), True)
+    def is_test(self, name: str) -> bool:
+        """Says whether a file name has this language's test file shape."""
+        return name.startswith(self.test_prefix) and name.endswith(self.test_suffix)
+
+
+K_CPP = Language("include", frozenset({".h", ".hpp"}), "test_", ".cpp", frozenset(), True)
 K_LANGUAGES = (
     K_CPP,
-    Language("source", frozenset({".py"}), "_test.py", frozenset({"__init__.py", "__main__.py"}), True),
-    Language("source", frozenset({".ts", ".tsx"}), ".test.ts", frozenset({"index.ts"}), False),
+    Language("source", frozenset({".py"}), "test_", ".py", frozenset({"__init__.py", "__main__.py"}), True),
+    Language("source", frozenset({".ts", ".tsx"}), "", ".test.ts", frozenset({"index.ts"}), False),
 )
-K_TEST_SUFFIXES = tuple(language.test_suffix for language in K_LANGUAGES)
 
 
 @dataclass(frozen=True, slots=True)
@@ -112,7 +120,7 @@ def _add_owner(expected: dict[Path, Path], tests: Path, owner: Path, folder: Pat
         base = folder / language.folder
         for unit in _units(base, language):
             relative = _strip(unit.relative_to(base), language, module)
-            test = tests / owner / relative.parent / f"{unit.stem}{language.test_suffix}"
+            test = tests / owner / relative.parent / language.test_name(unit)
             expected[test] = unit
 
 
@@ -136,7 +144,7 @@ def discover(root: Path) -> TestMirror:
             owners.add(tests / owner)
             for unit in _units(application, K_CPP):
                 relative = unit.relative_to(application)
-                expected[tests / owner / relative.parent / f"{unit.stem}{K_CPP.test_suffix}"] = unit
+                expected[tests / owner / relative.parent / K_CPP.test_name(unit)] = unit
     return TestMirror(root, expected, frozenset(owners), ignored_folders(root))
 
 
@@ -156,7 +164,7 @@ def rule_untested_unit(mirror: TestMirror) -> Iterator[Issue]:
 def rule_orphan_test(mirror: TestMirror) -> Iterator[Issue]:
     """Yields an issue for each test file that mirrors no header or source file."""
     for path in mirror.walk():
-        if path.is_file() and path.name.endswith(K_TEST_SUFFIXES) and path not in mirror.expected:
+        if path.is_file() and any(language.is_test(path.name) for language in K_LANGUAGES) and path not in mirror.expected:
             yield Issue(path, 1, "mirrors no header or source file; rename it or move it to its unit's mirror")
 
 

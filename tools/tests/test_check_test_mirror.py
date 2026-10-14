@@ -43,8 +43,8 @@ class MultiModuleTest(unittest.TestCase):
         _touch(self.root, "modules/physics/rigid_body/include/Sushi/rigid_body/physics_world.hpp")
         _touch(self.root, "modules/physics/rigid_body/include/Sushi/rigid_body/contact_solver.hpp")
         _touch(self.root, "modules/physics/rigid_body/include/Sushi/rigid_body.hpp")
-        _touch(self.root, "tests/physics/rigid_body/physics_world_test.cpp")
-        _touch(self.root, "tests/physics/rigid_body/rigid_body_test.cpp")
+        _touch(self.root, "tests/physics/rigid_body/test_physics_world.cpp")
+        _touch(self.root, "tests/physics/rigid_body/test_rigid_body.cpp")
         _touch(self.root, "tests/physics/rigid_body/fixtures/contact_solver/scene.json")
 
     def tearDown(self) -> None:
@@ -54,11 +54,11 @@ class MultiModuleTest(unittest.TestCase):
         self.assertEqual(_names(rule_untested_unit(discover(self.root))), ["contact_solver.hpp"])
 
     def test_a_test_with_no_header_is_reported(self) -> None:
-        _touch(self.root, "tests/physics/rigid_body/old_solver_test.cpp")
-        self.assertEqual(_names(rule_orphan_test(discover(self.root))), ["old_solver_test.cpp"])
+        _touch(self.root, "tests/physics/rigid_body/test_old_solver.cpp")
+        self.assertEqual(_names(rule_orphan_test(discover(self.root))), ["test_old_solver.cpp"])
 
     def test_a_kind_folder_is_reported(self) -> None:
-        _touch(self.root, "tests/unit/physics_world_test.cpp")
+        _touch(self.root, "tests/unit/test_physics_world.cpp")
         self.assertEqual(_names(rule_mirror_folders(discover(self.root))), ["unit"])
 
     def test_data_folders_and_the_package_test_are_allowed(self) -> None:
@@ -83,7 +83,7 @@ class LanguagesAndApplicationsTest(unittest.TestCase):
         _touch(self.root, "source/sushi_cli/_private.py")
         self.assertEqual(
             [test.relative_to(self.root).as_posix() for test in discover(self.root).expected],
-            ["tests/commands/build_test.py"],
+            ["tests/commands/test_build.py"],
         )
 
     def test_typescript_mirrors_each_source_file_of_a_module(self) -> None:
@@ -97,8 +97,8 @@ class LanguagesAndApplicationsTest(unittest.TestCase):
     def test_an_application_mirrors_to_tests_applications(self) -> None:
         _touch(self.root, "include/Sushi/sushi.hpp")
         _touch(self.root, "applications/editor/panels/outliner.hpp")
-        _touch(self.root, "tests/sushi_test.cpp")
-        _touch(self.root, "tests/applications/editor/panels/outliner_test.cpp")
+        _touch(self.root, "tests/test_sushi.cpp")
+        _touch(self.root, "tests/applications/editor/panels/test_outliner.cpp")
         mirror = discover(self.root)
         findings = [*rule_untested_unit(mirror), *rule_orphan_test(mirror), *rule_mirror_folders(mirror)]
         self.assertEqual(findings, [])
@@ -112,8 +112,8 @@ class SingleModuleTest(unittest.TestCase):
         self.root = Path(self._folder.name)
         _touch(self.root, "include/Sushi/collision/broad_phase.hpp")
         _touch(self.root, "include/Sushi/sushi.hpp")
-        _touch(self.root, "tests/collision/broad_phase_test.cpp")
-        _touch(self.root, "tests/sushi_test.cpp")
+        _touch(self.root, "tests/collision/test_broad_phase.cpp")
+        _touch(self.root, "tests/test_sushi.cpp")
 
     def tearDown(self) -> None:
         self._folder.cleanup()
@@ -124,11 +124,11 @@ class SingleModuleTest(unittest.TestCase):
         self.assertEqual(findings, [])
 
     def test_a_test_in_the_wrong_area_is_reported_twice(self) -> None:
-        (self.root / "tests/collision/broad_phase_test.cpp").unlink()
-        _touch(self.root, "tests/integration/broad_phase_test.cpp")
+        (self.root / "tests/collision/test_broad_phase.cpp").unlink()
+        _touch(self.root, "tests/integration/test_broad_phase.cpp")
         mirror = discover(self.root)
         self.assertEqual(_names(rule_untested_unit(mirror)), ["broad_phase.hpp"])
-        self.assertEqual(_names(rule_orphan_test(mirror)), ["broad_phase_test.cpp"])
+        self.assertEqual(_names(rule_orphan_test(mirror)), ["test_broad_phase.cpp"])
         self.assertEqual(_names(rule_mirror_folders(mirror)), ["integration"])
 
 

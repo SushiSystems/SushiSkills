@@ -59,7 +59,7 @@ The predicate is the module count.
 ```
 include/<Project>/<area>/<name>.hpp
 source/<area>/<name>.cpp
-tests/<area>/<name>_test.cpp
+tests/<area>/test_<name>.cpp
 ```
 
 **More than one module:** each module is a tree of its own, and its tests mirror it under
@@ -71,7 +71,7 @@ modules/<tier>/<module>/
     CMakeLists.txt
     include/<Project>/<module>/<name>.hpp
     source/<name>.cpp
-tests/<tier>/<module>/<name>_test.cpp
+tests/<tier>/<module>/test_<name>.cpp
 ```
 
 A project that grows from one module to two moves `include/` and `source/` under
