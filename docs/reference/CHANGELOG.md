@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- 2026-10-14 — tools: Reported a paragraph that one skill or instruction file copies from another (`check_docs_truth.py`, `rule_duplicated_passages`).
+- 2026-10-14 — contributing: Required every other file to cite a rule's one home, never restate it, and a reading for restated rules before each release (`docs/CONTRIBUTING.md`).
+- 2026-10-14 — skills: Turned the remaining restated rules into citations (`model-routing`, `multi-agent-work`, `documentation`, `versioning-and-release`).
 - 2026-10-14 — model-routing: Left the owner's limits to `claude/CLAUDE.md` and who writes `REPORT.md` to `multi-agent-work` (`skills/model-routing/SKILL.md`, `claude/CLAUDE.md`).
 - 2026-10-14 — multi-agent-work: Let a worker write a module README only when its dispatch lists it, and cited the roles from the other files (`multi-agent-work`, `AGENT_WORK.md`, `DISPATCH.md`).
 - 2026-10-14 — documentation: Said that a folder moved into the archive is never edited after (`skills/documentation/SKILL.md`).
