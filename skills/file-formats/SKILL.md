@@ -31,8 +31,10 @@ every reader knows what to do with every version it meets.
 
 ## Documentation
 
-The owning module's `README.md` holds the current schema and a table of versions: each version,
-the release it shipped in, and what changed.
+The owning module's `README.md` holds the current schema and a table of every version the code
+meets today: what the reader does with it (reads, migrates, rejects) and how it differs from the
+current version. It says what the code accepts now; the release a version shipped in is in the
+changelog.
 
 ## Example
 
