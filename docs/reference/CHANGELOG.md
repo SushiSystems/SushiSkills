@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-14 — claude: Removed the honesty section and the paragraph on what to ask, both held by the `sushiskills` doctrine (`claude/CLAUDE.md`).
 - 2026-10-14 — claude: Replaced the restated SOLID rule in the quality section and the first dispatch line with a citation of the `sushiskills` doctrine (`claude/CLAUDE.md`).
 - 2026-10-14 — tools: Skipped the files git ignores in the source comment checker (`tools/common/ignored_paths.py`, `drop_ignored`, `check_source_comments.py`).
 - 2026-10-14 — sushiskills: Split the doctrine into boundaries that hold without exception and defaults that name when they do not apply (`skills/sushiskills/SKILL.md`).
