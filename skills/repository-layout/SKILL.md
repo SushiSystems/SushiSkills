@@ -92,7 +92,10 @@ nothing else.
 
 ## Module rules
 
-1. A module owns one responsibility, named by its folder.
+1. A module owns one responsibility, named by its folder. The name says what the code does. A
+   name that would fit any code, such as `utils`, `common`, `helpers`, `shared`, `misc`,
+   `support`, `testing` or `test_support`, names no responsibility and is never a module's
+   name, with or without a prefix. Code that has no better name is split until each part has one.
 2. A module's public surface is its `include/` tree. `source/` is private to it.
 3. Dependencies point down the tier order declared in `cmake/`. Never sideways into another
    module's `source/`, never up a tier. An edge between two modules of one tier is listed in the
@@ -121,6 +124,7 @@ nothing else.
 | Mistake | Fix |
 | --- | --- |
 | A `utils/` or `common/` module | Name the responsibility; split it by what each part does |
+| A `testing/` or `test_support/` module for shared test code | The same: `test_runner`, `fake_audio_device`, each in the tier of what it depends on |
 | A `utils.hpp` header | The same: one header per responsibility, each in the lowest module that uses it |
 | Two modules of one tier sharing a header of one of them | Move the header down a tier, into a module both depend on |
 | Test data beside the source | `tests/<owner>/fixtures/<name>/` |
