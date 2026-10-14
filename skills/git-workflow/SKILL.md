@@ -23,8 +23,6 @@ A feature branch is rebased onto `main` before it merges, and deleted after.
 - Force push to any shared branch.
 - Rewriting commits that have been pushed.
 - Moving or deleting a tag.
-- `git worktree`, `git stash` and `git add -A` or `git add .` when another session may share the
-  working tree.
 - `--no-verify` or skipping signing.
 
 ## Pushing
@@ -40,10 +38,13 @@ conflict go away.
 
 ## Shared working tree
 
-Another session may be editing the same checkout.
+Another session may be editing the same checkout, and nothing tells an agent when one is. These
+hold always:
 
-- Stage by path, and only your own hunks in shared files.
+- Stage by path, and only your own hunks in shared files. Never `git add -A`, `git add .` or
+  `git commit -a`.
 - Check `git diff --cached --stat` before every commit and unstage anything that is not yours.
+- No `git stash`. A worktree only when the owner asks for one.
 - Never discard changes you did not make.
 
 Commit messages follow `commits`.

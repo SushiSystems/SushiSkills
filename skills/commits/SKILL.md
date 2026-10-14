@@ -46,8 +46,7 @@ for a design lives in a design document; the body may cite its path. Run the `hu
 
 ## Staging
 
-Stage by path, never `git add -A` or `git add .`. Check `git diff --cached --stat` before
-committing; another session may share the working tree.
+Staging follows `git-workflow`, section "Shared working tree".
 
 ## Examples
 
