@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-14 — cpp-code-style: Left the hot path rules to `performance` and kept only how C++ passes a value (`skills/cpp-code-style/SKILL.md`).
 - 2026-10-14 — python-code-style: Named `unittest` as the framework of the checker tests, which install nothing (`skills/python-code-style/SKILL.md`).
 - 2026-10-14 — repository-layout: Allowed `pyproject.toml` in the root of a repository that is a Python package (`skills/repository-layout/SKILL.md`).
 - 2026-10-14 — repository-layout: Named a test file `test_<name>` and a benchmark `benchmark_<name>`, keeping `<name>.test.ts` in TypeScript (`TESTS.md`, `check_test_mirror.py`).

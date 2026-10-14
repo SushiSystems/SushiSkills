@@ -132,9 +132,7 @@ forward-declares what it only names by pointer or reference.
 ## Performance defaults
 
 - Pass cheap types by value, everything else by `const&`; sinks by value then move.
-- No allocation, virtual dispatch through a map, or logging inside a per-element hot loop.
-- Reserve containers whose size is known.
-- Prefer contiguous storage and handles (`BodyID`) over pointer graphs.
+- The rules of a hot path are in `performance`.
 
 ## Common mistakes
 
