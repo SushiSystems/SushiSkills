@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- 2026-10-14 — tools: Added the summary of dispatch lines per model and effort (`tools/routing/summarize_dispatches.py`, `skills/model-routing/SKILL.md`).
+- 2026-10-14 — model-routing: Ran the orchestrator of a session without a plan at `low` and gave `sonnet` the band between spec-complete and cross-module work (`skills/model-routing/SKILL.md`).
+- 2026-10-14 — claude: Moved the dispatch block to a file each subagent reads by path and proves it read (`claude/DISPATCH.md`, `claude/CLAUDE.md`, `claude/README.md`).
 - 2026-10-14 — documentation: Moved design documents, agent work and the changelog format to files read only for those tasks (`AGENT_WORK.md`, `CHANGELOG_FORMAT.md`, `SKILL.md`).
 - 2026-10-14 — repository-layout: Moved private headers, internal modules and test folders to files read only for those tasks (`INTERNAL_MODULES.md`, `TESTS.md`, `SKILL.md`).
 - 2026-10-14 — tools: Added the one command that runs every checker and the tests and prints only what failed, and ran it in the workflow (`tools/check_all.py`, `ci.yml`, `skills/project-tools/SKILL.md`).

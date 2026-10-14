@@ -36,26 +36,21 @@ license block, the `@file` block, the tag table and what is forbidden in source;
 ## Delegation
 
 A subagent reads CLAUDE.md but not my memory, so nothing in memory reaches it unless the prompt
-carries it. Every subagent prompt, whatever the task, opens with the same seven lines, verbatim:
+carries it. The rules every subagent follows are in `DISPATCH.md`, in the folder of the file
+`~/.claude/CLAUDE.md` imports. Every subagent prompt opens with one line, naming that file by its
+absolute path on this machine:
 
-1. Invoke the `sushiskills` skill and follow its doctrine: the boundaries, SOLID first, without
-   exception; the defaults unless their "not when" line applies.
-2. Before writing any prose (a comment that explains, a commit message, a report, a reply),
-   invoke the `humanizer` skill and apply its rules in the language of the prose.
-3. Do not start any process that runs `se`, `cmake`, `ninja` or `ctest`, in the foreground or
-   the background, and do not write or edit any build configuration file.
-4. Write only to the files listed below and to the work folder under `docs/agent/`.
-5. Report what was done and what was not. Paste the output of every verification you claim.
-6. Before reporting, syntax-check what you wrote without building: C++ through
-   `compile_commands.json` with `clang -fsyntax-only`, GLSL through `shader_compiler.exe`.
-   Paste the command and its output.
-7. Write scratch only to the scratchpad, never binaries or copies, under 100 MB; delete what you
-   made and report the scratchpad size (`storage-discipline` skill).
+`Read <absolute path>/DISPATCH.md before anything else and follow it.`
+
+Read `DISPATCH.md` once before the first dispatch of a session. A report that does not open with
+the line it asks for is sent back unread, whatever its content: the subagent did not read the
+rules.
 
 Model per dispatch: the `model-routing` skill chooses the model and the effort for each kind
 of dispatch, by phase and by task, and holds the escalation ladder for a failed task. The limits
-it works within, for Claude 5.5 models only: the session runs on `opus` at `medium`; `fable` and `sonnet`
-are not used; every `opus` dispatch runs at `low`; `haiku` takes spec-complete and mechanical
+it works within, for Claude 5.5 models only: the session runs on `opus`, at `medium` when it
+plans or runs a plan and at `low` otherwise; `fable` is not used; `sonnet` runs at `low` or
+`medium` only; every `opus` dispatch runs at `low`; `haiku` takes spec-complete and mechanical
 work at `medium` or `high`, by task; `high` on `opus` is the exception, about five dispatches
 in a hundred, and only after I have approved it: ask me before any `high` dispatch. The `model`
 field and the effort are set on every dispatch, never left to inherit.
@@ -63,7 +58,7 @@ field and the effort are set on every dispatch, never left to inherit.
 Effort caps at `high`; never `xhigh` or `max`. `low` and `medium` are the right choice for
 mechanical work and are not a compromise.
 
-A report that comes back without evidence of 1, 2, 6 and 7 is sent back, not accepted. Reviewer
+A report that comes back without evidence of rules 1, 2, 6 and 7 of `DISPATCH.md` is sent back, not accepted. Reviewer
 dispatches check SOLID shape and humanizer register explicitly, as named items, not as "quality".
 
 ## Planning

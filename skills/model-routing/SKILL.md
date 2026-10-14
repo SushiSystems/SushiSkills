@@ -16,7 +16,7 @@ all, the effort cap, and when `high` needs approval. This skill routes within th
 ## The stack
 
 The tables below hold only when the session runs on a Claude 5.5 model: Opus 5.5 as `opus`,
-with Haiku 5.5 in the `haiku` seat. Another agent, another vendor's model or
+Sonnet 5.5 as `sonnet` and Haiku 5.5 as `haiku`. Another agent, another vendor's model or
 another Claude generation does not use this table. Effort levels are calibrated per generation,
 so a migration re-measures the matrix on this repository's own tasks before a row moves; the
 table is not carried over.
@@ -29,7 +29,8 @@ read from, and one real dispatch confirms it before the matrix relies on it.
 
 | Seat | Model | Effort |
 | --- | --- | --- |
-| Orchestrator: plans, dispatches, accepts reports, integrates, commits | `opus` | `medium` |
+| Orchestrator of a session that plans, or runs a plan | `opus` | `medium` |
+| Orchestrator of a session without a plan: a question, a review, a small edit, a commit | `opus` | `low` |
 
 The session model is chosen at the start. Changing it mid-session resets the prompt cache, so a
 plan session and an implementation session are separate sessions when they need different
@@ -43,10 +44,24 @@ seats; with this table they do not.
 | Plan | Brainstorming, `SPEC.md`, `PLAN.md` | orchestrator, inline | `medium` | Design judgment; never dispatched |
 | Implement | Spec-complete, files named, one or two files | `haiku` | `medium` | The plan states the change in sentences |
 | Implement | Spec-complete, many files or much reading | `haiku` | `high` | The same work over a wider area |
+| Implement | Inside one module, the plan leaves a local choice open: a pattern, a split, a bug's cause | `sonnet` | `low` | Judgment over a small area |
+| Implement | The same, over several files or with much reading | `sonnet` | `medium` | Judgment over a wider area |
 | Implement | Integration across modules, pattern choice, debugging | `opus` | `low` | Needs judgment, not architecture |
 | Review | Spec compliance, checker output, changed files against the assigned set | `haiku` | `high` | A comparison |
 | Review | SOLID shape, public surface, humanizer register | `opus` | `low` | The three items a reviewer names |
 | Architecture | A public interface, data ownership, a numeric kernel, a merge across streams | `opus` | `high` | The exception; owner approval first |
+
+### Haiku, Sonnet and Opus
+
+`haiku` at `medium` or `high` does work the plan has already decided: it follows sentences,
+and it is good at that. `opus` at `low` decides across modules. Between them sits work that the
+plan leaves one local choice in, inside one module: which of two patterns, how to split a file,
+why a test fails. `haiku` there guesses or stalls; `opus` there pays for judgment the area does
+not need. That band is `sonnet`'s. The test is the plan: if it states the change, `haiku`; if it
+states the goal and leaves the how inside one module, `sonnet`; if the how crosses a module,
+`opus`.
+
+The `sonnet` rows are not measured yet. The dispatch lines decide whether they stay.
 
 A task that does not match a row is split until its parts do. A task matching two rows runs on
 the more capable one.
@@ -60,8 +75,9 @@ orchestrator's own authority.
 | --- | --- | --- | --- |
 | 1 | `haiku` | `medium` | orchestrator |
 | 2 | `haiku` | `high` | orchestrator |
-| 3 | `opus` | `low` | orchestrator |
-| 4 | `opus` | `high` | owner |
+| 3 | `sonnet` | `medium` | orchestrator |
+| 4 | `opus` | `low` | orchestrator |
+| 5 | `opus` | `high` | owner |
 
 The cheap run comes first because the failure signal is cheap too: the checkers and the tests
 say whether the rung held. A task without a failure signal starts on the row the matrix gives
@@ -96,6 +112,8 @@ dispatch: <task> — <model> <effort>, <N> turns, <passed|failed, rung R>
 ```
 
 After a handful of pieces of work these lines say which rows are over- or under-provisioned.
+`python tools/routing/summarize_dispatches.py .` sums them per model and effort: runs, pass
+rate, mean turns, and how many ran above the first rung.
 The matrix is changed from those lines, in this skill, with the changelog line naming the
 measurement.
 
