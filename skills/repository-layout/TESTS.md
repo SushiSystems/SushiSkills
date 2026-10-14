@@ -24,6 +24,11 @@ A Unity repository mirrors under `Assets/<Product>/Tests/`; `UNITY.md` gives tha
 A test file is named for what it is of: `test_<name>`, and a benchmark `benchmark_<name>`.
 TypeScript keeps `<name>.test.ts`, the name vitest finds without configuration.
 
+A unit whose tests do not fit one file, such as a facade every scenario of its module runs
+through, keeps them in a folder named like its test file without the suffix:
+`tests/<tier>/<module>/test_<name>/`, one `test_<aspect>.cpp` per behaviour it checks. The folder
+stands for the unit's test file. A unit has the file or the folder, never both.
+
 A Python or TypeScript module is mirrored the same way under `tests/<tier>/<module>/`. A header
 with no area, such as the umbrella `include/<Project>/<project>.hpp`, has its test directly under
 the owner's folder.
