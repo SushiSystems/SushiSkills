@@ -77,7 +77,7 @@ orchestrator's own authority.
 | 2 | `haiku` | `high` | orchestrator |
 | 3 | `sonnet` | `medium` | orchestrator |
 | 4 | `opus` | `low` | orchestrator |
-| 5 | `opus` | `high` | owner |
+| 5 | `opus` | `high` | the limits in `claude/CLAUDE.md` |
 
 The cheap run comes first because the failure signal is cheap too: the checkers and the tests
 say whether the rung held. A task without a failure signal starts on the row the matrix gives

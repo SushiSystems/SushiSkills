@@ -13,8 +13,11 @@ A rule changes here first, in its own skill, and every repository follows it fro
 
 Sibling repositories copy `tools/` whole after a checker changes.
 
-A rule is stated in one file. `claude/CLAUDE.md` and a skill never restate each other; the one
-that does not hold the rule names the one that does.
+A rule is stated in one file. Every other file that needs it names that file and stops there:
+it never restates the rule, not even shortened. `check_docs_truth.py` reports a long paragraph
+copied between skills; a rule said twice in other words is caught only by a reader, so before
+each release a subagent reads `skills/`, `claude/` and this file for rules stated twice, and
+each finding becomes a citation.
 
 ## Boundaries and defaults
 

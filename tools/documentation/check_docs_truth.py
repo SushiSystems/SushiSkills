@@ -35,6 +35,7 @@ class PageKind(Enum):
     MANUAL_PAGE = "Manual page"
     MODULE_README = "Module README"
     DESIGN_DOCUMENT = "Design document"
+    RULE_FILE = "Rule file"
 
 
 K_SOURCE_FOLDERS = (
@@ -79,6 +80,8 @@ K_UNCHECKED_DOCUMENTS = frozenset({"docs/reference/CHANGELOG.md"})
 K_UNCHECKED_DOCS_FOLDERS = frozenset({"agent", "archive"})
 K_HISTORY_EXEMPT_NAMES = frozenset({"KNOWN_ISSUES.md"})
 K_PASSAGE_FLOOR = 300
+K_RULE_FOLDERS = ("skills", "claude")
+K_RULE_SKIPPED_FOLDERS = frozenset({"research"})
 K_CITATION_REACH = 3
 K_NOT_COMPILED = "not compiled"
 K_ELISIONS = frozenset({"...", "// ...", "# ..."})
@@ -391,6 +394,21 @@ class Manual:
         return tuple(read_page(path, kind) for path, kind in found)
 
     @cached_property
+    def rule_files(self) -> tuple[Page, ...]:
+        """Returns the skill and instruction files, read only for repeated passages."""
+        pages = {page.path for page in self.pages}
+        found: list[Path] = []
+        for name in K_RULE_FOLDERS:
+            folder = self.root / name
+            for current, folders, names in _walk(folder, self.source.ignored) if folder.is_dir() else ():
+                folders[:] = [entry for entry in folders if entry not in K_RULE_SKIPPED_FOLDERS]
+                found.extend(
+                    current / entry for entry in names
+                    if entry.endswith(".md") and current / entry not in pages
+                )
+        return tuple(read_page(path, PageKind.RULE_FILE) for path in found)
+
+    @cached_property
     def allow_list(self) -> tuple[AllowEntry, ...]:
         """Returns the entries of docs/.docs_truth_allow."""
         return read_allow_list(self.allow_path)
@@ -572,9 +590,9 @@ def rule_page_length(manual: Manual) -> Iterator[Issue]:
 
 
 def rule_duplicated_passages(manual: Manual) -> Iterator[Issue]:
-    """Yields an issue for each long paragraph that an earlier page already holds."""
+    """Yields an issue for each long paragraph that an earlier page or rule file already holds."""
     homes: dict[str, Page] = {}
-    for page in manual.pages:
+    for page in (*manual.pages, *manual.rule_files):
         for number, text in page.paragraphs():
             if len(text) < K_PASSAGE_FLOOR:
                 continue

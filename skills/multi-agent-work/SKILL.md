@@ -65,8 +65,7 @@ The evidence a report must carry, and what a reviewer dispatch checks by name, a
    documented behaviour carries the output of `tools/documentation/check_docs_truth.py` and the
    pages and lines the change made false. Without both, the report is sent back.
 
-Closing a piece of work includes correcting every page a worker reported, in the commit that
-closes it. A reported page left false is the orchestrator's defect (see `documentation`).
+A page a worker reports as false is handled as `AGENT_WORK.md` in `documentation` says.
 
 ## Shared working tree
 

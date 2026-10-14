@@ -118,8 +118,7 @@ and the changelog, and every `README.md` under the source folders.
 - "This review deserves its own file." → replace `REPORT.md`.
 - "This topic is slightly different from the existing design document." → extend it.
 - "I will update the changelog at the end of the week." → it is part of the commit.
-- "`docs/` is outside my write list, so I reported it." → reported is not corrected; the
-  orchestrator corrects it in the commit that closes the work.
+- "`docs/` is outside my write list, so I reported it." → `AGENT_WORK.md`, on a reported page.
 - "The manual is a later stage of the plan." → the page is part of the change that made it false.
 - "The module README is updated, that is enough." → `git grep` the name over `README.md` and
   `docs/`; every hit belongs to this change.

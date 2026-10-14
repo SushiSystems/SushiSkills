@@ -68,9 +68,8 @@ Once the owner approves, in this order:
    only a reader catches a sentence that describes behaviour the code has lost. A false
    sentence stops the release too.
 2. Set the version in the source of truth.
-3. In the changelog, rename `## Unreleased` to `## vX.Y.Z — YYYY-MM-DD`, open a new empty
-   `## Unreleased` above it, and move every older release section to
-   `docs/archive/changelog/vA.B.C.md`.
+3. Close the changelog's `## Unreleased` section as `CHANGELOG_FORMAT.md` in `documentation`
+   says.
 4. Update every design status and manual page that names the version.
 5. Commit only those files: `chore(release): vX.Y.Z`.
 6. Tag that commit with an annotated tag: `git tag -a vX.Y.Z -m "vX.Y.Z"`.
