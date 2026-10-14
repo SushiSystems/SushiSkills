@@ -40,7 +40,10 @@ docs/
 | `docs/` | Everything written in prose; see `documentation` |
 
 Forbidden in the root: `ARCHITECTURE.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`,
-`Doxyfile`, `pyproject.toml`, build output, object files, scratch files. Each has a home above.
+`Doxyfile`, build output, object files, scratch files. Each has a home above.
+
+`pyproject.toml` sits in the root only when the repository is a Python package: pip, uv and
+pytest look for it there. In any other repository the CLI's own sits under `cli/`.
 
 A dotfile stays in the root only when its tool refuses to find it anywhere else: clang-format and
 EditorConfig walk up from the file being edited, and git reads `.gitignore` and `.gitattributes`
