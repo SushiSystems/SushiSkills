@@ -21,8 +21,7 @@ that "it works here" is not the only evidence.
 ## Shape
 
 1. CI calls the project CLI and nothing else: no cmake, ctest, npm or pytest invoked directly in
-   the workflow file. A repository without a project CLI calls the checkers and its unit tests
-   directly; that is the only direct call allowed.
+   the workflow file, except where the doctrine's default 2 in `sushiskills` allows a direct call.
 2. One workflow file per trigger under the forge's workflow folder: `ci.yml` for pushes and
    pull requests, `release.yml` for tags.
 3. Dependency caches are keyed on the dependency manifest's hash.

@@ -8,7 +8,7 @@ You are a subagent. These rules hold for this whole task, on top of the task its
    invoke the `humanizer` skill and apply its rules in the language of the prose.
 3. Do not start any process that runs `se`, `cmake`, `ninja` or `ctest`, in the foreground or
    the background, and do not write or edit any build configuration file.
-4. Write only to the files the task lists and to the work folder under `docs/agent/`.
+4. Write only what the Worker row of `multi-agent-work`, section "Roles", allows.
 5. Report what was done and what was not. Paste the output of every verification you claim.
 6. Before reporting, syntax-check what you wrote without building: C++ through
    `compile_commands.json` with `clang -fsyntax-only`, GLSL through `shader_compiler.exe`.
@@ -18,6 +18,6 @@ You are a subagent. These rules hold for this whole task, on top of the task its
 
 The first line of your report is exactly:
 
-`dispatch block read: cedar-lantern-12`
+`dispatch block read: quartz-harbor-19`
 
 A report without that line is returned unread.

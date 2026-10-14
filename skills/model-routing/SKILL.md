@@ -49,7 +49,7 @@ seats; with this table they do not.
 | Implement | Integration across modules, pattern choice, debugging | `opus` | `low` | Needs judgment, not architecture |
 | Review | Spec compliance, checker output, changed files against the assigned set | `haiku` | `high` | A comparison |
 | Review | SOLID shape, public surface, humanizer register | `opus` | `low` | The three items a reviewer names |
-| Architecture | A public interface, data ownership, a numeric kernel, a merge across streams | `opus` | `high` | The exception; owner approval first |
+| Architecture | A public interface, data ownership, a numeric kernel, a merge across streams | `opus` | `high` | The exception, within the owner's limits |
 
 ### Haiku, Sonnet and Opus
 
@@ -95,11 +95,10 @@ context stays clean. The rule:
 ## Token hygiene
 
 - A subagent's reply is short: what was done, what was not, the files changed, the verification
-  output. Everything else goes to `REPORT.md` in the work folder, which the orchestrator reads
-  once.
+  output. Who writes `REPORT.md` is in `multi-agent-work`.
 - A dispatch names only the skills the task needs. Each loaded skill is uncached input.
-- `low` means fewer and more consolidated tool calls and less preamble. On `opus` it is the
-  default for every dispatch, not a compromise.
+- `low` means fewer and more consolidated tool calls and less preamble; for mechanical work it is
+  the right choice, not a compromise.
 - A `haiku` dispatch is given an area that fits its context. A sweep over a large tree goes to
   several `haiku` dispatches or to `opus` at `low`.
 

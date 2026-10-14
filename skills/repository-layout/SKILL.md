@@ -33,6 +33,7 @@ docs/
 | `cli/` | The project CLI package, with its own `pyproject.toml` |
 | `tools/` | Manual checkers; see `project-tools` |
 | `modules/` | Source, one tree per module |
+| `include/`, `source/` | Source of a one-module repository, in place of `modules/` |
 | `tests/` | Every test, in a tree that mirrors the source; see `TESTS.md` |
 | `applications/` | Executables, one folder each; example programs under `applications/examples/` |
 | `assets/` | Content an application loads at run time and the package ships; absent when there is none |

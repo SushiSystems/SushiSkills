@@ -47,7 +47,8 @@ why it exists so that a case it did not foresee is judged by its purpose.
    **Why:** only the CLI sets up the runtime search path, so a binary launched any other way
    fails to find its DLLs or shared objects.
    **Not when:** a debugger launches one test or program with the environment the CLI prints
-   for it. The result of that run is not a test result; the CLI run is.
+   for it; the result of that run is not a test result, the CLI run is. Or the repository has
+   no CLI: it calls its checkers and unit tests directly, and nothing else.
 
 ## The bricks
 
