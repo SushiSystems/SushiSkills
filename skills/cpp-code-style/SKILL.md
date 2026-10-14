@@ -97,7 +97,7 @@ Groups in this order, one blank line between groups:
 4. Other modules of this project.
 5. This module.
 
-Always `<Project/module/name.hpp>` with angle brackets. A header includes what it uses and
+Always with angle brackets, by the include path Names in `repository-layout` gives. A header includes what it uses and
 forward-declares what it only names by pointer or reference.
 
 ## Class shape

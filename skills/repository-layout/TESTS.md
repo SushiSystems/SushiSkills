@@ -33,8 +33,8 @@ through, keeps them in a folder named like its test file without the suffix:
 stands for the unit's test file. A unit has the file or the folder, never both.
 
 A Python or TypeScript module is mirrored the same way under `tests/<tier>/<module>/`. A header
-with no area, such as the umbrella `include/<Project>/<project>.hpp`, has its test directly under
-the owner's folder.
+with no area, such as an umbrella at the include root (see Names in `SKILL.md`), has its test
+directly under the owner's folder: `tests/<tier>/umbrella/test_SushiAI.cpp` for `SushiAI/SushiAI.hpp`.
 
 - A private header under `source/`, a Python file whose name starts with `_`, `__init__.py` and
   `index.ts` have no test file of their own. They are tested through the public unit that uses

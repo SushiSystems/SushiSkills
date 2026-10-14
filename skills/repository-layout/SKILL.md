@@ -119,6 +119,10 @@ nothing else.
 - Include path: `<Project>/<module>/<name>.hpp` or `<Project>/<tier>/<module>/<name>.hpp`, always
   with angle brackets. A repository uses one of the two for every module. With the tier in the
   path, a module's name is unique within its tier, so two tiers may each hold a `training`.
+- An umbrella header includes every public header of its scope and sits at the include root, in
+  a module named `umbrella`. The project's umbrella keeps the project folder's spelling
+  (`SushiAI/SushiAI.hpp`), the one file name that is not `snake_case`; a tier's umbrella is
+  `<Project>/<tier>.hpp` (`SushiAI/vision.hpp`).
 - Documents under `docs/` are the exception: `UPPER_SNAKE_CASE.md`.
 
 ## Common mistakes
