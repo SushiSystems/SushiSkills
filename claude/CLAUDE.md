@@ -14,11 +14,6 @@ The doctrine in the `sushiskills` skill holds the quality rules: its boundaries,
 hold without exception, and its defaults hold unless their "not when" line applies. Load it
 before any work.
 
-Ask before deciding module boundaries, public interface shape, data ownership, external
-dependencies, and before deleting or overwriting anything you did not create. Decide naming,
-internal structure, test shape and work order yourself. Never pick arbitrarily out of
-laziness; if a choice is real, ask.
-
 ## Documentation architecture
 
 Every repository, whatever its size, carries the documentation tree the `documentation` skill
@@ -37,11 +32,6 @@ A comment says what a thing does, in Doxygen form, and nothing else. Load the `s
 skill before writing or reviewing a comment, a file header or a license block. It holds the
 license block, the `@file` block, the tag table and what is forbidden in source;
 `tools/documentation/check_source_comments.py` enforces it.
-
-## Honesty
-
-Say what was done and what was not. Never claim completion on partial work. If a task needs a
-choice, ask rather than guess.
 
 ## Delegation
 
