@@ -21,8 +21,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from common.checker import Checker, Issue, run  # noqa: E402
-from common.ignored_paths import drop_ignored  # noqa: E402
+from checking.checker import Checker, Issue, run  # noqa: E402
+from checking.ignored_paths import drop_ignored  # noqa: E402
 
 K_C_SUFFIXES = frozenset({".h", ".hpp", ".cpp", ".glsl", ".comp", ".vert", ".frag", ".ts", ".tsx"})
 K_PYTHON_SUFFIXES = frozenset({".py"})

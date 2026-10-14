@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- 2026-10-14 — tools: Added the one command that runs every checker and the tests and prints only what failed, and ran it in the workflow (`tools/check_all.py`, `ci.yml`, `skills/project-tools/SKILL.md`).
+- 2026-10-14 — tools: Kept the docs truth checker out of the folders git ignores, so a name found only there is reported (`check_docs_truth.py`, `ignored_folders`).
+- 2026-10-14 — tools: Renamed the shared checker package after what it does (`tools/checking/`).
+- 2026-10-14 — tools: Kept the license writer's listing out of the test output (`test_write_license_block.py`).
+- 2026-10-14 — agents: Loaded only `sushiskills` at the start of work here and named the one check command (`AGENTS.md`).
 - 2026-10-14 — claude: Removed the honesty section and the paragraph on what to ask, both held by the `sushiskills` doctrine (`claude/CLAUDE.md`).
 - 2026-10-14 — claude: Replaced the restated SOLID rule in the quality section and the first dispatch line with a citation of the `sushiskills` doctrine (`claude/CLAUDE.md`).
 - 2026-10-14 — tools: Skipped the files git ignores in the source comment checker (`tools/common/ignored_paths.py`, `drop_ignored`, `check_source_comments.py`).

@@ -15,7 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from common.ignored_paths import drop_ignored  # noqa: E402
+from checking.ignored_paths import drop_ignored, ignored_folders  # noqa: E402
 from documentation.check_source_comments import collect  # noqa: E402
 
 
@@ -44,6 +44,13 @@ class IgnoredPathsTest(unittest.TestCase):
     def test_every_path_is_kept_outside_a_repository(self) -> None:
         paths = [self.root / "owned.py", self.root / "synced" / "foreign.py"]
         self.assertEqual(drop_ignored(self.root, paths), paths)
+
+    def test_an_ignored_folder_is_named_once(self) -> None:
+        self._make_repository()
+        self.assertEqual(ignored_folders(self.root), {(self.root / "synced").resolve()})
+
+    def test_no_folder_is_ignored_outside_a_repository(self) -> None:
+        self.assertEqual(ignored_folders(self.root), frozenset())
 
     def test_the_comment_checker_does_not_read_an_ignored_file(self) -> None:
         self._make_repository()
