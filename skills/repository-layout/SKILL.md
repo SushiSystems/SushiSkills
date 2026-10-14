@@ -50,9 +50,6 @@ A repository that holds skills and no modules has `skills/` and `claude/` in pla
 `cli/`, `modules/`, `tests/` and `applications/`. Each skill folder is a module whose `SKILL.md`
 is its README.
 
-A Unity repository keeps these rules with a different tree and PascalCase names; read `UNITY.md`
-in this folder before laying one out.
-
 ## One module or many
 
 The predicate is the module count.
@@ -79,47 +76,13 @@ modules/<tier>/<module>/
 A project that grows from one module to two moves `include/` and `source/` under
 `modules/<tier>/<module>/` and changes nothing else.
 
-A header that nothing outside the module includes is private and lives under `source/`, beside
-the code that uses it. A private tree of headers, such as a library's kernels, is a folder under
-`source/`, never a top-level folder.
+## Read before
 
-A module whose code is all templates and inline functions has no `source/` folder. It is declared
-as a header-only target, it still names every module it includes, and it carries the test that
-includes each of its headers first and alone (see Tests).
-
-A header that another module of the same repository includes, and a consumer must not, cannot
-stay under `source/`: rule 3 below forbids the reach. It goes to the `include/` tree of an
-internal module. An internal module is marked so in its `CMakeLists.txt`, its headers are never
-installed, and its README says so in the first paragraph. A module's `include/` root is installed
-whole or not at all, so headers of both kinds are two modules.
-
-## Tests
-
-`unit/`, `integration/`, `regression/` and `common/` sit directly under `tests/`, with no level
-between. A test kind that builds a different program gets its own folder beside them:
-
-| Folder | Holds |
+| Task | File in this folder |
 | --- | --- |
-| `tests/benchmark/` | Benchmark programs; see `testing` and `performance` |
-| `tests/package/` | An out-of-tree consumer that builds against the installed package |
-| `tests/<kind>/fixtures/` | Input data of one test kind |
-| `tests/goldens/` | Reference outputs a regression test compares against |
-
-Any other folder under `tests/` names the program it builds and has a `README.md`.
-
-With more than one module, a test of one module lives in that module's `tests/` folder and the
-root `tests/` holds only the tests that cross modules.
-
-- Each module with tests builds one test program, through the same build function as the root
-  program, so every program is linked, labelled and placed the same way.
-- A module test may include the umbrella header of the library: it is what a consumer includes,
-  and a test that goes through it tests it too. A test that names a header of a higher-tier
-  module by its own path crosses modules and belongs under the root `tests/`.
-- The umbrella hides a header that forgot one of its own includes. The module's sources, compiled
-  with the include roots the module declared, are what catches that, so a header-only module
-  needs one test that includes each of its headers first and alone.
-- The notes of a test follow the test: a module's `tests/README.md` holds them, and the root one
-  holds what the tests share.
+| A header no consumer includes, a header-only module, an internal module | `INTERNAL_MODULES.md` |
+| A test folder or a test program | `TESTS.md` |
+| A Unity repository | `UNITY.md` |
 
 ## Module rules
 
