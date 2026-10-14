@@ -25,7 +25,9 @@ type(scope)!: the same, for a change that breaks a public interface, file format
 | `build` | CMake, CLI, checkers, toolchain |
 | `chore` | Releases (`chore(release): v0.3.2`), housekeeping with no behaviour |
 
-- `scope` is the module or subsystem folder name: `matter`, `interop`, `cli`, `layering`.
+- `scope` is the module or subsystem folder name: `matter`, `interop`, `cli`, `layering`. The
+  one scope that is not a folder is `deps`: `build(deps): upgrade <name> to <version>` upgrades
+  a dependency, in its own commit.
 - The sentence says what the change does, as a full clause, under 72 characters:
   `feat(matter): reserve the neighbour list at tick start`.
 - A change that needs two scopes is usually two commits.

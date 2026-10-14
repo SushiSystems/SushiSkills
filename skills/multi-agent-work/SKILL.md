@@ -14,7 +14,7 @@ must carry its evidence.
 | Role | Does | Writes |
 | --- | --- | --- |
 | Orchestrator | Plans, dispatches, reviews reports, integrates, commits | Code, design, manual, changelog, backlog |
-| Worker | One task with one acceptance criterion | The files its dispatch lists, the module README among them when the task changes the module, and the work folder under `docs/agent/` |
+| Worker | One task with one acceptance criterion | The files its dispatch lists, a module README only when listed, and the work folder under `docs/agent/` |
 
 A worker never edits a file outside its assigned set, never writes to `docs/design/`, the
 manual, `CHANGELOG.md` or `REMAINING_WORK.md`, and never commits unless the dispatch says so.

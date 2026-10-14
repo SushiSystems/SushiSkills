@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- 2026-10-14 — model-routing: Left the owner's limits to `claude/CLAUDE.md` and who writes `REPORT.md` to `multi-agent-work` (`skills/model-routing/SKILL.md`, `claude/CLAUDE.md`).
+- 2026-10-14 — multi-agent-work: Let a worker write a module README only when its dispatch lists it, and cited the roles from the other files (`multi-agent-work`, `AGENT_WORK.md`, `DISPATCH.md`).
+- 2026-10-14 — documentation: Said that a folder moved into the archive is never edited after (`skills/documentation/SKILL.md`).
+- 2026-10-14 — commits: Named `deps` as the one scope that is not a folder and cited the upgrade commit from the other skills (`commits`, `dependencies`, `api-stability`).
+- 2026-10-14 — sushiskills: Added the repository without a CLI to the CLI default's exceptions (`skills/sushiskills/SKILL.md`, `skills/continuous-integration/SKILL.md`).
+- 2026-10-14 — repository-layout: Named `include/` and `source/` in the root of a one-module repository (`skills/repository-layout/SKILL.md`).
+- 2026-10-14 — tools: Added the tests of the changelog checker (`tools/tests/test_check_changelog.py`).
 - 2026-10-14 — file-formats: Made the version table say what the reader does with each version today (`skills/file-formats/SKILL.md`).
 - 2026-10-14 — git-workflow: Made staging by path, no stash and no worktree unasked hold always, and cited it from the other skills (`skills/git-workflow/SKILL.md`, `skills/commits/SKILL.md`, `skills/multi-agent-work/SKILL.md`).
 - 2026-10-14 — cpp-code-style: Left the hot path rules to `performance` and kept only how C++ passes a value (`skills/cpp-code-style/SKILL.md`).

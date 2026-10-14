@@ -64,8 +64,7 @@ tree. A component that is not listed is not shipped.
 
 ## Upgrading and removing
 
-- An upgrade is its own commit: `build(deps): upgrade <name> to <version>`, with the full test
-  suite run.
+- An upgrade is its own commit, in the shape `commits` gives, with the full test suite run.
 - A dependency no module uses any more is removed in the same change that stopped using it.
 
 ## Red flags

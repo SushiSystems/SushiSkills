@@ -29,7 +29,7 @@ docs/
     agent/
         <YYYY_MM_DD>_<WORK_NAME>/ one folder per piece of agent work
             SPEC.md  PLAN.md  REPORT.md
-    archive/                      frozen; added to, never edited
+    archive/                      frozen; a folder is moved in whole, then never edited
 <module>/README.md                the module's own facts, beside the code
 ```
 

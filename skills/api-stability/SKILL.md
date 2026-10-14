@@ -44,7 +44,7 @@ Repositories depend on each other in tiers, lowest first.
 1. Each repository pins every Sushi Systems dependency to an exact tag, `v0.3.2`, never to a
    branch or a range.
 2. When a lower repository releases, repositories above it upgrade in tier order, one at a time,
-   each in its own commit (`build(deps): upgrade <name> to vX.Y.Z`) followed by its own release
+   each in its own upgrade commit (see `commits`) followed by its own release
    when its changelog calls for one.
 3. A breaking release below is adapted to above in the same upgrade commit; no repository runs
    against a mix of old and new.

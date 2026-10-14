@@ -31,11 +31,7 @@ The manual is never archived; it is kept true.
 
 ## Who writes where
 
-| Writer | May write |
-| --- | --- |
-| Agent doing one piece of work | Its own work folder; the README of a module it changed, when its dispatch lists that file |
-| Orchestrator (the session that dispatched the work) | Everything above, plus `design/`, the manual, `CHANGELOG.md`, `REMAINING_WORK.md` |
-| Anyone | Nothing in `archive/` except moving a folder in |
+Who may write which file is the Roles table of `multi-agent-work`.
 
 A worker whose change makes a page outside its write list false reports the page and the exact
 lines. The orchestrator corrects them in the commit that closes that piece of work. Reported is

@@ -46,20 +46,15 @@ Read `DISPATCH.md` once before the first dispatch of a session. A report that do
 the line it asks for is sent back unread, whatever its content: the subagent did not read the
 rules.
 
-Model per dispatch: the `model-routing` skill chooses the model and the effort for each kind
-of dispatch, by phase and by task, and holds the escalation ladder for a failed task. The limits
-it works within, for Claude 5.5 models only: the session runs on `opus`, at `medium` when it
-plans or runs a plan and at `low` otherwise; `fable` is not used; `sonnet` runs at `low` or
-`medium` only; every `opus` dispatch runs at `low`; `haiku` takes spec-complete and mechanical
-work at `medium` or `high`, by task; `high` on `opus` is the exception, about five dispatches
-in a hundred, and only after I have approved it: ask me before any `high` dispatch. The `model`
+The `model-routing` skill chooses the model and the effort of the session and of every
+dispatch. My limits on it, for Claude 5.5 models only: `fable` is not used; `sonnet` runs at
+`low` or `medium` only; effort caps at `high`, never `xhigh` or `max`; `high` on `opus` is the
+exception, about five dispatches in a hundred, and only after I have approved it. The `model`
 field and the effort are set on every dispatch, never left to inherit.
 
-Effort caps at `high`; never `xhigh` or `max`. `low` and `medium` are the right choice for
-mechanical work and are not a compromise.
-
-A report that comes back without evidence of rules 1, 2, 6 and 7 of `DISPATCH.md` is sent back, not accepted. Reviewer
-dispatches check SOLID shape and humanizer register explicitly, as named items, not as "quality".
+A report that comes back without evidence of rules 1, 2, 6 and 7 of `DISPATCH.md` is sent back,
+not accepted. Reviewer dispatches check SOLID shape and humanizer register explicitly, as named
+items, not as "quality".
 
 ## Planning
 
