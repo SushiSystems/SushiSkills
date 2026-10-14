@@ -119,4 +119,5 @@ K_LOGGER.warning(
   `repository-layout` gives it.
 - Test functions: `test_<behaviour>_<condition>`, e.g. `test_step_rejects_negative_time`.
 - Checkers under `tools/` use the standard library only, so they run without installing
-  anything (see `project-tools`).
+  anything (see `project-tools`). Their tests in `tools/tests/` use `unittest` for the same
+  reason; pytest runs them too.
