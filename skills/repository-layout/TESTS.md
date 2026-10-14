@@ -38,7 +38,7 @@ directly under the owner's folder: `tests/<tier>/umbrella/test_SushiAI.cpp` for 
 
 - A private header under `source/`, a Python file whose name starts with `_`, `__init__.py` and
   `index.ts` have no test file of their own. They are tested through the public unit that uses
-  them.
+  them, and no test includes a header under `source/`.
 - A test that crosses modules belongs to the highest-tier module it uses, in the test file of the
   unit whose behaviour it checks. Dependencies point down, so every such test has one owner.
 - A module that grows out of an area of a one-module repository moves its tests with it:
