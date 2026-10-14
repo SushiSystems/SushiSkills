@@ -73,7 +73,8 @@ class TestMirror:
     def allowed_folders(self) -> frozenset[Path]:
         """Returns every folder below tests/ that a unit, a module or an application accounts for."""
         allowed: set[Path] = set()
-        for folder in {*self.owners, *(test.parent for test in self.expected)}:
+        unit_folders = {unit_folder(test) for test in self.expected}
+        for folder in {*self.owners, *(test.parent for test in self.expected), *unit_folders}:
             while folder != self.tests and self.tests in folder.parents:
                 allowed.add(folder)
                 folder = folder.parent
@@ -95,6 +96,25 @@ class TestMirror:
                 yield entry
                 if entry.is_dir():
                     pending.append(entry)
+
+
+def unit_folder(test: Path) -> Path:
+    """Returns the folder that stands for a unit's test file when its tests need more than one file."""
+    name = test.name
+    for language in K_LANGUAGES:
+        if language.is_test(name) and name.endswith(language.test_suffix):
+            return test.parent / name[: len(name) - len(language.test_suffix)]
+    return test.parent / test.stem
+
+
+def _aspect_files(folder: Path) -> list[Path]:
+    """Returns the test files in a unit's folder."""
+    if not folder.is_dir():
+        return []
+    return [
+        path for path in sorted(folder.iterdir())
+        if path.is_file() and any(language.is_test(path.name) for language in K_LANGUAGES)
+    ]
 
 
 def _units(folder: Path, language: Language) -> Iterator[Path]:
@@ -182,7 +202,7 @@ def collect(paths: list[Path]) -> Iterable[TestMirror]:
 def rule_untested_unit(mirror: TestMirror) -> Iterator[Issue]:
     """Yields an issue for each header or source file whose test file does not exist."""
     for test, header in sorted(mirror.expected.items(), key=lambda item: str(item[1])):
-        if not test.is_file():
+        if not test.is_file() and not _aspect_files(unit_folder(test)):
             shown = test.relative_to(mirror.root).as_posix()
             yield Issue(header, 1, f"no test file; expected {shown}")
 
@@ -193,7 +213,8 @@ def rule_orphan_test(mirror: TestMirror) -> Iterator[Issue]:
         is_test = path.name.endswith(K_UNITY_TEST_SUFFIX) or any(
             language.is_test(path.name) for language in K_LANGUAGES
         )
-        if path.is_file() and is_test and path not in mirror.expected:
+        in_unit_folder = any(unit_folder(test) == path.parent for test in mirror.expected)
+        if path.is_file() and is_test and path not in mirror.expected and not in_unit_folder:
             yield Issue(path, 1, "mirrors no header or source file; rename it or move it to its unit's mirror")
 
 
@@ -205,6 +226,13 @@ def rule_mirror_folders(mirror: TestMirror) -> Iterator[Issue]:
             yield Issue(path, 1, "folder has no counterpart in the source tree")
 
 
+def rule_unit_file_and_folder(mirror: TestMirror) -> Iterator[Issue]:
+    """Yields an issue for each unit that has both a test file and a folder of aspect files."""
+    for test in sorted(mirror.expected):
+        if test.is_file() and _aspect_files(unit_folder(test)):
+            yield Issue(test, 1, "the unit has a test file and a test folder; keep one")
+
+
 K_CHECKER = Checker(
     description="Checks that tests/ mirrors the source of the repository.",
     collect=collect,
@@ -212,6 +240,7 @@ K_CHECKER = Checker(
         "rule_untested_unit": rule_untested_unit,
         "rule_orphan_test": rule_orphan_test,
         "rule_mirror_folders": rule_mirror_folders,
+        "rule_unit_file_and_folder": rule_unit_file_and_folder,
     },
 )
 
