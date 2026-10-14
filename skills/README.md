@@ -20,7 +20,7 @@ agent reads the descriptions first and loads a skill only when its task matches.
 | `model-routing` | Model and effort per session seat and per dispatch, the escalation ladder, inline or subagent, what a report records |
 | `commits` | Commit subject grammar, body, staging |
 | `versioning-and-release` | Semantic versions, `vX.Y.Z` tags, when a release is due, how it is cut |
-| `project-tools` | The five checkers every repository carries and their shared contract |
+| `project-tools` | The six checkers every repository carries and their shared contract |
 | `testing` | What each change must test, bug fix order, determinism, golden files |
 | `dependencies` | Licences, where libraries come from, keeping them private |
 | `api-stability` | Public surfaces, deprecation, exports, cross-repository upgrades |

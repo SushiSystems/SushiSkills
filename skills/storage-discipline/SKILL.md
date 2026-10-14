@@ -59,9 +59,9 @@ never add a new package cache, virtual environment or conda environment without 
 
 ## Delegation
 
-A subagent does not inherit this rule. Line 7 of the dispatch block carries it, and the
-evidence rule beside the block sends back a report without the scratchpad size. The block is in
-`claude/CLAUDE.md`, section "Delegation".
+A subagent does not inherit this rule. Rule 7 of `claude/DISPATCH.md` sends it here, and the
+evidence rule in `claude/CLAUDE.md`, section "Delegation", sends back a report without the
+scratchpad size.
 
 ## Red flags
 

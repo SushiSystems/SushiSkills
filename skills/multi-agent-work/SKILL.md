@@ -38,9 +38,8 @@ owner runs to close the wave.
 
 ## Dispatch
 
-Every dispatch opens with the dispatch block, verbatim, whatever the task. The block lives in
-the owner's global instructions, `claude/CLAUDE.md` in SushiSkills, section "Delegation", and
-nowhere else; copy it from there.
+Every dispatch opens with the line `claude/CLAUDE.md` gives in its section "Delegation", which
+sends the subagent to `claude/DISPATCH.md`. The rules live in that file and nowhere else.
 
 Then: the task, its file list, its acceptance criterion, the skills it must load
 (`cpp-code-style`, `source-comments`, ...), and the work folder path.

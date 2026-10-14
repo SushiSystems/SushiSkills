@@ -1,0 +1,136 @@
+# test_check_test_mirror.py
+# SushiSkills - https://github.com/SushiSystems/SushiSkills
+# Copyright (c) 2026-present Mustafa Garip & Sushi Systems
+# Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.
+# Commercial use requires a licence from Sushi Systems.
+"""Tests the test mirror checker on single-module and multi-module trees built on disk."""
+
+from __future__ import annotations
+
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from testing.check_test_mirror import (  # noqa: E402
+    discover,
+    rule_mirror_folders,
+    rule_orphan_test,
+    rule_untested_unit,
+)
+
+
+def _touch(root: Path, relative: str) -> None:
+    """Creates an empty file and its folders below root."""
+    path = root / relative
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n", encoding="utf-8")
+
+
+def _names(issues) -> list[str]:
+    """Returns the file or folder name of each issue."""
+    return [issue.path.name for issue in issues]
+
+
+class MultiModuleTest(unittest.TestCase):
+    """Covers modules/<tier>/<module>/ mirrored to tests/<tier>/<module>/."""
+
+    def setUp(self) -> None:
+        self._folder = tempfile.TemporaryDirectory()
+        self.root = Path(self._folder.name)
+        _touch(self.root, "modules/physics/rigid_body/include/Sushi/rigid_body/physics_world.hpp")
+        _touch(self.root, "modules/physics/rigid_body/include/Sushi/rigid_body/contact_solver.hpp")
+        _touch(self.root, "modules/physics/rigid_body/include/Sushi/rigid_body.hpp")
+        _touch(self.root, "tests/physics/rigid_body/physics_world_test.cpp")
+        _touch(self.root, "tests/physics/rigid_body/rigid_body_test.cpp")
+        _touch(self.root, "tests/physics/rigid_body/fixtures/contact_solver/scene.json")
+
+    def tearDown(self) -> None:
+        self._folder.cleanup()
+
+    def test_a_header_without_its_test_is_reported(self) -> None:
+        self.assertEqual(_names(rule_untested_unit(discover(self.root))), ["contact_solver.hpp"])
+
+    def test_a_test_with_no_header_is_reported(self) -> None:
+        _touch(self.root, "tests/physics/rigid_body/old_solver_test.cpp")
+        self.assertEqual(_names(rule_orphan_test(discover(self.root))), ["old_solver_test.cpp"])
+
+    def test_a_kind_folder_is_reported(self) -> None:
+        _touch(self.root, "tests/unit/physics_world_test.cpp")
+        self.assertEqual(_names(rule_mirror_folders(discover(self.root))), ["unit"])
+
+    def test_data_folders_and_the_package_test_are_allowed(self) -> None:
+        _touch(self.root, "tests/package/main.cpp")
+        self.assertEqual(list(rule_mirror_folders(discover(self.root))), [])
+        self.assertEqual(list(rule_orphan_test(discover(self.root))), [])
+
+
+class LanguagesAndApplicationsTest(unittest.TestCase):
+    """Covers Python and TypeScript sources and the headers of an application."""
+
+    def setUp(self) -> None:
+        self._folder = tempfile.TemporaryDirectory()
+        self.root = Path(self._folder.name)
+
+    def tearDown(self) -> None:
+        self._folder.cleanup()
+
+    def test_python_mirrors_each_source_file_below_its_package(self) -> None:
+        _touch(self.root, "source/sushi_cli/commands/build.py")
+        _touch(self.root, "source/sushi_cli/__init__.py")
+        _touch(self.root, "source/sushi_cli/_private.py")
+        self.assertEqual(
+            [test.relative_to(self.root).as_posix() for test in discover(self.root).expected],
+            ["tests/commands/build_test.py"],
+        )
+
+    def test_typescript_mirrors_each_source_file_of_a_module(self) -> None:
+        _touch(self.root, "modules/web/viewer/source/camera.ts")
+        _touch(self.root, "modules/web/viewer/source/index.ts")
+        self.assertEqual(
+            [test.relative_to(self.root).as_posix() for test in discover(self.root).expected],
+            ["tests/web/viewer/camera.test.ts"],
+        )
+
+    def test_an_application_mirrors_to_tests_applications(self) -> None:
+        _touch(self.root, "include/Sushi/sushi.hpp")
+        _touch(self.root, "applications/editor/panels/outliner.hpp")
+        _touch(self.root, "tests/sushi_test.cpp")
+        _touch(self.root, "tests/applications/editor/panels/outliner_test.cpp")
+        mirror = discover(self.root)
+        findings = [*rule_untested_unit(mirror), *rule_orphan_test(mirror), *rule_mirror_folders(mirror)]
+        self.assertEqual(findings, [])
+
+
+class SingleModuleTest(unittest.TestCase):
+    """Covers include/<Project>/<area>/ mirrored to tests/<area>/."""
+
+    def setUp(self) -> None:
+        self._folder = tempfile.TemporaryDirectory()
+        self.root = Path(self._folder.name)
+        _touch(self.root, "include/Sushi/collision/broad_phase.hpp")
+        _touch(self.root, "include/Sushi/sushi.hpp")
+        _touch(self.root, "tests/collision/broad_phase_test.cpp")
+        _touch(self.root, "tests/sushi_test.cpp")
+
+    def tearDown(self) -> None:
+        self._folder.cleanup()
+
+    def test_a_mirrored_tree_is_clean(self) -> None:
+        mirror = discover(self.root)
+        findings = [*rule_untested_unit(mirror), *rule_orphan_test(mirror), *rule_mirror_folders(mirror)]
+        self.assertEqual(findings, [])
+
+    def test_a_test_in_the_wrong_area_is_reported_twice(self) -> None:
+        (self.root / "tests/collision/broad_phase_test.cpp").unlink()
+        _touch(self.root, "tests/integration/broad_phase_test.cpp")
+        mirror = discover(self.root)
+        self.assertEqual(_names(rule_untested_unit(mirror)), ["broad_phase.hpp"])
+        self.assertEqual(_names(rule_orphan_test(mirror)), ["broad_phase_test.cpp"])
+        self.assertEqual(_names(rule_mirror_folders(mirror)), ["integration"])
+
+
+if __name__ == "__main__":
+    unittest.main()

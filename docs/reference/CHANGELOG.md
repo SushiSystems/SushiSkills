@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- 2026-10-14 — repository-layout: Made `tests/` a mirror of the source, one test file per unit, with kinds as labels (`TESTS.md`, `SKILL.md`).
+- 2026-10-14 — testing: Replaced the kind folders with labels and put a regression test in its unit's test file (`skills/testing/SKILL.md`).
+- 2026-10-14 — tools: Added the checker that `tests/` mirrors the headers and sources of a repository (`tools/testing/check_test_mirror.py`, `check_all.py`).
+- 2026-10-14 — python-code-style: Named a test file `<name>_test.py` at its mirrored path (`skills/python-code-style/SKILL.md`, `skills/typescript-code-style/SKILL.md`).
+- 2026-10-14 — performance: Put a benchmark beside its unit's test as `<name>_benchmark.cpp` (`skills/performance/SKILL.md`).
+- 2026-10-14 — multi-agent-work: Sent a dispatch to `claude/DISPATCH.md` and stopped restating the storage rule there (`skills/multi-agent-work/SKILL.md`, `skills/storage-discipline/SKILL.md`, `claude/DISPATCH.md`).
+- 2026-10-14 — cpp-code-style: Kept the switch of a small closed set, as the doctrine's default allows (`skills/cpp-code-style/SKILL.md`).
 - 2026-10-14 — tools: Added the summary of dispatch lines per model and effort (`tools/routing/summarize_dispatches.py`, `skills/model-routing/SKILL.md`).
 - 2026-10-14 — model-routing: Ran the orchestrator of a session without a plan at `low` and gave `sonnet` the band between spec-complete and cross-module work (`skills/model-routing/SKILL.md`).
 - 2026-10-14 — claude: Moved the dispatch block to a file each subagent reads by path and proves it read (`claude/DISPATCH.md`, `claude/CLAUDE.md`, `claude/README.md`).

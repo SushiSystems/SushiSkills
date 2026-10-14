@@ -33,7 +33,7 @@ docs/
 | `cli/` | The project CLI package, with its own `pyproject.toml` |
 | `tools/` | Manual checkers; see `project-tools` |
 | `modules/` | Source, one tree per module |
-| `tests/` | Tests that cross module boundaries only |
+| `tests/` | Every test, in a tree that mirrors the source; see `TESTS.md` |
 | `applications/` | Executables, one folder each; example programs under `applications/examples/` |
 | `assets/` | Content an application loads at run time and the package ships; absent when there is none |
 | `third_party/` | Vendored code, outside this discipline |
@@ -59,10 +59,11 @@ The predicate is the module count.
 ```
 include/<Project>/<area>/<name>.hpp
 source/<area>/<name>.cpp
-tests/{unit,integration,regression,common}/
+tests/<area>/<name>_test.cpp
 ```
 
-**More than one module:** each module is a self-contained tree.
+**More than one module:** each module is a tree of its own, and its tests mirror it under
+`tests/`.
 
 ```
 modules/<tier>/<module>/
@@ -70,18 +71,19 @@ modules/<tier>/<module>/
     CMakeLists.txt
     include/<Project>/<module>/<name>.hpp
     source/<name>.cpp
-    tests/
+tests/<tier>/<module>/<name>_test.cpp
 ```
 
 A project that grows from one module to two moves `include/` and `source/` under
-`modules/<tier>/<module>/` and changes nothing else.
+`modules/<tier>/<module>/`, moves `tests/<area>/` to `tests/<tier>/<module>/`, and changes
+nothing else.
 
 ## Read before
 
 | Task | File in this folder |
 | --- | --- |
 | A header no consumer includes, a header-only module, an internal module | `INTERNAL_MODULES.md` |
-| A test folder or a test program | `TESTS.md` |
+| A test, a test folder or a test program | `TESTS.md` |
 | A Unity repository | `UNITY.md` |
 
 ## Module rules
@@ -117,8 +119,9 @@ A project that grows from one module to two moves `include/` and `source/` under
 | A `utils/` or `common/` module | Name the responsibility; split it by what each part does |
 | A `utils.hpp` header | The same: one header per responsibility, each in the lowest module that uses it |
 | Two modules of one tier sharing a header of one of them | Move the header down a tier, into a module both depend on |
-| Test data beside the source | `tests/<kind>/fixtures/` |
+| Test data beside the source | `tests/<owner>/fixtures/<name>/` |
+| A `unit/`, `integration/` or `regression/` test folder | The mirror in `TESTS.md`; the kind is a label |
 | A second CLI or script folder | Everything runnable goes through `cli/` or lives in `tools/` |
 | New top-level folder "for now" | It is not allowed; pick a home from the table |
 | A `samples/` or `examples/` folder in the root | `applications/examples/` |
-| Test input under `assets/` | `tests/<kind>/fixtures/`; `assets/` holds what ships |
+| Test input under `assets/` | `tests/<owner>/fixtures/<name>/`; `assets/` holds what ships |

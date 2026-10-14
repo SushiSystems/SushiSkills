@@ -1,29 +1,65 @@
-# Test folders
+# Test tree
 
-Read from the `repository-layout` skill before adding a test folder or a test program.
+Read from the `repository-layout` skill before adding a test, a test folder or a test program.
 
-`unit/`, `integration/`, `regression/` and `common/` sit directly under `tests/`, with no level
-between. A test kind that builds a different program gets its own folder beside them:
+`tests/` is a mirror of the source. A test's path is found from the path of what it tests, and
+the other way round, so nobody has to remember where a test lives.
+`tools/testing/check_test_mirror.py` enforces the mirror.
 
-| Folder | Holds |
+## The mirror
+
+A unit is a public C++ header, or a Python or TypeScript source file. Each unit has one test file,
+at the path its owner's folders give it under `tests/`:
+
+| Repository | Unit | Test |
+| --- | --- | --- |
+| One module | `include/<Project>/<area>/<name>.hpp` | `tests/<area>/<name>_test.cpp` |
+| Many modules | `modules/<tier>/<module>/include/<Project>/<module>/<name>.hpp` | `tests/<tier>/<module>/<name>_test.cpp` |
+| Application | `applications/<app>/<path>/<name>.hpp` | `tests/applications/<app>/<path>/<name>_test.cpp` |
+| Python | `source/<package>/<area>/<name>.py` | `tests/<area>/<name>_test.py` |
+| TypeScript | `source/<area>/<name>.ts` | `tests/<area>/<name>.test.ts` |
+
+A Python or TypeScript module is mirrored the same way under `tests/<tier>/<module>/`. A header
+with no area, such as the umbrella `include/<Project>/<project>.hpp`, has its test directly under
+the owner's folder.
+
+- A private header under `source/`, a Python file whose name starts with `_`, `__init__.py` and
+  `index.ts` have no test file of their own. They are tested through the public unit that uses
+  them.
+- A test that crosses modules belongs to the highest-tier module it uses, in the test file of the
+  unit whose behaviour it checks. Dependencies point down, so every such test has one owner.
+- A module that grows out of an area of a one-module repository moves its tests with it:
+  `tests/<area>/` becomes `tests/<tier>/<area>/`, file names unchanged.
+
+## What else sits in the tree
+
+| Path | Holds |
 | --- | --- |
-| `tests/benchmark/` | Benchmark programs; see `testing` and `performance` |
+| `tests/<owner>/fixtures/<name>/` | Input data of the tests in `<name>`'s test file |
+| `tests/<owner>/goldens/<name>/` | Reference outputs those tests compare against; see `testing` |
+| `tests/<owner>/<name>_benchmark.cpp` | The benchmark of a unit, built into the module's benchmark program; see `performance` |
 | `tests/package/` | An out-of-tree consumer that builds against the installed package |
-| `tests/<kind>/fixtures/` | Input data of one test kind |
-| `tests/goldens/` | Reference outputs a regression test compares against |
+| `tests/<owner>/README.md` | Notes the tests of one owner share |
 
-Any other folder under `tests/` names the program it builds and has a `README.md`.
+No other folder sits under `tests/`: no `unit/`, `integration/`, `regression/`, `common/` or
+scenario folder. Code that the tests of several modules share is a module of its own, mirrored
+like any other.
 
-With more than one module, a test of one module lives in that module's `tests/` folder and the
-root `tests/` holds only the tests that cross modules.
+`cli/` and `tools/` are packaged or copied whole, so their tests travel with them: `cli/tests/`
+mirrors `cli/` by the same table, and `tools/tests/` holds the checker tests.
 
-- Each module with tests builds one test program, through the same build function as the root
-  program, so every program is linked, labelled and placed the same way.
-- A module test may include the umbrella header of the library: it is what a consumer includes,
-  and a test that goes through it tests it too. A test that names a header of a higher-tier
-  module by its own path crosses modules and belongs under the root `tests/`.
+## Kinds are labels
+
+Whether a test is unit, integration, regression, golden, benchmark or device-bound is a label on
+the test, registered with the test framework and the build, never a folder. The CLI runs a label
+(`--label unit`) or a unit (`--for <path>`). The labels and what each requires are in `testing`.
+
+## Programs
+
+- Each module, and each application with tests, builds one test program, through the same build
+  function, so every program is linked, labelled and placed the same way.
+- A module's test may include the library's umbrella header: it is what a consumer includes. A
+  test that includes a higher-tier module's header belongs to that module.
 - The umbrella hides a header that forgot one of its own includes. The module's sources, compiled
-  with the include roots the module declared, are what catches that, so a header-only module
-  needs one test that includes each of its headers first and alone.
-- The notes of a test follow the test: a module's `tests/README.md` holds them, and the root one
-  holds what the tests share.
+  with the include roots the module declared, are what catches that, so a header-only module's
+  test of each header includes that header first.
