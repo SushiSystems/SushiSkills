@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- 2026-10-14 — project-tools: Kept a repository's settings in `tools/settings.py` and its own tools beside the shared ones, which it copies and never edits (`skills/project-tools/SKILL.md`).
+- 2026-10-14 — tools: Added the copy of the shared tools that keeps a repository's license blocks, settings and own tools (`copy_shared_tools.py`, `settings.py`).
+
 - 2026-10-14 — repository-layout: Let a unit keep its tests in a folder `test_<name>/` of aspect files when one file cannot hold them (`TESTS.md`, `check_test_mirror.py`).
 - 2026-10-14 — repository-layout: Allowed `<Project>/<tier>/<module>/` as a repository's include path, mirrored to the same `tests/<tier>/<module>/` (`SKILL.md`, `TESTS.md`, `check_test_mirror.py`).
 - 2026-10-14 — repository-layout: Ruled out a module name that fits any code, `testing` and `test_support` among them, and placed shared test code by that rule (`SKILL.md`, `TESTS.md`).
