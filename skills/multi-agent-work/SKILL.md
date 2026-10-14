@@ -70,6 +70,5 @@ closes it. A reported page left false is the orchestrator's defect (see `documen
 
 ## Shared working tree
 
-- Stage by path. Check `git diff --cached --stat` before every commit.
-- No `git stash`, no `git add -A`, no worktrees unless the owner asks.
+- Staging, stash and worktrees follow `git-workflow`, section "Shared working tree".
 - Two workers never hold the same file in one wave.
