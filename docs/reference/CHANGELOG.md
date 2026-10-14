@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-10-14 — repository-layout: Made `Assets/<Product>/Tests/` in a Unity repository a mirror of the product, with `<Name>Tests.cs` and one test assembly per code folder (`UNITY.md`, `TESTS.md`).
+- 2026-10-14 — tools: Checked the Unity test mirror when `ProjectSettings/` is present (`check_test_mirror.py`, `discover_unity`).
 - 2026-10-14 — tools: Reported a paragraph that one skill or instruction file copies from another (`check_docs_truth.py`, `rule_duplicated_passages`).
 - 2026-10-14 — contributing: Required every other file to cite a rule's one home, never restate it, and a reading for restated rules before each release (`docs/CONTRIBUTING.md`).
 - 2026-10-14 — skills: Turned the remaining restated rules into citations (`model-routing`, `multi-agent-work`, `documentation`, `versioning-and-release`).

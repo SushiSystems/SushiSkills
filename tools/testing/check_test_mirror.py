@@ -20,7 +20,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from checking.checker import Checker, Issue, run  # noqa: E402
 from checking.ignored_paths import ignored_folders  # noqa: E402
 
-K_DATA_FOLDERS = frozenset({"fixtures", "goldens"})
+K_DATA_FOLDERS = frozenset({"fixtures", "goldens", "Fixtures", "Goldens"})
+K_UNITY_MARKER = "ProjectSettings"
+K_UNITY_TESTS = "Tests"
+K_UNITY_TEST_SUFFIX = "Tests.cs"
+K_UNITY_UNTESTED = frozenset({"Tests", "Legacy", "Content"})
+K_UNITY_NOT_PRODUCTS = frozenset({
+    "ThirdParty", "LargeFiles", "Resources", "Plugins", "StreamingAssets", "Gizmos", "Editor",
+})
 K_PACKAGE_FOLDER = "package"
 K_APPLICATIONS_FOLDER = "applications"
 
@@ -58,14 +65,10 @@ class TestMirror:
     """Holds the units of one repository and the tests/ tree that must mirror them."""
 
     root: Path
+    tests: Path
     expected: dict[Path, Path]
     owners: frozenset[Path]
     ignored: frozenset[Path]
-
-    @property
-    def tests(self) -> Path:
-        """Returns the repository's tests/ folder."""
-        return self.root / "tests"
 
     def allowed_folders(self) -> frozenset[Path]:
         """Returns every folder below tests/ that a unit, a module or an application accounts for."""
@@ -145,12 +148,35 @@ def discover(root: Path) -> TestMirror:
             for unit in _units(application, K_CPP):
                 relative = unit.relative_to(application)
                 expected[tests / owner / relative.parent / K_CPP.test_name(unit)] = unit
-    return TestMirror(root, expected, frozenset(owners), ignored_folders(root))
+    return TestMirror(root, tests, expected, frozenset(owners), ignored_folders(root))
+
+
+def discover_unity(root: Path) -> list[TestMirror]:
+    """Returns one mirror per product under Assets/: <Product>/Tests/ mirrors its C# files."""
+    mirrors: list[TestMirror] = []
+    assets = root / "Assets"
+    ignored = ignored_folders(root)
+    for product in sorted(entry for entry in assets.iterdir() if entry.is_dir()) if assets.is_dir() else []:
+        if product.name in K_UNITY_NOT_PRODUCTS:
+            continue
+        tests = product / K_UNITY_TESTS
+        expected = {
+            tests / unit.relative_to(product).parent / f"{unit.stem}{K_UNITY_TEST_SUFFIX}": unit
+            for unit in sorted(product.rglob("*.cs"))
+            if unit.relative_to(product).parts[0] not in K_UNITY_UNTESTED
+        }
+        mirrors.append(TestMirror(root, tests, expected, frozenset(), ignored))
+    return mirrors
 
 
 def collect(paths: list[Path]) -> Iterable[TestMirror]:
-    """Returns the mirror of each given repository root."""
-    return [discover(path) for path in paths if path.is_dir()]
+    """Returns the mirrors of each given repository root, Unity or not."""
+    mirrors: list[TestMirror] = []
+    for path in paths:
+        if path.is_dir():
+            unity = (path / K_UNITY_MARKER).is_dir()
+            mirrors.extend(discover_unity(path) if unity else [discover(path)])
+    return mirrors
 
 
 def rule_untested_unit(mirror: TestMirror) -> Iterator[Issue]:
@@ -164,7 +190,10 @@ def rule_untested_unit(mirror: TestMirror) -> Iterator[Issue]:
 def rule_orphan_test(mirror: TestMirror) -> Iterator[Issue]:
     """Yields an issue for each test file that mirrors no header or source file."""
     for path in mirror.walk():
-        if path.is_file() and any(language.is_test(path.name) for language in K_LANGUAGES) and path not in mirror.expected:
+        is_test = path.name.endswith(K_UNITY_TEST_SUFFIX) or any(
+            language.is_test(path.name) for language in K_LANGUAGES
+        )
+        if path.is_file() and is_test and path not in mirror.expected:
             yield Issue(path, 1, "mirrors no header or source file; rename it or move it to its unit's mirror")
 
 

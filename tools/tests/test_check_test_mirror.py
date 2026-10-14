@@ -15,6 +15,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from testing.check_test_mirror import (  # noqa: E402
+    collect,
     discover,
     rule_mirror_folders,
     rule_orphan_test,
@@ -102,6 +103,44 @@ class LanguagesAndApplicationsTest(unittest.TestCase):
         mirror = discover(self.root)
         findings = [*rule_untested_unit(mirror), *rule_orphan_test(mirror), *rule_mirror_folders(mirror)]
         self.assertEqual(findings, [])
+
+
+class UnityTest(unittest.TestCase):
+    """Covers Assets/<Product>/ mirrored to Assets/<Product>/Tests/ with <Name>Tests.cs."""
+
+    def setUp(self) -> None:
+        self._folder = tempfile.TemporaryDirectory()
+        self.root = Path(self._folder.name)
+        (self.root / "ProjectSettings").mkdir()
+        _touch(self.root, "Assets/MobileRTS/Core/CommandBus.cs")
+        _touch(self.root, "Assets/MobileRTS/Features/Ballistics/Simulation/ProjectileFlight.cs")
+        _touch(self.root, "Assets/MobileRTS/Legacy/OldRadar.cs")
+        _touch(self.root, "Assets/ThirdParty/Vendor/Thing.cs")
+        _touch(self.root, "Assets/MobileRTS/Tests/Core/CommandBusTests.cs")
+        _touch(self.root, "Assets/MobileRTS/Tests/Features/Ballistics/Simulation/Fixtures/Shot/a.json")
+
+    def tearDown(self) -> None:
+        self._folder.cleanup()
+
+    def _all(self) -> list[str]:
+        """Returns the rule and the file name of every finding over the repository."""
+        findings = []
+        for mirror in collect([self.root]):
+            for rule in (rule_untested_unit, rule_orphan_test, rule_mirror_folders):
+                findings += [(rule.__name__, issue.path.name) for issue in rule(mirror)]
+        return findings
+
+    def test_an_untested_script_is_reported_and_legacy_and_vendors_are_not(self) -> None:
+        self.assertEqual(self._all(), [("rule_untested_unit", "ProjectileFlight.cs")])
+
+    def test_a_kind_folder_and_its_test_are_reported(self) -> None:
+        _touch(self.root, "Assets/MobileRTS/Features/Ballistics/Simulation/ProjectileFlight.cs")
+        _touch(self.root, "Assets/MobileRTS/Tests/Features/Ballistics/Simulation/ProjectileFlightTests.cs")
+        _touch(self.root, "Assets/MobileRTS/Tests/EditMode/RadarTests.cs")
+        self.assertEqual(self._all(), [
+            ("rule_orphan_test", "RadarTests.cs"),
+            ("rule_mirror_folders", "EditMode"),
+        ])
 
 
 class SingleModuleTest(unittest.TestCase):

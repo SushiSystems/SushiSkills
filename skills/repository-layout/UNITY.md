@@ -27,6 +27,7 @@ Assets/
         Features/<Feature>/     one responsibility per folder
         Content/<Kind>/<Name>/  data and art, no code
         Legacy/                 code on its way out; nothing new enters
+        Tests/                  the mirror of everything above that holds code
     ThirdParty/<Vendor>/        vendored packs, outside this discipline
     LargeFiles/                 git-ignored, backed up by hand
 ```
@@ -44,12 +45,11 @@ Features/<Feature>/
     Simulation/   rules; runs headless
     View/         what the player sees and touches
     Editor/       editor tooling
-    Tests/
     Prefabs/      assets only this feature's code uses
 ```
 
 Only the folders with content exist. Each code folder carries one assembly definition:
-`<Company>.<Product>.<Feature>.Simulation`, `.View`, `.Editor`, `.Tests`.
+`<Company>.<Product>.<Feature>.Simulation`, `.View`, `.Editor`.
 
 | Assembly | May reference |
 | --- | --- |
@@ -65,6 +65,26 @@ line in `App`, and removed by deleting both. If adding one requires editing anot
 boundary is wrong.
 
 `Simulation` references no UI, camera, input or audio type and no `ThirdParty` assembly.
+
+## Tests
+
+`Assets/<Product>/Tests/` mirrors `Assets/<Product>/`, because Unity compiles only what sits
+under `Assets/` or `Packages/`. `tools/testing/check_test_mirror.py` enforces the mirror.
+
+| Unit | Test |
+| --- | --- |
+| `Assets/<Product>/<path>/<Name>.cs` | `Assets/<Product>/Tests/<path>/<Name>Tests.cs` |
+
+- The test class is `<Name>Tests`, one per file, as C# names a test fixture. `Legacy/` and
+  `Content/` have no tests.
+- Each mirrored code folder is one test assembly, `<Company>.<Product>.Tests.<Feature>.<Folder>`.
+  `Simulation` and `Editor` tests run in EditMode; `View` tests run in PlayMode. Unity requires
+  the two modes in separate assemblies, and the split falls where the code already splits.
+- A test assembly references what its mirrored folder references, and that folder. A test of two
+  features together belongs to `App`, the only assembly that sees both.
+- The kind of a test is an NUnit `[Category]`, never a folder. The labels are in `testing`.
+- Test data sits in `Fixtures/<Name>/` and reference outputs in `Goldens/<Name>/` beside the
+  test file that reads them.
 
 ## Content
 
@@ -92,6 +112,7 @@ An asset that only one feature's code uses lives in that feature's `Prefabs/`.
 | --- | --- | --- |
 | Folder under `Assets/` | `PascalCase`, no space, bracket or leading underscore | `Features/Ballistics` |
 | C# file | `PascalCase`, one type per file, named after it | `ProjectileFlight.cs` |
+| Test file | The unit's name and `Tests` | `ProjectileFlightTests.cs` |
 | Namespace | Follows the folder | `SushiSystems.MobileRTS.Ballistics.View` |
 | Asset | `PascalCase` | `M1Abrams.prefab` |
 | Scene | `PascalCase` | `Match.unity` |
