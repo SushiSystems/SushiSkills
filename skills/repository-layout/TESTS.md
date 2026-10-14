@@ -19,6 +19,8 @@ at the path its owner's folders give it under `tests/`:
 | Python | `source/<package>/<area>/<name>.py` | `tests/<area>/test_<name>.py` |
 | TypeScript | `source/<area>/<name>.ts` | `tests/<area>/<name>.test.ts` |
 
+A Unity repository mirrors under `Assets/<Product>/Tests/`; `UNITY.md` gives that tree.
+
 A test file is named for what it is of: `test_<name>`, and a benchmark `benchmark_<name>`.
 TypeScript keeps `<name>.test.ts`, the name vitest finds without configuration.
 

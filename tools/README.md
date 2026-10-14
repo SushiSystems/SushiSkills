@@ -13,7 +13,7 @@ repository copies this folder whole; a rule is fixed here first and copied out.
 | `documentation/check_changelog.py` | Headings and entry shape, releases kept live, length, one sentence, nesting, cited places | Repository root |
 | `documentation/check_docs_truth.py` | The manual against the source: named symbols, cited paths, example sources, history words, page length, duplicated passages, em dashes, the allow-list | Repository root, `--source` |
 | `layering/check_layering.py` | Declared tiers, upward includes, reaches into another module's `source/` | Repository root |
-| `testing/check_test_mirror.py` | `tests/` mirrors the source: one `test_<name>` file per header or source file (`<name>.test.ts` in TypeScript), no test without a unit, no folder without a counterpart | Repository root |
+| `testing/check_test_mirror.py` | `tests/` mirrors the source: one `test_<name>` file per header or source file (`<name>.test.ts` in TypeScript), no test without a unit, no folder without a counterpart; in a Unity repository, `Assets/<Product>/Tests/` with `<Name>Tests.cs` | Repository root |
 | `licensing/write_license_block.py` | Nothing; writes the license block of `source-comments` into every tracked source file, or lists the files that lack it with `--report` | Repository root, `--project` |
 | `routing/summarize_dispatches.py` | Nothing; sums the dispatch lines of every `REPORT.md` per model and effort, for `model-routing` | Repository root |
 | `tests/` | Unit tests for the checker rules; run `python -m unittest discover -s tools/tests` | |
