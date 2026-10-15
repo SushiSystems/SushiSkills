@@ -15,7 +15,7 @@ which it keeps is in the `project-tools` skill.
 | `documentation/check_docs_layout.py` | `docs/` entries, required documents, document names, work folders, status lines, design ceiling, links under `docs/`, reachability from `docs/README.md`, READMEs under `modules/<tier>/`, archive candidates | Repository root |
 | `documentation/check_changelog.py` | Headings and entry shape, releases kept live, length, one sentence, nesting, cited places | Repository root |
 | `documentation/check_docs_truth.py` | The manual against the source: named symbols, cited paths, example sources, history words, page length, duplicated passages, em dashes, the allow-list | Repository root, `--source` |
-| `layering/check_layering.py` | Declared tiers, upward includes, reaches into another module's `source/` | Repository root |
+| `layering/check_layering.py` | Declared tiers and domains, upward includes from a module or its tests, cross-domain and unlisted same-tier includes, reaches into another module's `source/`, dependencies the build file lists, internal headers in installed ones | Repository root |
 | `testing/check_test_mirror.py` | `tests/` mirrors the source: one `test_<name>` file per header or source file (`<name>.test.ts` in TypeScript), no test without a unit, no folder without a counterpart, no test that includes a header under `source/`; in a Unity repository, `Assets/<Product>/Tests/` with `<Name>Tests.cs` | Repository root |
 | `licensing/write_license_block.py` | Nothing; writes the license block of `source-comments` into every tracked source file, or lists the files that lack it with `--report` | Repository root, `--project` |
 | `routing/summarize_dispatches.py` | Nothing; sums the dispatch lines of every `REPORT.md` per model and effort, for `model-routing` | Repository root |
@@ -44,7 +44,11 @@ reporting, 2 on a bad path. Python 3.11, standard library only.
 ## Per-repository settings
 
 `settings.py` holds them. `check_layering.py` does nothing until `K_TIER_ORDER` lists the
-repository's tiers, lowest first. `K_CLOSED` makes
+repository's tiers, lowest first. `K_DOMAIN_TIERS` names the tiers that share a rank and never
+include each other, and `K_SAME_TIER_EDGES` lists each `(includer, included)` pair of one tier.
+`K_MODULE_FUNCTION` names the CMake function that declares a module; when it is set, the
+dependencies its `K_PUBLIC_DEPENDS` and `K_PRIVATE_DEPENDS` keywords list are checked against the
+includes, and a module marked `K_INTERNAL_MARK` may not be included by an installed header. `K_CLOSED` makes
 `check_source_comments.py` expect the closed licence lines. `check_docs_truth.py` takes a
 repository's macro prefixes from the source unless `K_MACRO_PREFIXES` names them.
 

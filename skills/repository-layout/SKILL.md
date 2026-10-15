@@ -99,7 +99,9 @@ nothing else.
 2. A module's public surface is its `include/` tree. `source/` is private to it.
 3. Dependencies point down the tier order declared in `cmake/`. Never sideways into another
    module's `source/`, never up a tier. An edge between two modules of one tier is listed in the
-   same `cmake/` table, and the build refuses one that is not.
+   same `cmake/` table, and the build refuses one that is not. Tiers declared as domains share
+   one rank and never include each other; a module named `umbrella` includes its scope without
+   listed edges.
 4. A module is added by creating its folder and one line in its tier's list. If adding it
    requires editing another module, the boundary is wrong.
 5. Every module carries `README.md` stating what it owns, what it depends on and its public
