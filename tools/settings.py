@@ -11,5 +11,11 @@ copy_shared_tools.py writes this file only when a repository has none, and never
 from __future__ import annotations
 
 K_TIER_ORDER: tuple[str, ...] = ()
+K_DOMAIN_TIERS: tuple[str, ...] = ()
+K_SAME_TIER_EDGES: frozenset[tuple[str, str]] = frozenset()
+K_MODULE_FUNCTION = ""
+K_PUBLIC_DEPENDS = "DEPENDS"
+K_PRIVATE_DEPENDS = "PRIVATE_DEPENDS"
+K_INTERNAL_MARK = "INTERNAL"
 K_CLOSED = False
 K_MACRO_PREFIXES: tuple[str, ...] = ()
