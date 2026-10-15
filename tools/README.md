@@ -48,7 +48,8 @@ reporting, 2 on a bad path. Python 3.11, standard library only.
 `settings.py` holds them. `check_layering.py` does nothing until `K_TIER_ORDER` lists the
 repository's tiers, lowest first. `K_DOMAIN_TIERS` names the tiers that share a rank and never
 include each other. `K_MODULE_FUNCTION` names the CMake function that declares a module; when it
-is set, the dependencies its `K_PUBLIC_DEPENDS` and `K_PRIVATE_DEPENDS` keywords list are checked
+is set, the dependencies its `K_PUBLIC_DEPENDS` and `K_PRIVATE_DEPENDS` keywords list, and those of any keyword in
+`K_PRIVATE_DEPENDS_ALSO` as private ones, are checked
 against the includes and are the allowed edges between modules of one tier, and a module marked
 `K_INTERNAL_MARK` may not be included by an installed header. Without the function,
 `K_SAME_TIER_EDGES` lists each `(includer, included)` pair of one tier. `K_CLOSED` makes
