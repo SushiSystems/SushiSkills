@@ -62,8 +62,9 @@ needs to change is changed in SushiSkills first.
   not use. The copy never touches it.
 
 `python tools/checking/copy_shared_tools.py ROOT --from SUSHISKILLS` copies the shared files;
-with `--report` it lists the ones that differ and exits 1. A repository runs it after a checker
-changes upstream, and a report that lists a file is a local edit to move upstream or drop.
+with `--report` it lists the ones that differ and exits 1. It is run from the SushiSkills
+checkout, never from a repository's copy, so a fix to the copier applies on the run that brings
+it. A repository runs it after a checker changes upstream, and a report that lists a file is a local edit to move upstream or drop.
 
 ## When to run
 
