@@ -71,9 +71,9 @@ mirrors `cli/` by the same table, and `tools/tests/` holds the checker tests.
 
 ## Kinds are labels
 
-Whether a test is unit, integration, regression, golden, benchmark or device-bound is a label on
-the test, registered with the test framework and the build, never a folder. The CLI runs a label
-(`--label unit`) or a unit (`--for <path>`). The labels and what each requires are in `testing`.
+A test's size and scope are labels on the test, registered with the test framework and the
+build, never folders. The CLI runs a label (`--label small`) or a unit (`--for <path>`). The
+labels and what each allows are in `testing`.
 
 ## Programs
 
