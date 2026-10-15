@@ -118,6 +118,19 @@ class RuleCrossDomainIncludesTest(LayeringTest):
         self.assertEqual(list(rule_upward_includes(tree)), [])
 
 
+class DomainNameResolutionTest(LayeringTest):
+    """Covers a bare build name that a domain module shares with a lower one."""
+
+    def test_a_bare_name_means_the_module_outside_the_domains(self) -> None:
+        _write(self.root, "modules/core/umbrella/include/Project/core.hpp")
+        _write(self.root, "modules/vision/umbrella/include/Project/vision.hpp")
+        _write(self.root, "modules/vision/blocks/CMakeLists.txt", "project_add_module(NAME blocks DEPENDS umbrella)")
+        _write(self.root, "modules/vision/blocks/include/Project/vision/blocks/conv.hpp", "#include <Project/core.hpp>")
+        layout = Layout(("core", "vision"), domain_tiers=("vision",), module_function="project_add_module")
+        tree = ModuleTree(self.root, layout)
+        self.assertEqual(list(rule_declared_dependencies(tree)) + list(rule_unused_dependencies(tree)), [])
+
+
 class RuleSameTierIncludesTest(LayeringTest):
     """Covers the listed edges between modules of one tier."""
 
