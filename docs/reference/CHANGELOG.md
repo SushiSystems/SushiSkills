@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-10-15 — tools: Kept a repository's `tools/README.md`, which lists its own tools, when the shared tools are copied (`copy_shared_tools.py`).
+
 - 2026-10-15 — repository-layout: Kept a helper that only one owner's tests share in that owner's test folder, named by what it does, with a README row (`TESTS.md`).
 
 - 2026-10-14 — repository-layout: Reported a test that includes a private header under `source/` (`TESTS.md`, `check_test_mirror.py`, `rule_private_include`).
