@@ -37,8 +37,9 @@ A Python or TypeScript module is mirrored the same way under `tests/<tier>/<modu
 with no area, such as an umbrella at the include root (see Names in `SKILL.md`), has its test
 directly under the owner's folder: `tests/<tier>/umbrella/test_SushiAI.cpp` for `SushiAI/SushiAI.hpp`.
 
-- A private header under `source/`, a Python file whose name starts with `_`, `__init__.py` and
-  `index.ts` have no test file of their own. They are tested through the public unit that uses
+- A package's entry, `__main__.py`, is tested by `test_main.py`.
+- A private header under `source/`, any other Python file whose name starts with `_`, `__init__.py`
+  and `index.ts` have no test file of their own. They are tested through the public unit that uses
   them, and no test includes a header under `source/`.
 - A test that crosses modules belongs to the highest-tier module it uses, in the test file of the
   unit whose behaviour it checks. Dependencies point down, so every such test has one owner.
