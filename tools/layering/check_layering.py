@@ -174,15 +174,20 @@ class ModuleTree:
     def key_of(self, module: Module, token: str) -> str:
         """Returns the module key a build file token names.
 
-        `<tier>/<name>` is taken as written. A bare name is looked up in the module's own tier first,
-        then as the one module of that name; a token that names no module stays as written.
+        `<tier>/<name>` is taken as written. A bare name is the one module of that name outside the
+        domain tiers, since a domain module that shares its name is written with its tier; failing
+        that, the module of that name in the module's own tier, then the one module of that name.
+        A token that names no module stays as written.
         """
         if "/" in token:
             return token
+        named = [other for other in self.modules.values() if other.name == token]
+        shared = [other for other in named if other.tier not in self.layout.domain_tiers]
+        if len(shared) == 1:
+            return shared[0].key
         if f"{module.tier}/{token}" in self.modules:
             return f"{module.tier}/{token}"
-        named = [other.key for other in self.modules.values() if other.name == token]
-        return named[0] if len(named) == 1 else token
+        return named[0].key if len(named) == 1 else token
 
     def declared(self, module: Module) -> dict[str, frozenset[str]]:
         """Returns the module keys a build file lists, by public and private keyword."""
