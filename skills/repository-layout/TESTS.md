@@ -52,14 +52,20 @@ directly under the owner's folder: `tests/<tier>/umbrella/test_SushiAI.cpp` for 
 | `tests/<owner>/goldens/<name>/` | Reference outputs those tests compare against; see `testing` |
 | `tests/<owner>/benchmark_<name>.cpp` | The benchmark of a unit, built into the module's benchmark program; see `performance` |
 | `tests/package/` | An out-of-tree consumer that builds against the installed package |
-| `tests/<owner>/README.md` | Notes the tests of one owner share |
+| `tests/<owner>/<name>.hpp` | A helper that only the tests of this owner share; see below |
+| `tests/<owner>/README.md` | Notes the tests of one owner share, with a row per helper |
 
 No other folder sits under `tests/`: no `unit/`, `integration/`, `regression/`, `common/` or
 scenario folder. Code that the tests of several modules share is a module of its own, mirrored
 like any other. It is an internal module (see `INTERNAL_MODULES.md`), named by module rule 1 in
 `SKILL.md`, and each part sits in the lowest tier its dependencies allow.
 
-`cli/` and `tools/` are packaged or copied whole, so their tests travel with them: `cli/tests/`
+A helper that only the tests of one owner share sits in that owner's test folder. Its name says
+what it does, never `test_*`, `helpers` or another name module rule 1 rules out, and the folder's
+README has a row for it. Once a test of another owner includes it, it is shared by several
+modules and becomes a module of its own, as the paragraph above says.
+
+`cli/` is packaged and `tools/` is copied, so their tests travel with them: `cli/tests/`
 mirrors `cli/` by the same table, and `tools/tests/` holds the checker tests.
 
 ## Kinds are labels
