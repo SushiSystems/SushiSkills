@@ -20,8 +20,9 @@ repository. They are run by hand or through the project's CLI; they never build 
 | `tools/testing/check_test_mirror.py` | `tests/` mirrors the public headers, from `repository-layout` |
 
 A repository may add checkers; it may not rename or drop these six. `tools/check_all.py` runs
-all of them and the checker tests, and prints only what failed; a repository that adds a
-checker adds it to that list. A checker never reads a file git ignores.
+all of them and the checker tests, and prints only what failed; it also runs every other
+`tools/<area>/check_<what>.py` a repository holds as its own. A checker never reads a file git
+ignores.
 
 One tool beside them writes: `tools/licensing/write_license_block.py` puts the license block of
 `source-comments` into every tracked source file. It is run when a repository is created, when
