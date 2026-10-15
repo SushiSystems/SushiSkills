@@ -162,6 +162,15 @@ class BuildDeclarationTest(LayeringTest):
         _write(self.root, "modules/foundation/log/CMakeLists.txt", "project_add_module(NAME log DEPENDS core)")
         self.assertEqual(list(rule_same_tier_includes(ModuleTree(self.root, K_BUILD))), [])
 
+    def test_resolves_a_tier_qualified_name_and_keeps_same_named_modules_apart(self) -> None:
+        _write(self.root, "modules/domain/core/include/Project/domain/core/core.hpp")
+        _write(self.root, "modules/foundation/log/CMakeLists.txt", "project_add_module(NAME log DEPENDS foundation/core)")
+        layout = Layout(("foundation", "domain"), module_function="project_add_module")
+        self.assertEqual(list(rule_declared_dependencies(ModuleTree(self.root, layout))), [])
+        self.assertEqual(list(rule_unused_dependencies(ModuleTree(self.root, layout))), [])
+        _write(self.root, "modules/foundation/log/CMakeLists.txt", "project_add_module(NAME log DEPENDS domain/core)")
+        self.assertEqual(len(list(rule_declared_dependencies(ModuleTree(self.root, layout)))), 2)
+
     def test_reports_an_installed_header_that_includes_an_internal_module(self) -> None:
         _write(self.root, "modules/foundation/log/CMakeLists.txt", "project_add_module(NAME log DEPENDS core)")
         self.assertEqual(_messages(rule_public_headers(ModuleTree(self.root, K_BUILD))),
