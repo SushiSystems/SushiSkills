@@ -17,6 +17,16 @@ that fails without the change and passes with it.
 | `perf` | The existing tests unchanged and green, plus the measurement from `performance` |
 | `refactor` | No new test; every existing test green before and after |
 
+A unit that is hard to reach is still tested:
+
+| Unit | Tested through |
+| --- | --- |
+| A device backend | The real device, under the `device` label |
+| A plugin or ABI boundary | A fake host that calls its entry points |
+| A GUI panel | The toolkit run without a window, such as ImGui's `NewFrame` and `Render` with no backend |
+
+A panel that cannot be tested that way holds logic that belongs in a unit of its own.
+
 Private details are not tested directly. If a private function seems to need its own test, it is
 a brick that wants its own module.
 
@@ -77,3 +87,4 @@ the command and its output.
 - "The golden is outdated anyway, I regenerated it." → report and stop.
 - "It passed on the second run." → it is flaky; fix or quarantine.
 - "No GPU here, so the test counts as passing." → skipped.
+- "It is GUI, plugin or device code; list it as untested." → test it as above.

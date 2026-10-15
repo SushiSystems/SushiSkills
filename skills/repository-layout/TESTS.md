@@ -9,7 +9,8 @@ the other way round, so nobody has to remember where a test lives.
 ## The mirror
 
 A unit is a public C++ header, or a Python or TypeScript source file. Each unit has one test file,
-at the path its owner's folders give it under `tests/`:
+at the path its owner's folders give it under `tests/`. No unit is exempt, and no checker keeps a
+list of units it skips; `testing` says how a hard unit is tested.
 
 | Repository | Unit | Test |
 | --- | --- | --- |
