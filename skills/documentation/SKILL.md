@@ -31,6 +31,7 @@ docs/
             SPEC.md  PLAN.md  REPORT.md
     archive/                      frozen; a folder is moved in whole, then never edited
 <module>/README.md                the module's own facts, beside the code
+<folder>/<file>.md                one file's facts, beside it, when its README would pass the ceiling
 ```
 
 No other folder under `docs/`. No other file names inside a work folder.
@@ -68,11 +69,13 @@ its module README, the manual pages that describe it, its design status and its 
 land in one commit.
 
 The manual is the root `README.md`, every document under `docs/` outside `agent/`, `archive/`
-and the changelog, and every `README.md` under the source folders.
+and the changelog, and every `.md` page under the source folders: each `README.md`, and each page
+named after the file it describes (`test_tensor.md` beside `test_tensor.cpp`), which its folder's
+README links.
 
 - A change that adds, renames or removes a public name, a signature, a header path, a CLI
   command or a behaviour a page describes searches the manual for the old name,
-  `git grep -n <old name> -- README.md docs '*README.md'`, and corrects every hit in that commit.
+  `git grep -n <old name> -- '*.md'`, and corrects every hit in that commit.
 - Architecture and guide pages are part of every change. They are never a stage at the end of a
   plan.
 - `tools/documentation/check_docs_truth.py` enforces what a tool can: every name and path a page
@@ -97,7 +100,7 @@ and the changelog, and every `README.md` under the source folders.
 | --- | --- | --- |
 | Root `README.md` | 300 lines | Move the detail into the manual and link it |
 | Manual page | 600 lines | Split by subject into pages the index links |
-| Module README | 800 lines | Move each part to the README of the folder it describes |
+| Module README | 800 lines | Move each part to the README of the folder it describes, or to a page beside the file it describes |
 | Design document | 1 500 lines | Split into `<TOPIC>/`, one file per phase |
 
 - One fact, one home. A paragraph of 300 characters or more that a second page repeats becomes

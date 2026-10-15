@@ -52,10 +52,8 @@ enforces as a timeout. Every test carries exactly one.
 | `medium` | Threads and processes, localhost, files in a temporary folder, a software device: Lavapipe for Vulkan, a CPU SYCL device, a null audio driver, a fake plugin host | 300 s |
 | `large` | Real hardware, such as a GPU or an audio device, or a run longer than `medium` allows | 900 s |
 
-What a test covers is its scope, a second label, which says what the test proves and never
-decides when it runs: `unit` for one brick in isolation, `integration` for two or more modules
-working through their public surfaces. Why a test exists, a defect it guards, and how it checks, a
-golden file, are written in its name and its body, not in a label. A benchmark is not a test; it
+Size is the only kind label. What a test covers, why it exists and how it checks, such as a
+defect it guards or a golden file it compares, are written in its name and its body. A benchmark is not a test; it
 is a program of its own, from `performance`.
 
 - Names read as behaviour: `StepRejectsNegativeTime`, `test_step_rejects_negative_time`,
