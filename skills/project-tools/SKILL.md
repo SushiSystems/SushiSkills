@@ -19,8 +19,9 @@ repository. They are run by hand or through the project's CLI; they never build 
 | `tools/layering/check_layering.py` | Module dependencies follow the declared tier order; nothing reaches into another module's private `source/` |
 | `tools/testing/check_test_mirror.py` | `tests/` mirrors the public headers, from `repository-layout` |
 | `tools/testing/check_test_sizes.py` | Every test writes its size in its source, from `testing` |
+| `tools/logs/check_logging.py` | Log calls carry their module's category, library code writes no console output and hides no failure, from `logging` |
 
-A repository may add checkers; it may not rename or drop these seven. `tools/check_all.py` runs
+A repository may add checkers; it may not rename or drop these eight. `tools/check_all.py` runs
 all of them and the checker tests, and prints only what failed; it also runs every other
 `tools/<area>/check_<what>.py` a repository holds as its own. A checker never reads a file git
 ignores.
@@ -75,6 +76,6 @@ it. A repository runs it after a checker changes upstream, and a report that lis
 | Before reporting a task finished | `python tools/check_all.py .` |
 | Before a commit touching `docs/` | `check_docs_layout.py`, `check_changelog.py` and `check_docs_truth.py` |
 | Before a commit that adds, renames or removes a public name, a header path or a CLI command | `check_docs_truth.py` |
-| Periodically, or on request | All seven with `--report`; act on the archive candidates |
+| Periodically, or on request | All eight with `--report`; act on the archive candidates |
 
 A claim that a checker passed carries the command and its pasted output.

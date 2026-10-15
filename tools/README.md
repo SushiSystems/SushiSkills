@@ -1,12 +1,12 @@
 # tools
 
-Reference implementations of the seven checkers every Sushi Systems repository carries. A rule is
+Reference implementations of the eight checkers every Sushi Systems repository carries. A rule is
 fixed here first and copied out with `checking/copy_shared_tools.py`; which files that copies and
 which it keeps is in the `project-tools` skill.
 
 | Path | Checks | Takes |
 | --- | --- | --- |
-| `check_all.py` | Nothing itself; runs the seven checkers, then the repository's own `<area>/check_<what>.py` files and the tests, and prints only what failed | Repository root |
+| `check_all.py` | Nothing itself; runs the eight checkers, then the repository's own `<area>/check_<what>.py` files and the tests, and prints only what failed | Repository root |
 | `checking/checker.py` | Nothing itself; runs a checker's rule table and prints findings | |
 | `checking/copy_shared_tools.py` | Nothing; copies these files into a repository, keeping its license blocks, `settings.py`, this README and its own tools, or lists the files that differ with `--report` | Repository root, `--from` |
 | `settings.py` | Nothing; holds the settings that differ between repositories | |
@@ -18,6 +18,7 @@ which it keeps is in the `project-tools` skill.
 | `layering/check_layering.py` | Declared tiers and domains, upward includes from a module or its tests, cross-domain and unlisted same-tier includes, reaches into another module's `source/`, dependencies the build file lists, internal headers in installed ones | Repository root |
 | `testing/check_test_mirror.py` | `tests/` mirrors the source: one `test_<name>` file per header or source file (`<name>.test.ts` in TypeScript), no test without a unit, no folder without a counterpart, no test that includes a header under `source/`; in a Unity repository, `Assets/<Product>/Tests/` with `<Name>Tests.cs` | Repository root |
 | `testing/check_test_sizes.py` | Every test names its size in its source: a `Small_`, `Medium_` or `Large_` C++ suite, a size mark on a pytest file, class or function, a `small:` TypeScript `describe` | Repository root |
+| `logs/check_logging.py` | Console writes outside the paths `settings.py` allows, empty `catch` and `except: pass`, C++ log calls without their module's category, a logging module without `<module>_log_category.hpp`, Python root-logger, named-logger and f-string records | Repository root |
 | `licensing/write_license_block.py` | Nothing; writes the license block of `source-comments` into every tracked source file, or lists the files that lack it with `--report` | Repository root, `--project` |
 | `routing/summarize_dispatches.py` | Nothing; sums the dispatch lines of every `REPORT.md` per model and effort, for `model-routing` | Repository root |
 | `tests/` | Unit tests for the checker rules; run `python -m unittest discover -s tools/tests` | |

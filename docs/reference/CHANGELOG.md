@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- 2026-10-16 — logging: Set seven levels, a category per module, two gates, per-category levels from the environment, the record line, a bounded sink queue and Python rules (`SKILL.md`).
+- 2026-10-16 — tools: Added the logging checker and its prefix and console settings (`check_logging.py`, `settings.py`).
+
 - 2026-10-15 — repository-layout: Let tiers declared as domains share one rank and never include each other, and let an umbrella include its scope (`SKILL.md`).
 - 2026-10-15 — tools: Keyed modules by tier, read the tier include form and root umbrellas, and added domain, same-tier and build declaration rules (`check_layering.py`, `settings.py`).
 
