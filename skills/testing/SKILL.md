@@ -52,6 +52,19 @@ enforces as a timeout. Every test carries exactly one.
 | `medium` | Threads and processes, localhost, files in a temporary folder, a software device: Lavapipe for Vulkan, a CPU SYCL device, a null audio driver, a fake plugin host | 300 s |
 | `large` | Real hardware, such as a GPU or an audio device, or a run longer than `medium` allows | 900 s |
 
+A test's size is written in its source, once, where the test is declared:
+
+| Language | Where the size is written |
+| --- | --- |
+| C++ | The suite's name opens with `Small_`, `Medium_` or `Large_`: `TEST(Small_TensorShape, RejectsANegativeExtent)` |
+| Python | `pytest.mark.small`, `medium` or `large` on the test's class, or as `pytestmark` on its file |
+| TypeScript | The `describe` block's name opens with `small:`, `medium:` or `large:` |
+
+The build reads the size from there and sets the label and the timeout; no build file lists
+suites or files by size. A suite that opens with no size fails the build, and in Python one
+that carries none fails collection. `quarantined` is the one label a build file lists, by test
+name, because it is a state with an entry in `KNOWN_ISSUES.md`, not a property of the test.
+
 Size is the only kind label. What a test covers, why it exists and how it checks, such as a
 defect it guards or a golden file it compares, are written in its name and its body. A benchmark is not a test; it
 is a program of its own, from `performance`.
