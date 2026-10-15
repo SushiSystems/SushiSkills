@@ -56,7 +56,8 @@ SushiSkills ships them, under its own license block, and never edits them. A sha
 needs to change is changed in SushiSkills first.
 
 - `tools/settings.py` is shared by name only. It holds what differs between repositories, such
-  as the tier order, and the copy never overwrites it.
+  as the tier order, and the copy never overwrites it. `tools/README.md` is kept the same way:
+  it lists the repository's own tools beside the shared ones, which "The set" above names.
 - Every other file under a repository's `tools/` is its own tool, at any path SushiSkills does
   not use. The copy never touches it.
 

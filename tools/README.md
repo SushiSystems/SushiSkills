@@ -8,7 +8,7 @@ which it keeps is in the `project-tools` skill.
 | --- | --- | --- |
 | `check_all.py` | Nothing itself; runs the six checkers and the tests, prints only what failed | Repository root |
 | `checking/checker.py` | Nothing itself; runs a checker's rule table and prints findings | |
-| `checking/copy_shared_tools.py` | Nothing; copies these files into a repository, keeping its license blocks, `settings.py` and its own tools, or lists the files that differ with `--report` | Repository root, `--from` |
+| `checking/copy_shared_tools.py` | Nothing; copies these files into a repository, keeping its license blocks, `settings.py`, this README and its own tools, or lists the files that differ with `--report` | Repository root, `--from` |
 | `settings.py` | Nothing; holds the settings that differ between repositories | |
 | `checking/ignored_paths.py` | Nothing itself; names the files and folders git ignores, which no checker reads | |
 | `documentation/check_source_comments.py` | C++, GLSL, TypeScript and Python: license block, file header, block ceiling, `//` and `#` runs, separators, history words, `@date` | Files or folders |
