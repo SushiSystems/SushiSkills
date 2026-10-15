@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-10-16 — tools: Let the rule option of every checker repeat (`checker.py`).
+- 2026-10-16 — tools: Read every shader stage and include fragment, and report the backslash date tag too (`check_source_comments.py`).
 - 2026-10-16 — logging: Set seven levels, a category per module, two gates, per-category levels from the environment, the record line, a bounded sink queue and Python rules (`SKILL.md`).
 - 2026-10-16 — tools: Added the logging checker and its prefix and console settings (`check_logging.py`, `settings.py`).
 
