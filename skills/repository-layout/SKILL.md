@@ -96,6 +96,8 @@ nothing else.
    name that would fit any code, such as `utils`, `common`, `helpers`, `shared`, `misc`,
    `support`, `testing` or `test_support`, names no responsibility and is never a module's
    name, with or without a prefix. Code that has no better name is split until each part has one.
+   The bottom layer that wraps the platform and the language's primitives is such a module too,
+   named by what it wraps: `platform`, `status`, `allocation`.
 2. A module's public surface is its `include/` tree. `source/` is private to it.
 3. Dependencies point down the tier order declared in `cmake/`. Never sideways into another
    module's `source/`, never up a tier. An edge between two modules of one tier is listed in the
@@ -124,7 +126,8 @@ nothing else.
 - An umbrella header includes every public header of its scope and sits at the include root, in
   a module named `umbrella`. The project's umbrella keeps the project folder's spelling
   (`SushiAI/SushiAI.hpp`), the one file name that is not `snake_case`; a tier's umbrella is
-  `<Project>/<tier>.hpp` (`SushiAI/vision.hpp`).
+  `<Project>/<tier>.hpp` (`SushiAI/vision.hpp`). An umbrella saves a consumer the writing of
+  many includes; no module includes one, except another umbrella.
 - Documents under `docs/` are the exception: `UPPER_SNAKE_CASE.md`.
 
 ## Common mistakes
