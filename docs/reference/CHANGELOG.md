@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-10-16 — logging: Made a level call for a project the logger does not own write one warning (`INTERFACE.md`).
+- 2026-10-16 — tools: Let every checker list its rule names (`checker.py`, `--list-rules`).
 - 2026-10-16 — sushiskills: Required every report to name each SOLID breach and unneeded dependency met in the work, and every dependency to be one the code uses (`SKILL.md`).
 - 2026-10-16 — tools: Left the source and its test mirror out of the probe folder rule (`check_probes.py`, `rule_probe_outside_folder`).
 - 2026-10-16 — testing: Told tests, benchmarks, probes and programs apart by what they answer, with one probe per subsystem under `applications/probes/` (`SKILL.md`).
