@@ -94,6 +94,12 @@ different versions are an error `doctor` names, with both pinning repositories.
 4. A shared library's runtime file, such as `sushilog.dll`, is copied beside every executable
    the build makes that loads it, tests and examples included, through `TARGET_RUNTIME_DLLS`,
    and the install and every binary package ship it, listed in `NOTICE.md`.
+5. A Sushi library built as a shared library exports the version of its binary interface, and
+   a consumer checks it on first use: a mismatch stops the process with one line naming the
+   consumer, both versions and the library's path, never a crash later. SushiLog's form is in
+   `skills/logging/INTERFACE.md`, "ABI version".
+6. Every capability a CLI or `hub` has is in that repository's manual: a guide page says what
+   it does for the person and how to run it, and the FAQ links it.
 
 ## Upgrading and removing
 
