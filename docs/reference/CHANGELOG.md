@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- 2026-10-16 — testing: Told tests, benchmarks, probes and programs apart by what they answer, with one probe per subsystem under `applications/probes/` (`SKILL.md`).
+- 2026-10-16 — repository-layout: Placed probes under `applications/probes/` (`SKILL.md`).
+- 2026-10-16 — tools: Added the probe checker (`check_probes.py`).
 - 2026-10-16 — testing: Took a Python test's timeout from `pytest-timeout`, set from its size in `conftest.py` (`SKILL.md`).
 - 2026-10-16 — logging: Let a forward receiver ignore the sender's thread and text, and computed the ceiling with internal linkage per translation unit (`INTERFACE.md`).
 - 2026-10-16 — tools: Left a log call written in a comment out of the category rules (`check_logging.py`).

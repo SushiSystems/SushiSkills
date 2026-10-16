@@ -76,6 +76,37 @@ is a program of its own, from `performance`.
   `it("rejects a negative time step")`.
 - A test's name starts with the unit it tests, so a failing name leads to its file.
 
+## Tests, benchmarks, probes and programs
+
+Every program a repository runs on purpose is one of four kinds, told apart by what it answers.
+
+| Kind | Answers | Ends with | Lives in | Runs through |
+| --- | --- | --- | --- | --- |
+| Test | Does the code keep its promise? | Pass or fail | `tests/`, with a size | `<cli> test`, by size |
+| Benchmark | How fast or how light? | A measurement, no verdict | Beside the unit's tests, from `performance` | `<cli> bench` |
+| Probe | What does this device, driver or simulation do? | Numbers or files a person reads, no verdict | `applications/probes/<name>/` | `<cli> probe <name>` |
+| Program | How is the library used? | Whatever the program does | `applications/` | `<cli> run` |
+
+A program that decides pass or fail is a test, whatever it measures: a frame compared against
+its golden, a device checked against its own capability report, two pixels read back. It is
+written as a test of the size its hardware needs, usually `large`, and runs with the other tests
+of that size. A command that only runs tests of one size is `<cli> test --label <size>`, never a
+probe.
+
+A probe:
+
+- measures one subsystem, and a subsystem has one probe; a variant of it, such as a regional
+  nest against the global core, is an argument (`--scope global`), never a second probe;
+- has a name that no other probe's name starts with, so two probes are never told apart by a
+  suffix;
+- returns 0 whenever it ran, and non-zero only when it could not run, saying why on stderr;
+- prints each measurement on stdout as one line, `<name> <value> <unit>`, or writes its files
+  under one folder it names on start;
+- takes every input that changes its numbers, such as a seed, a viewpoint or a duration, from
+  its arguments, so two runs with the same arguments can be compared;
+- is listed in `applications/probes/README.md` with what it measures and an example run;
+- is never added to the test runner and never gates CI.
+
 ## Determinism
 
 1. Every random source takes a fixed seed written in the test.
