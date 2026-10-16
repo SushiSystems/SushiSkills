@@ -54,6 +54,24 @@ tree. A component that is not listed is not shipped.
   version, the licence, and every local patch listed.
 - Never installed by hand, never copied into a module's `source/`.
 
+## A Sushi library as a dependency
+
+A repository builds on its own, with or without a SushiStack workspace: whoever clones only
+SushiRuntime gets SushiLog through `sr setup`, without `hub`.
+
+1. The repository's dependency fragment, `cli/sushistack.deps.toml`, lists each Sushi library it
+   links in `[module] depends_on` and pins it in `[sushi.<name>]` with `version` (a release tag)
+   and `commit` (its full hash).
+2. The build finds it in this order, the CLI and CMake alike, and stops at the first that exists:
+   1. `<NAME>_DIR`, set by the person or the CLI;
+   2. the sibling checkout `../<name>`, as a workspace or a person lays it out;
+   3. the copy `<cli> setup` fetched: sushicore clones the pinned tag into its home, under
+      `sources/<name>/<version>/`, and refuses it when the commit differs from the pin.
+3. CMake never downloads; it only reads the path the CLI hands it.
+4. `<cli> doctor` reports a sibling whose commit differs from the pin, and which of the three it
+   used.
+5. Moving a pin is an upgrade, as below.
+
 ## Wiring
 
 1. A module links a third-party library `PRIVATE`. Its types never appear in the module's public

@@ -97,6 +97,18 @@ Tag `v0.1.0` with the owner's approval.
 
 Acceptance: the tag exists and the package builds from it.
 
+## Task 6a: a Sushi library resolves without a workspace
+
+`dependencies`, "A Sushi library as a dependency", holds the rule. In sushicore: read the
+`[sushi.<name>]` pins of a fragment, resolve `<NAME>_DIR`, then the sibling, then the fetched
+copy, and add a provisioning step that clones a pinned tag into `<home>/sources/<name>/<version>/`
+and checks its commit; `doctor` names the source it used and a sibling off its pin. Release
+sushicore with the owner's approval.
+
+Acceptance: in a scratch folder holding only a SushiRuntime clone, `sr setup` fetches SushiLog at
+its pin and `sr build` finds it; with a sibling present the sibling is used and the fetch is
+skipped.
+
 ## Tasks 7 to 10: adoption, one repository each, in its own session
 
 | Task | Repository | Change |
@@ -106,6 +118,7 @@ Acceptance: the tag exists and the package builds from it.
 | 9 | SushiBLAS, SushiAI | Their fronts move from `SR_LOG_FRONT_AT` to SushiLog's front macro and link SushiLog directly |
 | 10 | SushiEngine | Both lanes link SushiLog; the native lane's port and the SushiDSP join go |
 
-Each waits on task 6 and on the one above it in the hierarchy. Acceptance per task: the
+Each waits on tasks 6 and 6a and on the one above it in the hierarchy, pins SushiLog in its
+fragment and resolves it as task 6a does, never by `add_subdirectory` of a fixed path alone. Acceptance per task: the
 repository's `check_all` clean, its tests green, and one process loading it with SushiRuntime
 shows one stream with both projects' records.
