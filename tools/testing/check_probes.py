@@ -63,7 +63,8 @@ def rule_probe_outside_folder(repository: Repository) -> Iterator[Issue]:
     folders = {parent for path in repository.files for parent in path.relative_to(repository.root).parents}
     for folder in sorted(folders):
         inside = folder == K_PROBES or K_PROBES in folder.parents
-        if folder.name and K_PROBE_FOLDER.fullmatch(folder.name) and not inside \n                and folder.parts[0] not in K_MIRRORED:
+        mirrored = folder.parts[0] in K_MIRRORED if folder.parts else False
+        if folder.name and K_PROBE_FOLDER.fullmatch(folder.name) and not inside and not mirrored:
             yield Issue(repository.root / folder, 1, f"probes live in {K_PROBES.as_posix()}/<name>/")
 
 
