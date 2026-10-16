@@ -23,6 +23,7 @@ from checking.ignored_paths import drop_ignored  # noqa: E402
 
 K_PROBES = Path("applications") / "probes"
 K_PROBE_FOLDER = re.compile(r"probes?|.+_probes?")
+K_MIRRORED = frozenset({"modules", "tests", "source", "include"})
 K_SKIPPED = frozenset({".git", "third_party", "build", "docs", "node_modules", "__pycache__"})
 K_TEST_FRAMEWORK = re.compile(r"#\s*include\s*[<\"](?:gtest|gmock|catch2|doctest)/|^\s*import pytest\b", re.MULTILINE)
 K_TEST_RUNNER = re.compile(r"\b(?:add_test|gtest_discover_tests|gtest_add_tests|catch_discover_tests)\s*\(")
@@ -58,11 +59,11 @@ def collect(paths: list[Path]) -> Iterable[Repository]:
 
 
 def rule_probe_outside_folder(repository: Repository) -> Iterator[Issue]:
-    """Yields an issue for each folder named as probes that is not applications/probes or inside it."""
+    """Yields an issue for each folder named as probes outside applications/probes, the source and its test mirror."""
     folders = {parent for path in repository.files for parent in path.relative_to(repository.root).parents}
     for folder in sorted(folders):
         inside = folder == K_PROBES or K_PROBES in folder.parents
-        if folder.name and K_PROBE_FOLDER.fullmatch(folder.name) and not inside and folder.parts[0] != "modules":
+        if folder.name and K_PROBE_FOLDER.fullmatch(folder.name) and not inside \n                and folder.parts[0] not in K_MIRRORED:
             yield Issue(repository.root / folder, 1, f"probes live in {K_PROBES.as_posix()}/<name>/")
 
 
