@@ -77,6 +77,10 @@ Every view is valid only during the sink call.
 
 A project's level variable is read the first time one of its categories is used.
 
+A logger owns the projects whose categories it has seen. `set_log_level` and `log_level` for a
+project or category it does not own change nothing and write one `WARN` naming the project, so
+a host that set the level through the wrong logger sees why nothing changed.
+
 ## Forwarding
 
 A record entering through `log_forward_sink()` passes no level gate of the receiver, because the
