@@ -36,7 +36,7 @@ K_PY_FSTRING_CALL = re.compile(r"\b_?log\w*\.(?:trace|debug|info|warning|error|c
 K_COMMENT_STARTS = ("//", "/*", "*", "#")
 K_LOGGER_PREFIX = "SL"
 K_REEXPORT = re.compile(r"\busing\s+(?:\w+\s*=\s*)?(?:::)?SushiLog::\w+")
-K_FORWARDING_SHIM = re.compile(r"\)\s*\{\s*(?:return\s+)?(?:::)?(?:SushiLog::\w+|sl_\w+)\s*\([^;]*\)\s*;\s*\}")
+K_FORWARDING_SHIM = re.compile(r"\binline\b[^{};]*\)\s*\{\s*(?:return\s+)?(?:::)?(?:SushiLog::\w+|sl_\w+)\s*\([^;]*\)\s*;\s*\}")
 
 
 @dataclass(frozen=True, slots=True)
