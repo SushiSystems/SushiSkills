@@ -17,7 +17,7 @@ macro prefix and the paths that may write to the console from `tools/settings.py
 
 | Part | Rule |
 | --- | --- |
-| Logger | One per process. It lives in the foundation module of the lowest Sushi library the project depends on, inside that shared library, so a program and every library it loads share one queue, one thread and one sink. A project that depends on no Sushi library holds its own, under this same contract. The logger is the only code that writes a record |
+| Logger | One per project that depends on no other Sushi library, in its foundation module, inside its shared library. A project above one of them uses that logger. Where two loggers meet in one process, one forwards into the other, as "Two loggers in one process" says, so the process still has one queue, one thread and one sink. The logger is the only code that writes a record |
 | Front | Every project above the logger's owner keeps its own macros, categories and environment variable, and writes through the owner's logger. It adds no queue, thread or sink. A new project extends the logger by declaring categories, never by changing it |
 | Project | A value holding the project's name and the environment variable that sets its levels, declared once per project: `K_<PROJECT>_LOG_PROJECT` |
 | Category | A project and a module. Each module declares one, named after its folder, in `<module>_log_category.hpp`: `K_<MODULE>_LOG_CATEGORY`. A module logs only under its own |
@@ -108,6 +108,26 @@ send one project's records to their own file.
 | Failure | A sink that throws loses nothing: the logger writes the exception and the record to stderr |
 | `FATAL` | Delivered on the calling thread after the queue is drained, then flushed, before the process ends |
 | Exit | The logger is never destroyed, so a call is valid during static initialisation and process exit. At static destruction it stops its thread and delivers what is queued. A process ended without static destruction loses its queue |
+
+## Two loggers in one process
+
+A program that loads two projects with loggers of their own, such as SushiEngine loading
+SushiRuntime and SushiDSP, joins them at start-up, before its first log call. Without the join
+each logger writes stderr on its own thread and their lines interleave.
+
+| Part | Rule |
+| --- | --- |
+| Receiver | Every logger offers `log_forward_sink()`: a sink that takes a record from another logger and enters it into its own queue |
+| Sender | The other logger's sink is set to the receiver's forward sink. A logger whose sink forwards delivers on the calling thread, so the receiver numbers the thread and orders the record as if it had been called directly |
+| Fields | The forward carries the level, project, module, file, line and message, never a formatted line, so the receiver writes one record shape |
+| Levels | Each logger keeps the levels of its own projects and reads their variables. A record the sender's level drops is never forwarded |
+| Choice | The receiver is the logger of the library the program depends on most; the program names the join in one place, its start-up |
+
+```cpp
+SushiDSP::set_log_sink(SushiRuntime::log_forward_sink());
+```
+
+Source: not compiled
 
 ## Python
 
