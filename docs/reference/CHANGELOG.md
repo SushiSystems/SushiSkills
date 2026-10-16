@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-16 — logging: Made SushiLog the one logger every Sushi library links, with a hidden static target for plug-ins that join the host through the C calls (`SKILL.md`, `INTERFACE.md`).
 - 2026-10-16 — logging: Made a level call for a project the logger does not own write one warning (`INTERFACE.md`).
 - 2026-10-16 — tools: Let every checker list its rule names (`checker.py`, `--list-rules`).
 - 2026-10-16 — sushiskills: Required every report to name each SOLID breach and unneeded dependency met in the work, and every dependency to be one the code uses (`SKILL.md`).

@@ -1,6 +1,6 @@
 # SushiLog repository
 
-Status: proposed, waiting for the owner's decisions in task 0.
+Status: in progress; task 0 decided on 2026-10-16.
 
 One logger for every Sushi library, in a repository of its own. SushiRuntime, SushiDSP,
 SushiBLAS, SushiAI and SushiEngine link one shared library, so a process holds one queue, one
@@ -29,6 +29,14 @@ through SushiRuntime.
 4. Inline or waves for tasks 1 to 5, and build permission for each task's build.
 
 Acceptance: the four answers are recorded in this file.
+
+Decided on 2026-10-16:
+
+1. `SushiLog`, as proposed.
+2. PolyForm Noncommercial 1.0.0.
+3. The owner created `SushiSystems/SushiLog`; the checkout is `D:/Projects/sushilog`.
+4. Inline: one subagent (opus, low) writes tasks 2 to 5; this session runs every build and test,
+   because a subagent starts no build. It may copy from SushiRuntime's logger.
 
 ## Task 1: the standard names SushiLog
 

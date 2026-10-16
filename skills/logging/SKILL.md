@@ -17,8 +17,8 @@ macro prefix and the paths that may write to the console from `tools/settings.py
 
 | Part | Rule |
 | --- | --- |
-| Logger | One per project that depends on no other Sushi library, in its foundation module, inside its shared library. A project above one of them uses that logger. Where two loggers meet in one process, one forwards into the other, as "Meeting another logger" says, so the process still has one queue, one thread and one sink. The logger is the only code that writes a record |
-| Front | Every project above the logger's owner keeps its own macros, categories and environment variable, and writes through the owner's logger. It adds no queue, thread or sink. A new project extends the logger by declaring categories, never by changing it |
+| Logger | SushiLog, one shared library that every Sushi library links directly, never through another Sushi library. A process loads it once, so it holds one queue, one thread and one sink whatever it loads. A plug-in a host may load twice links SushiLog's static target, whose symbols are hidden, and joins the host as "Meeting another logger" says. SushiLog is the only code that writes a record |
+| Front | Every project keeps its own macros, `LogProject`, categories and environment variable, and writes through SushiLog. It adds no queue, thread or sink. A new project extends the logger by declaring categories, never by changing it |
 | Project | A value holding the project's name and the environment variable that sets its levels, declared once per project: `K_<PROJECT>_LOG_PROJECT` |
 | Category | A project and a module. Each module declares one, named after its folder, in `<module>_log_category.hpp`: `K_<MODULE>_LOG_CATEGORY`. A module logs only under its own |
 | Call | `<PREFIX>_LOG_<LEVEL>(category, "format {}", value)`, where `<PREFIX>` is the project's macro prefix |
@@ -112,25 +112,20 @@ its own logging system keeps it.
 
 ## Meeting another logger
 
-A process can hold a logger besides ours: a second Sushi logger, as when SushiEngine loads
-SushiRuntime and SushiDSP, or the host's own, as in Unity, a Python program or a game with a
-logging library. The program joins them at start-up, before its first log call, so one of them
-writes everything. Without the join each logger writes stderr on its own thread and their lines
-interleave.
+A process can hold a logging system besides SushiLog: the host's own, as in Unity, a Python
+program or a game with a logging library, or a plug-in's private SushiLog. The program joins
+them at start-up, before its first log call, so one of them writes everything.
 
 | Host | Join |
 | --- | --- |
-| Its own logging system | It sets the sink of every Sushi logger it loads to one that hands each record to its system |
-| A host outside C++ | The same, through the C interface |
-| Only Sushi libraries | One Sushi logger receives and every other forwards into it, as "Forwarding" in `INTERFACE.md` says |
+| Its own logging system, in C++ | It sets SushiLog's sink to one that hands each record to its system |
+| Its own logging system, outside C++ | The same, through the C interface |
+| A host that wants its records in SushiLog's stream | It writes them through `log_forward_sink()` |
+| A plug-in with a private SushiLog | The plug-in sets its sink to the host's, as either row above |
 
-| Rule | Detail |
-| --- | --- |
-| Choice | The receiver is the logger of the library the program depends on most; the program names the join in one place, its start-up |
-| Order | A logger that sends to a forward sink or a host's sink delivers on the calling thread, so records arrive in the order they were made |
-| Levels | Each logger keeps the levels of its own projects and reads their variables; a record the sender drops is never sent |
-
-The types, the calls, forwarding and the C interface are in [`INTERFACE.md`](INTERFACE.md).
+A sink that belongs to a host is delivered on the calling thread, so the host sees records in
+the order they were made. The types, the calls, forwarding and the C interface are in
+[`INTERFACE.md`](INTERFACE.md).
 
 ## Python
 
