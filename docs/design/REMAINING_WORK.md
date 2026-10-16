@@ -26,6 +26,11 @@ The single backlog of this repository.
   2027-01-03 a push fails on the oldest work folder until it is archived. The owner decides
   whether that is the intended nudge or whether the rule leaves the gate.
 - Whether contributions from outside are accepted, and under which contributor agreement.
+- Under study since 2026-10-16: C++ tests inside their module, at
+  `modules/<tier>/<module>/tests/`, with Python tests kept beside the package. The owner wants
+  the present `tests/` mirror used longer first, so every case is known. Cases collected so far:
+  a test that spans several modules, a second target inside a module folder, a shader twin, a
+  test that reaches a private header.
 
 ## Estate programmes
 
