@@ -20,7 +20,13 @@ why it exists so that a case it did not foresee is judged by its purpose.
 1. **SOLID.** Every unit is a brick: one responsibility, detachable and re-attachable without
    touching its neighbours, rebuildable on its own. Siblings that do the same kind of thing are
    shaped the same. Code depends on the abstraction it needs, never on a neighbour's internals.
-2. **Honesty.** Say what was done and what was not. Partial work is reported as partial.
+   A dependency exists because the code uses it: a module, a link, an include or a package the
+   code does not need is removed, or reported when removing it is the owner's decision.
+2. **Honesty.** Say what was done and what was not. Partial work is reported as partial. Every
+   report names each SOLID breach and each unneeded dependency met in the work, the ones it
+   made, the ones it kept and the ones it only saw, with the file and what it costs. A breach
+   is never called a trade-off to make it sound chosen, and "none" is written only after
+   looking.
 3. **An obsessive quality bar.** "Good enough for now" is not accepted. Work that passes by
    accident is not finished.
 4. **Maintainability before performance.** Engineer it once carefully, run it a thousand times
