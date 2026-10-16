@@ -91,10 +91,9 @@ Every view is valid only during the sink call.
 
 A project's level variable is read the first time one of its categories is used.
 
-A logger owns the projects whose categories it has seen. `set_log_level` and `log_level` for a
-project it does not own change nothing and write one `WARN` naming the project, so a host that
-set the level through the wrong logger sees why nothing changed. A call for a category makes the
-logger see it, so a category set before the first log call keeps its level.
+A level call for a project or a category adds it when it is new, reading the project's variable
+first. A host can therefore set a project's level before anything of the project has logged and
+without knowing a category name; every category of the project starts at that level.
 
 ## Forwarding
 
