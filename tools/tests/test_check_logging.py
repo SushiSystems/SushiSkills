@@ -106,6 +106,8 @@ class LoggingTest(unittest.TestCase):
         self.write("modules/foundation/log/include/PX/log/log_c_sink.h",
                    "static inline void px_set_log_sink(SushiLogSinkFunction f, void* u)\n{\n"
                    "    sl_set_log_sink(f, u);\n}\n")
+        self.write("modules/foundation/log/source/capture.cpp",
+                   "Capture::~Capture()\n{\n    SushiLog::set_log_sink(SushiLog::LogSink());\n}\n")
         self.assertEqual(self.found(rule_front_reexport),
                          [("log_c_sink.h", 1), ("log_level.hpp", 1), ("log_level.hpp", 2)])
 
