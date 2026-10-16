@@ -55,10 +55,10 @@ Source: not compiled
 | Field | Holds |
 | --- | --- |
 | `file`, `line` | The call site; `file` is the file name without its folders |
-| `thread` | The logger's number for the calling thread; 0 in a record sent to a forward sink |
+| `thread` | The sending logger's number for the calling thread |
 | `time_ns` | System clock time of the call, in nanoseconds since the Unix epoch |
 | `message` | The formatted message alone |
-| `text` | The whole line of `SKILL.md`'s "Record"; empty in a record sent to a forward sink |
+| `text` | The whole line of `SKILL.md`'s "Record" |
 
 Every view is valid only during the sink call.
 
@@ -80,8 +80,9 @@ A project's level variable is read the first time one of its categories is used.
 ## Forwarding
 
 A record entering through `log_forward_sink()` passes no level gate of the receiver, because the
-sender has already applied its own. The receiver keeps `time_ns`, gives `thread` its own number
-for the calling thread, writes `text` and queues the record as if the call had been made to it.
+sender has already applied its own. The receiver keeps `time_ns`, ignores the sender's `thread`
+and `text`, numbers the calling thread and writes the line itself, and queues the record as if
+the call had been made to it.
 
 Joining a sender to a receiver is two calls on the sender, made at start-up:
 
@@ -93,6 +94,13 @@ SushiDSP::set_log_sink(SushiRuntime::log_forward_sink());
 Source: not compiled
 
 The receiver is never destroyed, so a sender may forward during process exit.
+
+## Compile-time ceiling
+
+A front computes the ceiling of `SKILL.md`'s "Two gates" in its own translation unit, from
+`NDEBUG` and its `<PREFIX>_ENABLE_LOGGING`, through a function with internal linkage
+(`static constexpr`). An `inline` function whose body reads `NDEBUG` would differ between
+translation units and break the one-definition rule.
 
 ## C interface
 
