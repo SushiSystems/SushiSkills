@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-16 — logging: Handed the sink a record view of every field and joined a host's own logging system, in C++ or through a C sink setter (`SKILL.md`).
 - 2026-10-16 — logging: Let a project with no Sushi dependency keep its own logger, and join two loggers in one process through a forward sink (`SKILL.md`).
 - 2026-10-16 — logging: Made a project a value that names its level variable, and kept `ERROR` and `FATAL` when logging is switched off (`SKILL.md`).
 - 2026-10-16 — logging: Kept one logger per process with a front per project, so each project's records carry its name and its own variable sets its levels (`SKILL.md`).
