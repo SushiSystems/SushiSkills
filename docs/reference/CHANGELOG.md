@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-16 — dependencies: Required every shared Sushi library to check its binary interface version, and every CLI and hub capability to have a guide page (`SKILL.md`).
 - 2026-10-16 — logging: Added the ABI version a front checks on its first call (`INTERFACE.md`).
 - 2026-10-16 — dependencies: Moved pins together, named a failed fetch and conflicting pins, and shipped a shared library's runtime file beside every executable (`SKILL.md`).
 - 2026-10-16 — dependencies: Let a workspace take over a standalone setup, cloning from the copy setup fetched and clearing copies no module uses (`SKILL.md`).
