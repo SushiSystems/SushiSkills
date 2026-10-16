@@ -19,12 +19,15 @@ macro prefix and the paths that may write to the console from `tools/settings.py
 | --- | --- |
 | Logger | One per process. It lives in the foundation module of the lowest Sushi library the project depends on, inside that shared library, so a program and every library it loads share one queue, one thread and one sink. A project that depends on no Sushi library holds its own, under this same contract. The logger is the only code that writes a record |
 | Front | Every project above the logger's owner keeps its own macros, categories and environment variable, and writes through the owner's logger. It adds no queue, thread or sink. A new project extends the logger by declaring categories, never by changing it |
+| Project | A value holding the project's name and the environment variable that sets its levels, declared once per project: `K_<PROJECT>_LOG_PROJECT` |
 | Category | A project and a module. Each module declares one, named after its folder, in `<module>_log_category.hpp`: `K_<MODULE>_LOG_CATEGORY`. A module logs only under its own |
 | Call | `<PREFIX>_LOG_<LEVEL>(category, "format {}", value)`, where `<PREFIX>` is the project's macro prefix |
 | Format | The project's own C++17 formatter: each `{}` takes the next argument through `operator<<`, `{{` and `}}` are literal braces, no format specs. A value that needs width, precision or hex is formatted into a string before the call. No `std::format`, no concatenation at the call site |
 
 ```cpp
-inline constexpr Logging::LogCategory K_ECS_LOG_CATEGORY = Logging::make_log_category("sushiengine", "ecs");
+inline constexpr Logging::LogProject K_SUSHIENGINE_LOG_PROJECT{"sushiengine", "SE_LOG_LEVEL"};
+inline constexpr Logging::LogCategory K_ECS_LOG_CATEGORY =
+    Logging::make_log_category(K_SUSHIENGINE_LOG_PROJECT, "ecs");
 
 PX_LOG_WARN(K_ECS_LOG_CATEGORY,
             "archetype {} rejected component {}: already {} components, limit {}",
@@ -54,9 +57,9 @@ The level of every category is `WARN` unless something sets it.
 
 A call passes two gates before its arguments are evaluated.
 
-1. **Compile time.** Each translation unit has a ceiling: `OFF` when `<PREFIX>_ENABLE_LOGGING` is
-   defined as 0, `DEBUG` under `NDEBUG`, `TRACE` otherwise. A call past the ceiling compiles to
-   `((void)0)`.
+1. **Compile time.** Each translation unit has a ceiling: `ERROR` when `<PREFIX>_ENABLE_LOGGING`
+   is defined as 0, `DEBUG` under `NDEBUG`, `TRACE` otherwise. A call past the ceiling compiles
+   to `((void)0)`.
 2. **Run time.** Each category's level is one atomic. A call past it costs one relaxed load and a
    branch.
 
