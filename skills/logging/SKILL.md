@@ -18,7 +18,7 @@ macro prefix and the paths that may write to the console from `tools/settings.py
 | Part | Rule |
 | --- | --- |
 | Logger | SushiLog, one shared library that every Sushi library links directly, never through another Sushi library. A process loads it once, so it holds one queue, one thread and one sink whatever it loads. A plug-in a host may load twice links SushiLog's static target, whose symbols are hidden, and joins the host as "Meeting another logger" says. SushiLog is the only code that writes a record |
-| Front | Every project keeps its own macros, `LogProject`, categories and environment variable, and writes through SushiLog. It adds no queue, thread or sink. A new project extends the logger by declaring categories, never by changing it |
+| Front | Every project keeps its own macros, `LogProject`, categories and environment variable, and writes through SushiLog. It adds no queue, thread or sink. A new project extends the logger by declaring categories, never by changing it. What a front holds and what it never does is "Fronts" below |
 | Project | A value holding the project's name and the environment variable that sets its levels, declared once per project: `K_<PROJECT>_LOG_PROJECT` |
 | Category | A project and a module. Each module declares one, named after its folder, in `<module>_log_category.hpp`: `K_<MODULE>_LOG_CATEGORY`. A module logs only under its own |
 | Call | `<PREFIX>_LOG_<LEVEL>(category, "format {}", value)`, where `<PREFIX>` is the project's macro prefix |
@@ -35,6 +35,24 @@ PX_LOG_WARN(K_ECS_LOG_CATEGORY,
 ```
 
 Source: not compiled
+
+## Fronts
+
+A project's front is the part of logging that belongs to the project, in its foundation module.
+
+| A front holds | Example |
+| --- | --- |
+| Its `LogProject`, naming the project and its level variable | `K_SUSHIRUNTIME_LOG_PROJECT{"sushiruntime", "SR_LOG_LEVEL"}` |
+| Its ceiling, computed per translation unit | `K_LOG_LEVEL_FLOOR` from `SR_ENABLE_LOGGING` |
+| Its macros, each on `SL_LOG_FRONT_AT` | `SR_LOG_WARN(category, ...)` |
+| One category per module, in `<module>_log_category.hpp` | `K_MEMORY_LOG_CATEGORY` |
+
+A front never re-exports SushiLog: no alias of a SushiLog type (`using LogLevel =
+SushiLog::LogLevel`), no `using` of a SushiLog name into the project's namespace, no function or
+C function that only forwards to SushiLog (`sr_set_log_sink`). Code names SushiLog's types and
+calls as `SushiLog::...` and `sl_...`. One thing keeps one name; and a call such as
+`set_log_sink` or `set_log_synchronous` acts on the whole process, which a project-named copy
+would hide.
 
 ## Levels
 

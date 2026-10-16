@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-17 — logging: Named what a project's front holds and forbade it to re-export SushiLog's types and calls (`SKILL.md`).
 - 2026-10-17 — logging: Stated that SushiLog exports functions only, so one set of objects compiled with `SUSHILOG_STATIC` links either target (`INTERFACE.md`).
 - 2026-10-17 — logging: Limited the unowned warning to project calls, since a category call registers its category (`INTERFACE.md`).
 - 2026-10-16 — dependencies: Required every shared Sushi library to check its binary interface version, and every CLI and hub capability to have a guide page (`SKILL.md`).
