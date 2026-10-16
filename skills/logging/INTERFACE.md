@@ -32,6 +32,21 @@ Source: not compiled
 The numbers of `LogLevel` are part of the C interface below and never change. A project and a
 category hold views of string literals, so both are `constexpr` and live for the whole process.
 
+## ABI version
+
+```cpp
+inline constexpr std::uint32_t K_ABI_VERSION = 1;
+std::uint32_t abi_version() noexcept;
+```
+
+Source: not compiled
+
+`K_ABI_VERSION` is the version a front was compiled against; `abi_version()` is the one the
+loaded library holds. A front compares the two on its first call and, when they differ, writes
+one line on stderr naming its project, both versions and the library's path, then terminates,
+so a process never runs on a SushiLog whose layout it does not know. The number grows on every
+change to a type or a call of this page, and never otherwise.
+
 ## Record
 
 ```cpp

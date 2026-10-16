@@ -70,13 +70,19 @@ SushiRuntime gets SushiLog through `sr setup`, without `hub`.
 3. CMake never downloads; it only reads the path the CLI hands it.
 4. `<cli> doctor` reports a sibling whose commit differs from the pin, and which of the three it
    used.
-5. Moving a pin is an upgrade, as below.
+5. Moving a pin is an upgrade, as below. Every repository pinning a library moves together,
+   through `hub pin <name> <version>`, and the library's CI builds and tests each repository
+   that pins it before a release.
 6. A workspace takes over what a repository set up on its own. The toolchains `<cli> setup`
    installed sit in the machine root that `hub` reads too, so nothing is fetched twice.
    `hub link` adopts a checkout the person made. `hub add` clones a library from the copy setup
    fetched, when one at the pinned version exists, then points the clone's remote at the
    repository. The workspace sibling then wins the search above. `hub status` lists each fetched
    copy that no module uses any more, and `hub clean` removes it.
+
+When `setup` cannot fetch, it says in one message what it tried to fetch, from where, and how
+to hand it a checkout through `<NAME>_DIR`. Two pins of one library in one dependency chain at
+different versions are an error `doctor` names, with both pinning repositories.
 
 ## Wiring
 
@@ -85,6 +91,9 @@ SushiRuntime gets SushiLog through `sr setup`, without `hub`.
 2. When a public header must expose a third-party type (a graphics API handle, for example), the
    module's `README.md` says so and names the type, and the owner has approved it.
 3. One module wraps each dependency. Other modules use the wrapper, not the library.
+4. A shared library's runtime file, such as `sushilog.dll`, is copied beside every executable
+   the build makes that loads it, tests and examples included, through `TARGET_RUNTIME_DLLS`,
+   and the install and every binary package ship it, listed in `NOTICE.md`.
 
 ## Upgrading and removing
 
