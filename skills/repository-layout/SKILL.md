@@ -35,7 +35,7 @@ docs/
 | `modules/` | Source, one tree per module |
 | `include/`, `source/` | Source of a one-module repository, in place of `modules/` |
 | `tests/` | Every test, in a tree that mirrors the source; see `TESTS.md` |
-| `applications/` | Executables, one folder each; example programs under `applications/examples/` |
+| `applications/` | Executables, one folder each; example programs under `applications/examples/`, probes under `applications/probes/`; which kind a program is comes from `testing` |
 | `assets/` | Content an application loads at run time and the package ships; absent when there is none |
 | `third_party/` | Vendored code, outside this discipline |
 | `docs/` | Everything written in prose; see `documentation` |
