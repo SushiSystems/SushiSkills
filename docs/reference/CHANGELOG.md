@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-16 — logging: Kept one logger per process with a front per project, so each project's records carry its name and its own variable sets its levels (`SKILL.md`).
 - 2026-10-16 — tools: Reported a console write qualified with `std::` (`check_logging.py`, `rule_console_output`).
 - 2026-10-16 — tools: Left an entry under `docs/` that git ignores out of the tree check (`check_docs_layout.py`, `rule_docs_entries`).
 - 2026-10-16 — tools: Read further build keywords that declare a private dependency, such as a compile-only link (`check_layering.py`, `K_PRIVATE_DEPENDS_ALSO`).
