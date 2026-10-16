@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-17 — logging: Made a project level call add the project, so a host sets it before anything logs (`INTERFACE.md`).
 - 2026-10-17 — tools: Reported a front that re-exports a SushiLog name or forwards to it (`check_logging.py`, `rule_front_reexport`).
 - 2026-10-17 — logging: Named what a project's front holds and forbade it to re-export SushiLog's types and calls (`SKILL.md`).
 - 2026-10-17 — logging: Stated that SushiLog exports functions only, so one set of objects compiled with `SUSHILOG_STATIC` links either target (`INTERFACE.md`).
