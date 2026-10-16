@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-16 — tools: Left the source and its test mirror out of the probe folder rule (`check_probes.py`, `rule_probe_outside_folder`).
 - 2026-10-16 — testing: Told tests, benchmarks, probes and programs apart by what they answer, with one probe per subsystem under `applications/probes/` (`SKILL.md`).
 - 2026-10-16 — repository-layout: Placed probes under `applications/probes/` (`SKILL.md`).
 - 2026-10-16 — tools: Added the probe checker (`check_probes.py`).

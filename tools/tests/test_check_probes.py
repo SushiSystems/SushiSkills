@@ -49,6 +49,7 @@ class ProbesTest(unittest.TestCase):
         self.write("tools/probes/clouds/main.cpp")
         self.write("applications/render_probe/main.cpp")
         self.write("modules/render/source/gi/probe/volume.cpp")
+        self.write("tests/foundation/device_probe/test_query.cpp")
         self.assertEqual(self.found(rule_probe_outside_folder), ["applications/render_probe", "tools/probes"])
 
     def test_reports_a_probe_that_uses_a_test_framework(self) -> None:
