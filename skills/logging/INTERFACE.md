@@ -1,8 +1,7 @@
 # Logger interface
 
-Every Sushi logger offers this interface, in its project's namespace and with its project's
-export macro, so that any two of them, or one and a host, join the same way. `SKILL.md` holds
-the rules; this page holds the types and what each call does.
+SushiLog offers this interface, in namespace `SushiLog`, as the one logger of every Sushi
+library. `SKILL.md` holds the rules; this page holds the types and what each call does.
 
 ## Values
 
@@ -88,11 +87,13 @@ sender has already applied its own. The receiver keeps `time_ns`, ignores the se
 and `text`, numbers the calling thread and writes the line itself, and queues the record as if
 the call had been made to it.
 
-Joining a sender to a receiver is two calls on the sender, made at start-up:
+A plug-in that links SushiLog's static target joins the host's SushiLog through the C
+interface, because a `LogSink` does not cross a library boundary: the host hands the plug-in
+`sl_forward_record`, and the plug-in makes it its sink at start-up.
 
 ```cpp
-SushiDSP::set_log_synchronous(true);
-SushiDSP::set_log_sink(SushiRuntime::log_forward_sink());
+sl_set_log_synchronous(1);
+sl_set_log_sink(host_forward_record, host_user);
 ```
 
 Source: not compiled
@@ -108,8 +109,7 @@ translation units and break the one-definition rule.
 
 ## C interface
 
-A host outside C++ joins through one C call per logger, named with the project's lowercase
-prefix.
+A host outside C++, or a plug-in with a private SushiLog, joins through these C calls.
 
 ```c
 typedef struct SushiLogRecord
@@ -128,12 +128,14 @@ typedef struct SushiLogRecord
 
 typedef void (*SushiLogSinkFunction)(const SushiLogRecord* record, void* user);
 
-void sr_set_log_sink(SushiLogSinkFunction function, void* user);
-void sr_set_log_synchronous(int synchronous);
+void sl_set_log_sink(SushiLogSinkFunction function, void* user);
+void sl_set_log_synchronous(int synchronous);
+void sl_forward_record(const SushiLogRecord* record, void* user);
 ```
 
 Source: not compiled
 
+`sl_forward_record` is `log_forward_sink()` as a `SushiLogSinkFunction`; its `user` is unused.
 `size` is `sizeof(SushiLogRecord)` of the logger that filled it; a later version only adds
 fields at the end, and a host reads only the fields its own `size` covers. Strings are not
 NUL-terminated. A null `function` restores stderr. The function must not throw or unwind into
