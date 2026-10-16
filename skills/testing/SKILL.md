@@ -60,6 +60,9 @@ A test's size is written in its source, once, where the test is declared:
 | Python | `pytest.mark.small`, `medium` or `large` on the test's class, or as `pytestmark` on its file |
 | TypeScript | The `describe` block's name opens with `small:`, `medium:` or `large:` |
 
+In Python the timeout comes from `pytest-timeout`, a development dependency of every package
+with tests, which the project's `conftest.py` sets from each test's size.
+
 The build reads the size from there and sets the label and the timeout; no build file lists
 suites or files by size. A suite that opens with no size fails the build, and in Python one
 that carries none fails collection. `quarantined` is the one label a build file lists, by test
