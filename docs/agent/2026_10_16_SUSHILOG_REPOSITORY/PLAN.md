@@ -1,6 +1,8 @@
 # SushiLog repository
 
-Status: in progress; task 0 decided on 2026-10-16.
+Status: in progress. Done on 2026-10-17: tasks 0 to 6 (SushiLog v0.1.0, commit `b2dc144`) and
+6a (sushicore v0.9.1). Open: 6b and 6c in SushiStack, and the adoptions 7 to 10: 7 and 8
+started, 9 waits on 7, 10 waits on 7 and 8.
 
 One logger for every Sushi library, in a repository of its own. SushiRuntime, SushiDSP,
 SushiBLAS, SushiAI and SushiEngine link one shared library, so a process holds one queue, one
