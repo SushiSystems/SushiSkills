@@ -17,7 +17,7 @@ macro prefix and the paths that may write to the console from `tools/settings.py
 
 | Part | Rule |
 | --- | --- |
-| Logger | One per project that depends on no other Sushi library, in its foundation module, inside its shared library. A project above one of them uses that logger. Where two loggers meet in one process, one forwards into the other, as "Two loggers in one process" says, so the process still has one queue, one thread and one sink. The logger is the only code that writes a record |
+| Logger | One per project that depends on no other Sushi library, in its foundation module, inside its shared library. A project above one of them uses that logger. Where two loggers meet in one process, one forwards into the other, as "Meeting another logger" says, so the process still has one queue, one thread and one sink. The logger is the only code that writes a record |
 | Front | Every project above the logger's owner keeps its own macros, categories and environment variable, and writes through the owner's logger. It adds no queue, thread or sink. A new project extends the logger by declaring categories, never by changing it |
 | Project | A value holding the project's name and the environment variable that sets its levels, declared once per project: `K_<PROJECT>_LOG_PROJECT` |
 | Category | A project and a module. Each module declares one, named after its folder, in `<module>_log_category.hpp`: `K_<MODULE>_LOG_CATEGORY`. A module logs only under its own |
@@ -93,8 +93,9 @@ A record is one line, with no line break inside it:
 The fields are local time to the millisecond, the level, the project and module of the
 category, the thread and the file and line of the call. The thread is a small number the logger gives each thread on its first
 record, so one thread's records can be followed through the log. A record goes into the sink as
-its level, its project, its module and the line, all valid during the call, so a program can
-send one project's records to their own file.
+one record view: level, project, module, file, line, thread, message and the formatted line, all
+valid during the call. A program can send one project's records to their own file, and a host
+with a logging system of its own can file each field where it belongs.
 
 ## Sink
 
@@ -109,11 +110,19 @@ send one project's records to their own file.
 | `FATAL` | Delivered on the calling thread after the queue is drained, then flushed, before the process ends |
 | Exit | The logger is never destroyed, so a call is valid during static initialisation and process exit. At static destruction it stops its thread and delivers what is queued. A process ended without static destruction loses its queue |
 
-## Two loggers in one process
+## Meeting another logger
 
-A program that loads two projects with loggers of their own, such as SushiEngine loading
-SushiRuntime and SushiDSP, joins them at start-up, before its first log call. Without the join
-each logger writes stderr on its own thread and their lines interleave.
+A process can hold a logger besides ours: a second Sushi logger, as when SushiEngine loads
+SushiRuntime and SushiDSP, or the host's own, as in Unity, a Python program or a game with a
+logging library. The program joins them at start-up, before its first log call, so one of them
+writes everything. Without the join each logger writes stderr on its own thread and their lines
+interleave.
+
+| Host | Join |
+| --- | --- |
+| Its own logging system | It sets the sink of every Sushi logger it loads to one that hands the record view to its system |
+| A host outside C++ | The same, through the logger's `extern "C"` sink setter, which takes a function pointer, a user pointer and a plain struct of the record's fields |
+| Only Sushi libraries | One Sushi logger receives, every other forwards into it, as below |
 
 | Part | Rule |
 | --- | --- |
@@ -122,6 +131,7 @@ each logger writes stderr on its own thread and their lines interleave.
 | Fields | The forward carries the level, project, module, file, line and message, never a formatted line, so the receiver writes one record shape |
 | Levels | Each logger keeps the levels of its own projects and reads their variables. A record the sender's level drops is never forwarded |
 | Choice | The receiver is the logger of the library the program depends on most; the program names the join in one place, its start-up |
+| Delivery | A logger whose sink belongs to a host also delivers on the calling thread, so the host sees calls in the order they were made |
 
 ```cpp
 SushiDSP::set_log_sink(SushiRuntime::log_forward_sink());
