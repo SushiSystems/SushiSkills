@@ -7,7 +7,8 @@ description: Use when adding, reviewing or removing a log call, a log category, 
 
 A log records what the program decided. After a failure, a reader must be able to tell what
 happened, with which values, in which module and thread, and what the program did next, without
-a debugger. A level that is off costs nothing.
+a debugger, and follow one project's records through a process that loads several. A level
+that is off costs nothing.
 
 `tools/logs/check_logging.py` enforces the rules a checker can see. It reads the project's
 macro prefix and the paths that may write to the console from `tools/settings.py`.
@@ -16,13 +17,14 @@ macro prefix and the paths that may write to the console from `tools/settings.py
 
 | Part | Rule |
 | --- | --- |
-| Logger | One per process, in the project's foundation module, inside the shared library, so a program and every library it loads share one level table and one sink. It is the only code that writes a record |
-| Category | Each module declares one, named after its folder, in `<module>_log_category.hpp`: `K_<MODULE>_LOG_CATEGORY`. A module logs only under its own |
+| Logger | One per process. It lives in the foundation module of the lowest Sushi library the project depends on, inside that shared library, so a program and every library it loads share one queue, one thread and one sink. A project that depends on no Sushi library holds its own, under this same contract. The logger is the only code that writes a record |
+| Front | Every project above the logger's owner keeps its own macros, categories and environment variable, and writes through the owner's logger. It adds no queue, thread or sink. A new project extends the logger by declaring categories, never by changing it |
+| Category | A project and a module. Each module declares one, named after its folder, in `<module>_log_category.hpp`: `K_<MODULE>_LOG_CATEGORY`. A module logs only under its own |
 | Call | `<PREFIX>_LOG_<LEVEL>(category, "format {}", value)`, where `<PREFIX>` is the project's macro prefix |
 | Format | The project's own C++17 formatter: each `{}` takes the next argument through `operator<<`, `{{` and `}}` are literal braces, no format specs. A value that needs width, precision or hex is formatted into a string before the call. No `std::format`, no concatenation at the call site |
 
 ```cpp
-inline constexpr Logging::LogCategory K_ECS_LOG_CATEGORY = Logging::make_log_category("ecs");
+inline constexpr Logging::LogCategory K_ECS_LOG_CATEGORY = Logging::make_log_category("sushiengine", "ecs");
 
 PX_LOG_WARN(K_ECS_LOG_CATEGORY,
             "archetype {} rejected component {}: already {} components, limit {}",
@@ -62,29 +64,34 @@ A call passes two gates before its arguments are evaluated.
 
 ## Setting the level
 
-`<PREFIX>_LOG_LEVEL` in the environment sets the levels at the first log call. It takes a level
-for every category, then any number of `category=level` pairs, in any case:
+Each project's `<PREFIX>_LOG_LEVEL` sets the levels of that project's categories at the first
+log call, and touches no other project's. It takes a level for all of them, then any number of
+`module=level` pairs, in any case:
 
 ```
-PX_LOG_LEVEL=warn,distributed=debug,memory=trace
+SR_LOG_LEVEL=off
+SA_LOG_LEVEL=warn,autograd=trace
 ```
 
-A value the logger cannot read is reported once on stderr, and the levels stay at `WARN`. In
-code, `set_log_level(level)` sets every category and `set_log_level(category, level)` sets one.
-A call made before the first log call wins over the environment.
+These two lines silence one project and follow one module of another, in the same process. A
+value the logger cannot read is reported once on stderr, and that project's levels stay at
+`WARN`. In code, `set_log_level(project, level)` sets one project and
+`set_log_level(category, level)` sets one category. A call made before the first log call wins
+over the environment.
 
 ## Record
 
 A record is one line, with no line break inside it:
 
 ```
-[12:04:31.207] [WARN] [memory] [t3] [usm_allocator.cpp:88] share refused for 64 MiB on device 1; falling back to a host copy
+[12:04:31.207] [WARN] [sushiruntime.memory] [t3] [usm_allocator.cpp:88] share refused for 64 MiB on device 1; falling back to a host copy
 ```
 
-The fields are local time to the millisecond, the level, the category, the thread and the file
-and line of the call. The thread is a small number the logger gives each thread on its first
+The fields are local time to the millisecond, the level, the project and module of the
+category, the thread and the file and line of the call. The thread is a small number the logger gives each thread on its first
 record, so one thread's records can be followed through the log. A record goes into the sink as
-its level and the line, valid during the call.
+its level, its project, its module and the line, all valid during the call, so a program can
+send one project's records to their own file.
 
 ## Sink
 
