@@ -123,6 +123,14 @@ A front computes the ceiling of `SKILL.md`'s "Two gates" in its own translation 
 (`static constexpr`). An `inline` function whose body reads `NDEBUG` would differ between
 translation units and break the one-definition rule.
 
+## Linking both targets
+
+SushiLog exports functions only, never data, and keeps it so. A consumer whose one set of objects
+reaches both the shared library and a plug-in linked to the static target compiles them with
+`SUSHILOG_STATIC`: no declaration then carries an import decoration, the plug-in resolves each
+call in the static target, and every other program resolves it through the shared library's
+import thunks.
+
 ## C interface
 
 A host outside C++, or a plug-in with a private SushiLog, joins through these C calls.
