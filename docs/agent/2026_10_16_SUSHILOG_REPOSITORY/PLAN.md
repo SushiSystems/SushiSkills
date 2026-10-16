@@ -109,6 +109,15 @@ Acceptance: in a scratch folder holding only a SushiRuntime clone, `sr setup` fe
 its pin and `sr build` finds it; with a sibling present the sibling is used and the fetch is
 skipped.
 
+## Task 6b: a workspace takes over a standalone setup
+
+In SushiStack, rule 6 of the same section: `hub add` clones from a fetched copy at the pinned
+version and resets the remote; `hub status` lists fetched copies no module uses; `hub clean`
+removes them. It waits on task 6a's folder layout.
+
+Acceptance: a test with a fetched copy and no network adds the module from it, with the
+repository's URL as the remote; a second test lists and removes an unused copy.
+
 ## Tasks 7 to 10: adoption, one repository each, in its own session
 
 | Task | Repository | Change |
@@ -118,7 +127,7 @@ skipped.
 | 9 | SushiBLAS, SushiAI | Their fronts move from `SR_LOG_FRONT_AT` to SushiLog's front macro and link SushiLog directly |
 | 10 | SushiEngine | Both lanes link SushiLog; the native lane's port and the SushiDSP join go |
 
-Each waits on tasks 6 and 6a and on the one above it in the hierarchy, pins SushiLog in its
+Each waits on tasks 6, 6a and 6b and on the one above it in the hierarchy, pins SushiLog in its
 fragment and resolves it as task 6a does, never by `add_subdirectory` of a fixed path alone. Acceptance per task: the
 repository's `check_all` clean, its tests green, and one process loading it with SushiRuntime
 shows one stream with both projects' records.

@@ -71,6 +71,12 @@ SushiRuntime gets SushiLog through `sr setup`, without `hub`.
 4. `<cli> doctor` reports a sibling whose commit differs from the pin, and which of the three it
    used.
 5. Moving a pin is an upgrade, as below.
+6. A workspace takes over what a repository set up on its own. The toolchains `<cli> setup`
+   installed sit in the machine root that `hub` reads too, so nothing is fetched twice.
+   `hub link` adopts a checkout the person made. `hub add` clones a library from the copy setup
+   fetched, when one at the pinned version exists, then points the clone's remote at the
+   repository. The workspace sibling then wins the search above. `hub status` lists each fetched
+   copy that no module uses any more, and `hub clean` removes it.
 
 ## Wiring
 
