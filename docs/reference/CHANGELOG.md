@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-16 — tools: Left an entry under `docs/` that git ignores out of the tree check (`check_docs_layout.py`, `rule_docs_entries`).
 - 2026-10-16 — tools: Read further build keywords that declare a private dependency, such as a compile-only link (`check_layering.py`, `K_PRIVATE_DEPENDS_ALSO`).
 - 2026-10-16 — tools: Let the rule option of every checker repeat (`checker.py`).
 - 2026-10-16 — tools: Read every shader stage and include fragment, and report the backslash date tag too (`check_source_comments.py`).
