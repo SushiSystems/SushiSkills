@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-16 — tools: Left a log call written in a comment out of the category rules (`check_logging.py`).
 - 2026-10-16 — logging: Fixed the one interface every logger offers: its values, record, calls, forwarding and C sink (`INTERFACE.md`).
 - 2026-10-16 — logging: Handed the sink a record view of every field and joined a host's own logging system, in C++ or through a C sink setter (`SKILL.md`).
 - 2026-10-16 — logging: Let a project with no Sushi dependency keep its own logger, and join two loggers in one process through a forward sink (`SKILL.md`).
