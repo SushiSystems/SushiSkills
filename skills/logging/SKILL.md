@@ -91,11 +91,11 @@ A record is one line, with no line break inside it:
 ```
 
 The fields are local time to the millisecond, the level, the project and module of the
-category, the thread and the file and line of the call. The thread is a small number the logger gives each thread on its first
-record, so one thread's records can be followed through the log. A record goes into the sink as
-one record view: level, project, module, file, line, thread, message and the formatted line, all
-valid during the call. A program can send one project's records to their own file, and a host
-with a logging system of its own can file each field where it belongs.
+category, the thread and the file and line of the call. The thread is a small number the logger
+gives each thread on its first record, so one thread's records can be followed through the log.
+The sink receives every field apart, as the `LogRecord` of [`INTERFACE.md`](INTERFACE.md), so a
+program can send one project's records to their own file and a host can file each field where
+its own logging system keeps it.
 
 ## Sink
 
@@ -120,24 +120,17 @@ interleave.
 
 | Host | Join |
 | --- | --- |
-| Its own logging system | It sets the sink of every Sushi logger it loads to one that hands the record view to its system |
-| A host outside C++ | The same, through the logger's `extern "C"` sink setter, which takes a function pointer, a user pointer and a plain struct of the record's fields |
-| Only Sushi libraries | One Sushi logger receives, every other forwards into it, as below |
+| Its own logging system | It sets the sink of every Sushi logger it loads to one that hands each record to its system |
+| A host outside C++ | The same, through the C interface |
+| Only Sushi libraries | One Sushi logger receives and every other forwards into it, as "Forwarding" in `INTERFACE.md` says |
 
-| Part | Rule |
+| Rule | Detail |
 | --- | --- |
-| Receiver | Every logger offers `log_forward_sink()`: a sink that takes a record from another logger and enters it into its own queue |
-| Sender | The other logger's sink is set to the receiver's forward sink. A logger whose sink forwards delivers on the calling thread, so the receiver numbers the thread and orders the record as if it had been called directly |
-| Fields | The forward carries the level, project, module, file, line and message, never a formatted line, so the receiver writes one record shape |
-| Levels | Each logger keeps the levels of its own projects and reads their variables. A record the sender's level drops is never forwarded |
 | Choice | The receiver is the logger of the library the program depends on most; the program names the join in one place, its start-up |
-| Delivery | A logger whose sink belongs to a host also delivers on the calling thread, so the host sees calls in the order they were made |
+| Order | A logger that sends to a forward sink or a host's sink delivers on the calling thread, so records arrive in the order they were made |
+| Levels | Each logger keeps the levels of its own projects and reads their variables; a record the sender drops is never sent |
 
-```cpp
-SushiDSP::set_log_sink(SushiRuntime::log_forward_sink());
-```
-
-Source: not compiled
+The types, the calls, forwarding and the C interface are in [`INTERFACE.md`](INTERFACE.md).
 
 ## Python
 
