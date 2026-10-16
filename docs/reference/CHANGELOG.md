@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-10-16 — logging: Added the ABI version a front checks on its first call (`INTERFACE.md`).
+- 2026-10-16 — dependencies: Moved pins together, named a failed fetch and conflicting pins, and shipped a shared library's runtime file beside every executable (`SKILL.md`).
 - 2026-10-16 — dependencies: Let a workspace take over a standalone setup, cloning from the copy setup fetched and clearing copies no module uses (`SKILL.md`).
 - 2026-10-16 — dependencies: Pinned each Sushi library a repository links and found it through its directory, its sibling or the copy setup fetched, so a repository builds without a workspace (`SKILL.md`).
 - 2026-10-16 — logging: Made SushiLog the one logger every Sushi library links, with a hidden static target for plug-ins that join the host through the C calls (`SKILL.md`, `INTERFACE.md`).

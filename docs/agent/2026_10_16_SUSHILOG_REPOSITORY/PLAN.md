@@ -91,6 +91,14 @@ ASan with UBSan, and ThreadSanitizer.
 Acceptance: CI green on main; a consumer project in `tests/` finds the package and logs through
 both targets.
 
+## Task 5a: user guide
+
+`docs/guides/LOGGING_GUIDE.md` in SushiLog: where records go, how to set levels per project and
+module, how to send records to a file or a host's system, and what the ABI check's message
+means. Each adopting repository's FAQ links it.
+
+Acceptance: `check_docs_truth.py` clean in SushiLog.
+
 ## Task 6: release
 
 Tag `v0.1.0` with the owner's approval.
@@ -118,6 +126,14 @@ removes them. It waits on task 6a's folder layout.
 Acceptance: a test with a fetched copy and no network adds the module from it, with the
 repository's URL as the remote; a second test lists and removes an unused copy.
 
+## Task 6c: pins move together
+
+In SushiStack: `hub pin <name> <version>` rewrites the `[sushi.<name>]` pin in every linked
+module's fragment, and SushiLog's CI gains a downstream stage that builds and tests SushiRuntime
+against the commit under test.
+
+Acceptance: a test moves a pin in two fragments at once; the downstream stage runs on main.
+
 ## Tasks 7 to 10: adoption, one repository each, in its own session
 
 | Task | Repository | Change |
@@ -125,7 +141,7 @@ repository's URL as the remote; a second test lists and removes an unused copy.
 | 7 | SushiRuntime | `foundation/log` and `foundation/logging` become the SR front over SushiLog; `logger.cpp` goes; `SR_LOG_*` and the public calls keep their names |
 | 8 | SushiDSP | Its logger goes; `SD_LOG_*` becomes a front over SushiLog; plug-ins link `SushiLogStatic` |
 | 9 | SushiBLAS, SushiAI | Their fronts move from `SR_LOG_FRONT_AT` to SushiLog's front macro and link SushiLog directly |
-| 10 | SushiEngine | Both lanes link SushiLog; the native lane's port and the SushiDSP join go |
+| 10 | SushiEngine | Both lanes link SushiLog; the native lane's port and the SushiDSP join go; the binary package ships `sushilog.dll`, lists SushiLog in `NOTICE.md` and names its version |
 
 Each waits on tasks 6, 6a and 6b and on the one above it in the hierarchy, pins SushiLog in its
 fragment and resolves it as task 6a does, never by `add_subdirectory` of a fixed path alone. Acceptance per task: the
