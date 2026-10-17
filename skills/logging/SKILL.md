@@ -22,7 +22,7 @@ macro prefix and the paths that may write to the console from `tools/settings.py
 | Project | A value holding the project's name and the environment variable that sets its levels, declared once per project: `K_<PROJECT>_LOG_PROJECT` |
 | Category | A project and a module. Each module declares one, named after its folder, in `<module>_log_category.hpp`: `K_<MODULE>_LOG_CATEGORY`. A module logs only under its own |
 | Call | `<PREFIX>_LOG_<LEVEL>(category, "format {}", value)`, where `<PREFIX>` is the project's macro prefix |
-| Format | The project's own C++17 formatter: each `{}` takes the next argument through `operator<<`, `{{` and `}}` are literal braces, no format specs. A value that needs width, precision or hex is formatted into a string before the call. No `std::format`, no concatenation at the call site |
+| Format | SushiLog's formatter: each `{}` takes the next argument through `operator<<`, `{{` and `}}` are literal braces, no format specs. A value that needs width, precision or hex is formatted into a string before the call. No `std::format`, no concatenation at the call site. Text built outside a log call, such as an error message, uses the one general formatter of the lowest Sushi library the project links; a project never keeps a formatter of its own |
 
 ```cpp
 inline constexpr Logging::LogProject K_SUSHIENGINE_LOG_PROJECT{"sushiengine", "SE_LOG_LEVEL"};
@@ -187,6 +187,12 @@ involved, and what the program does now.
 
 A failure is either returned to the caller as a status or logged where it is handled, never
 neither. An empty `catch` or an `except` whose body is only `pass` is forbidden.
+
+A failure is logged once. A helper that makes the failure at a boundary may log it there; then
+the code that catches it does not log it again. A macro or helper used everywhere to throw, such
+as a check that throws on a false condition, only throws and never logs. A macro that logs on
+behalf of its caller takes the caller's category, so its records filter by the module that made
+them.
 
 ```cpp
 try
