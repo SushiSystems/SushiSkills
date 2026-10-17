@@ -83,7 +83,7 @@ Every program a repository runs on purpose is one of four kinds, told apart by w
 | Kind | Answers | Ends with | Lives in | Runs through |
 | --- | --- | --- | --- | --- |
 | Test | Does the code keep its promise? | Pass or fail | `tests/`, with a size | `<cli> test`, by size |
-| Benchmark | How fast or how light? | A measurement, no verdict | Beside the unit's tests, from `performance` | `<cli> bench` |
+| Benchmark | How fast or how light? | A measurement, no verdict | Beside the unit's tests, or a scenario under `applications/benchmarks/`, from `performance` | `<cli> bench` |
 | Probe | What does this device, driver or simulation do? | Numbers or files a person reads, no verdict | `applications/probes/<name>/` | `<cli> probe <name>` |
 | Program | How is the library used? | Whatever the program does | `applications/` | `<cli> run` |
 
