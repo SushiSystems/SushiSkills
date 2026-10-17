@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-17 — logging: Added `log_at` for a record at another call site (`INTERFACE.md`).
 - 2026-10-17 — logging: Moved the one text formatter and its value helpers to SushiLog::text (`SKILL.md`).
 - 2026-10-17 — logging: Named SushiRuntime's `format_text` and its value helpers as the one formatter for text outside log calls (`SKILL.md`).
 - 2026-10-17 — logging: Logged a failure once, kept throwing helpers silent, gave a logging macro its caller's category and allowed one shared formatter (`SKILL.md`).

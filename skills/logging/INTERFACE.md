@@ -88,6 +88,7 @@ Every view is valid only during the sink call.
 | `void set_log_sink(LogSink)` | Replaces the sink; an empty sink restores stderr |
 | `void set_log_synchronous(bool)` | `true` waits for the queue, then delivers each record on the calling thread |
 | `LogSink log_forward_sink()` | Returns a sink that enters another logger's record into this logger's queue |
+| `void log_at(LogLevel, LogCategory, const char* file, int line, std::string_view message)` | Writes one record at the given call site past both level gates, for a handler that reports a failure elsewhere, such as an assertion |
 
 A project's level variable is read the first time one of its categories is used.
 
