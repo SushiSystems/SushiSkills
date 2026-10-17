@@ -22,7 +22,7 @@ macro prefix and the paths that may write to the console from `tools/settings.py
 | Project | A value holding the project's name and the environment variable that sets its levels, declared once per project: `K_<PROJECT>_LOG_PROJECT` |
 | Category | A project and a module. Each module declares one, named after its folder, in `<module>_log_category.hpp`: `K_<MODULE>_LOG_CATEGORY`. A module logs only under its own |
 | Call | `<PREFIX>_LOG_<LEVEL>(category, "format {}", value)`, where `<PREFIX>` is the project's macro prefix |
-| Format | SushiLog's formatter: each `{}` takes the next argument through `operator<<`, `{{` and `}}` are literal braces, no format specs. A value that needs width, precision or hex is formatted into a string before the call. No `std::format`, no concatenation at the call site. Text built outside a log call, such as an error message, uses SushiRuntime's `format_text`, and a value that needs width, precision or hex goes through the helpers beside it; a project never keeps a formatter or such a helper of its own |
+| Format | `SushiLog::text`, which the logger and every other message share: `format_text`, where each `{}` takes the next argument through `operator<<`, `{{` and `}}` are literal braces and there are no format specs; a value that needs a precision, a width, a form or hex goes first through its helpers (`fixed`, `general`, `scientific`, `hex`, `right`, `left`). No `std::format`, no concatenation at the call site, and no project keeps a formatter or such a helper of its own |
 
 ```cpp
 inline constexpr Logging::LogProject K_SUSHIENGINE_LOG_PROJECT{"sushiengine", "SE_LOG_LEVEL"};
