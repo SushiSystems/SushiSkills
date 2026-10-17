@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-17 — logging: Logged a failure once, kept throwing helpers silent, gave a logging macro its caller's category and allowed one shared formatter (`SKILL.md`).
 - 2026-10-17 — tools: Held scenario benchmarks under `applications/benchmarks/` to the probe rules (`check_probes.py`).
 - 2026-10-17 — performance: Split benchmarks into micro ones beside their unit and scenario ones under `applications/benchmarks/`, with no test size and no release gate (`SKILL.md`).
 - 2026-10-17 — testing: Named scenario benchmarks among the program kinds (`SKILL.md`).
