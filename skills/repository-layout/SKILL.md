@@ -98,7 +98,10 @@ nothing else.
    name, with or without a prefix. Code that has no better name is split until each part has one.
    The bottom layer that wraps the platform and the language's primitives is such a module too,
    named by what it wraps: `platform`, `status`, `allocation`.
-2. A module's public surface is its `include/` tree. `source/` is private to it.
+2. A module's public surface is its `include/` tree. `source/` is private to it. A module whose
+   headers its build generates, such as compiled shaders, writes them below
+   `generated/<Project>/<module>/` and has no `include/` tree; its users include
+   `<Project/module/name.h>` like any other module, and no source header stands in for them.
 3. Dependencies point down the tier order declared in `cmake/`. Never sideways into another
    module's `source/`, never up a tier. An edge between two modules of one tier is listed in the
    same `cmake/` table, and the build refuses one that is not. Tiers declared as domains share
