@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- 2026-10-17 — performance: Split benchmarks into micro ones beside their unit and scenario ones under `applications/benchmarks/`, with no test size and no release gate (`SKILL.md`).
+- 2026-10-17 — testing: Named scenario benchmarks among the program kinds (`SKILL.md`).
+- 2026-10-17 — repository-layout: Placed scenario benchmarks under `applications/benchmarks/` (`SKILL.md`).
 - 2026-10-17 — logging: Made a project level call add the project, so a host sets it before anything logs (`INTERFACE.md`).
 - 2026-10-17 — tools: Reported a front that re-exports a SushiLog name or forwards to it (`check_logging.py`, `rule_front_reexport`).
 - 2026-10-17 — logging: Named what a project's front holds and forbade it to re-export SushiLog's types and calls (`SKILL.md`).
