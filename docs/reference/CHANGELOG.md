@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-17 — tools: Gave a shared file new to a repository the repository's own license header (`copy_shared_tools.py`).
 - 2026-10-17 — logging: Added `log_at` for a record at another call site (`INTERFACE.md`).
 - 2026-10-17 — logging: Moved the one text formatter and its value helpers to SushiLog::text (`SKILL.md`).
 - 2026-10-17 — logging: Named SushiRuntime's `format_text` and its value helpers as the one formatter for text outside log calls (`SKILL.md`).
