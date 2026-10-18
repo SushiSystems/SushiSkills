@@ -50,6 +50,28 @@ Ask in order, stop at the first yes.
 4. Is it about work that is finished and untouched for 90 days? → `docs/archive/`.
 5. Otherwise → the manual: `getting_started/`, `architecture/`, `guides/` or `reference/`.
 
+## The root README
+
+The root `README.md` is the front page: each line answers a question a cold reader has, and
+everything else is a link into `docs/`. Its sections, in this order, none of them empty:
+
+1. `# <Project>`, then one sentence: what it is and who it is for. Two CI or licence badges at
+   most, on the line under the title.
+2. The smallest real use, as code taken from a file the build compiles, citing it.
+3. `## Build`: the commands that build and test it, one block.
+4. `## Status`: what works and what does not yet, in a few lines, linking
+   `docs/design/REMAINING_WORK.md`.
+5. `## Documentation`: a link to `docs/README.md`; `docs/CONTRIBUTING.md` for contributors.
+6. `## Licence`: the licence by name, `LICENSE`, and `COMMERCIAL.md` and `NOTICE.md` where they
+   exist.
+
+A repository with no code to show, such as SushiSkills, replaces section 2 with a table of
+where things are. Not on the page: a table of contents, emoji headings, a feature bullet list,
+adjectives such as fast, powerful or seamless, and anything the manual already says.
+
+`CONTRIBUTING.md` is `docs/CONTRIBUTING.md`; GitHub finds it there. `SECURITY.md` and
+`CODE_OF_CONDUCT.md` sit under `.github/`, as `repository-layout` says.
+
 ## Read before
 
 | Task | File in this folder |
@@ -98,7 +120,7 @@ README links.
 
 | Page | Ceiling | Above it |
 | --- | --- | --- |
-| Root `README.md` | 300 lines | Move the detail into the manual and link it |
+| Root `README.md` | 120 lines | Move the detail into the manual and link it |
 | Manual page | 600 lines | Split by subject into pages the index links |
 | Module README | 800 lines | Move each part to the README of the folder it describes, or to a page beside the file it describes |
 | Design document | 1 500 lines | Split into `<TOPIC>/`, one file per phase |

@@ -20,7 +20,7 @@ docs/
 
 | Entry | Holds |
 | --- | --- |
-| `README.md` | What the project is, one build line, a link to `docs/README.md` |
+| `README.md` | The front page; its shape is in `documentation`, section "The root README" |
 | `NOTICE.md` | Third-party components, ported files and redistributed binaries; see `dependencies` |
 | `COMMERCIAL.md` | How a company obtains a commercial licence; absent from a closed repository |
 | `CMakeLists.txt` | `project()`, options and `add_subdirectory`; no logic |
@@ -28,7 +28,7 @@ docs/
 | `AGENTS.md`, `CLAUDE.md` | Agent instructions and skill declarations; names the skills the repository follows |
 | `sushi-module.toml` | The module manifest the stack's tooling reads from the root |
 | `.config/` | Configuration a flag or a key can point a tool at, such as `doxygen/Doxyfile` and `docker/Dockerfile`; its `README.md` has one row per file, naming the tool and the call site that passes the path |
-| `.github/` | What GitHub resolves by name: workflows, `SECURITY.md`, `CODE_OF_CONDUCT.md` |
+| `.github/` | What GitHub resolves by name: workflows, templates, `SECURITY.md` and `CODE_OF_CONDUCT.md`; the last two are SushiSkills' own, copied unchanged by `copy_shared_tools.py` and edited only there |
 | `cmake/` | Every CMake function and the layer table |
 | `cli/` | The project CLI package, with its own `pyproject.toml` |
 | `tools/` | Manual checkers; see `project-tools` |
@@ -40,7 +40,7 @@ docs/
 | `third_party/` | Vendored code, outside this discipline |
 | `docs/` | Everything written in prose; see `documentation` |
 
-Forbidden in the root: `ARCHITECTURE.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`,
+Forbidden in the root: `ARCHITECTURE.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`,
 `Doxyfile`, build output, object files, scratch files. Each has a home above.
 
 `pyproject.toml` sits in the root only when the repository is a Python package: pip, uv and
