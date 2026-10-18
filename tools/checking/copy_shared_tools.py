@@ -3,7 +3,7 @@
 # Copyright (c) 2026-present Mustafa Garip & Sushi Systems
 # Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.
 # Commercial use requires a licence from Sushi Systems.
-"""Copies the shared tools of SushiSkills into a repository, keeping its settings and its own tools.
+"""Copies the shared tools and community files of SushiSkills into a repository, keeping its settings and its own tools.
 
 Usage: python tools/checking/copy_shared_tools.py ROOT --from UPSTREAM [--report]
 """
@@ -17,6 +17,7 @@ from collections.abc import Iterable
 from pathlib import Path
 
 K_TOOLS = "tools"
+K_COMMUNITY = (".github/CODE_OF_CONDUCT.md", ".github/SECURITY.md")
 K_KEPT = frozenset({"tools/settings.py", "tools/README.md"})
 K_HEADER_TEMPLATE = "tools/check_all.py"
 K_HEADER_SUFFIX = ".py"
@@ -87,8 +88,8 @@ def copy(upstream: Path, root: Path, shared: Iterable[str]) -> list[str]:
 
 
 def shared_files(upstream: Path) -> list[str]:
-    """Returns the files git tracks under the upstream tools folder."""
-    listed = subprocess.run(["git", "-C", str(upstream), "ls-files", K_TOOLS],
+    """Returns the files git tracks under the upstream tools folder, and the shared community files."""
+    listed = subprocess.run(["git", "-C", str(upstream), "ls-files", K_TOOLS, *K_COMMUNITY],
                             capture_output=True, text=True, encoding="utf-8", check=True)
     return [line for line in listed.stdout.splitlines() if line]
 

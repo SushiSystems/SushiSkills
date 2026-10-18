@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-18 — docs: Fixed the root README to six sections under 120 lines, and shared one Code of Conduct (Contributor Covenant 3.0) and one security policy that every repository copies (`documentation`, `copy_shared_tools.py`).
 - 2026-10-17 — tools: Gave a shared file new to a repository the repository's own license header (`copy_shared_tools.py`).
 - 2026-10-17 — logging: Added `log_at` for a record at another call site (`INTERFACE.md`).
 - 2026-10-17 — logging: Moved the one text formatter and its value helpers to SushiLog::text (`SKILL.md`).
