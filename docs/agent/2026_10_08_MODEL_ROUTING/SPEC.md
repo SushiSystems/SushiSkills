@@ -1,6 +1,6 @@
 # Model routing
 
-**Status:** Shipped — implemented on 2026-10-08; see `REPORT.md`.
+**Status:** Shipped — 2026-10-08. See `REPORT.md`.
 
 The global instructions set one model for every dispatch, `opus`, and vary only the effort.
 They name no phase, and the orchestrator itself ran on `fable`, the most expensive seat in the

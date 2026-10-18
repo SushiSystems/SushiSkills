@@ -79,6 +79,7 @@ adjectives such as fast, powerful or seamless, and anything the manual already s
 | --- | --- |
 | Opening or extending a design document, opening or closing a work folder under `docs/agent/` | `AGENT_WORK.md` |
 | Writing a changelog entry or moving a release section | `CHANGELOG_FORMAT.md` |
+| Writing or closing an entry in `REMAINING_WORK.md` or `KNOWN_ISSUES.md` | `BACKLOG_FORMAT.md` |
 
 ## Names
 

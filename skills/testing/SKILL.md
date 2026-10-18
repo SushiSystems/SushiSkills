@@ -116,8 +116,8 @@ A probe:
 4. No test depends on wall-clock time, test order, network or a file outside the repository.
 5. A test that fails intermittently is fixed the day it is seen, or quarantined: it gains the
    `quarantined` label, which takes it out of every gating stage, and an entry in
-   `docs/reference/KNOWN_ISSUES.md` naming it, its owner and the date it is fixed by. A
-   quarantined test is never deleted silently.
+   `docs/reference/KNOWN_ISSUES.md` naming it, with the `Owner:` and `Fix by:` fields of
+   `BACKLOG_FORMAT.md` in `documentation`. A quarantined test is never deleted silently.
 6. A `small` test is never retried. A `medium` or `large` test that passes only on a retry is
    intermittent, and rule 5 applies.
 

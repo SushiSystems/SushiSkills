@@ -30,8 +30,8 @@ a story fits.
 ## Known issues
 
 A failure that turns out not to be this repository's fault gets an entry in
-`docs/reference/KNOWN_ISSUES.md`: the symptom as seen, the real cause, how to recognise it, and
-the workaround. One entry per cause.
+`docs/reference/KNOWN_ISSUES.md`, one entry per cause, in the shape `BACKLOG_FORMAT.md` in
+`documentation` gives.
 
 ## Red flags
 

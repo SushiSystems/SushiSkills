@@ -1,6 +1,6 @@
 # Rules unification
 
-**Status:** Shipped — implemented and reviewed on 2026-10-05; see `REPORT.md`.
+**Status:** Shipped — 2026-10-05. Implemented and reviewed; see `REPORT.md`.
 
 Programme 1 of 5 in the estate refactor. The estate audit of 2026-10-05
 (`docs/agent/2026_10_05_ESTATE_AUDIT/REPORT.md`) found that this repository states several rules

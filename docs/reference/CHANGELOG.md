@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- 2026-10-19 — project-tools: Added the backlog fact check, which gives every entry a verdict against the code and the history (`SKILL.md`).
+- 2026-10-19 — tools: Added a checker for the backlog and the known issues that finds sibling repositories beside the root (`check_backlog.py`, `design_status.py`).
+- 2026-10-19 — documentation: Limited status lines to four dated forms, ran the archive clock from the status date and forbade roadmap, journal, handover, milestone and priority files (`AGENT_WORK.md`, `check_docs_layout.py`).
+- 2026-10-19 — documentation: Gave the backlog and the known issues one entry format with IDs, states, owning repositories and a `## Next` order (`BACKLOG_FORMAT.md`).
 - 2026-10-18 — docs: Fixed the root README to six sections under 120 lines, and shared one Code of Conduct (Contributor Covenant 3.0) and one security policy that every repository copies (`documentation`, `copy_shared_tools.py`).
 - 2026-10-17 — tools: Gave a shared file new to a repository the repository's own license header (`copy_shared_tools.py`).
 - 2026-10-17 — logging: Added `log_at` for a record at another call site (`INTERFACE.md`).

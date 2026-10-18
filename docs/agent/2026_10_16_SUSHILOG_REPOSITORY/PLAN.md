@@ -1,6 +1,6 @@
 # SushiLog repository
 
-Status: in progress. Done on 2026-10-17: tasks 0 to 6 (SushiLog v0.1.0, commit `b2dc144`) and
+**Status:** Open — tasks 7 to 10. Done on 2026-10-17: tasks 0 to 6 (SushiLog v0.1.0, commit `b2dc144`) and
 6a (sushicore v0.9.1). Done on 2026-10-17 as well: 6b and the `hub pin` half of 6c (SushiStack `9c1f9c5`). Open: the
 downstream stage of 6c, which waits on task 7, and the adoptions 7 to 10: 7 and 8 started, 9
 waits on 7, 10 waits on 7 and 8.
