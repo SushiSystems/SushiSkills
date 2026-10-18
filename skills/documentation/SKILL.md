@@ -57,7 +57,8 @@ everything else is a link into `docs/`. Its sections, in this order, none of the
 
 1. `# <Project>`, then one sentence: what it is and who it is for. Two CI or licence badges at
    most, on the line under the title.
-2. The smallest real use, as code taken from a file the build compiles, citing it.
+2. The smallest real use: for a library, code under the example rule of "Size and one home";
+   for a tool, the commands a user types.
 3. `## Build`: the commands that build and test it, one block.
 4. `## Status`: what works and what does not yet, in a few lines, linking
    `docs/design/REMAINING_WORK.md`.
