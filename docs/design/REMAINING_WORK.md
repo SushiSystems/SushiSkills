@@ -1,6 +1,6 @@
 # Remaining work
 
-Next id: RW-18
+Next id: RW-19
 
 ## Decisions waiting for the owner
 
@@ -91,6 +91,14 @@ hand and fall behind: the first migration found one still naming nine checkers.
 
 The copy keeps `settings.py`, so a new setting breaks the checker that reads it: the second
 migration found `check_layering.py` failing on `K_PRIVATE_DEPENDS_ALSO`.
+
+### RW-18 Refuse a changelog without its title and `## Unreleased`
+- State: open
+- Done when: `check_changelog.py` reports a `CHANGELOG.md` that lacks `# Changelog` or
+  `## Unreleased`
+
+Two commits in one repository wrote the changelog as their own entry alone and 413 lines were
+lost; the checker passed, since it reads entries and the one entry left was well formed.
 
 ## Estate
 

@@ -1,6 +1,6 @@
 # Backlog format: plan
 
-**Status:** Open — part 1 done on 2026-10-19; part 2 migrated sushilog and sushicore, nine repositories left.
+**Status:** Open — part 1 done on 2026-10-19; part 2 migrated sushilog, sushicore and sushiruntime, eight repositories left.
 
 Runs inline (D10). Each task has one acceptance criterion and one build, the build being
 `python tools/check_all.py .` in the repository the task changes. Tasks 1 to 5 change sushiskills
