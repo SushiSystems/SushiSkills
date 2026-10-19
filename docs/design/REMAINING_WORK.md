@@ -1,6 +1,6 @@
 # Remaining work
 
-Next id: RW-17
+Next id: RW-18
 
 ## Decisions waiting for the owner
 
@@ -83,6 +83,14 @@ It rejects only lines that name Sushi Systems or state a licence.
 
 Each repository keeps its `tools/README.md`, so the rows naming the shared tools are copied by
 hand and fall behind: the first migration found one still naming nine checkers.
+
+### RW-17 Report a setting the shared tools read that `settings.py` lacks
+- State: open
+- Done when: `copy_shared_tools.py` names each `K_` setting the copied tools import that the
+  repository's `tools/settings.py` does not define, with SushiSkills' default
+
+The copy keeps `settings.py`, so a new setting breaks the checker that reads it: the second
+migration found `check_layering.py` failing on `K_PRIVATE_DEPENDS_ALSO`.
 
 ## Estate
 
