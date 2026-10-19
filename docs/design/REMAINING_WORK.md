@@ -1,6 +1,6 @@
 # Remaining work
 
-Next id: RW-22
+Next id: RW-23
 
 ## Decisions waiting for the owner
 
@@ -58,6 +58,14 @@ The file block is checked today; a symbol needs a C++ parser.
 
 A TypeScript repository holds its package split in `architecture.test.ts` files today.
 
+
+### RW-22 Read C# in the comment, licence and layering checks
+- State: open
+- Done when: `check_source_comments.py` and `write_license_block.py` read `.cs` files, and
+  `check_layering.py` reads a Unity tree's assembly definitions
+
+A Unity repository relies on its assembly definitions alone to stop a reference between
+features.
 ### RW-7 Check that a changelog entry's verb is past tense
 - State: open
 - Done when: `check_changelog.py` reports an entry whose verb is not in the past tense
