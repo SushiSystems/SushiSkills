@@ -1,6 +1,6 @@
 # Remaining work
 
-Next id: RW-19
+Next id: RW-20
 
 ## Decisions waiting for the owner
 
@@ -28,6 +28,14 @@ a shader twin, a test that reaches a private header.
 ### RW-4 Decide whether the release tags are pushed
 - State: decision
 - Done when: `v0.1.0` and `v0.1.1` are on the remote, or the owner has ruled them local
+
+### RW-19 Name the licence of the shared code of conduct text
+- State: decision
+- Done when: `NOTICE.md` names the licence of the Contributor Covenant text that
+  `.github/CODE_OF_CONDUCT.md` adapts, or the owner replaces the text
+
+Every repository copies the file from here. Four pages of the Covenant read on 2026-10-09 state
+no licence for its text.
 
 ## Checkers
 
