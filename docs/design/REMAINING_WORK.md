@@ -1,6 +1,6 @@
 # Remaining work
 
-Next id: RW-21
+Next id: RW-22
 
 ## Decisions waiting for the owner
 
@@ -49,6 +49,14 @@ The file block is checked today; a symbol needs a C++ parser.
 - State: open
 - Done when: `check_layering.py` reports a Python import that crosses a module boundary the
   layering forbids
+
+
+### RW-21 Read TypeScript imports in the layering check
+- State: open
+- Done when: `check_layering.py` reports a TypeScript import that crosses a boundary the
+  repository's tier order forbids
+
+A TypeScript repository holds its package split in `architecture.test.ts` files today.
 
 ### RW-7 Check that a changelog entry's verb is past tense
 - State: open

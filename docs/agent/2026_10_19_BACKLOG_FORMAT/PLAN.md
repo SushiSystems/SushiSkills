@@ -1,7 +1,8 @@
 # Backlog format: plan
 
-**Status:** Open — part 1 done on 2026-10-19; part 2 migrated sushilog, sushicore, sushiruntime, sushiblas, sushiai and sushidsp; five
-repositories left.
+**Status:** Open — part 1 done on 2026-10-19; part 2 migrated sushilog, sushicore, sushiruntime, sushiblas, sushiai, sushidsp and sushiweb;
+project-mobilerts-legacy, sushistack and sushiengine are left, and sushitrack migrates under its
+own agent.
 
 Runs inline (D10). Each task has one acceptance criterion and one build, the build being
 `python tools/check_all.py .` in the repository the task changes. Tasks 1 to 5 change sushiskills
