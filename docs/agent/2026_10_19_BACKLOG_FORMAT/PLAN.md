@@ -1,7 +1,7 @@
 # Backlog format: plan
 
-**Status:** Open — part 1 done on 2026-10-19; part 2 migrated eleven repositories; sushitrack migrates under its own
-agent. The programme is `sushistack RW-19`.
+**Status:** Shipped — 2026-10-19. All twelve estate repositories are on the backlog format;
+sushitrack migrated last, under its own session.
 
 Runs inline (D10). Each task has one acceptance criterion and one build, the build being
 `python tools/check_all.py .` in the repository the task changes. Tasks 1 to 5 change sushiskills

@@ -77,8 +77,13 @@ the first run and found a fault reported twice.
 - No dependency was added. `check_backlog.py` uses `subprocess` for one `git rev-parse` under
   `--report`.
 
+## Close
+
+sushitrack closed the programme on 2026-10-19: its backlog and known issues pass
+`check_backlog.py` on its `main`, the last of the twelve estate repositories to do so, and
+`sushistack RW-19` is deleted.
+
 ## Not done
 
-- Part 2, the migrations: `RW-14`.
 - Repositories outside the estate (ipekweb, mayagaweb, serkangaripweb) stay out of scope until
   the owner decides.
