@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-19 — continuous-integration: Added the default that a prose-only commit pushed to main carries [skip ci] once the checks pass locally (`SKILL.md`).
 - 2026-10-19 — tools: Read every check's output as UTF-8, so a finding with an em dash no longer stops the run on Windows (`check_all.py`).
 - 2026-10-19 — project-tools: Added the backlog fact check, which gives every entry a verdict against the code and the history (`SKILL.md`).
 - 2026-10-19 — tools: Added a checker for the backlog and the known issues that finds sibling repositories beside the root (`check_backlog.py`, `design_status.py`).

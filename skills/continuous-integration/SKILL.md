@@ -40,6 +40,17 @@ Each stage runs the tests whose size, from `testing`, fits its budget. No test c
 6. A job prints the CLI command it ran as its first line.
 7. Third-party actions are pinned to a commit hash.
 
+## Commits that need no run
+
+- **Rule:** a commit pushed straight to `main` that changes only prose (a page under `docs/`, a
+  README, the changelog) carries `[skip ci]` at the end of its subject line, after
+  `python tools/check_all.py .` has passed locally.
+- **Why:** such a commit cannot change what the build, the tests or the sanitizers see, and a run
+  for it holds the runners for an hour while it waits behind the run before it.
+- **Not when:** the commit touches source, a test, a build file, the CLI, a checker, a workflow
+  or a dependency manifest; the commit goes through a pull request, whose `gate` must report; or
+  `check_all.py` was not run clean, since CI then runs the checkers the commit skipped.
+
 ## When CI fails
 
 - A red `main` is fixed, or the change that broke it reverted, before any other work lands.
