@@ -131,22 +131,3 @@ lost; the checker passed, since it reads entries and the one entry left was well
 
 One repository keeps this as a local edit of the shared checker, with the list in a text file;
 the copy would drop it.
-
-## Estate
-
-### RW-14 Migrate every estate repository to the backlog format
-- State: open
-- Done when: `check_all.py`, with `check_backlog.py` in it, passes in every estate repository
-- Source: `docs/agent/2026_10_19_BACKLOG_FORMAT/PLAN.md` §2
-
-Part 2 of the plan gives the order and the steps. The work lands in the other repositories, so
-this entry moves with RW-15 to the repository that coordinates them.
-
-### RW-15 Hand the estate programmes to the repository that coordinates them
-- State: open
-- Done when: the coordinating repository's backlog holds the programmes and this entry is deleted
-- Source: `docs/agent/2026_10_05_ESTATE_AUDIT/REPORT.md`
-
-The estate audit of 2026-10-05 opened five programmes: rules unification, which is this
-repository's and has shipped, then licence, command line, documentation and layout, and code,
-which run in the other repositories and take their rules from here.
