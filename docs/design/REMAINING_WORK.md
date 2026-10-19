@@ -1,6 +1,6 @@
 # Remaining work
 
-Next id: RW-20
+Next id: RW-21
 
 ## Decisions waiting for the owner
 
@@ -107,6 +107,14 @@ migration found `check_layering.py` failing on `K_PRIVATE_DEPENDS_ALSO`.
 
 Two commits in one repository wrote the changelog as their own entry alone and 413 lines were
 lost; the checker passed, since it reads entries and the one entry left was well formed.
+
+### RW-20 Let the test mirror checker skip listed units
+- State: open
+- Done when: `check_test_mirror.py` skips the units a repository lists in `tools/settings.py` and
+  fails on a listed unit that has gained a test
+
+One repository keeps this as a local edit of the shared checker, with the list in a text file;
+the copy would drop it.
 
 ## Estate
 
