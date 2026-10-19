@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-19 — tools: Read every check's output as UTF-8, so a finding with an em dash no longer stops the run on Windows (`check_all.py`).
 - 2026-10-19 — project-tools: Added the backlog fact check, which gives every entry a verdict against the code and the history (`SKILL.md`).
 - 2026-10-19 — tools: Added a checker for the backlog and the known issues that finds sibling repositories beside the root (`check_backlog.py`, `design_status.py`).
 - 2026-10-19 — documentation: Limited status lines to four dated forms, ran the archive clock from the status date and forbade roadmap, journal, handover, milestone and priority files (`AGENT_WORK.md`, `check_docs_layout.py`).

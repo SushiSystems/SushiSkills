@@ -1,6 +1,6 @@
 # Remaining work
 
-Next id: RW-16
+Next id: RW-17
 
 ## Decisions waiting for the owner
 
@@ -75,6 +75,14 @@ It rejects only lines that name Sushi Systems or state a licence.
 ### RW-13 Read reference-style links and links around an image
 - State: open
 - Done when: `rule_links` and `rule_reachable_from_index` follow both kinds
+
+### RW-16 Copy the shared rows of `tools/README.md` with the shared tools
+- State: open
+- Done when: `copy_shared_tools.py` writes the rows of the shared tools into a repository's
+  `tools/README.md` and keeps the rows of its own tools
+
+Each repository keeps its `tools/README.md`, so the rows naming the shared tools are copied by
+hand and fall behind: the first migration found one still naming nine checkers.
 
 ## Estate
 
