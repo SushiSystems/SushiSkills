@@ -29,9 +29,10 @@ a story fits.
 
 ## Known issues
 
-A failure that turns out not to be this repository's fault gets an entry in
-`docs/reference/KNOWN_ISSUES.md`, one entry per cause, in the shape `BACKLOG_FORMAT.md` in
-`documentation` gives.
+A failure that turns out not to be this repository's fault, or that this repository lives with
+and has a workaround for, gets an entry in `docs/reference/KNOWN_ISSUES.md`, one entry per cause,
+in the shape `BACKLOG_FORMAT.md` in `documentation` gives. A defect to be fixed with no workaround
+yet is a backlog entry instead.
 
 ## Red flags
 

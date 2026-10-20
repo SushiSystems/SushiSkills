@@ -3,8 +3,9 @@
 Read from the `documentation` skill before writing or closing an entry in
 `docs/design/REMAINING_WORK.md` or `docs/reference/KNOWN_ISSUES.md`.
 
-The backlog holds what is to be done. The known issues hold defects that stand in the tree.
-Neither holds finished work: the commit that closes an entry deletes it and writes its changelog
+The backlog holds what is to be done. The known issues hold conditions a reader can meet and act
+on: a defect that has a workaround, a limitation chosen on purpose, a fault of the toolchain, a
+dependency or a sibling. Neither holds finished work: the commit that closes an entry deletes it and writes its changelog
 line, and what works is in the root README's `## Status`.
 
 ## Which repository owns an entry
@@ -58,6 +59,7 @@ Next id: RW-16
 | `State:` | Required: `decision`, `open`, `blocked` or `unmeasured` |
 | `Done when:` | Required: one acceptance criterion |
 | `Blocked by:` | Required when `blocked`, absent otherwise: IDs, or `external: <reason>` for a block outside the estate |
+| `Where:` | Optional: at most five paths the work changes, written as in `KNOWN_ISSUES.md` |
 | `Source:` | Optional: a design document, with `§<n>` for a section, or a file of a work folder |
 
 `unmeasured` is built work whose acceptance is a run or a measurement rather than a commit. Work
@@ -98,6 +100,12 @@ Next id: KI-8
 | `Fix:` | Required when the origin is `own`: `RW-<n>`, or `none, <reason>` for a limitation chosen on purpose |
 | `Owner:`, `Fix by:` | Required for a quarantined test |
 | `Source:` | Optional: the investigation, usually a work folder's `REPORT.md` |
+
+A known issue of origin `own` carries a workaround, or a `Fix:` of the form `none, <reason>`. A
+defect with a scheduled fix and no workaround is work: it lives in the backlog alone, and its
+symptom and cause are prose in that entry. Once a workaround exists it may be copied here with
+`Fix: RW-<n>`. An origin that is not `own` is never the repository's to close, so it is not
+backlog work whatever its workaround.
 
 Built work that was never measured or verified is not a defect; it is a backlog entry with
 `State: unmeasured`.
