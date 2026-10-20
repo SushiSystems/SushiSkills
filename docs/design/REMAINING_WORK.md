@@ -131,14 +131,3 @@ lost; the checker passed, since it reads entries and the one entry left was well
 
 One repository keeps this as a local edit of the shared checker, with the list in a text file;
 the copy would drop it.
-
-## Backlog format
-
-### RW-23 Move the backlog work out of every repository's known issues
-- State: open
-- Done when: `check_backlog.py --rule rule_scope` reports nothing in each of the twelve estate
-  repositories
-- Source: `docs/agent/2026_10_20_KNOWN_ISSUES_SCOPE/PLAN.md`
-
-119 known issues carry a scheduled fix and no workaround. Each moves its symptom and cause into the
-backlog entry its `Fix:` names, one repository at a time.

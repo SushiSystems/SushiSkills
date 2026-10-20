@@ -1,6 +1,6 @@
 # Known issues scope: plan
 
-**Status:** Open — part 1 done, no repository migrated
+**Status:** Shipped — 2026-10-20
 
 Runs inline, as the owner chose on 2026-10-20. Each task has one acceptance criterion and one
 build, the build being `python tools/check_all.py .` in the repository the task changes. Part 1

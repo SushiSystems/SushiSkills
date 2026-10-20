@@ -1,6 +1,6 @@
 # Known issues scope
 
-**Status:** Open — rule decided by the owner on 2026-10-20; checker built, migrations not started
+**Status:** Shipped — 2026-10-20
 
 ## Problem
 
