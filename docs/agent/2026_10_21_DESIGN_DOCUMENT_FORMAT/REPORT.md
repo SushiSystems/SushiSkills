@@ -42,7 +42,7 @@ Recorded after each repository, by `RW-24`.
 | sushilog | done | `32b9f59` | No design document; shared tools copied whole |
 | sushiweb | done | `887716b9` | `SOCIAL_APP.md` became a topic folder of seven pages; 62 source files repointed; only the design checker and the ceiling copied, as the other shared tools raise licence findings that predate this work |
 | sushicore | done | `348ddd8` | Three documents reshaped in place; the GPU run evidence moved to `docs/agent/2026_10_14_GPU_TOOLKIT_SELECTION/REPORT.md`; shared tools copied whole |
-| sushiai | open | | 94 findings, 1 document above 400 lines |
+| sushiai | done | `96a162c` | Seven documents reshaped; `GRAPH_CAPABILITIES.md` (1117 lines) became a topic folder of five pages; phase states read from each document's own status line and from the status of the work folders it names, so the owner should confirm them; the plan's source commits moved to `docs/agent/2026_10_21_GRAPH_CAPABILITIES_SOURCES/`; shared tools copied whole |
 | sushiblas, sushidsp, sushifx, sushihub, sushiruntime, sushitrack, project-mobilerts | open | | Not measured |
 | sushiengine | open | | 1 177 findings, 51 above the ceiling; last |
 
