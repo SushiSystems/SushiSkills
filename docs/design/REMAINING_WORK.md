@@ -140,6 +140,6 @@ the copy would drop it.
   nothing in each sibling repository
 - Source: `docs/agent/2026_10_21_DESIGN_DOCUMENT_FORMAT/SPEC.md`
 
-Done: every sibling repository but sushiengine (1 177 findings, 111 documents, 35 of them above
-600 lines), which is left for last. The progress table, the phase states the owner should confirm
-and the steps to continue are in the `REPORT.md` of the source folder.
+Done: every sibling repository; sushiengine is partly done. Nine of its design documents, which another
+session was editing, still wait for the old shape to be reshaped. The progress table, the phase states
+the owner should confirm and the steps to continue are in the `REPORT.md` of the source folder.
