@@ -4,14 +4,6 @@ Next id: RW-26
 
 ## Decisions waiting for the owner
 
-### RW-1 Decide whether the archive clock gates a push
-- State: decision
-- Done when: the owner has kept `rule_archive_candidates` in the gate of `ci.yml`, or moved it
-  to `--report`
-
-The rule reads the date in a work folder's status line. From 2027-01-04 a push fails on the
-oldest work folder until it is archived.
-
 ### RW-2 Decide whether contributions from outside are accepted
 - State: decision
 - Done when: the owner has named a contributor agreement, or ruled contributions out
@@ -139,6 +131,3 @@ the copy would drop it.
 - Done when: a pilot repository other than `sushiengine` keeps its designs as topics with generated
   views, closes agent work by deleting it, and has an untracked archive, with its `check_all` green
 - Source: `docs/agent/2026_10_21_DOCS_SCALABILITY/SPEC.md`
-
-The archive rule of RW-1 goes away with the untracked archive, so RW-1 is decided by this entry's
-phase D4 and not before.

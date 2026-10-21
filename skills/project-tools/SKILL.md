@@ -13,7 +13,7 @@ repository. They are run by hand or through the project's CLI; they never build 
 | Checker | Enforces |
 | --- | --- |
 | `tools/documentation/check_source_comments.py` | Every rule in `source-comments` |
-| `tools/documentation/check_docs_layout.py` | The tree, required documents, names, work folder contents, status lines, broken links and anchors, reachability from the index, 90-day archive candidates and the forbidden kinds of file from `documentation` |
+| `tools/documentation/check_docs_layout.py` | The tree, required documents, names, work folder contents, status lines, broken links and anchors, reachability from the index, closed work past its grace and the forbidden kinds of file from `documentation` |
 | `tools/documentation/check_changelog.py` | One line, 240 characters, one sentence, no nesting |
 | `tools/documentation/check_backlog.py` | `BACKLOG_FORMAT.md` in `documentation`: the shape of both files, IDs, paths, references, entry size, and a backlog entry for every open design document |
 | `tools/documentation/check_design_format.py` | `DESIGN_FORMAT.md` in `documentation`: the five sections in order, the status length, the phase table and its states, no commit hash, no dated record of work |
@@ -80,7 +80,7 @@ it. A repository runs it after a checker changes upstream, and a report that lis
 | Before reporting a task finished | `python tools/check_all.py .` |
 | Before a commit touching `docs/` | `check_docs_layout.py`, `check_changelog.py` and `check_docs_truth.py` |
 | Before a commit that adds, renames or removes a public name, a header path or a CLI command | `check_docs_truth.py` |
-| Periodically, or on request | All ten with `--report`; act on the archive candidates |
+| Periodically, or on request | All ten with `--report`; delete the closed work it lists |
 | Before a backlog migration, and on request | The backlog fact check below |
 
 A claim that a checker passed carries the command and its pasted output.

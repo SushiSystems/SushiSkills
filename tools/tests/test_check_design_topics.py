@@ -19,6 +19,7 @@ from checking.checker import Issue  # noqa: E402
 from documentation.check_design_topics import (  # noqa: E402
     K_CHECKER,
     Repository,
+    rule_archive_not_cited,
     rule_designs_resolve,
     rule_folder_ceiling,
     rule_glossary_entry,
@@ -77,14 +78,14 @@ K_FILES = {
 }
 
 
-def _repository(folder: str, files: dict[str, str], is_required: bool = False, ceiling: int = 0) -> Repository:
+def _repository(folder: str, files: dict[str, str], is_required: bool = False, ceiling: int = 0, untracked: bool = False) -> Repository:
     """Writes the given files under a root and returns its repository."""
     root = Path(folder) / "alpha"
     for name, text in files.items():
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text, encoding="utf-8")
-    return Repository(root, is_required, ceiling)
+    return Repository(root, is_required, ceiling, untracked)
 
 
 def _messages(issues: Iterable[Issue]) -> list[str]:
@@ -92,21 +93,22 @@ def _messages(issues: Iterable[Issue]) -> list[str]:
     return [issue.message for issue in issues]
 
 
-def _check(rule, overrides: dict[str, str] | None = None, is_required: bool = False, ceiling: int = 0) -> list[str]:
+def _check(rule, overrides: dict[str, str] | None = None, is_required: bool = False, ceiling: int = 0, untracked: bool = False) -> list[str]:
     """Returns the messages a rule gives for the valid files with some of them replaced."""
     with tempfile.TemporaryDirectory() as folder:
         files = {**K_FILES, **(overrides or {})}
-        return _messages(rule(_repository(folder, files, is_required, ceiling)))
+        return _messages(rule(_repository(folder, files, is_required, ceiling, untracked)))
 
 
 class RegistrationTest(unittest.TestCase):
     """Checks the rule table."""
 
     def test_names_every_rule(self) -> None:
-        """Holds the eight rules under their names."""
+        """Holds the nine rules under their names."""
         self.assertEqual(
             sorted(K_CHECKER.rules),
             [
+                "rule_archive_not_cited",
                 "rule_designs_resolve",
                 "rule_folder_ceiling",
                 "rule_glossary_entry",
@@ -122,7 +124,7 @@ class RegistrationTest(unittest.TestCase):
         """Runs every rule over the valid files with the strict settings on."""
         glossary = {"docs/reference/GLOSSARY.md": "# Glossary\n\n**audio**: the sound of the engine.\n"}
         for name, rule in K_CHECKER.rules.items():
-            self.assertEqual(_check(rule, glossary, True, 10), [], name)
+            self.assertEqual(_check(rule, glossary, True, 10, True), [], name)
 
 
 class ModulesExistTest(unittest.TestCase):
@@ -245,6 +247,26 @@ class FolderCeilingTest(unittest.TestCase):
         extra = {f"docs/agent/2026_10_2{index}_W/SPEC.md": "# W\n" for index in range(3)}
         messages = _check(rule_folder_ceiling, extra, False, 3)
         self.assertEqual(messages, ["4 entries; the ceiling is 3"])
+
+
+class ArchiveCitationTest(unittest.TestCase):
+    """Covers the ban on citing an archive the repository does not track."""
+
+    CITING = {"docs/guides/use.md": "See docs/archive/design/OLD.md and [x](../archive/y.md).\nPlain line.\n"}
+
+    def test_is_silent_while_the_archive_is_tracked(self) -> None:
+        """Reports nothing for a repository that still tracks its archive."""
+        self.assertEqual(_check(rule_archive_not_cited, self.CITING), [])
+
+    def test_reports_each_line_that_cites_the_archive(self) -> None:
+        """Reports the one line that cites the archive by path and by link."""
+        messages = _check(rule_archive_not_cited, self.CITING, untracked=True)
+        self.assertEqual(messages, ["the archive is not tracked; cite the topic that holds the decision"])
+
+    def test_does_not_read_the_archive_itself(self) -> None:
+        """Does not report a citation inside the archive."""
+        files = {"docs/archive/old.md": "See docs/archive/other.md.\n"}
+        self.assertEqual(_check(rule_archive_not_cited, files, untracked=True), [])
 
 
 class ViewsTest(unittest.TestCase):

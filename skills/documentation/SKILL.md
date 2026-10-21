@@ -29,7 +29,7 @@ docs/
     agent/
         <YYYY_MM_DD>_<WORK_NAME>/ one folder per piece of agent work
             SPEC.md  PLAN.md  REPORT.md
-    archive/                      frozen; a folder is moved in whole, then never edited
+    archive/                      frozen, only in a repository that has not retired it; see AGENT_WORK.md
 <module>/README.md                the module's own facts, beside the code
 <folder>/<file>.md                one file's facts, beside it, when its README would pass the ceiling
 ```
@@ -47,7 +47,8 @@ Ask in order, stop at the first yes.
 1. Is it a fact about one module? → that module's `README.md`.
 2. Was it written by an agent while doing a piece of work? → that work's folder in `docs/agent/`.
 3. Is it intent with an open phase? → `docs/design/<TOPIC>.md`.
-4. Is it about work that is finished and untouched for 90 days? → `docs/archive/`.
+4. Is it about work that is finished? → nowhere: it is deleted when its decisions are in the topic;
+   version history keeps it.
 5. Otherwise → the manual: `getting_started/`, `architecture/`, `guides/` or `reference/`.
 
 ## The root README

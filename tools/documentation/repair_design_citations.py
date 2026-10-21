@@ -22,12 +22,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from checking.ignored_paths import drop_ignored  # noqa: E402
+from documentation.citation_files import citing_files  # noqa: E402
 from documentation.design_topics import topics  # noqa: E402
 
-K_EXTENSIONS = frozenset({".md", ".cpp", ".hpp", ".h", ".py", ".ts", ".glsl", ".comp", ".toml", ".json", ".txt", ".cmake"})
-K_SKIPPED_FOLDERS = frozenset({".git", "third_party", "node_modules", "build"})
-K_ARCHIVE = Path("docs") / "archive"
 K_PATH = re.compile(r"docs/design/(?P<tail>[A-Za-z0-9_]+(?:\.md)?(?:/[A-Za-z0-9_.-]+)*)")
 K_LINK = re.compile(r"\]\((?P<target>(?:\.\./|\./)*[A-Za-z0-9_./-]*design/[A-Za-z0-9_]+(?:/[A-Za-z0-9_.-]+)*\.md)(?P<anchor>#[^)\s]*)?\)")
 K_EXIT_CLEAN = 0
@@ -95,22 +92,11 @@ def repair_text(path: Path, text: str, root: Path, known: dict[str, Path]) -> tu
     return K_PATH.sub(fix_path, K_LINK.sub(fix_link, text)), found
 
 
-def _files(root: Path) -> list[Path]:
-    """Returns each file below root that holds citations: not ignored, not the archive and not a vendored folder."""
-    found: list[Path] = []
-    for folder, names, files in os.walk(root):
-        names[:] = [name for name in names if name not in K_SKIPPED_FOLDERS]
-        found += [Path(folder) / name for name in files if Path(name).suffix in K_EXTENSIONS]
-    kept = drop_ignored(root, found)
-    archive = (root / K_ARCHIVE).resolve()
-    return [path for path in kept if archive not in path.resolve().parents]
-
-
 def run(root: Path, apply: bool) -> list[Repair]:
     """Repairs, or with apply False only lists, every moved citation below root."""
     known = topics(root / "docs")
     found: list[Repair] = []
-    for path in _files(root):
+    for path in citing_files(root):
         try:
             text = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:

@@ -34,6 +34,7 @@ class Status:
     is_known: bool
     is_open: bool
     closed_on: datetime.date | None
+    is_shipped: bool = False
 
 
 def design_documents(docs: Path) -> list[Path]:
@@ -83,7 +84,7 @@ def read_status(path: Path) -> Status:
         closed_on = datetime.date.fromisoformat(match["shipped"] or match["superseded"] or match["withdrawn"])
     except ValueError:
         return Status(number, False, False, None)
-    return Status(number, True, False, closed_on)
+    return Status(number, True, False, closed_on, bool(match["shipped"]))
 
 
 def body_lines(path: Path) -> list[tuple[int, str]]:

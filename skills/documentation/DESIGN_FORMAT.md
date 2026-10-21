@@ -12,7 +12,7 @@ folder to learn what one piece of work did.
 | Answers | What are we building, and why this way? | What did this piece of work do and find? |
 | Holds | The ruling, its reason, the shape, the phases, the open questions | Commit hashes, measurements, review findings, the working record |
 | Never holds | A commit hash, a measurement log, a dated narrative of who built what | A decision that outlives the work |
-| Lives | As long as the topic | Until closed, then 90 days |
+| Lives | As long as the topic | Until closed, then deleted |
 
 When a piece of work makes a decision, its closing commit writes that decision into the design
 document and leaves the evidence in `REPORT.md`. The document links the work folder; it does not

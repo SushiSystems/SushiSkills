@@ -52,12 +52,25 @@ fails an item whose topic or phase does not exist, so a renamed phase is found w
    folder's status and the design status, writes the decisions the work made into its design
    document, updates `REMAINING_WORK.md`, updates the module READMEs and manual pages the work
    made false.
-4. **Archive.** A work folder or a design document whose status has carried a `Shipped`,
-   `Superseded` or `Withdrawn` date for 90 days moves to `docs/archive/` as it is, keeping its
-   path below `docs/`. The clock reads the date in the status line, never a commit date, which a
-   pass over many files would reset. `check_docs_layout.py` lists the candidates.
+4. **Delete.** A closed work folder, and a design document that is `Superseded` or `Withdrawn`, is
+   deleted: the version history keeps it, and the decisions it made are already in the topic. The
+   clock reads the date in the status line, never a commit date, which a pass over many files would
+   reset. `check_docs_layout.py` lists each one closed for longer than `K_CLOSED_GRACE_DAYS` in
+   `tools/settings.py`: 90 days by default, 0 in a repository that deletes at close. A `Shipped`
+   design document stays as the record of its decisions and their reasons; what the code now is
+   belongs on the module page.
 
-The manual is never archived; it is kept true.
+## The archive
+
+`docs/archive/` holds frozen text and nothing new is moved into it. A repository that still tracks
+one runs `tools/documentation/retire_archive.py --apply` once the repository cites nothing in it:
+the tool tags the history `docs-archive-<date>`, unstages the folder and ignores it, and the
+commit follows. A repository that sets `K_ARCHIVE_UNTRACKED` in `tools/settings.py` has
+`check_design_topics.py` fail every line that cites the archive; each such citation is repointed to
+the topic that holds the decision, or dropped. A decision that only an archived folder held is not
+recovered.
+
+The manual is never deleted; it is kept true.
 
 ## Who writes where
 

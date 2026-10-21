@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-10-21 — tools: Added `retire_archive.py` and the rule `rule_archive_not_cited`; a repository can stop tracking `docs/archive/` once nothing cites it.
+- 2026-10-21 — documentation: Closed work is deleted, not archived; `rule_closed_work` replaces `rule_archive_candidates` and leaves a shipped design in place.
 - 2026-10-21 — tools: Added `repair_design_citations.py`, which rewrites each citation of a design document that became a folder or a file and reports the ones it cannot place.
 - 2026-10-21 — tools: Added `generate_design_views.py`, which writes the topic map, a Designs block per module and a work block per topic from their metadata.
 - 2026-10-21 — tools: Added `check_design_topics.py`: a topic's `Modules` line must name real modules, and a work folder's `Implements` and `Designs` lines must name real topics and phases.

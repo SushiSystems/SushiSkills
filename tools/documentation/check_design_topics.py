@@ -23,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import settings  # noqa: E402
 from checking.checker import Checker, Issue, run  # noqa: E402
+from documentation.citation_files import archive_citations  # noqa: E402
 from documentation.design_topics import (  # noqa: E402
     K_DESIGNS_FIELD,
     K_IMPLEMENTS_FIELD,
@@ -48,6 +49,7 @@ class Repository:
     root: Path
     is_required: bool = False
     ceiling: int = 0
+    is_archive_untracked: bool = False
 
     @property
     def docs(self) -> Path:
@@ -59,7 +61,8 @@ def collect(paths: list[Path]) -> Iterable[Repository]:
     """Returns each given folder that holds a docs/ tree, with the topic settings of this repository."""
     required = bool(getattr(settings, "K_DESIGN_TOPICS", False))
     ceiling = int(getattr(settings, "K_FOLDER_CEILING", 0))
-    return [Repository(path, required, ceiling) for path in paths if (path / "docs").is_dir()]
+    untracked = bool(getattr(settings, "K_ARCHIVE_UNTRACKED", False))
+    return [Repository(path, required, ceiling, untracked) for path in paths if (path / "docs").is_dir()]
 
 
 def _normal(name: str) -> str:
@@ -145,6 +148,14 @@ def rule_folder_ceiling(repository: Repository) -> Iterator[Issue]:
                 yield Issue(folder, 1, f"{count} entries; the ceiling is {repository.ceiling}")
 
 
+def rule_archive_not_cited(repository: Repository) -> Iterator[Issue]:
+    """Yields an issue for each line that cites the archive, once the repository no longer tracks it."""
+    if not repository.is_archive_untracked:
+        return
+    for path, number in archive_citations(repository.root):
+        yield Issue(path, number, "the archive is not tracked; cite the topic that holds the decision")
+
+
 def rule_views_current(repository: Repository) -> Iterator[Issue]:
     """Yields an issue for a generated block whose text is not what the metadata says it should be."""
     for path, name, body in expected_blocks(repository.root):
@@ -170,6 +181,7 @@ K_CHECKER = Checker(
         "rule_designs_resolve": rule_designs_resolve,
         "rule_glossary_entry": rule_glossary_entry,
         "rule_folder_ceiling": rule_folder_ceiling,
+        "rule_archive_not_cited": rule_archive_not_cited,
         "rule_views_current": rule_views_current,
         "rule_views_present": rule_views_present,
     },
