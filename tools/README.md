@@ -20,6 +20,7 @@ which it keeps is in the `project-tools` skill.
 | `documentation/generate_design_views.py` | Writes the topic map, the Designs block of each module README and the work block of each topic between their markers; `--init` adds the markers, `--check` writes nothing and fails a stale block | Repository root |
 | `documentation/repair_design_citations.py` | Rewrites each citation of a design document that moved between one file and a folder with a `README.md` in the manual and the source, and reports the ones it cannot place; `--move OLD NEW` rewrites the citations of a file that was moved or merged; nothing is written without `--apply` | Repository root |
 | `documentation/retire_archive.py` | Tags the history that holds `docs/archive/`, unstages it and ignores it, once nothing cites it; nothing is changed without `--apply` | Repository root |
+| `documentation/drop_retired_citations.py` | Replaces each citation of a file under a retired folder, such as `docs/archive` or a deleted work folder, with a phrase naming it and the version history; a link becomes its text; nothing is written without `--apply` | Repository root, `--prefix` |
 | `documentation/citation_files.py` | Nothing itself; lists the files that can cite a document and the lines that cite the archive | |
 | `documentation/design_views.py` | Nothing itself; renders the three generated views and reads and writes the blocks | |
 | `documentation/design_topics.py` | Nothing itself; reads a topic's name, metadata lines and phase ids and the links work folders make to them | |

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-21 — tools: Added `drop_retired_citations.py`, which replaces each citation of an archived or deleted file with a phrase naming it and the version history.
 - 2026-10-21 — tools: Added `retire_archive.py` and the rule `rule_archive_not_cited`; a repository can stop tracking `docs/archive/` once nothing cites it.
 - 2026-10-21 — documentation: Closed work is deleted, not archived; `rule_closed_work` replaces `rule_archive_candidates` and leaves a shipped design in place.
 - 2026-10-21 — tools: Added `repair_design_citations.py`, which rewrites each citation of a design document that became a folder or a file and reports the ones it cannot place.

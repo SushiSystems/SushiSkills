@@ -68,7 +68,9 @@ the tool tags the history `docs-archive-<date>`, unstages the folder and ignores
 commit follows. A repository that sets `K_ARCHIVE_UNTRACKED` in `tools/settings.py` has
 `check_design_topics.py` fail every line that cites the archive; each such citation is repointed to
 the topic that holds the decision, or dropped. A decision that only an archived folder held is not
-recovered.
+recovered. `tools/documentation/drop_retired_citations.py --prefix docs/archive --apply` replaces
+each such citation with a phrase naming the file, and does the same for the files of a deleted work
+folder.
 
 The manual is never deleted; it is kept true.
 
