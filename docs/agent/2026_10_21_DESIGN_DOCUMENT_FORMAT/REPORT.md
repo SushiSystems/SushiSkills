@@ -43,7 +43,13 @@ Recorded after each repository, by `RW-24`.
 | sushiweb | done | `887716b9` | `SOCIAL_APP.md` became a topic folder of seven pages; 62 source files repointed; only the design checker and the ceiling copied, as the other shared tools raise licence findings that predate this work |
 | sushicore | done | `348ddd8` | Three documents reshaped in place; the GPU run evidence moved to `docs/agent/2026_10_14_GPU_TOOLKIT_SELECTION/REPORT.md`; shared tools copied whole |
 | sushiai | done | `96a162c` | Seven documents reshaped; `GRAPH_CAPABILITIES.md` (1117 lines) became a topic folder of five pages; phase states read from each document's own status line and from the status of the work folders it names, so the owner should confirm them; the plan's source commits moved to `docs/agent/2026_10_21_GRAPH_CAPABILITIES_SOURCES/`; shared tools copied whole |
-| sushiblas, sushidsp, sushifx, sushihub, sushiruntime, sushitrack, project-mobilerts | open | | Not measured |
+| sushitrack | open | | Measured 2026-10-21: 1 design document, 10 findings, none above the ceiling |
+| sushiblas | open | | Measured 2026-10-21: 4 documents, 47 findings, none above the ceiling; 2 of them hashes |
+| sushihub | open | | Measured 2026-10-21: 3 documents, 50 findings, none above the ceiling |
+| sushiruntime | open | | Measured 2026-10-21: 5 documents, 90 findings, 2 above the ceiling |
+| sushidsp | open | | Measured 2026-10-21: 4 documents, 163 findings (61 hashes, 31 dated work lines), 1 above the ceiling |
+| project-mobilerts | open | | Measured 2026-10-21: 13 documents, 197 findings, 12 of them phase tables, 2 above the ceiling |
+| sushifx, sushistack, IpekWeb, MAYAGAWeb, SerkanGaripWeb | not applicable | | No design documents, or no `docs/` tree |
 | sushiengine | open | | 1 177 findings, 51 above the ceiling; last |
 
 ## Known weaknesses
