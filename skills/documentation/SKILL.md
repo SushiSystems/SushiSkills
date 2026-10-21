@@ -78,6 +78,7 @@ adjectives such as fast, powerful or seamless, and anything the manual already s
 | Task | File in this folder |
 | --- | --- |
 | Opening or extending a design document, opening or closing a work folder under `docs/agent/` | `AGENT_WORK.md` |
+| Writing or reshaping a design document: its sections, status line and phase table | `DESIGN_FORMAT.md` |
 | Writing a changelog entry or moving a release section | `CHANGELOG_FORMAT.md` |
 | Writing or closing an entry in `REMAINING_WORK.md` or `KNOWN_ISSUES.md` | `BACKLOG_FORMAT.md` |
 
@@ -125,7 +126,7 @@ README links.
 | Root `README.md` | 120 lines | Move the detail into the manual and link it |
 | Manual page | 600 lines | Split by subject into pages the index links |
 | Module README | 800 lines | Move each part to the README of the folder it describes, or to a page beside the file it describes |
-| Design document | 1 500 lines | Split into `<TOPIC>/`, one file per phase |
+| Design document | 400 lines | Split into `<TOPIC>/`, one file per phase |
 
 - One fact, one home. A paragraph of 300 characters or more that a second page repeats becomes
   one sentence and a link there.

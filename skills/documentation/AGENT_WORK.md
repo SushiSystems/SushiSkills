@@ -7,8 +7,9 @@ Read from the `documentation` skill before opening a design document or a work f
 
 - `docs/design/README.md` maps every topic to exactly one document. Before writing, look the
   topic up there. If a document exists, extend it; never open a second one on the same topic.
-- Every design document's second line is its status, in one of four forms. Text may follow the
-  date after a full stop.
+- A design document has the sections, the one-line status and the phase table of
+  `DESIGN_FORMAT.md`. Its second line is its status, in one of four forms. Text may follow the date
+  after a full stop.
 
   | Form | Meaning |
   | --- | --- |
@@ -34,8 +35,9 @@ Read from the `documentation` skill before opening a design document or a work f
    in place as the work moves. A second review round replaces the first `REPORT.md`; it is not
    a new file.
 3. **Close.** The orchestrator, in one commit: writes the changelog line, dates the work
-   folder's status and the design status, updates `REMAINING_WORK.md`, updates the module
-   READMEs and manual pages the work made false.
+   folder's status and the design status, writes the decisions the work made into its design
+   document, updates `REMAINING_WORK.md`, updates the module READMEs and manual pages the work
+   made false.
 4. **Archive.** A work folder or a design document whose status has carried a `Shipped`,
    `Superseded` or `Withdrawn` date for 90 days moves to `docs/archive/` as it is, keeping its
    path below `docs/`. The clock reads the date in the status line, never a commit date, which a

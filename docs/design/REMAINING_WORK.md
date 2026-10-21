@@ -1,6 +1,6 @@
 # Remaining work
 
-Next id: RW-24
+Next id: RW-25
 
 ## Decisions waiting for the owner
 
@@ -131,3 +131,16 @@ lost; the checker passed, since it reads entries and the one entry left was well
 
 One repository keeps this as a local edit of the shared checker, with the list in a text file;
 the copy would drop it.
+
+## Estate
+
+### RW-24 Reshape the design documents of the sibling repositories
+- State: open
+- Done when: `check_design_format.py` and the 400-line ceiling of `check_docs_layout.py` report
+  nothing in each sibling repository
+- Source: `docs/agent/2026_10_21_DESIGN_DOCUMENT_FORMAT/SPEC.md`
+
+A run on 2026-10-21 found 44 findings in sushicore, 94 in sushiai, 19 in sushiweb and 1 177 in
+sushiengine, whose 111 documents hold 35 files above 600 lines. Each sibling copies the shared
+tools first, so its check fails until its documents are reshaped. Start with a small repository
+and leave sushiengine for last.

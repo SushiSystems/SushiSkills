@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-21 — documentation: Gave the design document five fixed sections, a one-line status, a phase table and a 400-line ceiling, and kept commit hashes in the work folder (`DESIGN_FORMAT.md`, `check_design_format.py`).
 - 2026-10-20 — documentation: Kept a defect with a scheduled fix and no workaround out of the known issues and let a backlog entry carry `Where:` (`BACKLOG_FORMAT.md`, `rule_scope`).
 - 2026-10-19 — continuous-integration: Added the default that a prose-only commit pushed to main carries [skip ci] once the checks pass locally (`SKILL.md`).
 - 2026-10-19 — tools: Read every check's output as UTF-8, so a finding with an em dash no longer stops the run on Windows (`check_all.py`).
