@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-21 — docs: Recorded the migration of sushitrack, sushiblas, sushihub, sushiruntime, sushidsp and project-mobilerts to the design format (`docs/agent/2026_10_21_DESIGN_DOCUMENT_FORMAT/REPORT.md`, `REMAINING_WORK.md`).
 - 2026-10-21 — documentation: Made a worker record each step in its work folder right after finishing it, without asking (`AGENT_WORK.md`).
 - 2026-10-21 — tools: Read a design document for a bare commit hash and for a line that dates built, merged or reviewed work (`check_design_format.py`, `rule_no_execution_record`).
 - 2026-10-21 — documentation: Gave the design document five fixed sections, a one-line status, a phase table and a 400-line ceiling, and kept commit hashes in the work folder (`DESIGN_FORMAT.md`, `check_design_format.py`).

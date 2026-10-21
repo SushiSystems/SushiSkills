@@ -140,8 +140,6 @@ the copy would drop it.
   nothing in each sibling repository
 - Source: `docs/agent/2026_10_21_DESIGN_DOCUMENT_FORMAT/SPEC.md`
 
-Done: sushilog, sushiweb, sushicore, sushiai and sushitrack. Left, by findings: sushiblas (47),
-sushihub (50), sushiruntime (90), sushidsp (163), project-mobilerts (197) and sushiengine
-(1 177 findings, 111 documents, 35 of them above 600 lines). Each sibling copies the shared
-tools first, so its check fails until its documents are reshaped. Leave sushiengine for last.
-The progress table and the steps to continue are in the `REPORT.md` of the source folder.
+Done: every sibling repository but sushiengine (1 177 findings, 111 documents, 35 of them above
+600 lines), which is left for last. The progress table, the phase states the owner should confirm
+and the steps to continue are in the `REPORT.md` of the source folder.

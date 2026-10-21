@@ -44,11 +44,11 @@ Recorded after each repository, by `RW-24`.
 | sushicore | done | `348ddd8` | Three documents reshaped in place; the GPU run evidence moved to `docs/agent/2026_10_14_GPU_TOOLKIT_SELECTION/REPORT.md`; shared tools copied whole |
 | sushiai | done | `96a162c` | Seven documents reshaped; `GRAPH_CAPABILITIES.md` (1117 lines) became a topic folder of five pages; phase states read from each document's own status line and from the status of the work folders it names, so the owner should confirm them; the plan's source commits moved to `docs/agent/2026_10_21_GRAPH_CAPABILITIES_SOURCES/`; shared tools copied whole |
 | sushitrack | done | `ed9d79e` | One document reshaped in place; the phase states read from its own status line, so the owner should confirm them; shared tools copied whole |
-| sushiblas | open | | Measured 2026-10-21: 4 documents, 47 findings, none above the ceiling; 2 of them hashes |
-| sushihub | open | | Measured 2026-10-21: 3 documents, 50 findings, none above the ceiling |
-| sushiruntime | open | | Measured 2026-10-21: 5 documents, 90 findings, 2 above the ceiling |
-| sushidsp | open | | Measured 2026-10-21: 4 documents, 163 findings (61 hashes, 31 dated work lines), 1 above the ceiling |
-| project-mobilerts | open | | Measured 2026-10-21: 13 documents, 197 findings, 12 of them phase tables, 2 above the ceiling |
+| sushiblas | done | `45a5a52` | Four documents reshaped; the module split and GPU run evidence moved to two work folders; the build states are read from each document's own status text, so the owner should confirm them; shared tools copied whole |
+| sushihub | done | `c3e8fd2` | The checkout is `sushistack/`, whose remote is SushiHub. Three documents reshaped; the landing records of the decoupling waves moved to a work folder; only the design checker, its test and the ceiling copied, as the other shared tools predate this work |
+| sushiruntime | done | `f134019` | Five documents reshaped; the engine backbone plan and the substrate plan became topic folders; phase states for WP-0 to WP-3, WP-6 and WP-DOCS are the last recorded reading and WP-7 is contradictory between two documents, so the owner should confirm them; shared tools copied whole |
+| sushidsp | done | `1efc691` | Five documents reshaped; the SushiDSP design became a topic folder; dated phase records, hashes and measurements moved to four work folders; phase states read from the documents' own text, so the owner should confirm them; the design checker, its test, the ceiling and `check_all.py` copied |
+| project-mobilerts | done | `ccdab09c2` | The git checkout is `project-mobilerts-legacy/`; `project-mobilerts/` is a Plastic SCM Unity project with no `docs/`. Thirteen documents reshaped, three of them topic folders; phase states derived from each document's status and tables, so the owner should confirm them; the closed licence header of the repository kept on the copied tools |
 | sushifx, sushistack, IpekWeb, MAYAGAWeb, SerkanGaripWeb | not applicable | | No design documents, or no `docs/` tree |
 | sushiengine | open | | 1 177 findings, 51 above the ceiling; last |
 
