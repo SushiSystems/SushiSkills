@@ -52,6 +52,33 @@ Recorded after each repository, by `RW-24`.
 | sushifx, sushistack, IpekWeb, MAYAGAWeb, SerkanGaripWeb | not applicable | | No design documents, or no `docs/` tree |
 | sushiengine | open | | 1 177 findings, 51 above the ceiling; last |
 
+## How to continue
+
+For a session on another machine. Work from sibling checkouts of the repositories, side by side
+with this one; take no clone path from this page.
+
+1. Read `SPEC.md` for the format and `skills/documentation/DESIGN_FORMAT.md` for the rule.
+2. Pick the next open repository from the table above, smallest first, `sushiengine` last.
+3. Measure it: `python tools/documentation/check_design_format.py ../<repo> --report` and
+   `python tools/documentation/check_docs_layout.py ../<repo> --rule rule_design_ceiling`.
+4. Check the repository's tools against this one with
+   `python tools/checking/copy_shared_tools.py ../<repo> --from . --report`. When the report lists
+   only the four design format files, copy the whole set. When it lists many, copy only
+   `check_design_format.py`, its test and `check_docs_layout.py`, as sushiweb did: the full copy
+   raises licence findings in `check_source_comments.py` that predate this work. sushidsp,
+   sushiengine and sushistack were behind in the known issues scope work for the same reason.
+5. Reshape each design document into the five sections, one repository per commit. Keep the
+   section titles other files cite (search `git grep` for the document's name). Split a document
+   above 400 lines into `<TOPIC>/` with a README and one page per part. Move dated evidence and
+   hashes to a work folder `REPORT.md`.
+6. Close the repository with its checkers, the tools README row, the changelog line and
+   `python tools/check_all.py .` (or its own checkers when it has no `check_all.py`).
+7. Write the repository's row in the table above and update `RW-24` before the next repository.
+
+The phase states in the migrated documents are read from each document's own status line and
+from the status of the work folders it names. They are not verified against the code; the owner
+confirms them.
+
 ## Known weaknesses
 
 - The checker sees form and two content signals, not meaning. `rule_no_commit_hashes` finds a hash

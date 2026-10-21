@@ -144,4 +144,4 @@ Done: sushilog, sushiweb, sushicore and sushiai. Left, by findings: sushitrack (
 sushiblas (47), sushihub (50), sushiruntime (90), sushidsp (163), project-mobilerts (197) and
 sushiengine (1 177 findings, 111 documents, 35 of them above 600 lines). Each sibling
 copies the shared tools first, so its check fails until its documents are reshaped. Leave
-sushiengine for last. The progress table is in the `REPORT.md` of the source folder.
+sushiengine for last. The progress table and the steps to continue are in the `REPORT.md` of the source folder.
