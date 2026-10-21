@@ -1,6 +1,6 @@
 # Remaining work
 
-Next id: RW-26
+Next id: RW-29
 
 ## Decisions waiting for the owner
 
@@ -126,8 +126,23 @@ the copy would drop it.
 
 ## Documentation
 
-### RW-25 Make the documentation tree scale
+### RW-26 Write bulk edits through a temporary file and the changelog as fragments
 - State: open
-- Done when: a pilot repository other than `sushiengine` keeps its designs as topics with generated
-  views, closes agent work by deleting it, and has an untracked archive, with its `check_all` green
+- Done when: a tool that rewrites many files refuses to shrink one past a set share and copies it first, and an entry is added as a file beside the changelog and joined at a release
 - Source: `docs/agent/2026_10_21_DOCS_SCALABILITY/SPEC.md`
+
+Phase D5 of the source. Two sessions edit the changelog and the backlog at once, and a bulk edit emptied a file once.
+
+### RW-27 Check a built phase against a test and make a shipped design shrink
+- State: open
+- Done when: a phase marked built may name an existing test or command that a checker verifies, and a shipped design above a set size is a finding
+- Source: `docs/agent/2026_10_21_DOCS_SCALABILITY/SPEC.md`
+
+Phase D8 of the source: phase evidence, the size ceiling that makes a shipped design graduate, a rule that a module page does not restate the signatures the generated reference holds, and a report of the share of live documentation to code.
+
+### RW-28 Land the topic model in the main checkout of sushiengine
+- State: blocked
+- Blocked by: external: another session holds uncommitted edits in eight files the commit changes
+- Done when: commit `0dcf60dc7` of sushiengine is merged into the working tree of its main checkout and `git status` shows only the other session's files
+
+The commit is in place; the working tree holds the other session's version of `REMAINING_WORK.md`, `GLOSSARY.md`, `KNOWN_ISSUES.md`, `REDISTRIBUTABLES.md`, `cmake/Runtime.cmake`, two test READMEs and one example README.
