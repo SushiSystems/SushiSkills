@@ -58,13 +58,32 @@ phase is named by its id in the table below, not described in the status.
 
 When every phase is `built` or `withdrawn`, the document's status becomes `Shipped`.
 
+## The topic and its metadata
+
+The unit of design is the topic: a name that is a module (`AUDIO`, `ECS`) or a subject that spans
+modules (`WEATHER`). A topic has one home, `docs/design/<TOPIC>.md` or `docs/design/<TOPIC>/`. A new
+idea about an existing topic is a page and a phase in that topic, never a second document. Two
+documents on one subject are merged into one topic.
+
+Under the status line, one field to a line, a design document may carry:
+
+| Field | Holds |
+| --- | --- |
+| `**Modules:**` | The paths of the modules the topic governs, separated by commas, or `none` |
+
+`check_design_topics.py` reads each path and fails one that is not in the repository. A repository
+that sets `K_DESIGN_TOPICS` in `tools/settings.py` also requires the line on every topic and a term
+in `docs/reference/GLOSSARY.md` for each topic name.
+
+Work reaches a topic through its phase ids; see `AGENT_WORK.md`.
+
 ## Size
 
 A design document has at most 400 lines. Above it, the topic becomes `<TOPIC>/`: a `README.md`
 with the five sections and the status, and one file per phase for the detail the Design section
 would otherwise hold. The phase files carry no status and no fixed sections.
 
-`tools/documentation/check_design_format.py` enforces the sections, the status length, the phase
+`tools/documentation/check_design_topics.py` enforces the metadata above. `tools/documentation/check_design_format.py` enforces the sections, the status length, the phase
 table, the hash rule and the dated-work rule; `check_docs_layout.py` enforces the size. The two
 content rules read form only: a hash anywhere in prose, and a line outside the status that sets a
 verb such as built, merged or reviewed beside an ISO date. A narrative with no date and no hash

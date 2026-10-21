@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-21 — tools: Added `check_design_topics.py`: a topic's `Modules` line must name real modules, and a work folder's `Implements` and `Designs` lines must name real topics and phases.
 - 2026-10-21 — docs: Recorded the last sibling repository, sushiengine, in the design format migration, which closes it (`docs/agent/2026_10_21_DESIGN_DOCUMENT_FORMAT/REPORT.md`).
 - 2026-10-21 — docs: Recorded the migration of sushitrack, sushiblas, sushihub, sushiruntime, sushidsp and project-mobilerts to the design format (`docs/agent/2026_10_21_DESIGN_DOCUMENT_FORMAT/REPORT.md`, `REMAINING_WORK.md`).
 - 2026-10-21 — documentation: Made a worker record each step in its work folder right after finishing it, without asking (`AGENT_WORK.md`).

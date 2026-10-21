@@ -17,6 +17,7 @@ repository. They are run by hand or through the project's CLI; they never build 
 | `tools/documentation/check_changelog.py` | One line, 240 characters, one sentence, no nesting |
 | `tools/documentation/check_backlog.py` | `BACKLOG_FORMAT.md` in `documentation`: the shape of both files, IDs, paths, references, entry size, and a backlog entry for every open design document |
 | `tools/documentation/check_design_format.py` | `DESIGN_FORMAT.md` in `documentation`: the five sections in order, the status length, the phase table and its states, no commit hash, no dated record of work |
+| `tools/documentation/check_design_topics.py` | `DESIGN_FORMAT.md` and `AGENT_WORK.md` in `documentation`: the modules a topic names exist, the topics and phases a work folder implements exist, and the opt-in rules for a `Modules` line and a glossary entry per topic and for the folder ceiling |
 | `tools/documentation/check_docs_truth.py` | The manual against the source, from `documentation`: every name and path a page writes in code exists, every example cites the file it is taken from, no history words, the page ceilings, no paragraph in two pages, no em dash in prose, a reason on every allow-list entry |
 | `tools/layering/check_layering.py` | Module dependencies follow the declared tier order; nothing reaches into another module's private `source/` |
 | `tools/testing/check_test_mirror.py` | `tests/` mirrors the public headers, from `repository-layout` |
@@ -24,7 +25,7 @@ repository. They are run by hand or through the project's CLI; they never build 
 | `tools/testing/check_probes.py` | Probes and scenario benchmarks live in `applications/probes/` and `applications/benchmarks/`, use no test framework, stay out of the test runner, carry a name of their own and are listed, from `testing` and `performance` |
 | `tools/logs/check_logging.py` | Log calls carry their module's category, library code writes no console output and hides no failure, from `logging` |
 
-A repository may add checkers; it may not rename or drop these eleven. `tools/check_all.py` runs
+A repository may add checkers; it may not rename or drop these twelve. `tools/check_all.py` runs
 all of them and the checker tests, and prints only what failed; it also runs every other
 `tools/<area>/check_<what>.py` a repository holds as its own. A checker never reads a file git
 ignores.

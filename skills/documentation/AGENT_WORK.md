@@ -26,6 +26,19 @@ Read from the `documentation` skill before opening a design document or a work f
   under `docs/` outside `agent/` and `archive/`. Phases live in their design document, finished
   work in the changelog, a journal or a handover in the work folder that wrote it.
 
+## Linking work to a design
+
+A work folder that carries out a phase of a design says so under the status line of its first file,
+one field to a line:
+
+| Field | Holds |
+| --- | --- |
+| `**Implements:**` | `TOPIC#PHASE` items, separated by commas, naming phases in the topic's phase table |
+| `**Designs:**` | Topics the work touches without carrying out one of their phases, separated by commas |
+
+An audit or a tooling change that serves no design carries neither line. `check_design_topics.py`
+fails an item whose topic or phase does not exist, so a renamed phase is found where the work cites it.
+
 ## Agent work lifecycle
 
 1. **Open.** One folder: `docs/agent/<YYYY_MM_DD>_<WORK_NAME>/`. Before opening, check that no
