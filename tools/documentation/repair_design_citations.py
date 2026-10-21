@@ -26,7 +26,7 @@ from documentation.citation_files import citing_files  # noqa: E402
 from documentation.design_topics import topics  # noqa: E402
 
 K_PATH = re.compile(r"docs/design/(?P<tail>[A-Za-z0-9_]+(?:\.md)?(?:/[A-Za-z0-9_.-]+)*)")
-K_LINK = re.compile(r"\]\((?P<target>(?:\.\./|\./)*[A-Za-z0-9_./-]*design/[A-Za-z0-9_]+(?:/[A-Za-z0-9_.-]+)*\.md)(?P<anchor>#[^)\s]*)?\)")
+K_LINK = re.compile(r"\]\((?P<target>[A-Za-z0-9_./-]+\.md)(?P<anchor>#[^)\s]*)?\)")
 K_EXIT_CLEAN = 0
 K_EXIT_FINDINGS = 1
 
@@ -120,7 +120,7 @@ def run(root: Path, apply: bool, moves: dict[str, str] | None = None) -> list[Re
             text = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
             continue
-        if "design/" not in text:
+        if not moves and "design/" not in text:
             continue
         fixed, repairs = repair_text(path, text, root, known, moves)
         found += repairs

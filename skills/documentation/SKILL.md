@@ -25,7 +25,7 @@ docs/
     design/
         README.md                 topic -> design document map
         REMAINING_WORK.md         the single backlog
-        <TOPIC>.md                live intent, each with a status line
+        <TOPIC>/README.md         live intent of one topic, with a status line; pages beside it
     agent/
         <YYYY_MM_DD>_<WORK_NAME>/ one folder per piece of agent work
             SPEC.md  PLAN.md  REPORT.md
@@ -46,7 +46,7 @@ Ask in order, stop at the first yes.
 
 1. Is it a fact about one module? → that module's `README.md`.
 2. Was it written by an agent while doing a piece of work? → that work's folder in `docs/agent/`.
-3. Is it intent with an open phase? → `docs/design/<TOPIC>.md`.
+3. Is it intent with an open phase? → `docs/design/<TOPIC>/README.md`.
 4. Is it about work that is finished? → nowhere: it is deleted when its decisions are in the topic;
    version history keeps it.
 5. Otherwise → the manual: `getting_started/`, `architecture/`, `guides/` or `reference/`.
@@ -127,7 +127,7 @@ README links.
 | Root `README.md` | 120 lines | Move the detail into the manual and link it |
 | Manual page | 600 lines | Split by subject into pages the index links |
 | Module README | 800 lines | Move each part to the README of the folder it describes, or to a page beside the file it describes |
-| Design document | 400 lines | Split into `<TOPIC>/`, one file per phase |
+| Design document | 400 lines | Pages beside its `README.md`, one per phase |
 
 - One fact, one home. A paragraph of 300 characters or more that a second page repeats becomes
   one sentence and a link there.

@@ -18,9 +18,9 @@ Read from the `documentation` skill before opening a design document or a work f
   | `**Status:** Superseded — <YYYY-MM-DD> by <link>` | Replaced by another document |
   | `**Status:** Withdrawn — <YYYY-MM-DD>, <reason>` | Given up by the owner |
 
-- A design document above its ceiling (see "Size and one home" in `SKILL.md`) is split into
-  `<TOPIC>/` with a `README.md` and one file per phase, and the map is updated in the same commit.
-  The `README.md` carries the status; the phase files carry none.
+- A design document is the `README.md` of its topic folder. Above its ceiling (see "Size and one
+  home" in `SKILL.md`) the detail moves into one page per phase beside it, and the generated map
+  follows. The `README.md` carries the status; the pages carry none.
 - `REMAINING_WORK.md` is the only backlog and `## Next` in it the only order; its format is
   `BACKLOG_FORMAT.md`. No TODO list, roadmap, journal, handover, milestone or priority file sits
   under `docs/` outside `agent/` and `archive/`. Phases live in their design document, finished

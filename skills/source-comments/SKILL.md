@@ -104,7 +104,7 @@ Two `//` lines in a row are a paragraph, and a paragraph belongs in a document.
 
 | Forbidden | Where it goes instead |
 | --- | --- |
-| Why a design was chosen | `docs/design/<TOPIC>.md`, cited by path |
+| Why a design was chosen | `docs/design/<TOPIC>/README.md`, cited by path |
 | History: "previously", "was changed", "fixed in" | The commit message |
 | `TODO`, `FIXME`, `HACK`, `XXX` | `docs/design/REMAINING_WORK.md` |
 | Separator lines (`-----`, `=====`, `*****`) outside the license block | Nothing; split the file |

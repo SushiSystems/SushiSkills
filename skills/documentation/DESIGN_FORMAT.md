@@ -7,7 +7,7 @@ A design document and a work folder record different things, and neither holds w
 does. A reader opens a design document to learn what is being built and why. A reader opens a work
 folder to learn what one piece of work did.
 
-| | `docs/design/<TOPIC>.md` | `docs/agent/<YYYY_MM_DD>_<WORK_NAME>/` |
+| | `docs/design/<TOPIC>/README.md` | `docs/agent/<YYYY_MM_DD>_<WORK_NAME>/` |
 | --- | --- | --- |
 | Answers | What are we building, and why this way? | What did this piece of work do and find? |
 | Holds | The ruling, its reason, the shape, the phases, the open questions | Commit hashes, measurements, review findings, the working record |
@@ -61,7 +61,8 @@ When every phase is `built` or `withdrawn`, the document's status becomes `Shipp
 ## The topic and its metadata
 
 The unit of design is the topic: a name that is a module (`AUDIO`, `ECS`) or a subject that spans
-modules (`WEATHER`). A topic has one home, `docs/design/<TOPIC>.md` or `docs/design/<TOPIC>/`. A new
+modules (`WEATHER`). A topic has one home, the folder `docs/design/<TOPIC>/`, whose `README.md` is the design document.
+Nothing but `README.md` and `REMAINING_WORK.md` sits loose in `docs/design/`. A new
 idea about an existing topic is a page and a phase in that topic, never a second document. Two
 documents on one subject are merged into one topic.
 
@@ -91,9 +92,9 @@ place. A repair is never done by hand.
 
 ## Size
 
-A design document has at most 400 lines. Above it, the topic becomes `<TOPIC>/`: a `README.md`
-with the five sections and the status, and one file per phase for the detail the Design section
-would otherwise hold. The phase files carry no status and no fixed sections.
+A design document, the `README.md` of a topic folder, has at most 400 lines. Above it, the detail
+moves into one page per phase beside it, where the Design section would otherwise hold it. The pages carry
+no status and no fixed sections. `fold_design_topics.py --apply` gives a loose document its folder.
 
 `tools/documentation/check_design_topics.py` enforces the metadata above. `tools/documentation/check_design_format.py` enforces the sections, the status length, the phase
 table, the hash rule and the dated-work rule; `check_docs_layout.py` enforces the size. The two
