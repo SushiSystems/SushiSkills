@@ -31,6 +31,6 @@ A change that needs more than five places is more than one entry.
 
 **Release.** When a version ships, `## Unreleased` is renamed to `## vX.Y.Z — YYYY-MM-DD` and a
 new empty `## Unreleased` opens above it. The live file keeps `Unreleased` and the latest
-release; every older release section moves, unchanged, to `docs/archive/changelog/vX.Y.Z.md`.
+release; every older release section is deleted, and the tag of its release holds the file as it was.
 When and how a release is cut is in `versioning-and-release`.
 

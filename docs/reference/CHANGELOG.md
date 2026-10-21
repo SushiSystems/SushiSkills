@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-22 — documentation: Older release sections are deleted from the changelog at a release; the tag of the release holds them (`CHANGELOG_FORMAT.md`).
 - 2026-10-22 — tools: Added `fold_design_topics.py` and `rule_topic_folder`: every design topic is a folder with a `README.md`, and only the two indexes sit loose in `docs/design`.
 - 2026-10-21 — tools: Added `drop_retired_citations.py`, which replaces each citation of an archived or deleted file with a phrase naming it and the version history.
 - 2026-10-21 — tools: Added `retire_archive.py` and the rule `rule_archive_not_cited`; a repository can stop tracking `docs/archive/` once nothing cites it.
