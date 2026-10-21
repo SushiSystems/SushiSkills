@@ -131,15 +131,3 @@ lost; the checker passed, since it reads entries and the one entry left was well
 
 One repository keeps this as a local edit of the shared checker, with the list in a text file;
 the copy would drop it.
-
-## Estate
-
-### RW-24 Reshape the design documents of the sibling repositories
-- State: open
-- Done when: `check_design_format.py` and the 400-line ceiling of `check_docs_layout.py` report
-  nothing in each sibling repository
-- Source: `docs/agent/2026_10_21_DESIGN_DOCUMENT_FORMAT/SPEC.md`
-
-Done: every sibling repository; sushiengine is partly done. Nine of its design documents, which another
-session was editing, still wait for the old shape to be reshaped. The progress table, the phase states
-the owner should confirm and the steps to continue are in the `REPORT.md` of the source folder.
