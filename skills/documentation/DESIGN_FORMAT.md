@@ -85,6 +85,10 @@ Nobody edits text between markers. `tools/documentation/generate_design_views.py
 
 Work reaches a topic through its phase ids; see `AGENT_WORK.md`.
 
+When a topic becomes a folder, or a folder a file, `tools/documentation/repair_design_citations.py
+--apply` rewrites every citation of it in the manual and the source and reports the ones it cannot
+place. A repair is never done by hand.
+
 ## Size
 
 A design document has at most 400 lines. Above it, the topic becomes `<TOPIC>/`: a `README.md`

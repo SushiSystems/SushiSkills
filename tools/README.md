@@ -18,6 +18,7 @@ which it keeps is in the `project-tools` skill.
 | `documentation/check_design_format.py` | Design documents: the five sections in order, a status line of at most 160 characters, the phase table and its states, no commit hash, no line that dates built or merged work | Repository root |
 | `documentation/check_design_topics.py` | Design topics: the modules a `Modules` line names exist, the topics and phases a work folder names in `Implements` and `Designs` exist, and the opt-in rules for a `Modules` line and a glossary entry on every topic and for the entry ceiling of `docs/design` and `docs/agent` | Repository root |
 | `documentation/generate_design_views.py` | Writes the topic map, the Designs block of each module README and the work block of each topic between their markers; `--init` adds the markers, `--check` writes nothing and fails a stale block | Repository root |
+| `documentation/repair_design_citations.py` | Rewrites each citation of a design document that moved between one file and a folder with a `README.md` in the manual and the source, and reports the ones it cannot place; nothing is written without `--apply` | Repository root |
 | `documentation/design_views.py` | Nothing itself; renders the three generated views and reads and writes the blocks | |
 | `documentation/design_topics.py` | Nothing itself; reads a topic's name, metadata lines and phase ids and the links work folders make to them | |
 | `documentation/design_status.py` | Nothing itself; finds the design documents and work folders and reads their status lines | |
