@@ -16,20 +16,22 @@ from checking.ignored_paths import drop_ignored
 K_EXTENSIONS = frozenset({".md", ".cpp", ".hpp", ".h", ".py", ".ts", ".glsl", ".comp", ".toml", ".json", ".txt", ".cmake"})
 K_SKIPPED_FOLDERS = frozenset({".git", "third_party", "node_modules", "build"})
 K_ARCHIVE = Path("docs") / "archive"
-K_FIXTURES = Path("tools") / "tests"
+K_SHARED_TOOLS = tuple(
+    Path("tools") / name for name in ("checking", "documentation", "layering", "licensing", "logs", "routing", "testing", "tests")
+)
 K_ARCHIVE_CITATION = re.compile(r"(?:docs/|\.\./)archive/")
 
 
 def citing_files(root: Path) -> list[Path]:
     """Returns each file below root that may hold citations: not ignored, not vendored, not in the archive.
 
-    The checker tests under tools/tests write fake citations as fixtures, so they are left out.
+    The shared tools and their tests name paths and write fake citations as fixtures, so they are left out.
     """
     found: list[Path] = []
     for folder, names, files in os.walk(root):
         names[:] = [name for name in names if name not in K_SKIPPED_FOLDERS]
         found += [Path(folder) / name for name in files if Path(name).suffix in K_EXTENSIONS]
-    skipped = [(root / K_ARCHIVE).resolve(), (root / K_FIXTURES).resolve()]
+    skipped = [(root / K_ARCHIVE).resolve(), *((root / folder).resolve() for folder in K_SHARED_TOOLS)]
     return [path for path in drop_ignored(root, found) if not any(folder in path.resolve().parents for folder in skipped)]
 
 
