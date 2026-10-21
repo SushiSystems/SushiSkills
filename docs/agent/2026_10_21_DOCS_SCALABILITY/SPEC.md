@@ -1,6 +1,6 @@
 # Documentation that scales
 
-**Status:** Open — decisions taken on 2026-10-21; pilot is sushidsp; the tools are not written
+**Status:** Open — decisions taken on 2026-10-21; the tools are built; the sushidsp pilot is under way
 
 ## Problem
 
@@ -131,12 +131,12 @@ repaired by hand.
 | D0 | Research and options, this document. | built |
 | D1 | The owner decides the unit, the lifecycle and the archive. | built |
 | D2 | The gate of the pilot repository is green. | built |
-| D3 | The resolver, the generated views, `Implements:` and the glossary check, with tests, in SushiSkills. | planned |
-| D4 | The lifecycle: graduation, delete at close, archive untracked, the 675 citations repointed. | planned |
+| D3 | The resolver, the generated views, `Implements:` and the glossary check, with tests, in SushiSkills. | built |
+| D4 | The lifecycle rules and tools: delete at close, the archive retired and uncited, with tests, in SushiSkills. | built |
 | D5 | Safe writing for the bulk tools, and changelog fragments. | planned |
-| D6 | Pilot on a small repository: metadata, views, topic merges the owner approves. | planned |
+| D6 | Pilot on `sushidsp`: metadata, views, topic merges, the archive citations repointed and the archive retired. | building |
 | D7 | The other repositories follow, smallest first, `sushiengine` last. | planned |
-| D8 | Phase evidence, the module README dedup rule and the volume report. | planned |
+| D8 | Phase evidence, the size ceiling that makes a shipped design graduate, the module README dedup rule and the volume report. | planned |
 
 ## Open questions
 
