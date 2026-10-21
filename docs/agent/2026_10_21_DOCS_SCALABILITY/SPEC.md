@@ -1,6 +1,6 @@
 # Documentation that scales
 
-**Status:** Open — the owner took the decisions on 2026-10-21; no tool is written and no pilot is chosen
+**Status:** Open — decisions taken on 2026-10-21; pilot is sushidsp; the tools are not written
 
 ## Problem
 
@@ -130,7 +130,7 @@ repaired by hand.
 | --- | --- | --- |
 | D0 | Research and options, this document. | built |
 | D1 | The owner decides the unit, the lifecycle and the archive. | built |
-| D2 | The gate of the pilot repository is green. | planned |
+| D2 | The gate of the pilot repository is green. | built |
 | D3 | The resolver, the generated views, `Implements:` and the glossary check, with tests, in SushiSkills. | planned |
 | D4 | The lifecycle: graduation, delete at close, archive untracked, the 675 citations repointed. | planned |
 | D5 | Safe writing for the bulk tools, and changelog fragments. | planned |
@@ -140,9 +140,13 @@ repaired by hand.
 
 ## Open questions
 
-1. Which repository is the pilot? It is small, has real design documents and is not `sushiengine`.
-2. The folder ceiling: 60 is proposed; 40 or 100 are the alternatives.
-3. The merge list of topics (71 to about 45) is a content decision. A table is produced from shared
-   name prefixes and shared modules, and the owner approves it row by row before any merge.
-4. A decision that only an archived folder holds, found while repointing citations: graduate it into
-   its topic, or accept that it is lost?
+None. The owner delegated the rest on 2026-10-21 and the choices are these.
+
+1. **Pilot: `sushidsp`.** 13 design documents, 57 archive files and 21 work folders on 713 source files:
+   small enough to finish, large enough to merge topics and repoint archive citations for real. Its
+   tree was clean and its gate green on 2026-10-21.
+2. **Folder ceiling: 60** entries in `docs/design` and in `docs/agent`.
+3. **Topic merges** are proposed by a table from shared name prefixes and shared modules and applied by
+   the orchestrator; a merge keeps every section as a page.
+4. **A decision held only by an archived folder is lost** and is not recovered; the version history
+   keeps the text.
