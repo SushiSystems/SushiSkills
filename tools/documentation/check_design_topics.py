@@ -34,6 +34,7 @@ from documentation.design_topics import (  # noqa: E402
     topics,
     work_documents,
 )
+from documentation.design_views import K_TOPICS_BLOCK, expected_blocks, read_block  # noqa: E402
 
 K_GLOSSARY = Path("docs/reference/GLOSSARY.md")
 K_TERM_LINE = re.compile(r"^(\|\s*`?|\*\*|#+\s)")
@@ -144,6 +145,21 @@ def rule_folder_ceiling(repository: Repository) -> Iterator[Issue]:
                 yield Issue(folder, 1, f"{count} entries; the ceiling is {repository.ceiling}")
 
 
+def rule_views_current(repository: Repository) -> Iterator[Issue]:
+    """Yields an issue for a generated block whose text is not what the metadata says it should be."""
+    for path, name, body in expected_blocks(repository.root):
+        current = read_block(path, name)
+        if current is not None and current != body:
+            yield Issue(path, 1, f"the generated block '{name}' is stale; run generate_design_views.py")
+
+
+def rule_views_present(repository: Repository) -> Iterator[Issue]:
+    """Yields an issue when the repository asks for topics and its design index lacks the topic map block."""
+    index = repository.docs / "design" / "README.md"
+    if repository.is_required and index.is_file() and read_block(index, K_TOPICS_BLOCK) is None:
+        yield Issue(index, 1, "the topic map is generated; run generate_design_views.py --init")
+
+
 K_CHECKER = Checker(
     description="Checks the topic metadata of design documents, the phases work folders name and the folder limits.",
     collect=collect,
@@ -154,6 +170,8 @@ K_CHECKER = Checker(
         "rule_designs_resolve": rule_designs_resolve,
         "rule_glossary_entry": rule_glossary_entry,
         "rule_folder_ceiling": rule_folder_ceiling,
+        "rule_views_current": rule_views_current,
+        "rule_views_present": rule_views_present,
     },
 )
 

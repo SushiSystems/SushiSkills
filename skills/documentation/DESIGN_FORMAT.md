@@ -69,11 +69,19 @@ Under the status line, one field to a line, a design document may carry:
 
 | Field | Holds |
 | --- | --- |
+| `**About:**` | One sentence saying what the topic is, for the topic map |
 | `**Modules:**` | The paths of the modules the topic governs, separated by commas, or `none` |
 
 `check_design_topics.py` reads each path and fails one that is not in the repository. A repository
 that sets `K_DESIGN_TOPICS` in `tools/settings.py` also requires the line on every topic and a term
 in `docs/reference/GLOSSARY.md` for each topic name.
+
+Three views are generated from this metadata and the phase tables, each between a begin and an end
+marker (`<!-- topics:begin -->` and `<!-- topics:end -->`, and the same for `designs` and `work`):
+the topic map in `docs/design/README.md`, a list of the topics that govern a module at the end of
+its README, and the open work that names a topic's phases, at the end of its `Phases` section.
+Nobody edits text between markers. `tools/documentation/generate_design_views.py` writes the views,
+`--init` adds the markers, and `check_design_topics.py` fails a block that is out of date.
 
 Work reaches a topic through its phase ids; see `AGENT_WORK.md`.
 

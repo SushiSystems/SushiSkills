@@ -24,6 +24,7 @@ from documentation.design_status import (
 K_FIELD = re.compile(r"^\*\*(?P<name>[A-Za-z][A-Za-z ]*):\*\*\s*(?P<value>.*?)\s*$")
 K_NONE = "none"
 K_STATUS_FIELD = "Status"
+K_ABOUT_FIELD = "About"
 K_MODULES_FIELD = "Modules"
 K_IMPLEMENTS_FIELD = "Implements"
 K_DESIGNS_FIELD = "Designs"

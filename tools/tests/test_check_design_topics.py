@@ -25,6 +25,8 @@ from documentation.check_design_topics import (  # noqa: E402
     rule_implements_resolve,
     rule_modules_exist,
     rule_modules_required,
+    rule_views_current,
+    rule_views_present,
 )
 
 K_TOPIC = """# Audio
@@ -101,7 +103,7 @@ class RegistrationTest(unittest.TestCase):
     """Checks the rule table."""
 
     def test_names_every_rule(self) -> None:
-        """Holds the six rules under their names."""
+        """Holds the eight rules under their names."""
         self.assertEqual(
             sorted(K_CHECKER.rules),
             [
@@ -111,6 +113,8 @@ class RegistrationTest(unittest.TestCase):
                 "rule_implements_resolve",
                 "rule_modules_exist",
                 "rule_modules_required",
+                "rule_views_current",
+                "rule_views_present",
             ],
         )
 
@@ -241,6 +245,27 @@ class FolderCeilingTest(unittest.TestCase):
         extra = {f"docs/agent/2026_10_2{index}_W/SPEC.md": "# W\n" for index in range(3)}
         messages = _check(rule_folder_ceiling, extra, False, 3)
         self.assertEqual(messages, ["4 entries; the ceiling is 3"])
+
+
+class ViewsTest(unittest.TestCase):
+    """Covers the generated blocks."""
+
+    BLOCKS = {"docs/design/README.md": "# Design\n\n<!-- topics:begin -->\nstale\n<!-- topics:end -->\n"}
+
+    def test_reports_a_stale_block(self) -> None:
+        """Reports a block whose text is not what the metadata gives."""
+        messages = _check(rule_views_current, self.BLOCKS)
+        self.assertEqual(messages, ["the generated block 'topics' is stale; run generate_design_views.py"])
+
+    def test_leaves_a_file_without_markers_alone(self) -> None:
+        """Reports nothing while no file carries a marker."""
+        self.assertEqual(_check(rule_views_current, {"docs/design/README.md": "# Design\n"}), [])
+
+    def test_asks_for_the_topic_map_when_topics_are_required(self) -> None:
+        """Reports a design index with no topic map once the repository asks for topics."""
+        overrides = {"docs/design/README.md": "# Design\n"}
+        self.assertEqual(_check(rule_views_present, overrides), [])
+        self.assertEqual(len(_check(rule_views_present, overrides, True)), 1)
 
 
 if __name__ == "__main__":
