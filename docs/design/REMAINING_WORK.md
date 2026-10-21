@@ -140,7 +140,7 @@ the copy would drop it.
   nothing in each sibling repository
 - Source: `docs/agent/2026_10_21_DESIGN_DOCUMENT_FORMAT/SPEC.md`
 
-A run on 2026-10-21 found 44 findings in sushicore, 94 in sushiai, 19 in sushiweb and 1 177 in
-sushiengine, whose 111 documents hold 35 files above 600 lines. Each sibling copies the shared
-tools first, so its check fails until its documents are reshaped. Start with a small repository
-and leave sushiengine for last.
+Done: sushilog, sushiweb and sushicore. Left: sushiai (94 findings), sushiengine (1 177 findings,
+111 documents, 35 of them above 600 lines) and the repositories not yet measured. Each sibling
+copies the shared tools first, so its check fails until its documents are reshaped. Leave
+sushiengine for last. The progress table is in the `REPORT.md` of the source folder.

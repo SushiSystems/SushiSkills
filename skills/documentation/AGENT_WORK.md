@@ -33,7 +33,8 @@ Read from the `documentation` skill before opening a design document or a work f
    (`SPEC.md`, else `PLAN.md`, else `REPORT.md`) carries a status line in the forms above.
 2. **Work.** The folder holds at most `SPEC.md`, `PLAN.md` and `REPORT.md`. Each is rewritten
    in place as the work moves. A second review round replaces the first `REPORT.md`; it is not
-   a new file.
+   a new file. A worker records each step in the folder right after finishing it, naming the
+   commit, and does not ask first or wait for the end.
 3. **Close.** The orchestrator, in one commit: writes the changelog line, dates the work
    folder's status and the design status, writes the decisions the work made into its design
    document, updates `REMAINING_WORK.md`, updates the module READMEs and manual pages the work

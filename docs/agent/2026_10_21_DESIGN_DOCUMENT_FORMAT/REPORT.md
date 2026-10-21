@@ -32,6 +32,20 @@ Read-only runs on 2026-10-21, before any sibling copies the tool:
 The first column counts findings of `check_design_format.py`; the second counts findings of
 `rule_design_ceiling`, which reads phase files as well as documents.
 
+## Migration progress
+
+Recorded after each repository, by `RW-24`.
+
+| Repository | State | Commit | Notes |
+| --- | --- | --- | --- |
+| sushiskills | done | `115d3ef`, `25737bc` | No design document to reshape |
+| sushilog | done | `32b9f59` | No design document; shared tools copied whole |
+| sushiweb | done | `887716b9` | `SOCIAL_APP.md` became a topic folder of seven pages; 62 source files repointed; only the design checker and the ceiling copied, as the other shared tools raise licence findings that predate this work |
+| sushicore | done | `348ddd8` | Three documents reshaped in place; the GPU run evidence moved to `docs/agent/2026_10_14_GPU_TOOLKIT_SELECTION/REPORT.md`; shared tools copied whole |
+| sushiai | open | | 94 findings, 1 document above 400 lines |
+| sushiblas, sushidsp, sushifx, sushihub, sushiruntime, sushitrack, project-mobilerts | open | | Not measured |
+| sushiengine | open | | 1 177 findings, 51 above the ceiling; last |
+
 ## Known weaknesses
 
 - The checker sees form and two content signals, not meaning. `rule_no_commit_hashes` finds a hash
