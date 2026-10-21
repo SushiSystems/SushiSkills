@@ -31,7 +31,13 @@ K_FENCE = re.compile(r"^(`{3,}|~{3,})")
 K_SECTION = re.compile(r"^## (\S.*?)\s*$")
 K_TABLE_ROW = re.compile(r"^\|(.*)\|\s*$")
 K_TABLE_RULE = re.compile(r"^\|[\s:|-]+\|\s*$")
-K_HASH = re.compile(r"`[0-9a-f]{7,40}(?:\.\.\.?[0-9a-f]{7,40})?`")
+K_HASH = re.compile(r"(?<![\w/.-])[0-9a-f]{7,40}(?![\w/-])")
+K_EXECUTION_VERB = r"(?:built|landed|merged|shipped|completed|implemented|reviewed|finished|done)"
+K_ISO_DATE = r"\d{4}-\d{2}-\d{2}"
+K_EXECUTION_RECORD = re.compile(
+    rf"\b{K_EXECUTION_VERB}\b[^.\n]{{0,60}}{K_ISO_DATE}|{K_ISO_DATE}[^.\n]{{0,40}}\b{K_EXECUTION_VERB}\b",
+    re.IGNORECASE,
+)
 K_HASH_DIGIT = re.compile(r"\d")
 K_HASH_LETTER = re.compile(r"[a-f]")
 
@@ -140,12 +146,21 @@ def rule_phase_table(repository: Repository) -> Iterator[Issue]:
 
 
 def rule_no_commit_hashes(repository: Repository) -> Iterator[Issue]:
-    """Yields an issue for each commit hash in a design document."""
+    """Yields an issue for each commit hash in a design document, in a code span or bare."""
     for path in repository.documents():
         for number, line in _lines(path):
             for match in K_HASH.finditer(line):
                 if K_HASH_DIGIT.search(match.group()) and K_HASH_LETTER.search(match.group()):
                     yield Issue(path, number, "a commit hash belongs in the work folder's REPORT.md")
+
+
+def rule_no_execution_record(repository: Repository) -> Iterator[Issue]:
+    """Yields an issue for each line outside the status that dates when work was built, merged or reviewed."""
+    for path in repository.documents():
+        status_line, _ = first_content_line(path)
+        for number, line in _lines(path):
+            if number != status_line and K_EXECUTION_RECORD.search(line):
+                yield Issue(path, number, "when work was done belongs in the work folder's REPORT.md")
 
 
 K_CHECKER = Checker(
@@ -156,6 +171,7 @@ K_CHECKER = Checker(
         "rule_status_length": rule_status_length,
         "rule_phase_table": rule_phase_table,
         "rule_no_commit_hashes": rule_no_commit_hashes,
+        "rule_no_execution_record": rule_no_execution_record,
     },
 )
 

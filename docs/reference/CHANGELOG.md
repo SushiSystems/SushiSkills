@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-21 — tools: Read a design document for a bare commit hash and for a line that dates built, merged or reviewed work (`check_design_format.py`, `rule_no_execution_record`).
 - 2026-10-21 — documentation: Gave the design document five fixed sections, a one-line status, a phase table and a 400-line ceiling, and kept commit hashes in the work folder (`DESIGN_FORMAT.md`, `check_design_format.py`).
 - 2026-10-20 — documentation: Kept a defect with a scheduled fix and no workaround out of the known issues and let a backlog entry carry `Where:` (`BACKLOG_FORMAT.md`, `rule_scope`).
 - 2026-10-19 — continuous-integration: Added the default that a prose-only commit pushed to main carries [skip ci] once the checks pass locally (`SKILL.md`).

@@ -65,4 +65,7 @@ with the five sections and the status, and one file per phase for the detail the
 would otherwise hold. The phase files carry no status and no fixed sections.
 
 `tools/documentation/check_design_format.py` enforces the sections, the status length, the phase
-table and the hash rule; `check_docs_layout.py` enforces the size.
+table, the hash rule and the dated-work rule; `check_docs_layout.py` enforces the size. The two
+content rules read form only: a hash anywhere in prose, and a line outside the status that sets a
+verb such as built, merged or reviewed beside an ISO date. A narrative with no date and no hash
+passes them; only a reader catches it.

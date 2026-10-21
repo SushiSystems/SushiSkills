@@ -20,6 +20,7 @@ from documentation.check_design_format import (  # noqa: E402
     K_CHECKER,
     Repository,
     rule_no_commit_hashes,
+    rule_no_execution_record,
     rule_phase_table,
     rule_sections,
     rule_status_length,
@@ -83,10 +84,10 @@ class RegistrationTest(unittest.TestCase):
     """Checks the rule table."""
 
     def test_names_every_rule(self) -> None:
-        """Holds the four rules under their names."""
+        """Holds the five rules under their names."""
         self.assertEqual(
             sorted(K_CHECKER.rules),
-            ["rule_no_commit_hashes", "rule_phase_table", "rule_sections", "rule_status_length"],
+            ["rule_no_commit_hashes", "rule_no_execution_record", "rule_phase_table", "rule_sections", "rule_status_length"],
         )
 
 
@@ -178,10 +179,34 @@ class CommitHashTest(unittest.TestCase):
         text = K_DOCUMENT + "\nBuilt in `24fe81c9`, reviewed in `1587108c..49660a6b`.\n"
         self.assertEqual(len(_check(rule_no_commit_hashes, text)), 2)
 
+    def test_reports_a_bare_hash(self) -> None:
+        """Reports a hash written in prose outside a code span."""
+        self.assertEqual(len(_check(rule_no_commit_hashes, K_DOCUMENT + "\nBuilt in 24fe81c9 first.\n")), 1)
+
     def test_leaves_a_word_and_a_number_alone(self) -> None:
         """Does not read a long number or a name in a code span as a hash."""
         text = K_DOCUMENT + "\nThe `1234567` slots and `decade` stay.\n"
         self.assertEqual(_check(rule_no_commit_hashes, text), [])
+
+
+class ExecutionRecordTest(unittest.TestCase):
+    """Covers the rule against a dated record of work done."""
+
+    def test_reports_a_verb_beside_a_date_in_either_order(self) -> None:
+        """Reports work dated after its verb and before it."""
+        text = K_DOCUMENT + "\nThe cook landed on 2026-09-29.\nOn 2026-09-30 the solver was merged.\n"
+        self.assertEqual(len(_check(rule_no_execution_record, text)), 2)
+
+    def test_leaves_a_ruling_and_the_status_alone(self) -> None:
+        """Does not read an approval date or the status line as a record of work."""
+        text = K_DOCUMENT.replace("phase K1 is building", "built 2026-09-29")
+        text += "\nThe owner approved it on 2026-10-04.\n"
+        self.assertEqual(_check(rule_no_execution_record, text), [])
+
+    def test_ignores_a_fenced_example(self) -> None:
+        """Does not read an example in a fenced block."""
+        text = K_DOCUMENT + "\n```\nlanded 2026-09-29\n```\n"
+        self.assertEqual(_check(rule_no_execution_record, text), [])
 
 
 if __name__ == "__main__":

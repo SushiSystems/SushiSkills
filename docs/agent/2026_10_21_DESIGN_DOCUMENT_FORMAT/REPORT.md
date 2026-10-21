@@ -12,7 +12,7 @@ The rule and its checker are in SushiSkills. No sibling repository is migrated; 
 - `skills/documentation/AGENT_WORK.md`, `SKILL.md`: the pointer, the close step that writes the
   work's decisions into the design document, the 400-line ceiling.
 - `tools/documentation/check_design_format.py` and its test: `rule_sections`,
-  `rule_status_length`, `rule_phase_table`, `rule_no_commit_hashes`. 15 tests.
+  `rule_status_length`, `rule_phase_table`, `rule_no_commit_hashes`, `rule_no_execution_record`.
 - `check_docs_layout.py`: `K_DESIGN_LINE_CEILING` is 400.
 - `check_all.py`, `tools/README.md`, `project-tools`: the eleventh checker.
 
@@ -34,10 +34,12 @@ The first column counts findings of `check_design_format.py`; the second counts 
 
 ## Known weaknesses
 
-- The checker sees the form of a document, not its content. A narrative of who built what, written
-  under `Design` without a hash, passes. A reader catches it.
-- `rule_no_commit_hashes` reads a hash only when the whole code span is one, so a hash written
-  bare in prose, or a pure-letter hash, passes.
+- The checker sees form and two content signals, not meaning. `rule_no_commit_hashes` finds a hash
+  with a digit and a letter, in a code span or bare; a hash of letters only passes.
+  `rule_no_execution_record` finds a verb such as built or merged within a short span of an ISO
+  date. A narrative with neither passes, and a legitimate sentence that happens to match (a
+  decision that cites when a thing was merged) is a false finding. A run on `sushiengine` found 228
+  such lines and 104 hashes; the first lines read were all real execution records.
 - The 400-line ceiling is not tested against a document that is a table of contents for phase
   files; a split topic's README is held to the same ceiling.
 - The shared tools are not copied into any sibling. A sibling that copies them fails its own check
