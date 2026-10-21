@@ -67,11 +67,32 @@ break citations.
 
 ## Recommendation: B
 
-1. **Areas.** `docs/design/<area>/<TOPIC>/`, with the area one of a short fixed list that follows the
-   module layers: `foundation`, `domain`, `asset`, `world`, `presentation`, `applications`, `tooling`
-   and `cross` for documents about the whole engine. A topic gets its area once, from the layer of the
-   module that owns its behaviour, and does not move when the code moves. Most areas then hold tens
-   of topics, not hundreds.
+1. **Areas by subject, not by code layer.** The first version of this point used the module layers.
+   Classifying the 71 topics by hand showed that layers do not fit: a command line design, a
+   documentation design, a build design and an editor design are not layers of the code. The subjects
+   the 71 topics actually have, with their counts:
+
+   | Area | Holds | Topics |
+   | --- | --- | --- |
+   | `systems` | What the engine simulates and draws: physics, matter, atmosphere, ocean, clouds, audio, animation, effects, ray tracing, the render pipeline, the planet, the simulation core | about 45 |
+   | `content` | Assets, import, cooking, prefabs, handles | 6 |
+   | `applications` | The editor, the player, the add-on seam, usability | 6 |
+   | `tooling` | The command line, the build, the tests, diagnostics, the repository layout, cross-platform work | 7 |
+   | `architecture` | Restructuring across modules: the SOLID passes, the ECS migration, descopes, reachability | 7 |
+   | `documentation` | How documents are kept | 1 |
+   | `program` | Releases and hardening | 2 |
+
+   Two things follow. The list is a subject list and each repository sets its own in
+   `tools/settings.py`. And `systems` alone holds about two thirds of the topics, so it needs a second
+   level, a family folder, to stay bounded. The families are already visible in the names: `MATTER_*`
+   has eight topics, `CLOUD_*` four, `PHYSICS_*` three. A family folder appears when a folder passes
+   its entry ceiling (point 5); the checker names the groups that share a prefix and proposes the
+   split. The path is then `docs/design/<area>/<family>/<TOPIC>/` for large areas and
+   `docs/design/<area>/<TOPIC>/` for small ones.
+
+   Reading a document by subject is a view, not a place: the `Area` metadata of point 2 is the
+   truth and the generated indexes of point 3 give every other cut (by module, by status, by owner).
+   The folder tree exists to keep each folder small and stable, not to be the taxonomy.
 2. **Metadata under the status line**, one field per line, checked: `**Area:**`, `**Modules:** ` (the
    module paths the topic governs, each of which must exist), and `**Record:**` (see 4). The status
    line keeps its 160-character limit and its four forms.
@@ -96,8 +117,9 @@ break citations.
 
 ## Risks
 
-- Choosing the area is a judgement. Mitigated by the fixed list and by `cross` as the answer when
-  two areas fit.
+- Choosing the area is a judgement. Mitigated by the short list; a topic that spans subjects takes
+  the area of its dominant subject and lists the rest under `Modules`, since the indexes cut by module
+  anyway.
 - The generated blocks in module README files are the first generated text in them. A checker must
   tell a hand edit inside the markers from a stale block.
 - Moving 71 topics and rewriting about 2 000 citations is one more migration of the kind just
@@ -107,8 +129,8 @@ break citations.
 
 ## Open questions
 
-1. Is the area list right: eight values, taken from the layers? A repository with other layers
-   defines its own list in `tools/settings.py`.
+1. Is the subject list right: seven values for `sushiengine`, with a family level for `systems`? Is
+   a repository free to define its own list in `tools/settings.py`?
 2. Is the record folder inside the topic acceptable, given that it relaxes the no-dates rule for one
    named file?
 3. The entry ceiling per folder: 40, 60 or 100?
