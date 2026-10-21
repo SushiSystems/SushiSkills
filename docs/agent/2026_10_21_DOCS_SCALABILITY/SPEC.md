@@ -1,145 +1,148 @@
 # Documentation that scales
 
-**Status:** Open — research done on 2026-10-21; the owner has not yet chosen between the options below
+**Status:** Open — the owner took the decisions on 2026-10-21; no tool is written and no pilot is chosen
 
 ## Problem
 
 The module tree and the test tree scale: a new module adds a folder in a fixed place, and a checker
 says when a test has no home. `docs/` does not. Measured on `sushiengine` on 2026-10-21, four months
-after its first commit:
+after its first commit.
 
 | Measure | Value |
 | --- | --- |
-| Design topics | 71, in one folder; `docs/design` has 73 entries |
-| Work folders in `docs/agent` | 83, in one folder; 63 of them were opened on one day, one per reshaped design |
-| Markdown files added to `docs/` per month | 42 to 136 in agent work alone, since August |
-| Citations of a design document by path | 1 963, over 183 distinct paths |
-| Citations rewritten by one reshape of the corpus | more than 600 |
-| Modules a design topic cites | 1 module: 3 topics; 2 to 3: 14; 4 to 8: 22; 9 or more: 30 |
-| Modules that no design topic cites | 30 of 122 |
+| Design topics | 71 in one folder; 8 of them are `MATTER_*`, 4 `CLOUD_*`, 3 `PHYSICS_*` |
+| Work folders in `docs/agent` | 83 in one folder; 63 opened on one day, one per reshaped design |
+| Citations of a design by path | 1 963 over 183 paths; one reshape repaired more than 600 |
+| Modules a design topic cites | 1: 3 topics; 2 to 3: 14; 4 to 8: 22; 9 or more: 30 |
+| Where designs would sit if placed by the code they govern | 50 of 71 at the repository root |
+| Code | 30.9 MB, 650 000 lines |
+| Markdown | 24.7 MB, 397 000 lines, 80% of the code by size |
+| of which `docs/archive` and `docs/agent` | 14.2 MB, 57% of all Markdown |
+| of which live documents | 10.5 MB, 34% of the code |
+| Citations into `docs/archive` from outside it | 675 in 273 files, 128 of them source files |
+| Gate of the repository's own `check_all` | red before this work: three checkers fail |
 
-Four costs follow.
+Six costs follow.
 
-1. **One flat folder per kind.** A topic list read by eye stops working somewhere past 150 entries.
-   `docs/design/README.md` is edited by hand, one row per topic, and every agent that adds a topic
-   touches it, so it is also where parallel sessions collide.
-2. **Paths are identities.** A design document is cited by its path, so moving or splitting one costs
-   a repair pass over the whole repository. The format migration did this once; it will be needed
-   again each time the shape changes.
-3. **Records outnumber designs.** Each design reshaped to the format left one work folder of dated
-   record. The record belongs to one design and nothing else, yet it lives apart, ages on its own
-   clock and doubles the folder count.
-4. **A document cannot be reached from the code it governs.** Nothing says which designs apply to a
-   module, and 30 modules have none. A reader of a module README does not learn that a 6 000-line
-   design owns its behaviour.
+1. **One flat folder per kind**, and a topic map edited by hand, so parallel sessions collide on it.
+2. **Paths are identities.** Moving a document costs a repair pass over the repository.
+3. **One subject, many files.** Each new idea became a new design file, so the same noun is spread
+   over eight documents, and one subject can be described twice under two names.
+4. **History outweighs the living text.** More than half of the Markdown is closed work that nobody
+   maintains, and every search and every checker reads it.
+5. **Shared hot files.** The changelog, the backlog and the topic map are edited by every session.
+6. **A red gate protects nothing.** A checker that fails on a clean tree is not read.
 
-## What other projects do
+### What other projects do
 
-Evidence from the web search of 2026-10-21 is marked (web); the rest is from memory and not yet
-re-verified.
+- **Python.** A PEP whose work is done becomes `Final` and is marked as a historical document; the
+  canonical text moves to the reference. [PEP 683](https://peps.python.org/pep-0683/) shows the banner.
+- **Rust.** An accepted RFC is not changed in substance; a substantial change is a new RFC with a
+  note on the old one. The community discussion asks for the reference to become the truth once a
+  feature is stable. ([RFC README](https://rust-lang.github.io/rfcs/introduction.html),
+  [Life after an RFC](https://internals.rust-lang.org/t/life-after-an-rfc/4126))
+- **Documentation kinds.** [Diátaxis](https://canonical.com/blog/diataxis-a-new-foundation-for-canonical-documentation)
+  keeps tutorials, how-to guides, reference and explanation apart.
+- **Reference from code, owners and a review cadence** keep the living layer true.
+  ([GitBook](https://www.gitbook.com/blog/keep-technical-documentation-accurate),
+  [Heavybit](https://www.heavybit.com/library/article/who-owns-the-documentation-and-why-it-should-be-the-robots))
+- **Plans and reports** usually live in the pull request or the issue, not in the product tree. This
+  is experience, not checked by the search.
+- **Kubernetes enhancement proposals** group by owning group and keep a metadata file; not confirmed.
+- **Linux** reorganised a documentation top level its maintainer called a mess, and deleted its
+  hand-kept index files.
 
-- **Linux kernel documentation** grew into a top level its own maintainer calls a mess, and has been
-  reorganised by audience. Architecture documents moved into `Documentation/arch` so that they match
-  the source tree. The hand-maintained `00-INDEX` files were deleted in 2018. (web)
-- **Architecture decision records** are append-only and numbered. One team keeps a single global
-  sequence for the whole repository and tags each record with an area, because decisions that span
-  tiers are easier to find in one place; a superseded record points to its replacement and is
-  never rewritten. Index generation from the records' links is common tooling. (web)
-- **Kubernetes enhancement proposals** are grouped by the owning special interest group, not by code
-  path, and carry a machine-readable metadata file so that dashboards and release tooling read status
-  without parsing prose. The layout was not confirmed by the search; check the `kubernetes/enhancements`
-  repository before relying on it.
+The pattern: a design is a decision record that ends; the living truth is the reference and the
+module page; indexes are generated; history lives in version control.
 
-The pattern across them: ownership or audience decides the grouping, a stable identifier survives moves,
-and indexes are generated from metadata instead of kept by hand.
+## Decision
 
-## Options
+The owner decided on 2026-10-21:
 
-Two placement rules that derive the tree from the code were measured on `sushiengine` and both fail.
+1. **The unit is the topic**, a name that is a module (`AUDIO`, `ECS`) or a subject that spans modules
+   (`WEATHER`). Each topic has one home. A new idea about an existing topic is a page and a phase in
+   it, never a new top-level document. A subject that two documents describe becomes one topic.
+   Topic names are the entries of the glossary.
+2. **Agent work keeps its date and its plan, and does not repeat.** A work folder holds only the
+   difference and names the topic phase it carries out. When it closes, its decisions move into the
+   topic and the folder is deleted; version control, the changelog line and the topic keep the rest.
+3. **`docs/archive/` is untracked.** It is ignored by version control and its history stays in the
+   repository under a tag.
+4. **A design graduates.** When every phase of a topic is built, its decisions and their reasons stay
+   as a short record, what the code now is moves to the module page and the manual, and the narrative
+   of how it got there is deleted.
+5. **Storage is flat and carries no taxonomy.** Every cut a reader wants is a generated view.
+6. **Tools that write many files are safe.** They write through a temporary file, refuse to shrink a
+   file past a set share, and take a copy first.
+7. **The changelog is written as fragments** and joined at release.
+8. **The gate is made green before a rule is added** to it.
 
-- **Mirror the module tree**, or place a design at the common parent of the code it governs. Of 71
-  topics, 50 land at the repository root when every cited unit counts, and 20 to 35 when only the main
-  ones do. Designs cut across modules, so no rule of this kind gives them a home below the root.
-- **Group by the first word of the name.** The 71 names have 48 different first words, most of them
-  used once, so the folders would be singletons. Names were not chosen for this.
+Rejected, with the measurement: fixed folders by subject (fit one repository only), a mirror of the
+module tree or a home at the common parent of the governed code (50 of 71 at the root), grouping by
+the first word of the name (48 different first words for 71 names), subject tags, and the record kept
+inside the topic.
 
-A hand-written list of subject areas fits the topics, but it fits one repository: another repository
-has other subjects, and each new subject is a decision about the tree. That is the management cost
-the owner named.
+## Design
 
-**A. Fixed folders by subject.** Rejected for the reason above.
+**Topic folder.** `docs/design/<TOPIC>/README.md` holds the five sections of the design format, with
+the phase table of the whole topic. The README is the index and the contract; each sub-design is a
+page with its own status. Phase ids carry the sub-design as a prefix (`MATTER-DEVICE-D3`). The page
+list in a README is generated, not typed.
 
-**B. Flat storage, metadata for every cut, generated views.** Described below.
+**Metadata** under the status line, one field per line, checked:
 
-**C. Keep the flat tree and generate only the topic map.** Cheaper than B, and it leaves records,
-citations and the module link as they are.
+- `**Modules:**` the module paths the topic governs; each must exist.
+- Nothing else is required. A topic's phases are the contract, and work reaches them by id.
 
-## Recommendation: B
+**Generated views.** One tool writes, from the metadata and the phase tables: the topic map of
+`docs/design/README.md`, a page per module, a page per status, the `Designs` block between markers in
+every module README, and for each topic a work list built from the folders whose `Implements:` names
+one of its phases. CI checks that the generated text is current. A glossary entry for every topic is
+checked.
 
-The tree stops carrying meaning. It exists to keep folders small and paths stable. Every way a reader
-wants to cut the designs, by subject, by module, by status, by owner, is a generated view of
-metadata. A new subject is then a new tag value: no folder moves, no citation changes, and nothing to
-decide about the tree.
+**Resolver.** A citation names a topic and, when it needs one, a phase or a page. A tool resolves it
+to the path and reports a citation it cannot place. A move is a generated rewrite.
 
-1. **Storage.** `docs/design/<TOPIC>/`, one folder per topic, as it is today. Shipped, superseded and
-   withdrawn topics leave for the archive after 90 days, so the folder holds live designs only. If a
-   repository still passes the entry ceiling, the checker names the overflow rule, which is
-   mechanical and needs no judgement: topics older than a cut-off year move under
-   `docs/design/<year>/<TOPIC>/`, written by the tool with the citations repaired. Nothing in the
-   tree is chosen by an author.
-2. **Metadata under the status line**, one field per line, checked: `**Tags:**` (free words; the
-   subject), `**Modules:**` (module paths the topic governs, each must exist) and `**Record:**`
-   (see 4). The status line keeps its 160-character limit and its four forms.
-3. **Generated views.** A tool writes, from the metadata, the topic map of `docs/design/README.md`,
-   one page per tag, one per status, and a `Designs` block in every module README between generation
-   markers. CI verifies that the generated text is current. Nobody edits a row by hand, so parallel
-   sessions stop colliding, and a tag nobody has used before simply appears as a new page. A tag used
-   once is listed so that near-duplicates (`render`, `rendering`) can be merged by editing one word.
-4. **The record lives with its design.** A topic's execution record, today a work folder named
-   `<date>_<TOPIC>_RECORD`, becomes `<TOPIC>/RECORD.md`. The record is exempt from the no-dates and
-   no-hashes rules and from the reachable-from-index rule, is not counted in the topic's pages, and
-   moves to the archive together with its design. Work that does not belong to one design (an audit,
-   a review, a tooling change) stays in `docs/agent/` and names the designs it touched in a
-   `**Designs:**` line, which the tool reads to build the other direction of the link. This is the
-   owner's idea of 2026-10-21, kept in part: 63 record folders opened on one day are why the earlier
-   answer, that the two should stay apart, no longer holds for per-design records.
-5. **Bounded folders.** A ceiling of entries per folder, checked as the 400-line ceiling is, in
-   `docs/design/`, `docs/agent/` and each archive folder. The archive shards by year and month with the
-   same tool.
-6. **Stable references.** A citation names the topic, and a tool resolves a bare `<TOPIC>` to its
-   path. A move is one generated rewrite, not a hand repair, and the resolver reports any citation it
-   cannot place.
+**Agent work.** `SPEC.md` starts with `Implements: <TOPIC> <phase>` (or `Designs:` for work that
+touches several, or nothing for an audit). At close the orchestrator writes the decisions into the
+topic, sets the phase state, writes the changelog fragment, deletes the folder and updates the backlog.
+A phase marked `built` may name its evidence, an existing test or command, which a checker verifies.
 
-Everything above is independent of the repository: the tool reads the layout from `tools/settings.py`
-and needs no list of subjects.
+**Archive.** `docs/archive/` is in `.gitignore`. The closing step no longer moves a folder there; it
+deletes it. The existing contents get a tag, `docs-archive-<date>`, and are removed from the index. A
+live document or a source comment may not cite an archive path; each of the 675 existing citations is
+repointed to the topic that holds the decision, or dropped, before the removal.
 
-## Risks
+**Volume.** `check_all` reports the share of live documentation to code, as information and with no
+limit. A module README states what the module is and how to use it and links the generated reference
+for signatures. How much of the module Markdown restates signatures is measured before the rule is
+written.
 
-- Browsing the folder tree no longer tells a reader what a topic is about. The generated indexes do,
-  and they sit one click from `docs/README.md`. If the owner wants the tree itself to carry the
-  subject, a hand-written area list is the price, and it stays one repository's list.
-- The generated blocks in module README files are the first generated text in them. A checker must
-  tell a hand edit inside the markers from a stale block.
-- Adding metadata to 71 topics and folding 63 records is one more migration of the kind just
-  finished. It should be run once, by the tool of point 6.
-- The rule change lives in SushiSkills, so every repository follows it: the `documentation` skill,
-  `check_docs_layout.py`, `check_design_format.py` and a new generator change together.
+**Folder ceiling.** A checked limit of entries per folder in `docs/design` and `docs/agent`. Proposed:
+60.
 
-## Open questions
-
-1. Is a tree that carries no meaning acceptable, with tags and generated views doing the work?
-2. Is the record folder inside the topic acceptable, given that it relaxes the no-dates rule for one
-   named file?
-3. The entry ceiling per folder: 40, 60 or 100?
-4. Which repository is the pilot? It should be small, have real design documents and not be
-   `sushiengine`; the choice decides whether the tool is proved generic.
+**Order.** The tools and the resolver come before any merge of topics, so that no citation is
+repaired by hand.
 
 ## Phases
 
 | Id | Phase | State |
 | --- | --- | --- |
 | D0 | Research and options, this document. | built |
-| D1 | The owner chooses an option and answers the open questions. | planned |
-| D2 | Rules and tools in SushiSkills: metadata fields, entry ceiling, generator and resolver, with tests. | planned |
-| D3 | Pilot on a small repository: add the metadata, generate the views, fold the records. | planned |
-| D4 | The remaining repositories follow, smallest first, `sushiengine` last. | planned |
+| D1 | The owner decides the unit, the lifecycle and the archive. | built |
+| D2 | The gate of the pilot repository is green. | planned |
+| D3 | The resolver, the generated views, `Implements:` and the glossary check, with tests, in SushiSkills. | planned |
+| D4 | The lifecycle: graduation, delete at close, archive untracked, the 675 citations repointed. | planned |
+| D5 | Safe writing for the bulk tools, and changelog fragments. | planned |
+| D6 | Pilot on a small repository: metadata, views, topic merges the owner approves. | planned |
+| D7 | The other repositories follow, smallest first, `sushiengine` last. | planned |
+| D8 | Phase evidence, the module README dedup rule and the volume report. | planned |
+
+## Open questions
+
+1. Which repository is the pilot? It is small, has real design documents and is not `sushiengine`.
+2. The folder ceiling: 60 is proposed; 40 or 100 are the alternatives.
+3. The merge list of topics (71 to about 45) is a content decision. A table is produced from shared
+   name prefixes and shared modules, and the owner approves it row by row before any merge.
+4. A decision that only an archived folder holds, found while repointing citations: graduate it into
+   its topic, or accept that it is lost?

@@ -1,6 +1,6 @@
 # Remaining work
 
-Next id: RW-25
+Next id: RW-26
 
 ## Decisions waiting for the owner
 
@@ -131,3 +131,14 @@ lost; the checker passed, since it reads entries and the one entry left was well
 
 One repository keeps this as a local edit of the shared checker, with the list in a text file;
 the copy would drop it.
+
+## Documentation
+
+### RW-25 Make the documentation tree scale
+- State: open
+- Done when: a pilot repository other than `sushiengine` keeps its designs as topics with generated
+  views, closes agent work by deleting it, and has an untracked archive, with its `check_all` green
+- Source: `docs/agent/2026_10_21_DOCS_SCALABILITY/SPEC.md`
+
+The archive rule of RW-1 goes away with the untracked archive, so RW-1 is decided by this entry's
+phase D4 and not before.
