@@ -50,92 +50,89 @@ re-verified.
   without parsing prose. The layout was not confirmed by the search; check the `kubernetes/enhancements`
   repository before relying on it.
 
-The pattern across them: ownership or audience decides the tree, a stable identifier survives moves,
+The pattern across them: ownership or audience decides the grouping, a stable identifier survives moves,
 and indexes are generated from metadata instead of kept by hand.
 
 ## Options
 
-**A. Mirror the module tree.** `docs/design/<layer>/<module>/<TOPIC>/`, checked like the test mirror.
-Rejected on the measurement: only 3 of 71 topics touch one module, and 30 touch nine or more. A mirror
-would force a single home on a document that has many, and a module rename would move documents and
-break citations.
+Two placement rules that derive the tree from the code were measured on `sushiengine` and both fail.
 
-**B. Shard by area, describe by metadata, generate the indexes.** Described below.
+- **Mirror the module tree**, or place a design at the common parent of the code it governs. Of 71
+  topics, 50 land at the repository root when every cited unit counts, and 20 to 35 when only the main
+  ones do. Designs cut across modules, so no rule of this kind gives them a home below the root.
+- **Group by the first word of the name.** The 71 names have 48 different first words, most of them
+  used once, so the folders would be singletons. Names were not chosen for this.
 
-**C. Keep the flat tree and generate only the topic map.** Cheap, and it fixes the collision on
-`docs/design/README.md`. It does not bound any folder, and it leaves the path-as-identity cost.
+A hand-written list of subject areas fits the topics, but it fits one repository: another repository
+has other subjects, and each new subject is a decision about the tree. That is the management cost
+the owner named.
+
+**A. Fixed folders by subject.** Rejected for the reason above.
+
+**B. Flat storage, metadata for every cut, generated views.** Described below.
+
+**C. Keep the flat tree and generate only the topic map.** Cheaper than B, and it leaves records,
+citations and the module link as they are.
 
 ## Recommendation: B
 
-1. **Areas by subject, not by code layer.** The first version of this point used the module layers.
-   Classifying the 71 topics by hand showed that layers do not fit: a command line design, a
-   documentation design, a build design and an editor design are not layers of the code. The subjects
-   the 71 topics actually have, with their counts:
+The tree stops carrying meaning. It exists to keep folders small and paths stable. Every way a reader
+wants to cut the designs, by subject, by module, by status, by owner, is a generated view of
+metadata. A new subject is then a new tag value: no folder moves, no citation changes, and nothing to
+decide about the tree.
 
-   | Area | Holds | Topics |
-   | --- | --- | --- |
-   | `systems` | What the engine simulates and draws: physics, matter, atmosphere, ocean, clouds, audio, animation, effects, ray tracing, the render pipeline, the planet, the simulation core | about 45 |
-   | `content` | Assets, import, cooking, prefabs, handles | 6 |
-   | `applications` | The editor, the player, the add-on seam, usability | 6 |
-   | `tooling` | The command line, the build, the tests, diagnostics, the repository layout, cross-platform work | 7 |
-   | `architecture` | Restructuring across modules: the SOLID passes, the ECS migration, descopes, reachability | 7 |
-   | `documentation` | How documents are kept | 1 |
-   | `program` | Releases and hardening | 2 |
-
-   Two things follow. The list is a subject list and each repository sets its own in
-   `tools/settings.py`. And `systems` alone holds about two thirds of the topics, so it needs a second
-   level, a family folder, to stay bounded. The families are already visible in the names: `MATTER_*`
-   has eight topics, `CLOUD_*` four, `PHYSICS_*` three. A family folder appears when a folder passes
-   its entry ceiling (point 5); the checker names the groups that share a prefix and proposes the
-   split. The path is then `docs/design/<area>/<family>/<TOPIC>/` for large areas and
-   `docs/design/<area>/<TOPIC>/` for small ones.
-
-   Reading a document by subject is a view, not a place: the `Area` metadata of point 2 is the
-   truth and the generated indexes of point 3 give every other cut (by module, by status, by owner).
-   The folder tree exists to keep each folder small and stable, not to be the taxonomy.
-2. **Metadata under the status line**, one field per line, checked: `**Area:**`, `**Modules:** ` (the
-   module paths the topic governs, each of which must exist), and `**Record:**` (see 4). The status
-   line keeps its 160-character limit and its four forms.
-3. **Generated indexes.** The topic map of `docs/design/README.md`, one index per area, and a
-   `Designs` block in every module README between generation markers are written by a tool from the
-   metadata and verified by the same tool in CI. Nobody edits a row by hand, so sessions no longer
-   collide. `check_design_backlog_coverage` keeps reading the generated map.
+1. **Storage.** `docs/design/<TOPIC>/`, one folder per topic, as it is today. Shipped, superseded and
+   withdrawn topics leave for the archive after 90 days, so the folder holds live designs only. If a
+   repository still passes the entry ceiling, the checker names the overflow rule, which is
+   mechanical and needs no judgement: topics older than a cut-off year move under
+   `docs/design/<year>/<TOPIC>/`, written by the tool with the citations repaired. Nothing in the
+   tree is chosen by an author.
+2. **Metadata under the status line**, one field per line, checked: `**Tags:**` (free words; the
+   subject), `**Modules:**` (module paths the topic governs, each must exist) and `**Record:**`
+   (see 4). The status line keeps its 160-character limit and its four forms.
+3. **Generated views.** A tool writes, from the metadata, the topic map of `docs/design/README.md`,
+   one page per tag, one per status, and a `Designs` block in every module README between generation
+   markers. CI verifies that the generated text is current. Nobody edits a row by hand, so parallel
+   sessions stop colliding, and a tag nobody has used before simply appears as a new page. A tag used
+   once is listed so that near-duplicates (`render`, `rendering`) can be merged by editing one word.
 4. **The record lives with its design.** A topic's execution record, today a work folder named
-   `<date>_<TOPIC>_RECORD`, becomes `<TOPIC>/RECORD.md` or `<TOPIC>/record/`. The record is exempt from
-   the no-dates and no-hashes rules and from the reachable-from-index rule, is not counted in the
-   topic's pages, and moves to the archive together with its design 90 days after `Shipped`. Work that
-   does not belong to one design (an audit, a review, a tooling change) stays in `docs/agent/` and
-   names the designs it touched in a `**Designs:**` line, which the tool reads to build the other
-   direction of the link. This is the owner's idea of 2026-10-21, kept in part: the numbers above are
-   why the earlier answer, that the two should stay apart, no longer holds for per-design records.
-5. **Bounded folders.** A ceiling of entries per folder, checked as the 400-line ceiling is, forces a
-   shard at the moment a folder grows, in `docs/design/<area>/`, `docs/agent/` and the archive. The
-   archive shards by year and month.
-6. **Stable references.** A citation names the topic, `docs/design/<area>/<TOPIC>/`, and a tool
-   resolves a bare `<TOPIC>` to its path. A move of a topic between areas is then one generated
-   rewrite, not a hand repair, and the resolver reports any citation it cannot place.
+   `<date>_<TOPIC>_RECORD`, becomes `<TOPIC>/RECORD.md`. The record is exempt from the no-dates and
+   no-hashes rules and from the reachable-from-index rule, is not counted in the topic's pages, and
+   moves to the archive together with its design. Work that does not belong to one design (an audit,
+   a review, a tooling change) stays in `docs/agent/` and names the designs it touched in a
+   `**Designs:**` line, which the tool reads to build the other direction of the link. This is the
+   owner's idea of 2026-10-21, kept in part: 63 record folders opened on one day are why the earlier
+   answer, that the two should stay apart, no longer holds for per-design records.
+5. **Bounded folders.** A ceiling of entries per folder, checked as the 400-line ceiling is, in
+   `docs/design/`, `docs/agent/` and each archive folder. The archive shards by year and month with the
+   same tool.
+6. **Stable references.** A citation names the topic, and a tool resolves a bare `<TOPIC>` to its
+   path. A move is one generated rewrite, not a hand repair, and the resolver reports any citation it
+   cannot place.
+
+Everything above is independent of the repository: the tool reads the layout from `tools/settings.py`
+and needs no list of subjects.
 
 ## Risks
 
-- Choosing the area is a judgement. Mitigated by the short list; a topic that spans subjects takes
-  the area of its dominant subject and lists the rest under `Modules`, since the indexes cut by module
-  anyway.
+- Browsing the folder tree no longer tells a reader what a topic is about. The generated indexes do,
+  and they sit one click from `docs/README.md`. If the owner wants the tree itself to carry the
+  subject, a hand-written area list is the price, and it stays one repository's list.
 - The generated blocks in module README files are the first generated text in them. A checker must
   tell a hand edit inside the markers from a stale block.
-- Moving 71 topics and rewriting about 2 000 citations is one more migration of the kind just
-  finished. It should run once, with the tool of point 6, not by hand.
-- The rule change lives in SushiSkills, so every sibling repository follows it; the `documentation`
-  skill, `check_docs_layout.py`, `check_design_format.py` and a new generator change together.
+- Adding metadata to 71 topics and folding 63 records is one more migration of the kind just
+  finished. It should be run once, by the tool of point 6.
+- The rule change lives in SushiSkills, so every repository follows it: the `documentation` skill,
+  `check_docs_layout.py`, `check_design_format.py` and a new generator change together.
 
 ## Open questions
 
-1. Is the subject list right: seven values for `sushiengine`, with a family level for `systems`? Is
-   a repository free to define its own list in `tools/settings.py`?
+1. Is a tree that carries no meaning acceptable, with tags and generated views doing the work?
 2. Is the record folder inside the topic acceptable, given that it relaxes the no-dates rule for one
    named file?
 3. The entry ceiling per folder: 40, 60 or 100?
-4. Does the owner want the migration of `sushiengine` to be the pilot, with the tools written first
-   in SushiSkills and run there before the other repositories?
+4. Which repository is the pilot? It should be small, have real design documents and not be
+   `sushiengine`; the choice decides whether the tool is proved generic.
 
 ## Phases
 
@@ -144,5 +141,5 @@ break citations.
 | D0 | Research and options, this document. | built |
 | D1 | The owner chooses an option and answers the open questions. | planned |
 | D2 | Rules and tools in SushiSkills: metadata fields, entry ceiling, generator and resolver, with tests. | planned |
-| D3 | Pilot on `sushiengine`: move the topics into areas, generate the indexes, fold the records. | planned |
-| D4 | The remaining repositories follow, smallest first. | planned |
+| D3 | Pilot on a small repository: add the metadata, generate the views, fold the records. | planned |
+| D4 | The remaining repositories follow, smallest first, `sushiengine` last. | planned |
