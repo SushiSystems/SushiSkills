@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-10-22 — documentation: Added `docs/design/_REVISION/`, where a topic the owner keeps for revision after an audit waits untouched (`DESIGN_FORMAT.md`).
+- 2026-10-22 — tools: Listed the topics under revision with the state `Revision` and relinked a topic that moves in or out of it (`repair_design_citations.py`).
 - 2026-10-22 — documentation: Older release sections are deleted from the changelog at a release; the tag of the release holds them (`CHANGELOG_FORMAT.md`).
 - 2026-10-22 — tools: Added `fold_design_topics.py` and `rule_topic_folder`: every design topic is a folder with a `README.md`, and only the two indexes sit loose in `docs/design`.
 - 2026-10-21 — tools: Added `drop_retired_citations.py`, which replaces each citation of an archived or deleted file with a phrase naming it and the version history.

@@ -90,6 +90,15 @@ When a topic becomes a folder, or a folder a file, `tools/documentation/repair_d
 --apply` rewrites every citation of it in the manual and the source and reports the ones it cannot
 place. A repair is never done by hand.
 
+## A topic under revision
+
+When an audit grades a topic insufficient and the owner keeps it to be revised, its folder moves
+whole to `docs/design/_REVISION/<TOPIC>/` and its text stays as it was; the audit's report says
+what is wrong with it. The topic map lists it with the state `Revision`. Nothing new is written
+into it and no work carries out its phases. It leaves in one of two ways: rewritten into
+`docs/design/<TOPIC>/` in the format above, or deleted. After either move, and after the move in,
+`repair_design_citations.py --apply` relinks it, reading each link inside it from its former place.
+
 ## Size
 
 A design document, the `README.md` of a topic folder, has at most 400 lines. Above it, the detail

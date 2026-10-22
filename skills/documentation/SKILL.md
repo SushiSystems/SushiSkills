@@ -26,6 +26,7 @@ docs/
         README.md                 topic -> design document map
         REMAINING_WORK.md         the single backlog
         <TOPIC>/README.md         live intent of one topic, with a status line; pages beside it
+        _REVISION/<TOPIC>/        a topic the owner set aside for revision; see DESIGN_FORMAT.md
     agent/
         <YYYY_MM_DD>_<WORK_NAME>/ one folder per piece of agent work
             SPEC.md  PLAN.md  REPORT.md
