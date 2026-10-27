@@ -23,9 +23,9 @@ slower than one that ran fewer jobs.
    (`versioning-and-release`) and for performance measurement (`performance`, which measures in
    the build type that ships). Nothing else defaults to it.
 3. **Memory decides parallelism.** No build is allowed to push free memory under a reserve the
-   repository names, 1.5 GB unless it names another. Job counts are set per kind of unit, from
-   the measured peak of that kind and the memory free when the build starts, never from a
-   constant tuned on a quiet machine.
+   repository names, 1.5 GB unless it names another. What runs at once is decided from measured
+   peaks and the memory free when the build starts, never from a constant tuned on a quiet
+   machine.
 4. **A build change carries its numbers.** A change made to build faster or lighter is a
    performance claim and follows the measuring rule of `performance`: the same tree, the same
    machine, before and after, wall time and peak memory.
@@ -44,17 +44,19 @@ equivalent) are taken on the slowest units before any header or template is trim
 below is sized from these numbers.
 **Not when:** a repository whose full build takes under two minutes.
 
-### Pools by kind of unit
+### Admission by measured peak
 
-**Rule:** the job count is the hardware threads. Units that peak far above the rest, such as
-device compiles, device links and whole-program links, run in their own job pools whose depth is
-`max(1, floor((free memory - reserve) / measured peak))`, computed when the build starts. A
-build system without per-file pools gets the heavy units as a library of their own, which then
-carries the pool.
-**Why:** one global job count must be set for the worst unit and leaves most threads idle
-whenever the light units run; a constant count tuned on a quiet machine runs out of memory on a
-busy one.
-**Not when:** every unit peaks within a factor of two of the others.
+**Rule:** the job count is the hardware threads, and every compile and link runs through a
+launcher that admits it only when its expected peak, added to the peaks reserved by the edges
+already running, fits in the memory free at the start of the build less the reserve. The
+expected peak is the one measured for that unit on its last build, or the largest of its kind for
+a unit not seen before. Edges are admitted in arrival order, with a short window in which a
+lighter edge may pass a waiting heavy one; after it the queue drains, so no unit is starved.
+**Why:** units of one kind differ by a factor of three or more in memory, so any fixed job count
+or pool depth is set for the worst unit and idles the machine the rest of the time, and a count
+tuned on a quiet machine runs out of memory on a busy one. Per-kind pools are the fallback where
+no launcher can be set.
+**Not when:** every unit peaks within a factor of two of the others and the build always fits.
 
 ### Heavy code compiled once, where it is owned
 
@@ -128,7 +130,7 @@ excluded from real-time malware scanning, by the machine's owner.
 
 ## Red flags
 
-- "I will set `-j` to what worked last time." → pools from free memory.
+- "I will set `-j` to what worked last time." → admission by measured peak.
 - "I will switch this tree to Release for one measurement." → the Release tree.
 - "The test needs the kernel, so the test compiles it." → the module compiles it.
 - "Full debug information costs nothing." → measure its memory and link time first.

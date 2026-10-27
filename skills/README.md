@@ -30,7 +30,7 @@ agent reads the descriptions first and loads a skill only when its task matches.
 | `git-workflow` | `main` and short branches, pushing, conflicts, shared trees |
 | `continuous-integration` | What CI runs on Windows and Linux, red builds |
 | `platform-portability` | Platform adapters, export macros, paths and text |
-| `build-throughput` | One tree per configuration, Debug by default, job pools from free memory, heavy code compiled and linked once, caches, batches |
+| `build-throughput` | One tree per configuration, Debug by default, edges admitted by measured peak memory, heavy code compiled and linked once, caches, batches |
 | `storage-discipline` | Scratchpad budget, no binaries or copies in scratch, bounded output capture, cleanup before reporting |
 
 `humanizer` and `marketing-copy` carry one file per language and register beside `SKILL.md`,
