@@ -85,6 +85,7 @@ Each rule set is its own skill. Load the one your task touches.
 | Branches, pushing, conflicts | `git-workflow` |
 | CI workflows and CI failures | `continuous-integration` |
 | Windows and Linux differences, exports, paths | `platform-portability` |
+| Build configurations and trees, compile and link speed, build memory | `build-throughput` |
 | Scratch files, temp output, copies, downloads, anything that writes to disk | `storage-discipline` |
 
 ## Third-party skills

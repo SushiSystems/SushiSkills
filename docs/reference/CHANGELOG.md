@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-27 — build-throughput: Added the skill: one tree per configuration, Debug as the default build, job pools sized from free memory, heavy code compiled and device code linked once (`SKILL.md`).
 - 2026-10-22 — documentation: Added `docs/design/_REVISION/`, where a topic the owner keeps for revision after an audit waits untouched (`DESIGN_FORMAT.md`).
 - 2026-10-22 — tools: Dropped a relative link into a retired folder written from any folder, given the root (`drop_retired_citations.py`).
 - 2026-10-22 — tools: Named a file that starts with THE without a doubled article (`drop_retired_citations.py`).
