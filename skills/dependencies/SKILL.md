@@ -60,7 +60,7 @@ A repository builds on its own, with or without a SushiStack workspace: whoever 
 SushiRuntime gets SushiLog through `sr setup`, without `hub`.
 
 1. The repository's dependency fragment, `cli/sushistack.deps.toml`, lists each Sushi library it
-   links in `[module] depends_on` and pins it in `[sushi.<name>]` with `version` (a release tag)
+   links in `[module] depends_on` and pins it in `[sushisystems.<name>]` with `version` (a release tag)
    and `commit` (its full hash).
 2. The build finds it in this order, the CLI and CMake alike, and stops at the first that exists:
    1. `<NAME>_DIR`, set by the person or the CLI;
