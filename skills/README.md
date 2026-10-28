@@ -24,6 +24,7 @@ agent reads the descriptions first and loads a skill only when its task matches.
 | `testing` | What each change must test, bug fix order, determinism, golden files |
 | `dependencies` | Licences, where libraries come from, keeping them private |
 | `api-stability` | Public surfaces, deprecation, exports, cross-repository upgrades |
+| `module-install` | The two equal ways into a module, standalone and with SushiHub: the elements each module carries, the install pages, the checks |
 | `performance` | Hot path defaults, measured optimisation, benchmarks |
 | `debugging` | Known issues first, temporary instrumentation, root causes |
 | `file-formats` | `snake_case` keys, `format_version`, upgrading readers |

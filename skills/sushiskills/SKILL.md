@@ -79,6 +79,7 @@ Each rule set is its own skill. Load the one your task touches.
 | Tests a change must carry, bug fix order, determinism, goldens | `testing` |
 | Adding, vendoring or upgrading a third-party library | `dependencies` |
 | Changing or removing a public surface, cross-repository upgrades | `api-stability` |
+| How a module is obtained, set up and recognised, with or without SushiHub | `module-install` |
 | Optimising, benchmarks, perf claims | `performance` |
 | A bug, a crash, a wrong value | `debugging` |
 | A persistent file format | `file-formats` |

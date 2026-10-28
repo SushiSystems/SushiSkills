@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-28 — module-install: Added the skill: standalone and SushiHub as two equal ways into a module, the elements each module carries, the install pages, the bare-clone lane and the three checks (`SKILL.md`).
 - 2026-10-28 — dependencies: Named the pin table `[sushisystems.<name>]`, as `hub pin` writes it (`SKILL.md`).
 - 2026-10-28 — build-throughput: Made a module dependency public only when a public header needs the whole type, with forward declarations otherwise (`SKILL.md`).
 - 2026-10-28 — build-throughput: Added one copy of the build machinery in sushicore, Debug linking the release runtime and Release packages, and the empty device image red flag (`SKILL.md`).
