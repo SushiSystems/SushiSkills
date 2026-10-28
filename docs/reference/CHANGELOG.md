@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-28 — build-throughput: Made a module dependency public only when a public header needs the whole type, with forward declarations otherwise (`SKILL.md`).
 - 2026-10-28 — build-throughput: Added one copy of the build machinery in sushicore, Debug linking the release runtime and Release packages, and the empty device image red flag (`SKILL.md`).
 - 2026-10-28 — build-throughput: Replaced per-kind job pools with admission of each edge by its measured peak memory, pools kept as the fallback (`SKILL.md`).
 - 2026-10-27 — build-throughput: Added the skill: one tree per configuration, Debug as the default build, job pools sized from free memory, heavy code compiled and device code linked once (`SKILL.md`).

@@ -34,6 +34,15 @@ slower than one that ran fewer jobs.
 6. **One copy of the machinery.** A CLI built on sushicore takes the tree rule, the gate, its
    launcher entries and the report from sushicore (`build_tree`, `build_admission`,
    `build_gate`, `build_report`) and keeps no copy of its own.
+7. **A module dependency is public only when a public header needs the whole type.** That is a
+   type held by value or as a member, a base class, or a type used in an inline body. A type a
+   public header only names by reference or pointer is forward-declared there, its include
+   moves into the module's sources, and the dependency is private. A caller that builds such an
+   argument includes its header and links its module itself. Before a dependency is declared
+   public, read every public header and name the line that needs it.
+   A public edge hands its include directories to every module above, transitively. A change to
+   the lower module's headers then recompiles all of them, and the first build after the edge
+   lands recompiles most of the tree.
 
 ## Defaults
 
@@ -151,3 +160,5 @@ excluded from real-time malware scanning, by the machine's owner.
   images: a device driver that never sees the archives (`/WHOLEARCHIVE` passed through
   `-Xlinker`) links an empty device image, and every kernel is missing at run time.
 - "Release is the default because that is what ships." → Debug is the default; Release ships.
+- "The header names its type, so the dependency is public." → only by reference? Forward-declare
+  it and keep the edge private.

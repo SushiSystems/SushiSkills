@@ -98,7 +98,8 @@ Groups in this order, one blank line between groups:
 5. This module.
 
 Always with angle brackets, by the include path Names in `repository-layout` gives. A header includes what it uses and
-forward-declares what it only names by pointer or reference.
+forward-declares what it only names by pointer or reference. That is also what keeps a module
+dependency private (`build-throughput`, boundary 7).
 
 ## Class shape
 
