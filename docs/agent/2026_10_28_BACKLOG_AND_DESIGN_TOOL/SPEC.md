@@ -1,6 +1,6 @@
 # Backlog and design tool: specification
 
-**Status:** Open — specified 2026-10-28; built in sushicore and SushiSkills, the repositories moving
+**Status:** Shipped — 2026-10-28
 
 The owner asked on 2026-10-28 for the backlog, the known issues and the design documents to stay
 Markdown in git, behind a command line that reads and writes them as if they were a database. The
