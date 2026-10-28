@@ -60,7 +60,7 @@ class MissingSushicoreTest(unittest.TestCase):
             with mock.patch("documentation.check_backlog.load", return_value=None):
                 issues = list(rule_backlog(repository))
         self.assertEqual(len(issues), 1)
-        self.assertIn("install sushicore 0.10.0", issues[0].message)
+        self.assertIn("install sushicore 0.10.2", issues[0].message)
 
 
 @unittest.skipUnless(K_HAS_SUSHICORE, "sushicore is not installed")

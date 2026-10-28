@@ -21,7 +21,7 @@ from typing import Protocol
 
 from checking.checker import Issue
 
-K_MINIMUM_VERSION = "0.10.0"
+K_MINIMUM_VERSION = "0.10.2"
 K_SIBLING_SOURCE = Path("sushicore") / "source"
 
 
