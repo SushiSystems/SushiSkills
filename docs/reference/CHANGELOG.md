@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-28 — tools: Left the generated design views out of the duplicated passage rule, since a topic's About line repeats in every module it owns (`check_docs_truth.py`).
 - 2026-10-28 — tools: Let the backlog's pages describe what a defect no longer does, as the known issues could (`check_docs_truth.py`).
 - 2026-10-28 — docs: Moved the SushiSkills backlog into `docs/backlog/` with `backlog import` (`docs/backlog/`).
 - 2026-10-28 — tools: Taught the layout and truth checkers the `docs/backlog/` folder and its detail files (`check_docs_layout.py`, `check_docs_truth.py`).

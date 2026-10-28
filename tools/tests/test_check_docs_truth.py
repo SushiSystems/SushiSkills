@@ -284,6 +284,15 @@ class DuplicatedPassagesTest(unittest.TestCase):
         }
         self.assertEqual(_found(rule_duplicated_passages, files), [])
 
+    def test_accepts_a_generated_block_in_two_module_readmes(self) -> None:
+        """Accepts the designs block the views write into every module a topic owns."""
+        block = f"<!-- designs:begin -->\n{K_PASSAGE}\n<!-- designs:end -->"
+        files = {
+            "docs/guides/A.md": f"# A\n\n{block}\n",
+            "docs/guides/B.md": f"# B\n\n{block}\n",
+        }
+        self.assertEqual(_found(rule_duplicated_passages, files), [])
+
 
 class EmDashTest(unittest.TestCase):
     """Checks where an em dash is refused."""
