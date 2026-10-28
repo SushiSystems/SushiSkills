@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-28 — build-throughput: Added one copy of the build machinery in sushicore, Debug linking the release runtime and Release packages, and the empty device image red flag (`SKILL.md`).
 - 2026-10-28 — build-throughput: Replaced per-kind job pools with admission of each edge by its measured peak memory, pools kept as the fallback (`SKILL.md`).
 - 2026-10-27 — build-throughput: Added the skill: one tree per configuration, Debug as the default build, job pools sized from free memory, heavy code compiled and device code linked once (`SKILL.md`).
 - 2026-10-22 — documentation: Added `docs/design/_REVISION/`, where a topic the owner keeps for revision after an audit waits untouched (`DESIGN_FORMAT.md`).

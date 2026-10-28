@@ -31,6 +31,9 @@ slower than one that ran fewer jobs.
    machine, before and after, wall time and peak memory.
 5. **The CLI is the only door.** Every knob below is a CLI option or a machine-local CLI
    setting, never a command typed at the build system (`sushiskills`, default 2).
+6. **One copy of the machinery.** A CLI built on sushicore takes the tree rule, the gate, its
+   launcher entries and the report from sushicore (`build_tree`, `build_admission`,
+   `build_gate`, `build_report`) and keeps no copy of its own.
 
 ## Defaults
 
@@ -95,6 +98,15 @@ template-heavy code; unoptimised device code makes the tests that exercise it un
 **Not when:** a debugging session needs variable-level information on a module; that module's
 debugger build is its own tree.
 
+### Debug links what Release links
+
+**Rule:** on Windows every configuration takes the release C runtime, `_ITERATOR_DEBUG_LEVEL` is
+0, and a Debug tree links the Release build of every imported package.
+**Why:** the libraries below a repository are consumed as Release packages; a debug C runtime
+would need a debug build of the whole stack beneath it and would mismatch the packages' heaps.
+Memory errors are the sanitizer tree's job.
+**Not when:** the repository has no imported C++ packages and links nothing across a DLL edge.
+
 ### A compiler cache for units that are deterministic
 
 **Rule:** host units compile through a compiler cache inside the build directory, capped in size
@@ -135,4 +147,7 @@ excluded from real-time malware scanning, by the machine's owner.
 - "The test needs the kernel, so the test compiles it." → the module compiles it.
 - "Full debug information costs nothing." → measure its memory and link time first.
 - "The cache makes it faster, so device objects go in too." → the trial first.
+- "The shared library linked in seconds, so the device link is cheap." → count its device
+  images: a device driver that never sees the archives (`/WHOLEARCHIVE` passed through
+  `-Xlinker`) links an empty device image, and every kernel is missing at run time.
 - "Release is the default because that is what ships." → Debug is the default; Release ships.
