@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- 2026-10-28 — docs: Moved the SushiSkills backlog into `docs/backlog/` with `backlog import` (`docs/backlog/`).
+- 2026-10-28 — tools: Taught the layout and truth checkers the `docs/backlog/` folder and its detail files (`check_docs_layout.py`, `check_docs_truth.py`).
+- 2026-10-28 — tools: Made the backlog and the design checkers run the backlog and design checks of sushicore (`check_backlog.py`, `check_design_format.py`, `check_design_topics.py`, `sushicore_bridge.py`).
+- 2026-10-28 — documentation: Required a Modules line on every topic, one topic per module, and `design new` as the only way to open a topic (`DESIGN_FORMAT.md`).
+- 2026-10-28 — documentation: Replaced `REMAINING_WORK.md` and `KNOWN_ISSUES.md` with the tables of `docs/backlog/`, written by the backlog commands of sushicore, with priorities and a computed order (`BACKLOG_FORMAT.md`, `SKILL.md`).
 - 2026-10-28 — tools: Added `check_module_install.py`, which checks a module for the elements, both install headings, no machine path and no SushiHub in code (`module-install`).
 - 2026-10-28 — module-install: Named the module README `Build` section, not `Install`, as the install page beside `INSTALL.md` (`SKILL.md`).
 - 2026-10-28 — module-install: Added the skill: standalone and SushiHub as two equal ways into a module, the elements each module carries, the install pages, the bare-clone lane and the three checks (`SKILL.md`).

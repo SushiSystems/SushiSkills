@@ -1,123 +1,99 @@
 # Backlog format
 
-Read from the `documentation` skill before writing or closing an entry in
-`docs/design/REMAINING_WORK.md` or `docs/reference/KNOWN_ISSUES.md`.
+Read from the `documentation` skill before reading, writing or closing an entry of the backlog.
 
-The backlog holds what is to be done. The known issues hold conditions a reader can meet and act
-on: a defect that has a workaround, a limitation chosen on purpose, a fault of the toolchain, a
-dependency or a sibling. Neither holds finished work: the commit that closes an entry deletes it and writes its changelog
-line, and what works is in the root README's `## Status`.
+The backlog holds what is to be done: the remaining work, and the known issues, conditions a
+reader can meet and act on, such as a defect that has a workaround, a limitation chosen on
+purpose, or a fault of the toolchain, a dependency or a sibling. Neither holds finished work: the
+commit that closes an entry deletes it and writes its changelog line, and what works is in the
+root README's `## Status`.
+
+## The store
+
+```
+docs/backlog/
+    README.md          generated: each area counted by state and priority, and the pins
+    backlog.toml       the areas and the owner's pins
+    ids.toml           the next number of each kind and every number ever closed
+    <AREA>.md          one area, holding a table of remaining work and a table of known issues
+    detail/<ID>.md     the explanation of an entry that does not fit its row
+```
+
+Every file here is written by the `backlog` commands of sushicore: `<cli> backlog ...` in a
+repository with a module CLI, `python -m sushicore.backlog ...` in one without. Nobody edits a
+row by hand; `backlog check` fails a file out of the shape the tool writes. A detail file is
+prose the author writes, and `backlog close` deletes it with its entry.
+
+The columns, their values, the ceilings and the commands are in sushicore's
+`docs/reference/BACKLOG.md`. In short:
+
+| Kind | Columns |
+| --- | --- |
+| Remaining work, `RW-<n>` | `ID`, `Pri`, `State`, `Title`, `Done when`, `Blocked by`, `Source`, `Opened` |
+| Known issue, `KI-<n>` | `ID`, `Origin`, `Symptom`, `Workaround`, `Fix`, `Source`, `Opened` |
 
 ## Which repository owns an entry
 
 An entry lives in the repository whose commit closes it. A repository that waits on it cites it
-by ID and does not copy its text. A programme that spans repositories lives in the backlog of
-the repository that coordinates the others, and its entry lists the entries it waits on.
+by ID and does not copy its text, written `<repository> RW-<n>`, the repository being its folder
+name. A programme that spans repositories lives in the backlog of the repository that
+coordinates the others, and its entry lists the entries it waits on in `Blocked by`.
 
-## IDs
+## Areas
 
-`RW-<n>` in the backlog, `KI-<n>` in the known issues, written `<repository> RW-<n>` from another
-repository, the repository being its folder name. Each file opens with a counter line,
-`Next id: RW-<n>`, and every ID in the file is below it. An ID is never reused.
+An area is a module or a subject of the repository, named in upper case words joined by `_` and
+listed in `backlog.toml`; `backlog area add` adds one. An area is never a date, a programme of
+another repository, a design topic's phase or finished work. Areas are few: a subject with two
+entries belongs in the area of the module it changes, and `backlog area merge` joins two.
 
-## `REMAINING_WORK.md`
+## States
 
-```
-# Remaining work
-
-Next id: RW-16
-
-## Next
-
-- RW-14 Every speed figure in the design rests on these runs
-
-## Decisions waiting for the owner
-
-### RW-3 Choose whether contributions from outside are accepted
-- State: decision
-- Done when: the owner has named the contributor agreement, or ruled contributions out
-
-## Kernels
-
-### RW-14 Run the benchmark programs that have not run
-- State: unmeasured
-- Done when: each program has a recorded run on every device the build supports
-- Source: `docs/design/KERNELS.md` §4
-
-### RW-15 Bind a late operand address in the recorder
-- State: blocked
-- Blocked by: runtime RW-22
-- Done when: the recorder accepts an address bound at run time
-```
-
-| Part | Rule |
+| State | Means |
 | --- | --- |
-| `## Next` | Optional, first. The owner's order: at most ten lines `- RW-<n> <why it comes here>` |
-| Decisions | `## Decisions waiting for the owner`, holding every entry with `State: decision` and nothing else |
-| Other sections | `## <Area>`, a module or a subject; never a date, a programme of another repository or finished work |
-| Heading | `### RW-<n> <what is to be done>`, an imperative sentence |
-| `State:` | Required: `decision`, `open`, `blocked` or `unmeasured` |
-| `Done when:` | Required: one acceptance criterion |
-| `Blocked by:` | Required when `blocked`, absent otherwise: IDs, or `external: <reason>` for a block outside the estate |
-| `Where:` | Optional: at most five paths the work changes, written as in `KNOWN_ISSUES.md` |
-| `Source:` | Optional: a design document, with `§<n>` for a section, or a file of a work folder |
+| `open` | Work to be done |
+| `blocked` | Waits on the entries or the external reason in `Blocked by` |
+| `unmeasured` | Built work whose acceptance is a run or a measurement rather than a commit |
+| `decision` | Waits on the owner's ruling; never given to an agent |
 
-`unmeasured` is built work whose acceptance is a run or a measurement rather than a commit. Work
-whose claim was withdrawn from a design document is `open`. An open design phase gets one entry
-whose `Source:` cites its document; the phase's detail stays there. Every design document whose
-status is `Open` is cited by at least one entry.
+Work whose claim was withdrawn from a design document is `open`. Built work that was never
+measured or verified is not a defect; it is `unmeasured` work.
 
-The order lives in `## Next` and in no other file. An ID there that loses its entry fails the
-checker, so the commit that closes an entry also updates the order.
+## Priority and order
 
-## `KNOWN_ISSUES.md`
+`P0` is data loss, a broken gate, a regression in a release or a security fix after disclosure,
+late after 2 days. `P1` is a defect with no workaround or work that blocks other work, late after
+14. `P2` is a defect with a workaround or a missing check that let a defect through, late after
+90. `P3` is an improvement, reviewed after 180.
 
-```
-# Known issues
+The order is computed, never kept by hand. `backlog next` gives an agent its work: the owner's
+pins first, then the ready entries by priority and age. The owner pins at most ten entries with
+`backlog pin`; `backlog decisions` lists what waits on the owner.
 
-Next id: KI-8
+## Remaining work or a known issue
 
-## Storage
+A known issue of origin `own` carries a workaround, or a `Fix` of the form `none, <reason>` for a
+limitation chosen on purpose. A defect with a scheduled fix and no workaround is work: it lives in
+the remaining work table alone, its symptom and cause in its detail. Once a workaround exists it
+may become an issue with `Fix: RW-<n>`, and `backlog promote` opens the work of an issue. An
+origin that is not `own` is never the repository's to close, so it is not remaining work whatever
+its workaround.
 
-### KI-7 The host faults when it reads a shared buffer while a kernel runs
-- Origin: runtime
-- Upstream: runtime KI-4
-- Where: `modules/io/source/io.cpp`
-- Recognise: the process exits with an access fault during a print or a save
-- Workaround: finish the queue before a host read
-```
+An open design phase gets one work entry whose `Source` cites its topic; the phase's detail stays
+there. Every design topic whose status is `Open` is cited by at least one entry.
 
-| Part | Rule |
-| --- | --- |
-| Sections | `## <Area>` only |
-| Heading | `### KI-<n> <the symptom as seen>` |
-| `Origin:` | Required: `own`, `toolchain`, `dependency` or a sibling repository |
-| `Upstream:` | Required when the origin is a sibling, absent otherwise: that repository's `KI-<n>` |
-| `Where:` | Required when the origin is `own`: at most five paths |
-| `Cause:` | Required unless the origin is a sibling, whose entry holds it; `unknown` is a value |
-| `Recognise:` | Required: how a reader tells this issue from another |
-| `Workaround:` | Required; `none` is a value |
-| `Fix:` | Required when the origin is `own`: `RW-<n>`, or `none, <reason>` for a limitation chosen on purpose |
-| `Owner:`, `Fix by:` | Required for a quarantined test |
-| `Source:` | Optional: the investigation, usually a work folder's `REPORT.md` |
+## A quarantined test
 
-A known issue of origin `own` carries a workaround, or a `Fix:` of the form `none, <reason>`. A
-defect with a scheduled fix and no workaround is work: it lives in the backlog alone, and its
-symptom and cause are prose in that entry. Once a workaround exists it may be copied here with
-`Fix: RW-<n>`. An origin that is not `own` is never the repository's to close, so it is not
-backlog work whatever its workaround.
+A test taken out of the gating stages has a known issue whose detail file names the test, its
+owner and the date it is fixed by. The issue's `Fix` names the work that brings it back.
 
-Built work that was never measured or verified is not a defect; it is a backlog entry with
-`State: unmeasured`.
+## An agent and the backlog
 
-## Both files
+- Read the work to take with `backlog next --json`, never by reading the area files.
+- Add what the work found with `backlog add`, and close what it finished with `backlog close`,
+  writing the changelog line it prints.
+- A longer explanation goes in the entry's detail file or in the work folder its `Source` cites.
+- Two branches that took one ID are resolved with `backlog renumber` after the merge.
 
-- A field is a line `- <Name>: <value>`. A value continues on lines indented by two spaces.
-  Prose may follow the fields.
-- A field-shaped line with any other name is a finding; `- Done:` is one.
-- A path in `Where:` or `Source:` is written from the repository root and exists.
-- An entry is at most 25 lines, heading included. A longer investigation goes in its `Source:`.
-- An ID another entry cites is closed only once the citing entry is updated.
-
-`tools/documentation/check_backlog.py` enforces every rule above that a tool can see. Whether an
-entry is still true is the fact check in `project-tools`.
+`tools/documentation/check_backlog.py` runs `backlog check`, so a repository's checkers enforce
+every rule above that a tool can see. Whether an entry is still true is the fact check in
+`project-tools`.

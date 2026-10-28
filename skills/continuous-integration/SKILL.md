@@ -56,5 +56,5 @@ Each stage runs the tests whose size, from `testing`, fits its budget. No test c
 - A red `main` is fixed, or the change that broke it reverted, before any other work lands.
 - No release is proposed or cut while CI is red.
 - A failure that only CI shows is reproduced locally before it is fixed; if it is an environment
-  fault, it goes into `docs/reference/KNOWN_ISSUES.md`.
+  fault, it becomes a known issue through `backlog add issue`.
 - A job is never disabled or marked allowed-to-fail to get green.

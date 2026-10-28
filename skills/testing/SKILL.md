@@ -66,7 +66,7 @@ with tests, which the project's `conftest.py` sets from each test's size.
 The build reads the size from there and sets the label and the timeout; no build file lists
 suites or files by size. A suite that opens with no size fails the build, and in Python one
 that carries none fails collection. `quarantined` is the one label a build file lists, by test
-name, because it is a state with an entry in `KNOWN_ISSUES.md`, not a property of the test.
+name, because it is a state with a known issue in the backlog, not a property of the test.
 
 Size is the only kind label. What a test covers, why it exists and how it checks, such as a
 defect it guards or a golden file it compares, are written in its name and its body. A benchmark is not a test; it
@@ -115,9 +115,9 @@ A probe:
 3. A `large` test whose hardware is absent is reported as skipped, never as passed.
 4. No test depends on wall-clock time, test order, network or a file outside the repository.
 5. A test that fails intermittently is fixed the day it is seen, or quarantined: it gains the
-   `quarantined` label, which takes it out of every gating stage, and an entry in
-   `docs/reference/KNOWN_ISSUES.md` naming it, with the `Owner:` and `Fix by:` fields of
-   `BACKLOG_FORMAT.md` in `documentation`. A quarantined test is never deleted silently.
+   `quarantined` label, which takes it out of every gating stage, and a known issue whose
+   detail file names the test, its owner and the date it is fixed by, as `BACKLOG_FORMAT.md` in
+   `documentation` gives. A quarantined test is never deleted silently.
 6. A `small` test is never retried. A `medium` or `large` test that passes only on a retry is
    intermittent, and rule 5 applies.
 

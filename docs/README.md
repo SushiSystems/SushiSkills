@@ -10,8 +10,7 @@ This tree records how the repository is installed and changed.
 | [Documentation style guide](DOCUMENTATION_STYLE_GUIDE.md) | How prose and skill files are written here |
 | [Changelog](reference/CHANGELOG.md) | What changed, by release |
 | [Glossary](reference/GLOSSARY.md) | The words the skills use |
-| [Known issues](reference/KNOWN_ISSUES.md) | Defects that are recorded and not yet fixed |
 | [Design map](design/README.md) | Which design document covers which topic |
-| [Remaining work](design/REMAINING_WORK.md) | The backlog |
+| [Backlog](backlog/README.md) | Remaining work and known issues, by area; `python -m sushicore.backlog next` gives the order |
 
 Agent work folders are under `agent/`. Finished material is under `archive/` and is not edited.

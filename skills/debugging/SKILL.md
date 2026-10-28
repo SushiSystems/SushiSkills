@@ -11,7 +11,7 @@ a story fits.
 ## Order
 
 1. **Check the known issues.** When a failure looks impossible given the code, look it up in
-   `docs/reference/KNOWN_ISSUES.md` first. Some failures belong to a toolchain, a driver or a
+   the backlog first, `backlog list --kind issue`. Some failures belong to a toolchain, a driver or a
    vendor library, not to this repository.
 2. **Reproduce.** State the smallest input and steps that show it.
 3. **Instrument.** Add one temporary readout that prints the values the next decision depends
@@ -30,9 +30,9 @@ a story fits.
 ## Known issues
 
 A failure that turns out not to be this repository's fault, or that this repository lives with
-and has a workaround for, gets an entry in `docs/reference/KNOWN_ISSUES.md`, one entry per cause,
-in the shape `BACKLOG_FORMAT.md` in `documentation` gives. A defect to be fixed with no workaround
-yet is a backlog entry instead.
+and has a workaround for, becomes a known issue through `backlog add issue`, one entry per
+cause, as `BACKLOG_FORMAT.md` in `documentation` gives. A defect to be fixed with no workaround
+yet is remaining work instead, `backlog add work`.
 
 ## Red flags
 

@@ -17,7 +17,8 @@ must carry its evidence.
 | Worker | One task with one acceptance criterion | The files its dispatch lists, a module README only when listed, and the work folder under `docs/agent/` |
 
 A worker never edits a file outside its assigned set, never writes to `docs/design/`, the
-manual, `CHANGELOG.md` or `REMAINING_WORK.md`, and never commits unless the dispatch says so.
+manual, `CHANGELOG.md` or `docs/backlog/`, and never commits unless the dispatch says so. It
+reads its work with `backlog next` and reports what it found; the orchestrator writes the entries.
 
 ## Planning
 

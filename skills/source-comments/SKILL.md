@@ -106,7 +106,7 @@ Two `//` lines in a row are a paragraph, and a paragraph belongs in a document.
 | --- | --- |
 | Why a design was chosen | `docs/design/<TOPIC>/README.md`, cited by path |
 | History: "previously", "was changed", "fixed in" | The commit message |
-| `TODO`, `FIXME`, `HACK`, `XXX` | `docs/design/REMAINING_WORK.md` |
+| `TODO`, `FIXME`, `HACK`, `XXX` | A backlog entry, `backlog add work` |
 | Separator lines (`-----`, `=====`, `*****`) outside the license block | Nothing; split the file |
 | Commented-out code | Delete it; git keeps it |
 | `@date` | Git |

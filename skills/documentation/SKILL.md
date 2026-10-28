@@ -21,10 +21,11 @@ docs/
     .docs_truth_allow             names the manual may write that the source cannot hold
     getting_started/  architecture/  guides/
     reference/
-        CHANGELOG.md  GLOSSARY.md  KNOWN_ISSUES.md
+        CHANGELOG.md  GLOSSARY.md
+    backlog/                      remaining work and known issues, written by the backlog commands
+        README.md  backlog.toml  ids.toml  <AREA>.md  detail/<ID>.md
     design/
         README.md                 topic -> design document map
-        REMAINING_WORK.md         the single backlog
         <TOPIC>/README.md         live intent of one topic, with a status line; pages beside it
         _REVISION/<TOPIC>/        a topic the owner set aside for revision; see DESIGN_FORMAT.md
     agent/
@@ -38,8 +39,9 @@ docs/
 No other folder under `docs/`. No other file names inside a work folder.
 
 Required in every repository: `README.md`, `CONTRIBUTING.md`, `DOCUMENTATION_STYLE_GUIDE.md`,
-the three files under `reference/` and the two under `design/`. The other folders appear when
-they have content.
+the two files under `reference/`, `design/README.md`, and `backlog/README.md` with
+`backlog/backlog.toml`, which `backlog area add` writes. The other folders appear when they have
+content.
 
 ## Placement
 
@@ -47,10 +49,12 @@ Ask in order, stop at the first yes.
 
 1. Is it a fact about one module? → that module's `README.md`.
 2. Was it written by an agent while doing a piece of work? → that work's folder in `docs/agent/`.
-3. Is it intent with an open phase? → `docs/design/<TOPIC>/README.md`.
-4. Is it about work that is finished? → nowhere: it is deleted when its decisions are in the topic;
+3. Is it work to be done, or a defect a reader can meet? → the backlog, through `backlog add`.
+4. Is it intent with an open phase? → the topic that owns its module, `design owner <path>`:
+   `docs/design/<TOPIC>/`, as a page or a phase. A new topic only through `design new`.
+5. Is it about work that is finished? → nowhere: it is deleted when its decisions are in the topic;
    version history keeps it.
-5. Otherwise → the manual: `getting_started/`, `architecture/`, `guides/` or `reference/`.
+6. Otherwise → the manual: `getting_started/`, `architecture/`, `guides/` or `reference/`.
 
 ## The root README
 
@@ -63,7 +67,7 @@ everything else is a link into `docs/`. Its sections, in this order, none of the
    for a tool, the commands a user types.
 3. `## Build`: the commands that build and test it, one block.
 4. `## Status`: what works and what does not yet, in a few lines, linking
-   `docs/design/REMAINING_WORK.md`.
+   `docs/backlog/README.md`.
 5. `## Documentation`: a link to `docs/README.md`; `docs/CONTRIBUTING.md` for contributors.
 6. `## Licence`: the licence by name, `LICENSE`, and `COMMERCIAL.md` and `NOTICE.md` where they
    exist.
@@ -82,7 +86,7 @@ adjectives such as fast, powerful or seamless, and anything the manual already s
 | Opening or extending a design document, opening or closing a work folder under `docs/agent/` | `AGENT_WORK.md` |
 | Writing or reshaping a design document: its sections, status line and phase table | `DESIGN_FORMAT.md` |
 | Writing a changelog entry or moving a release section | `CHANGELOG_FORMAT.md` |
-| Writing or closing an entry in `REMAINING_WORK.md` or `KNOWN_ISSUES.md` | `BACKLOG_FORMAT.md` |
+| Reading, writing or closing an entry of the backlog in `docs/backlog/` | `BACKLOG_FORMAT.md` |
 
 ## Names
 
@@ -118,7 +122,7 @@ README links.
 - The old paragraph is deleted, never kept beside the new one. Git keeps it.
 - A page says what is. It does not say `previously`, `no longer`, `used to`, `was renamed`,
   `formerly`, `as of v`, `new in v`, `up to v` or `deprecated since`. What changed is in the
-  changelog; a defect that still bites is in `KNOWN_ISSUES.md`.
+  changelog; a defect that still bites is a known issue in the backlog.
 - When a section's subject is gone, the section goes, heading included.
 
 ### Size and one home
@@ -146,7 +150,12 @@ README links.
 
 - "I will write a quick note in a new file so the next agent sees it." → the work folder.
 - "This review deserves its own file." → replace `REPORT.md`.
-- "This topic is slightly different from the existing design document." → extend it.
+- "This topic is slightly different from the existing design document." → extend it:
+  `design owner <path>` names the topic, and `design page` adds to it.
+- "I will open a design topic for this feature." → `design new`, which refuses a module another
+  topic owns.
+- "I will add a line to the backlog file." → `backlog add`; nobody edits a row by hand.
+- "I will pick the next task from the backlog myself." → `backlog next --json`.
 - "I will update the changelog at the end of the week." → it is part of the commit.
 - "`docs/` is outside my write list, so I reported it." → `AGENT_WORK.md`, on a reported page.
 - "The manual is a later stage of the plan." → the page is part of the change that made it false.

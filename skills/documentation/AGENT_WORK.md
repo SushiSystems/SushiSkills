@@ -21,7 +21,7 @@ Read from the `documentation` skill before opening a design document or a work f
 - A design document is the `README.md` of its topic folder. Above its ceiling (see "Size and one
   home" in `SKILL.md`) the detail moves into one page per phase beside it, and the generated map
   follows. The `README.md` carries the status; the pages carry none.
-- `REMAINING_WORK.md` is the only backlog and `## Next` in it the only order; its format is
+- `docs/backlog/` is the only backlog and `backlog next` the only order; its format is
   `BACKLOG_FORMAT.md`. No TODO list, roadmap, journal, handover, milestone or priority file sits
   under `docs/` outside `agent/` and `archive/`. Phases live in their design document, finished
   work in the changelog, a journal or a handover in the work folder that wrote it.
@@ -50,7 +50,7 @@ fails an item whose topic or phase does not exist, so a renamed phase is found w
    commit, and does not ask first or wait for the end.
 3. **Close.** The orchestrator, in one commit: writes the changelog line, dates the work
    folder's status and the design status, writes the decisions the work made into its design
-   document, updates `REMAINING_WORK.md`, updates the module READMEs and manual pages the work
+   document, closes and adds the backlog entries with the `backlog` commands, updates the module READMEs and manual pages the work
    made false.
 4. **Delete.** A closed work folder, and a design document that is `Superseded` or `Withdrawn`, is
    deleted: the version history keeps it, and the decisions it made are already in the topic. The

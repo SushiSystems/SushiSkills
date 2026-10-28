@@ -61,21 +61,36 @@ When every phase is `built` or `withdrawn`, the document's status becomes `Shipp
 ## The topic and its metadata
 
 The unit of design is the topic: a name that is a module (`AUDIO`, `ECS`) or a subject that spans
-modules (`WEATHER`). A topic has one home, the folder `docs/design/<TOPIC>/`, whose `README.md` is the design document.
-Nothing but `README.md` and `REMAINING_WORK.md` sits loose in `docs/design/`. A new
-idea about an existing topic is a page and a phase in that topic, never a second document. Two
-documents on one subject are merged into one topic.
+modules (`WEATHER`). A topic has one home, the folder `docs/design/<TOPIC>/`, whose `README.md` is
+the design document. Nothing but `README.md` sits loose in `docs/design/`.
 
-Under the status line, one field to a line, a design document may carry:
+Topics have two levels: the topic, and the pages and phases under it. A new idea about an
+existing topic is a page and a phase in that topic, never a second topic. Clouds are a page of
+`ATMOSPHERE`; a matter solver is a page of `MATTER`.
+
+Under the status line, one field to a line, a design document carries:
 
 | Field | Holds |
 | --- | --- |
 | `**About:**` | One sentence saying what the topic is, for the topic map |
-| `**Modules:**` | The paths of the modules the topic governs, separated by commas, or `none` |
+| `**Modules:**` | Required: the paths of the modules the topic owns, separated by commas, or `none` |
 
-`check_design_topics.py` reads each path and fails one that is not in the repository. A repository
-that sets `K_DESIGN_TOPICS` in `tools/settings.py` also requires the line on every topic and a term
-in `docs/reference/GLOSSARY.md` for each topic name.
+**A module belongs to one topic.** A module path is named on the `**Modules:**` line of at most
+one topic, and a path inside a module belongs to the topic that names the deepest module holding
+it; `design owner <path>` says which. A topic of no module, such as a release, writes `none` and
+carries `**About:**` to say why.
+
+The `design` commands of sushicore write the frame: the title, the status line, the metadata
+lines, the five headings and the phase table. `design new <TOPIC> --modules <paths> --about
+<text>` is the only way to open a topic; it refuses a module another topic owns, or one inside or
+around it, and names that topic. `design page` and `design phase` grow a topic, and `design
+phase-state` moves a phase and ships the topic when the last one is built. Two topics on one
+subject are found with `design overlap` and joined with `design merge <INTO> <FROM>`, which makes
+`FROM` a page of `INTO`, joins the phases and the modules, and rewrites every citation. The prose
+inside the sections is the author's. The commands are in sushicore's `docs/reference/DESIGN.md`.
+
+A repository that sets `K_DESIGN_TOPICS` in `tools/settings.py` also requires a term in
+`docs/reference/GLOSSARY.md` for each topic name, and the topic map.
 
 Three views are generated from this metadata and the phase tables, each between a begin and an end
 marker (`<!-- topics:begin -->` and `<!-- topics:end -->`, and the same for `designs` and `work`):
@@ -105,8 +120,10 @@ A design document, the `README.md` of a topic folder, has at most 400 lines. Abo
 moves into one page per phase beside it, where the Design section would otherwise hold it. The pages carry
 no status and no fixed sections. `fold_design_topics.py --apply` gives a loose document its folder.
 
-`tools/documentation/check_design_topics.py` enforces the metadata above. `tools/documentation/check_design_format.py` enforces the sections, the status length, the phase
-table, the hash rule and the dated-work rule; `check_docs_layout.py` enforces the size. The two
+`tools/documentation/check_design_topics.py` enforces the metadata, the ownership rule and the
+generated views; `tools/documentation/check_design_format.py` enforces the sections, the status
+length, the phase table, the hash rule and the dated-work rule; both run sushicore's `design
+check`. `check_docs_layout.py` enforces the size. The two
 content rules read form only: a hash anywhere in prose, and a line outside the status that sets a
 verb such as built, merged or reviewed beside an ISO date. A narrative with no date and no hash
 passes them; only a reader catches it.
