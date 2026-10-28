@@ -46,7 +46,7 @@ what the other way in reads from it.
 | Module CLI | `cli/`, installable with `pip`, scripts `<alias>` and `<name>` | `setup` (provisions the toolchain and libraries the fragment names), `doctor` (reports what is missing), `build`, `test`, `run`, `link` and `unlink`. It works with SushiHub absent |
 | Build files | `CMakeLists.txt`, `cmake/`, presets | A configure that takes every outside path from `<NAME>_DIR`, `CMAKE_PREFIX_PATH` or `VCPKG_ROOT`, handed by the CLI. It downloads nothing but test frameworks |
 | Catalog entry | SushiStack `cli/sushihub/catalog.toml` | The clone URL, directory and alias behind `hub add <module>` |
-| Install pages | the module `README.md` "Install" and `docs/getting_started/INSTALL.md` | The two ways in, in order, with the prerequisites each needs |
+| Install pages | the module `README.md` "Build" and `docs/getting_started/INSTALL.md` | The two ways in, in order, with the prerequisites each needs |
 | Bare-clone lane | one job in the module's CI | Proof that the standalone way works: checkout, install the CLI, `<alias> setup`, build, test, with no `hub` and no `SUSHISTACK_HOME` |
 
 ## The install pages

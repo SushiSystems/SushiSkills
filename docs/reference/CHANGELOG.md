@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-10-28 — tools: Added `check_module_install.py`, which checks a module for the elements, both install headings, no machine path and no SushiHub in code (`module-install`).
+- 2026-10-28 — module-install: Named the module README `Build` section, not `Install`, as the install page beside `INSTALL.md` (`SKILL.md`).
 - 2026-10-28 — module-install: Added the skill: standalone and SushiHub as two equal ways into a module, the elements each module carries, the install pages, the bare-clone lane and the three checks (`SKILL.md`).
 - 2026-10-28 — dependencies: Named the pin table `[sushisystems.<name>]`, as `hub pin` writes it (`SKILL.md`).
 - 2026-10-28 — build-throughput: Made a module dependency public only when a public header needs the whole type, with forward declarations otherwise (`SKILL.md`).
