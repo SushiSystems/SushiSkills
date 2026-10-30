@@ -3,7 +3,7 @@
 # match it covers whole.
 product: Sushi[A-Z][A-Za-z]*
 product: SUSHI[A-Z_]*
-product: sushi(?:log|hub|stack|engine|runtime|ai|dsp|blas|track)\b
+product: sushi(?:log|hub|stack|engine|runtime|ai|dsp|blas|track)(?![a-z])
 product: \bsl_\w+
 tool: sushicore
 tool: sushi-module
