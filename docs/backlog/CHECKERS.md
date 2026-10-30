@@ -19,7 +19,6 @@
 | RW-20 | P2 | open | Let the test mirror checker skip listed units | `check_test_mirror.py` skips the units a repository lists in `tools/settings.py` and fails on a listed unit that has gained a test |  |  | 2026-10-19 |
 | RW-21 | P2 | open | Read TypeScript imports in the layering check | `check_layering.py` reports a TypeScript import that crosses a boundary the repository's tier order forbids |  |  | 2026-10-19 |
 | RW-22 | P2 | open | Read C# in the comment, licence and layering checks | `check_source_comments.py` and `write_license_block.py` read `.cs` files, and `check_layering.py` reads a Unity tree's assembly definitions |  |  | 2026-10-19 |
-| RW-29 | P1 | open | Stop copy_shared_tools from overwriting a checker a repository changed for itself | copying refuses or reports a shared checker whose copy differs from every SushiSkills version of it |  | `tools/checking/copy_shared_tools.py` | 2026-10-29 |
 
 ## Known issues
 

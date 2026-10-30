@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-30 — tools: Made the shared tools copy refuse a shared checker that holds a local edit, with `--force` to overwrite it (`copy_shared_tools.py`, RW-29).
 - 2026-10-28 — tools: Raised the sushicore the checkers ask for to 0.10.2, whose import rebases moved links and whose frozen topics own no module (`sushicore_bridge.py`).
 - 2026-10-28 — tools: Left the generated design views out of the duplicated passage rule, since a topic's About line repeats in every module it owns (`check_docs_truth.py`).
 - 2026-10-28 — tools: Let the backlog's pages describe what a defect no longer does, as the known issues could (`check_docs_truth.py`).
