@@ -109,7 +109,7 @@ Consequences, written into `testing` as rules:
 4. **A regression test is the smallest reproduction,** a few lines that show the defect, not the
    scenario that exposed it.
 5. **Rows, not copies.** The same promise over ten inputs is one parametrised test with ten rows.
-6. **Helpers that assert are named `Expect*` or `Assert*`,** so a checker can tell an assertion
+6. **Helpers that assert are named `expect_*` or `assert_*`,** so a checker can tell an assertion
    from a call.
 
 **Not when:** rule 3 does not hold when a collaborator inside the module is itself slow or needs a
@@ -260,7 +260,7 @@ The engineer's own list; a reviewer adds to it.
    whole suite. *Answer:* phase D starts with a measured run on the owner's machine and sets the
    numbers from it. The values above are the owner's start values until then.
 6. **The assertion check misreads helpers.** *Answer:* only a body with no `EXPECT_*`,
-   `ASSERT_*`, `FAIL`, `SUCCEED`, and no call to an `Expect*` or `Assert*` helper is a finding; a
+   `ASSERT_*`, `FAIL`, `SUCCEED`, and no call to an `expect_*` or `assert_*` helper is a finding; a
    body that calls anything else is read by the reviewer.
 7. **Mock-at-the-boundary cannot be checked from source.** *Answer:* it stays a reviewed rule. The
    report counts `EXPECT_CALL` and mock declarations per program, as a number, never a gate.

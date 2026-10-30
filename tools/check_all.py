@@ -40,6 +40,7 @@ K_CHECKERS = (
     "commits/check_backlog_trailer.py",
     "testing/check_test_mirror.py",
     "testing/check_test_sizes.py",
+    "testing/check_test_value.py",
     "testing/check_probes.py",
     "logs/check_logging.py",
     "ci/check_workflows.py",

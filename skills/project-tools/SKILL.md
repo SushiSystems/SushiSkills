@@ -25,6 +25,7 @@ repository. They are run by hand or through the project's CLI; they never build 
 | `tools/layering/check_layering.py` | Module dependencies follow the declared tier order; nothing reaches into another module's private `source/` |
 | `tools/testing/check_test_mirror.py` | `tests/` mirrors the public headers, from `repository-layout` |
 | `tools/testing/check_test_sizes.py` | Every test writes its size in its source, from `testing` |
+| `tools/testing/check_test_value.py` | Every test case written after `K_TEST_VALUE_SINCE` asserts something, from `testing` |
 | `tools/testing/check_probes.py` | Probes and scenario benchmarks live in `applications/probes/` and `applications/benchmarks/`, use no test framework, stay out of the test runner, carry a name of their own and are listed, from `testing` and `performance` |
 | `tools/logs/check_logging.py` | Log calls carry their module's category, library code writes no console output and hides no failure, from `logging` |
 | `tools/commits/check_backlog_trailer.py` | The `Backlog:` line of `commits`: each commit after `K_TRAILER_SINCE` names an entry open in its parent or in itself, or says `none (<reason>)` |

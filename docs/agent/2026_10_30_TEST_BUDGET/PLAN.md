@@ -40,7 +40,7 @@ and line that settles it, and the file that must take `--output-junit` is named.
 
 Adds, in this order, after "What a change must carry": "What a test is", "Value rules", "Budget"
 and "Directions to the agent", with the text of the spec's Design section and the table of its
-values. Tightens `large` to hardware that needs a device. Adds the `Expect*` and `Assert*` naming
+values. Tightens `large` to hardware that needs a device. Adds the `expect_*` and `assert_*` naming
 rule to "Sizes, scopes and names". Adds two red flags: "I will cover every branch to be safe" and
 "The test prints the value so I can see it".
 
@@ -72,7 +72,7 @@ and the constant to match; fails when only one changes; skips in a tree with no 
 **Files:** `tools/testing/check_test_value.py` (new), `tools/tests/test_check_test_value.py` (new).
 
 Rules, each a function in the checker's rule table: a C++ case with no `EXPECT_*`, `ASSERT_*`,
-`FAIL`, `SUCCEED` and no `Expect*` or `Assert*` call; a Python test with no `assert`,
+`FAIL`, `SUCCEED` and no `expect_*` or `assert_*` call; a Python test with no `assert`,
 `pytest.raises` or `pytest.approx`; a TypeScript `it` with no `expect(`; an assertion on a literal
 such as `EXPECT_TRUE(true)` or `EXPECT_EQ(1, 1)`; `sleep_for`, `time.sleep` or `setTimeout` in a
 `small` test. Skips `Benchmark_` suites. Applies to files changed after `K_TEST_VALUE_SINCE`.

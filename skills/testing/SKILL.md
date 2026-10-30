@@ -41,8 +41,8 @@ cheapest level that can see it, and fails when the promise is broken.
   test.
 - A test that repeats the implementation checks nothing, and a unit with every collaborator mocked
   checks its mocks.
-- A helper that asserts is named `Expect*` or `Assert*`, so a checker can tell an assertion from a
-  call. An assertion on a literal, such as `EXPECT_TRUE(true)`, is a defect.
+- A helper that asserts is named `expect_*` or `assert_*` (`expect*` or `assert*` in TypeScript),
+  so a checker can tell an assertion from a call. An assertion on a literal, such as `EXPECT_TRUE(true)`, is a defect.
 
 ## Value rules
 
