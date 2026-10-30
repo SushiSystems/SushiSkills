@@ -26,6 +26,8 @@ Decided by the owner on 2026-10-30.
 4. Backlog and design are used strictly: state from the repository's CLI, entries written only
    through it, a backlog trailer on every commit, a tracked hook.
 5. An agent writes nothing to memory unless the owner asks in that message.
+6. A general skill names no engine, vendor, device or build tool. An engine or a device class gets a
+   skill of its own, and the language skills name the tools behind the CLI.
 
 ## Design
 
@@ -68,5 +70,7 @@ It must not erase a checker a repository changed for itself (backlog entry RW-29
 
 ## Open questions
 
-- Where the neutral rule ends and a technology skill begins for the build tools the doctrine's
-  second default names (cmake, ninja, ctest, npm, uv).
+- How P9 stops a documentation page from going stale when the fact it describes, or the page it
+  links, changes. The proposal to settle with the owner: a page names what it `Describes`, a checker
+  fails a commit that changes a described file without the page unless the message says
+  `Docs: <page> unchanged (<reason>)`, and the same check runs in the hook and in CI.
