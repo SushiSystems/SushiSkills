@@ -25,3 +25,5 @@ K_CONSOLE_PATHS: tuple[str, ...] = ()
 K_DESIGN_TOPICS = True
 K_FOLDER_CEILING = 60
 K_CLOSED_GRACE_DAYS = 0
+K_AGNOSTIC_PATHS: tuple[str, ...] = ()
+K_AGNOSTIC_TERMS = ""

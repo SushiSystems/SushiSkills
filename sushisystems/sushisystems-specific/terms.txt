@@ -1,0 +1,16 @@
+# Terms the doctrine in skills/ must not name, read by tools/layering/check_agnostic.py.
+# One per line, '<category>: <pattern>', matched case-sensitively; an 'allow' line removes a
+# match it covers whole.
+product: Sushi[A-Z][A-Za-z]*
+product: SUSHI[A-Z_]*
+product: sushi(?:log|hub|stack|engine|runtime|ai|dsp|blas|track)\b
+product: \bsl_\w+
+tool: sushicore
+tool: sushi-module
+tool: \.sushi(?:stack|systems)\b
+tool: \bhub (?:add|install-cli|link|unlink|pin|install)\b
+identity: \bSushi\b
+identity: Mustafa|Garip
+identity: sushisystems
+identity: SushiSystems
+allow: Sushi[Ss]kills
