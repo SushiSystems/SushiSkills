@@ -117,6 +117,29 @@ renames its suites and edits their bodies, and counts as 210 additions. The chec
 it; the way through is a move commit (`git mv`, names unchanged) and a rename commit apart. A
 `refactor` commit that adds cases at all is also against `testing` ("no new test").
 
+## Repair and C1
+
+`bb32e25` installed the hooks in this clone (`python tools/hooks/install_hooks.py`) and moved
+`K_DOCS_FOLLOW_SINCE` to `b02fc98`, so `check_docs_follow.py` judges every later commit and not the
+one that missed its page. `check_all.py` is green again (20 checkers, tests). The owner approved both
+and the work goes on.
+
+C1 is commit `b1fdbd9`: `test_budget.py` and 15 tests. It reads a CTest JUnit file, takes a map from
+suite to program, an exemption table and an optional rerun file, and prints the budget line, a
+`rerun:` regex for the slow tests and the findings. Exempt tests are left out of every limit and
+total, which the skill now says; otherwise the matter tests would fail the large tier for good.
+The standard library parser is the only one a checker may use, so a file with a DOCTYPE or an ENTITY is
+refused unread.
+
+Not verified: the exact layout of `ctest --output-junit`. The reader takes `testcase` elements with
+`name`, `time` and a `skipped` child or `status="notrun"`, as the CTest documentation describes. No
+CTest is installed on this machine and no JUnit file from a real run exists, so phase D1 checks the
+reader against the owner's first file before anything gates.
+
+Phases A to C and B3 are done. What is left needs more than this repository: D0 edits `sushicore`
+and its release is the owner's, D1 needs the owner's machine, D2 to D4 edit SushiEngine, E1b opens
+entries in seven other repositories.
+
 ## Suggested removals
 
 None yet.
