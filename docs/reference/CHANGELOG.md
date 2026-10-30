@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-30 — testing: Added `test_budget.py`, which applies the budget to the times of a CTest JUnit run, prints one budget line and the findings, and judges a slow test by a rerun alone (RW-35).
 - 2026-10-30 — testing: Added `check_test_additions.py`, which fails a commit that adds more test cases than its limit or a second test program with no `Test program:` line, and `added_tests.py`, which lists what a range adds (RW-35).
 - 2026-10-30 — testing: Added `check_test_value.py`, which fails a test case written after `K_TEST_VALUE_SINCE` that asserts nothing, asserts a literal or sleeps in a `small` case (RW-35).
 - 2026-10-30 — tools: Added the test budget to `settings.py` and a test that keeps it equal to the table in the `testing` skill (`settings.py`, RW-35).

@@ -94,7 +94,7 @@ These limits are the budget.
   "(not rebuilt)" and never gates.
 - A test already over its limit is listed in the project's `tests/budget_exemptions.toml`, one test
   name and one open backlog ID. The checker fails an entry whose test no longer breaks its limit,
-  so the list only shrinks.
+  so the list only shrinks. An exempt test is left out of every limit and total.
 - A project's test command runs `small` and `medium` unless a size is named. It runs `large` only
   with a filter, or with the flag that means everything.
 
