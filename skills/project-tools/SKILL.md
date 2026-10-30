@@ -25,6 +25,8 @@ repository. They are run by hand or through the project's CLI; they never build 
 | `tools/testing/check_test_sizes.py` | Every test writes its size in its source, from `testing` |
 | `tools/testing/check_probes.py` | Probes and scenario benchmarks live in `applications/probes/` and `applications/benchmarks/`, use no test framework, stay out of the test runner, carry a name of their own and are listed, from `testing` and `performance` |
 | `tools/logs/check_logging.py` | Log calls carry their module's category, library code writes no console output and hides no failure, from `logging` |
+| `tools/commits/check_backlog_trailer.py` | The `Backlog:` line of `commits`: each commit after `K_TRAILER_SINCE` names an entry open in its parent or in itself, or says `none (<reason>)` |
+| `tools/layering/check_agnostic.py` | The folders `K_AGNOSTIC_PATHS` names hold no product, company tool, identity, machine path or technology name that the terms file lists; it checks nothing in a repository that names no folder |
 | `tools/ci/check_workflows.py` | The workflow files GitHub would refuse before a job starts, from `continuous-integration` |
 
 A repository may add checkers; it may not rename or drop these twelve. `tools/check_all.py` runs
@@ -75,6 +77,12 @@ with `--report` it lists the ones that differ and exits 1. It is run from the Su
 checkout, never from a repository's copy, so a fix to the copier applies on the run that brings
 it. A repository runs it after a checker changes upstream, and a report that lists a file is a local edit to move upstream or drop.
 
+## Hooks
+
+`tools/hooks/` is tracked, and `python tools/hooks/install_hooks.py` points git at it once per clone.
+`pre-commit` runs `tools/check_all.py`, and `commit-msg` runs `tools/hooks/commit_msg.py`, which
+refuses a message without the `Backlog:` line of `commits`. A hook is never skipped.
+
 ## When to run
 
 | Moment | Run |
@@ -84,6 +92,8 @@ it. A repository runs it after a checker changes upstream, and a report that lis
 | Before a commit that adds, renames or removes a public name, a header path or a CLI command | `check_docs_truth.py` |
 | Periodically, or on request | All ten with `--report`; delete the closed work it lists |
 | Before a backlog migration, and on request | The backlog fact check below |
+| Asking what is left, what is next or what is designed | The repository's `backlog` and `design` commands, never a file or the git log (`backlog`, `design`) |
+| Before every commit | `python tools/check_all.py .`, which the commit hook runs; the commit message ends with a `Backlog:` line (`commits`) |
 
 A claim that a checker passed carries the command and its pasted output.
 

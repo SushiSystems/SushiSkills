@@ -71,6 +71,8 @@ Each rule set is its own skill. Load the one your task touches.
 | Doxygen headers and comments in source | `source-comments` |
 | Log calls, categories, levels | `logging` |
 | Any file under `docs/` or a module README, or a name, path or command a page describes | `documentation` |
+| What is left or next, a defect found, work finished, a commit's backlog line | `backlog` |
+| What a module is meant to be, who owns it, a decision made, a phase moving | `design` |
 | More than one agent on one piece of work | `multi-agent-work` |
 | Which model and effort a session or a dispatch runs on | `model-routing` |
 | A commit message or pull request | `commits` |

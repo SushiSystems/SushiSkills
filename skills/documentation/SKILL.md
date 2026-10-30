@@ -87,6 +87,8 @@ adjectives such as fast, powerful or seamless, and anything the manual already s
 | Writing or reshaping a design document: its sections, status line and phase table | `DESIGN_FORMAT.md` |
 | Writing a changelog entry or moving a release section | `CHANGELOG_FORMAT.md` |
 | Reading, writing or closing an entry of the backlog in `docs/backlog/` | `BACKLOG_FORMAT.md` |
+| Asking what is left, what is next, what a module is meant to be or who owns it | The `backlog` and `design` skills: the answer comes from the repository's commands |
+| Finding a defect, finishing work, or making a decision | The `backlog` and `design` skills |
 
 ## Names
 
@@ -150,12 +152,8 @@ README links.
 
 - "I will write a quick note in a new file so the next agent sees it." → the work folder.
 - "This review deserves its own file." → replace `REPORT.md`.
-- "This topic is slightly different from the existing design document." → extend it:
-  `design owner <path>` names the topic, and `design page` adds to it.
-- "I will open a design topic for this feature." → `design new`, which refuses a module another
-  topic owns.
-- "I will add a line to the backlog file." → `backlog add`; nobody edits a row by hand.
-- "I will pick the next task from the backlog myself." → `backlog next --json`.
+- "I will read the backlog or the design map to see what is left or designed." → ask the
+  repository's commands, as `backlog` and `design` say.
 - "I will update the changelog at the end of the week." → it is part of the commit.
 - "`docs/` is outside my write list, so I reported it." → `AGENT_WORK.md`, on a reported page.
 - "The manual is a later stage of the plan." → the page is part of the change that made it false.

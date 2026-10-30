@@ -57,6 +57,11 @@ entries belongs in the area of the module it changes, and `backlog area merge` j
 Work whose claim was withdrawn from a design document is `open`. Built work that was never
 measured or verified is not a defect; it is `unmeasured` work.
 
+`unverified` is not a stored state. A tool that reads git may show it for work that is committed
+but was never built or run, so that such work is not mistaken for finished work. It is derived on
+every read, never set by hand, and it is told apart from `unmeasured`, which is stored and means
+the acceptance is a run or a measurement.
+
 ## Priority and order
 
 `P0` is data loss, a broken gate, a regression in a release or a security fix after disclosure,

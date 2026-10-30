@@ -14,6 +14,12 @@ that is checked out; a copied one goes stale.
 Make `~/.claude/CLAUDE.md` a single import line pointing at `claude/CLAUDE.md`; the exact line
 per platform is in [`claude/README.md`](../../claude/README.md).
 
+## Hooks
+
+In a clone of a repository that carries `tools/hooks/`, run `python tools/hooks/install_hooks.py`
+once. Git then runs `check_all.py` before each commit and refuses a message without its
+`Backlog:` line.
+
 ## What a linked install runs
 
 A symlinked install reads the working tree. An uncommitted edit to a skill is

@@ -46,6 +46,25 @@ for a design lives in a design document; the body may cite its path. Run the `hu
 3. Its documentation: module README, design status, changelog line. A change without them is
    not finished (see `documentation`).
 
+## The backlog line
+
+Every commit ends with one line, last in the message, that says which backlog entry it serves.
+
+```
+Backlog: RW-123
+Backlog: RW-123, KI-4
+Backlog: none (typo in a comment)
+```
+
+- An ID must be an entry open in the parent commit or in this commit, so the commit that closes an
+  entry still names it (`backlog`).
+- `none` carries its reason in brackets. A reason of no words is a refusal.
+- `tools/commits/check_backlog_trailer.py` checks the commits after `K_TRAILER_SINCE` in
+  `tools/settings.py`, and the `commit-msg` hook in `tools/hooks/` refuses a message that breaks
+  the rule before the commit exists. A repository runs `python tools/hooks/install_hooks.py` once
+  per clone; its setup command does it for the person.
+- A hook is never skipped with `--no-verify`.
+
 ## Staging
 
 Staging follows `git-workflow`, section "Shared working tree".

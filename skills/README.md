@@ -19,6 +19,8 @@ agent reads the descriptions first and loads a skill only when its task matches.
 | `multi-agent-work` | Orchestrator and workers, wave planning, dispatch, accepting reports |
 | `model-routing` | Model and effort per session seat and per dispatch, the escalation ladder, inline or subagent, what a report records |
 | `commits` | Commit subject grammar, body, staging |
+| `backlog` | State from the backlog commands, the order of a session, work or issue, priority |
+| `design` | State from the design commands, owner before change, decisions into the topic |
 | `versioning-and-release` | Semantic versions, `vX.Y.Z` tags, when a release is due, how it is cut |
 | `project-tools` | The twelve checkers every repository carries and their shared contract |
 | `testing` | What each change must test, bug fix order, determinism, golden files |

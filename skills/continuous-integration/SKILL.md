@@ -28,17 +28,18 @@ Each stage runs the tests whose size, from `testing`, fits its budget. No test c
 
 ## Shape
 
-1. CI calls the project CLI and nothing else: no build, test or package tool invoked directly in
+1. The checkout fetches the full history, so the commit trailer check of `commits` can read it.
+2. CI calls the project CLI and nothing else: no build, test or package tool invoked directly in
    the workflow file, except where the doctrine's default 2 in `sushiskills` allows a direct call.
-2. One workflow file per trigger under the forge's workflow folder: `ci.yml` for pull requests
+3. One workflow file per trigger under the forge's workflow folder: `ci.yml` for pull requests
    and pushes, `nightly.yml` for the schedule, `release.yml` for tags.
-3. One job, `gate`, depends on every pre-merge job, and is the one check `main` requires. `main`
+4. One job, `gate`, depends on every pre-merge job, and is the one check `main` requires. `main`
    takes changes through pull requests only.
-4. Every job sets a timeout. A newer push to a pull request cancels the run before it.
-5. Compiler output is cached by compiler, flags and build-file hash; dependency caches are keyed
+5. Every job sets a timeout. A newer push to a pull request cancels the run before it.
+6. Compiler output is cached by compiler, flags and build-file hash; dependency caches are keyed
    on the dependency manifest's hash.
-6. A job prints the CLI command it ran as its first line.
-7. Third-party actions are pinned to a commit hash.
+7. A job prints the CLI command it ran as its first line.
+8. Third-party actions are pinned to a commit hash.
 
 ## Commits that need no run
 

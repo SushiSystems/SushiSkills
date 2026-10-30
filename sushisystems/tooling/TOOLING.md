@@ -35,3 +35,7 @@ tool. This page says who fills each role at Sushi Systems.
 | `K_LOGGER_NAMESPACE`, `K_LOGGER_C_PREFIX`, `K_LOGGER_MACRO_PREFIX` | `"SushiLog"`, `"sl_"`, `"SL"` in every repository except SushiLog |
 
 SushiSkills' own `tools/settings.py` is the reference copy.
+
+The block a repository's `CLAUDE.md` carries for the order of work is in `CLAUDE_TEMPLATE.md`. A
+repository that has adopted the `Backlog:` commit line sets `K_TRAILER_SINCE` to the commit after
+which it applies, and its setup command runs `tools/hooks/install_hooks.py`.
