@@ -5,8 +5,8 @@ that is checked out; a copied one goes stale.
 
 | Agent | Step |
 | --- | --- |
-| Claude Code | Symlink each folder under `skills/` into `~/.claude/skills/` |
-| Codex, Gemini CLI, Copilot CLI | Symlink each folder under `skills/` into `~/.agents/skills/` |
+| Claude Code | Symlink each folder under `skills/` into `~/.claude/skills/`, and `sushisystems/sushisystems-specific` beside them |
+| Codex, Gemini CLI, Copilot CLI | Symlink each folder under `skills/` into `~/.agents/skills/`, and `sushisystems/sushisystems-specific` beside them |
 | Any other agent | Point it at `skills/sushiskills/SKILL.md` from the repository's `AGENTS.md`; that file names the others |
 
 ## Global instructions

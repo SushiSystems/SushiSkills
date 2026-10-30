@@ -52,7 +52,8 @@ for the folder they sit in. A file a flag can redirect goes to `.config/`.
 
 A repository that holds skills and no modules has `skills/` and `claude/` in place of `cmake/`,
 `cli/`, `modules/`, `tests/` and `applications/`. Each skill folder is a module whose `SKILL.md`
-is its README.
+is its README. Skills for one organisation alone go in a folder named for it, beside `skills/` and
+never inside it, one folder per skill.
 
 ## One module or many
 
