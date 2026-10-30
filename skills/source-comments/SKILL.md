@@ -1,6 +1,6 @@
 ---
 name: source-comments
-description: Use when writing or reviewing a comment, a Doxygen block, a file header, a docstring or a license block in C++, GLSL, TypeScript or Python source in a Sushi Systems repository.
+description: Use when writing or reviewing a comment, a Doxygen block, a file header, a docstring or a license block in C++, GLSL, TypeScript or Python source in a repository.
 ---
 
 # Source Comments
@@ -19,21 +19,13 @@ block is at most six lines and has exactly these tags.
 /* graph.hpp                                                              */
 /**************************************************************************/
 /*                          This file is part of:                         */
-/*                              SushiRuntime                              */
-/*              https://github.com/SushiSystems/SushiRuntime              */
-/*                         https://sushisystems.io                        */
+/*                                <Project>                               */
+/*                            <repository URL>                            */
+/*                              <website URL>                             */
 /**************************************************************************/
-/* Copyright (c) 2026-present Mustafa Garip & Sushi Systems               */
+/* Copyright (c) <year>-present <holder>                                  */
 /*                                                                        */
-/* Licensed under the PolyForm Noncommercial License 1.0.0 (the           */
-/* "License"); you may not use this file except in compliance with the    */
-/* License. You may obtain a copy of the License at                       */
-/*                                                                        */
-/*     https://polyformproject.org/licenses/noncommercial/1.0.0           */
-/*                                                                        */
-/* Noncommercial use is free. Commercial use requires a separate licence  */
-/* from Sushi Systems; see COMMERCIAL.md. The software is provided        */
-/* "as is", without warranty of any kind.                                 */
+/* <licence text, wrapped to this width>                                  */
 /**************************************************************************/
 
 /**
@@ -45,12 +37,12 @@ block is at most six lines and has exactly these tags.
 
 - The box is 76 columns wide and has three sections: the file name; `This file is part of:`,
   the project and its addresses, centred; the copyright line and the licence text.
-- The holder is `Mustafa Garip & Sushi Systems`. The year is the year the file was first
-  written, followed by `-present`.
+- The holder and the licence text are the owner's and are written once, in the writer's
+  configuration. The year is the year the file was first written, followed by `-present`.
 - A closed repository replaces the licence text with `All rights reserved.` and the paragraph
-  the writer's `--closed` flag produces, and names `https://sushisystems.io` alone.
+  the writer's `--closed` flag produces, and names the website alone.
 - A file ported from third-party code keeps the upstream copyright line and licence name inside
-  the box, below the Sushi licence text. See `dependencies`.
+  the box, below the owner's licence text. See `dependencies`.
 - Nobody types the box. `tools/licensing/write_license_block.py` writes it.
 - `@file` repeats the file name; `@brief` is one sentence starting with a verb; `@author` names
   a person. No `@date`, no version, no history.
@@ -120,10 +112,10 @@ files carry the same `#` lines.
 
 ```python
 # graph.py
-# SushiRuntime - https://github.com/SushiSystems/SushiRuntime
-# Copyright (c) 2026-present Mustafa Garip & Sushi Systems
-# Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.
-# Commercial use requires a licence from Sushi Systems.
+# <Project> - <repository URL>
+# Copyright (c) <year>-present <holder>
+# <licence line>
+# <licence line>
 """Builds the task graph from a module manifest."""
 ```
 

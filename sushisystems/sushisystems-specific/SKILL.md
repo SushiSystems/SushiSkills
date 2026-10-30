@@ -23,4 +23,6 @@ Each topic is a folder beside this file. Read the folder when the task touches i
 | --- | --- |
 | `../logging/LOGGER.md`, `../logging/INTERFACE.md` | Adding or changing a log call, a front, a category, a sink or a host join; SushiLog is the logger |
 | `../module-install/MODULE_INSTALL.md` | A module's install path, manifest, dependency declaration or catalog entry; SushiHub and `sushicore` fill the roles |
+| `../dependencies/DEPENDENCIES.md` | Pinning, finding or upgrading a Sushi library, or the shared logger's runtime file |
+| `../licence/LICENCE.md` | Writing or checking a licence block; the holder, the licence and the addresses |
 | `terms.txt` | Changing which names the doctrine must not carry; the checker reads it |
