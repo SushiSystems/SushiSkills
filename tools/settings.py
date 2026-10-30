@@ -63,3 +63,4 @@ K_LOGGER_NAMESPACE = "SushiLog"
 K_LOGGER_C_PREFIX = "sl_"
 K_TRAILER_SINCE = "2a6f3b82c3c10a44cb4fe54e8e0c89d685c2eded"
 K_EXTRA_TEST_FOLDERS: tuple[str, ...] = ("sushisystems/tooling/tests",)
+K_DOCS_FOLLOW_SINCE = "4d19a71ba72d076efb42ca8a6216992c143bf171"
