@@ -40,12 +40,12 @@ as a human writing.
 
 > Before: We simulate the world at real scale. Our engine draws on the WGS84 ellipsoid at true
 > scale. The four libraries beneath it are on GitHub and anyone can read the code.
-> After: In SushiEngine you can travel from Pluto to Mercury in milliseconds. [video]
+> After: In [Product] you can travel from Pluto to Mercury in milliseconds. [video]
 
 > Before: A next-generation simulation platform empowering industries and gamers to unlock
 > limitless possibilities.
-> After: SushiEngine models the solar system. [Game or customer] runs on it today.
+> After: [Product] models the solar system. [Game or customer] runs on it today.
 
 > Before: Our world-class team is passionate about pushing the boundaries of what's possible.
-> After: Mustafa and Mahmut Yavuz Garip started writing the engine in [year]. [One line each on
+> After: [Founder] and [Founder] started writing the engine in [year]. [One line each on
 > what they built.]

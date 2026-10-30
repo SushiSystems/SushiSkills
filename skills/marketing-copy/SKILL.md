@@ -1,6 +1,6 @@
 ---
 name: marketing-copy
-description: Use when writing, editing or reviewing any text that sells or presents a Sushi Systems company, product or person to outsiders, in English or Turkish - a website hero, an about or team page, a product page, a pitch deck, an investor email, a press release, a social post, a store listing. Load humanizer as well; this skill adds what marketing needs on top of it.
+description: Use when writing, editing or reviewing any text that sells or presents a company, product or person to outsiders, in English or Turkish - a website hero, an about or team page, a product page, a pitch deck, an investor email, a press release, a social post, a store listing. Load humanizer as well; this skill adds what marketing needs on top of it.
 ---
 
 # Marketing Copy
@@ -36,7 +36,7 @@ Copy containing any of these does not ship.
 
 ## How to write it instead
 
-1. **Find the one true thing a non-specialist can picture.** "In SushiEngine you can travel from
+1. **Find the one true thing a non-specialist can picture.** "In [Product] you can travel from
    Pluto to Mercury in milliseconds" needs no background. It comes from the owner, is true, and
    can be shown in a video. A hero is built on a fact like this, never on a phrase.
 2. **Put the evidence next to the claim.** A large claim is allowed when a fact sits beside it:
@@ -58,10 +58,10 @@ Copy containing any of these does not ship.
 
 ## Naming the licence
 
-Sushi Systems libraries are source-available: free for non-commercial use, with a paid licence
-for commercial use. Copy says exactly that. It never says "open source" or "açık kaynak" about
-a Sushi product, because those words promise commercial use. SushiEngine and the website are
-closed, and copy that mentions their source says so.
+Copy names a product's licence exactly. A product under a source-available licence is described
+as source-available, with what the licence allows and what it charges for. Copy never says "open
+source" or "açık kaynak" about a product whose licence is not one, because those words promise
+commercial use. Copy about a closed product that mentions its source says it is closed.
 
 ## Language files
 

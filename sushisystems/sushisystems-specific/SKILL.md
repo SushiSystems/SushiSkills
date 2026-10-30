@@ -25,4 +25,5 @@ Each topic is a folder beside this file. Read the folder when the task touches i
 | `../module-install/MODULE_INSTALL.md` | A module's install path, manifest, dependency declaration or catalog entry; SushiHub and `sushicore` fill the roles |
 | `../dependencies/DEPENDENCIES.md` | Pinning, finding or upgrading a Sushi library, or the shared logger's runtime file |
 | `../licence/LICENCE.md` | Writing or checking a licence block; the holder, the licence and the addresses |
+| `../brand/LICENCE_WORDING.md` | Writing copy that names a Sushi product's licence |
 | `terms.txt` | Changing which names the doctrine must not carry; the checker reads it |

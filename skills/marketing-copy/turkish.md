@@ -36,12 +36,12 @@ iddiayı kendisi kurar.
 
 ## Öncesi ve sonrası
 
-> Önce: SushiEngine, uçtan uca yenilikçi simülasyon deneyimi sunarak sektöre yön vermektedir.
-> Sonra: SushiEngine'de Plüton'dan Merkür'e milisaniyeler içinde gidebilirsin. [video]
+> Önce: [Ürün], uçtan uca yenilikçi simülasyon deneyimi sunarak sektöre yön vermektedir.
+> Sonra: [Ürün]'de Plüton'dan Merkür'e milisaniyeler içinde gidebilirsin. [video]
 
 > Önce: Sınırları zorlayan mimarimizle kullanıcılarımıza fark yaratan bir deneyim yaşatıyoruz.
 > Sonra: Motor Güneş Sistemi'ni modelliyor. [Oyun ya da müşteri] bugün bu motorda çalışıyor.
 
 > Önce: Vizyoner ekibimiz geleceği şekillendirmek için tutkuyla çalışıyor.
-> Sonra: Mustafa ve Mahmut Yavuz Garip motoru [yıl] yılında yazmaya başladı. [Her biri için
+> Sonra: [Kurucu] ve [Kurucu] motoru [yıl] yılında yazmaya başladı. [Her biri için
 > yaptığı işi anlatan tek satır.]
