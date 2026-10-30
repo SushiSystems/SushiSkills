@@ -102,6 +102,21 @@ Defects in my own work, found by the checkers and the tests, and what became of 
 - A first draft of the Python size rule merged the marks of a file and a class into one set, so
   the smallest size won; a test caught it and the nearest mark wins now.
 
+## B2 and B3
+
+B2 is commit `4cf335d`: `check_test_additions.py` and `added_tests.py`; B3 (wiring into `K_CHECKERS`,
+`tools/README.md`, `project-tools`) went in with B1 and B2. A fresh reviewer's finding that a case
+moved between files would count as an addition led to matching cases by name across the files a
+commit touches, and a first digest-only draft counted every edited test as new; a test caught it. The
+rule that stands: a case keeps its name, or it has a new name and a case with the same body went
+away (a rename). A copy under a new name counts, because the original stays.
+
+Read on SushiEngine's last 60 commits, read-only: 371 cases added in 25 commits, an average of 15
+a commit; two commits exceed 20. One is `refactor(matter_cooking)!`, which moves a module,
+renames its suites and edits their bodies, and counts as 210 additions. The checker would refuse
+it; the way through is a move commit (`git mv`, names unchanged) and a rename commit apart. A
+`refactor` commit that adds cases at all is also against `testing` ("no new test").
+
 ## Suggested removals
 
 None yet.
