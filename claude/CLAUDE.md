@@ -33,6 +33,20 @@ skill before writing or reviewing a comment, a file header or a license block. I
 license block, the `@file` block, the tag table and what is forbidden in source;
 `tools/documentation/check_source_comments.py` enforces it.
 
+## Memory
+
+Write nothing to memory unless I ask for it in that message. Only an instruction to remember,
+save or note something counts. A preference, a correction or an observation I state in passing
+does not. A subagent writes no memory at all, and a report that records a memory write is sent
+back.
+
+## Backlog and design
+
+What is left, what is next, what is open and what is designed are read with the repository's
+`backlog` and `design` commands, never from a markdown file or the git log. Load the `backlog` and
+`design` skills before answering such a question, when a defect turns up, and before finishing a
+piece of work. Every commit ends with its `Backlog:` line, and a commit hook is never skipped.
+
 ## Delegation
 
 A subagent reads CLAUDE.md but not my memory, so nothing in memory reaches it unless the prompt
@@ -52,7 +66,7 @@ dispatch. My limits on it, for Claude 5.5 models only: `fable` is not used; `son
 exception, about five dispatches in a hundred, and only after I have approved it. The `model`
 field and the effort are set on every dispatch, never left to inherit.
 
-A report that comes back without evidence of rules 1, 2, 6 and 7 of `DISPATCH.md` is sent back,
+A report that comes back without evidence of rules 1, 2, 6, 7 and 9 of `DISPATCH.md` is sent back,
 not accepted. Reviewer dispatches check SOLID shape and humanizer register explicitly, as named
 items, not as "quality".
 

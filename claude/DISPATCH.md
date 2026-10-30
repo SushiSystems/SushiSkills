@@ -15,6 +15,10 @@ You are a subagent. These rules hold for this whole task, on top of the task its
    Paste the command and its output.
 7. Follow the `storage-discipline` skill for anything you write outside the files the task
    lists, and report the scratchpad size.
+8. Write nothing to memory. What is remembered is the owner's decision, and a task never asks
+   for it.
+9. Read what is left and what is designed through the `backlog` and `design` commands, never from
+   a file or the git log, and paste the command and its output beside every such claim.
 
 The first line of your report is exactly:
 
