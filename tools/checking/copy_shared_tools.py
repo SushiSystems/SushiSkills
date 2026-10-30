@@ -5,10 +5,10 @@
 # Commercial use requires a licence from Sushi Systems.
 """Copies the shared tools and community files of SushiSkills into a repository, keeping its settings and its own tools.
 
-Usage: python tools/checking/copy_shared_tools.py ROOT --from UPSTREAM [--report] [--force]
+Usage: python tools/checking/copy_shared_tools.py ROOT --from UPSTREAM [--report] [--force] [--keep PATH]
 
 A shared file that holds text no version of upstream ever held is a local edit. A copy refuses to
-overwrite it and writes nothing; --force overwrites it anyway.
+overwrite it and writes nothing; --force overwrites it anyway, and --keep leaves a named file alone.
 """
 
 from __future__ import annotations
@@ -150,11 +150,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--from", dest="upstream", type=Path, required=True)
     parser.add_argument("--report", action="store_true")
     parser.add_argument("--force", action="store_true", help="overwrite a shared file that holds a local edit")
+    parser.add_argument("--keep", action="append", default=[], metavar="PATH",
+                        help="leave this shared file as the repository holds it; repeatable")
     arguments = parser.parse_args(argv)
     if not (arguments.upstream / K_TOOLS).is_dir() or not arguments.root.is_dir():
         print("usage: ROOT and UPSTREAM must be repositories with a tools folder", file=sys.stderr)
         return K_EXIT_USAGE
-    shared = shared_files(arguments.upstream)
+    shared = [relative for relative in shared_files(arguments.upstream) if relative not in arguments.keep]
     if arguments.report:
         files = pending(arguments.upstream, arguments.root, shared)
         edited = set(local_edits(arguments.upstream, arguments.root, shared))

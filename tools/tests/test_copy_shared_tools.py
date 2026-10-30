@@ -150,6 +150,19 @@ class CopyTest(unittest.TestCase):
             self.assertEqual(main([str(self.root), "--from", str(self.upstream)]), 1)
 
 
+    def test_a_kept_file_is_left_alone_and_the_rest_is_copied(self) -> None:
+        _git(self.upstream, "add", "-A")
+        _git(self.upstream, "commit", "-q", "-m", "second")
+        _write(self.root, "tools/layering/check.py", K_LOCAL_HEADER + K_EDITED_BODY)
+        (self.root / "tools/settings.py").unlink()
+        with contextlib.redirect_stdout(io.StringIO()):
+            code = main([str(self.root), "--from", str(self.upstream), "--keep", "tools/layering/check.py"])
+        self.assertEqual(code, 0)
+        self.assertEqual((self.root / "tools/layering/check.py").read_text(encoding="utf-8"),
+                         K_LOCAL_HEADER + K_EDITED_BODY)
+        self.assertTrue((self.root / "tools/settings.py").exists())
+
+
 class NewFileHeaderTest(unittest.TestCase):
     """Checks that a shared file new to a repository takes the repository's header."""
 
