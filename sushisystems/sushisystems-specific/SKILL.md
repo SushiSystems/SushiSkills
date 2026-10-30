@@ -27,4 +27,5 @@ Each topic is a folder beside this file. Read the folder when the task touches i
 | `../licence/LICENCE.md` | Writing or checking a licence block; the holder, the licence and the addresses |
 | `../brand/LICENCE_WORDING.md` | Writing copy that names a Sushi product's licence |
 | `../tooling/TOOLING.md`, `../tooling/CLAUDE_TEMPLATE.md` | Running the backlog or design tool, the build machinery, the manifest or the shared checkers; the block a repository's CLAUDE.md carries; `sushicore` fills the roles |
+| `../testing/TESTING.md` | Running a project's tests, reading its budget line, or asking which machine runs the `large` tier |
 | `terms.txt` | Changing which names the doctrine must not carry; the checker reads it |
