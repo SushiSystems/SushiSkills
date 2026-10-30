@@ -29,10 +29,13 @@ K_AGNOSTIC_PATHS: tuple[str, ...] = getattr(settings, "K_AGNOSTIC_PATHS", ())
 K_AGNOSTIC_TERMS: str = getattr(settings, "K_AGNOSTIC_TERMS", "")
 K_TECHNOLOGY_EXEMPT: tuple[str, ...] = getattr(settings, "K_TECHNOLOGY_EXEMPT", ())
 K_TEXT_SUFFIXES = frozenset({".md", ".py", ".toml", ".txt", ".json", ".yml", ".yaml", ".sh"})
+K_HASH_SUFFIXES = frozenset({".py", ".sh"})
+K_CONFIG_FILES = frozenset({"tools/settings.py"})
 K_CATEGORIES = ("product", "tool", "identity", "technology")
 K_ALLOW = "allow"
 K_TERM_LINE = re.compile(r"^(\w+):\s*(.+?)\s*$")
-K_MACHINE_PATH = re.compile(r"(?<![\w/])[A-Za-z]:[\\/][A-Za-z_]|(?<!\w)/(?:Users|home)/\w")
+K_MACHINE_PATH = re.compile(r"(?<![\w/])[A-Za-z]:[\\/]\w+[\\/]|(?<!\w)/(?:Users|home)/\w")
+K_ALLOW_MARK = "agnostic: allow"
 
 
 @dataclass(frozen=True, slots=True)
@@ -89,7 +92,8 @@ def _files_below(root: Path) -> tuple[Path, ...]:
         folder = root / name
         if folder.is_dir():
             found.extend(path for path in sorted(folder.rglob("*"))
-                         if path.is_file() and path.suffix in K_TEXT_SUFFIXES)
+                         if path.is_file() and path.suffix in K_TEXT_SUFFIXES
+                         and path.relative_to(root).as_posix() not in K_CONFIG_FILES)
     return tuple(drop_ignored(root, found))
 
 
@@ -100,9 +104,14 @@ def collect(paths: list[Path]) -> Iterable[Scope]:
 
 
 def _lines(path: Path) -> Iterator[tuple[int, str]]:
-    """Yields the number and text of each line of a file."""
+    """Yields the number and text of each line of a file, leaving out a leading license header of `#`
+    lines and each line that carries the mark `agnostic: allow`."""
+    in_header = path.suffix in K_HASH_SUFFIXES
     text = path.read_text(encoding="utf-8", errors="ignore")
-    yield from enumerate(text.splitlines(), 1)
+    for number, line in enumerate(text.splitlines(), 1):
+        in_header = in_header and line.startswith("#")
+        if not in_header and K_ALLOW_MARK not in line:
+            yield number, line
 
 
 def _is_exempt(scope: Scope, path: Path, category: str) -> bool:

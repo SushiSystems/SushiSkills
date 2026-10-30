@@ -1,6 +1,6 @@
 # tools
 
-Reference implementations of the twelve checkers every Sushi Systems repository carries. A rule is
+Reference implementations of the twelve checkers every repository carries. A rule is
 fixed here first and copied out with `checking/copy_shared_tools.py`; which files that copies and
 which it keeps is in the `project-tools` skill.
 
@@ -14,10 +14,11 @@ which it keeps is in the `project-tools` skill.
 | `documentation/check_source_comments.py` | C++, GLSL, TypeScript and Python: license block, file header, block ceiling, `//` and `#` runs, separators, history words, `@date` | Files or folders |
 | `documentation/check_docs_layout.py` | `docs/` entries, required documents, document names, work folders, status lines in the four forms, design ceiling, links under `docs/`, reachability from `docs/README.md`, READMEs under `modules/<tier>/`, closed work past its grace by the date in the status line, roadmap, journal, handover, milestone, priority and to-do files | Repository root |
 | `documentation/check_changelog.py` | Headings and entry shape, releases kept live, length, one sentence, nesting, cited places | Repository root |
-| `documentation/check_backlog.py` | `docs/backlog/` through sushicore's `backlog check`: the store's shape, values, IDs, paths, references here and in siblings checked out beside the repository, pins, the index, a work entry for every open design topic, and the retired backlog files | Repository root |
-| `documentation/check_design_format.py` | Design documents, through sushicore's `design check`: the five sections in order, a status line of at most 160 characters, the phase table and its states, no commit hash, no line that dates built or merged work | Repository root |
-| `documentation/check_design_topics.py` | Design topics: through sushicore's `design check`, a `Modules` line on every topic, its modules exist, each module named by one topic, no loose document, and the topics and phases a work folder names in `Implements` and `Designs` exist; then the generated views and the opt-in rules for a glossary entry on every topic and for the entry ceiling of `docs/design` and `docs/agent` | Repository root |
-| `documentation/check_module_install.py` | A Sushi module against `module-install`: the manifest, the dependency fragment and the install page exist, the page has the `Standalone` and `With SushiHub` headings, no machine path in a committed config or code file, no `hub` command or `SUSHISTACK_HOME` in code, CMake or a workflow; a repository that is not a module is skipped | Repository root |
+| `documentation/check_backlog.py` | `docs/backlog/` through the tooling package's `backlog check`: the store's shape, values, IDs, paths, references here and in siblings checked out beside the repository, pins, the index, a work entry for every open design topic, and the retired backlog files | Repository root |
+| `documentation/check_design_format.py` | Design documents, through the tooling package's `design check`: the five sections in order, a status line of at most 160 characters, the phase table and its states, no commit hash, no line that dates built or merged work | Repository root |
+| `documentation/check_design_topics.py` | Design topics: through the tooling package's `design check`, a `Modules` line on every topic, its modules exist, each module named by one topic, no loose document, and the topics and phases a work folder names in `Implements` and `Designs` exist; then the generated views and the opt-in rules for a glossary entry on every topic and for the entry ceiling of `docs/design` and `docs/agent` | Repository root |
+| `documentation/check_module_install.py` | A module against `module-install`: the manifest, the dependency declaration and the install page exist, the page has the headings the settings name, no machine path in a committed config or code file, no workspace tool command or variable in code, build files or a workflow; a repository whose settings name no manifest is skipped | Repository root |
+| `layering/check_agnostic.py` | The folders `K_AGNOSTIC_PATHS` names: no product, company tool, identity or machine path the terms file lists, no engine, vendor or device name outside the folders `K_TECHNOLOGY_EXEMPT` names; a line with `agnostic: allow` is left out | Repository root |
 | `documentation/generate_design_views.py` | Writes the topic map, the Designs block of each module README and the work block of each topic between their markers; `--init` adds the markers, `--check` writes nothing and fails a stale block | Repository root |
 | `documentation/repair_design_citations.py` | Rewrites each citation of a design document that moved between one file and a folder with a `README.md` in the manual and the source, and reports the ones it cannot place; `--move OLD NEW` rewrites the citations of a file that was moved or merged; nothing is written without `--apply` | Repository root |
 | `documentation/retire_archive.py` | Tags the history that holds the archive folder, unstages it and ignores it, once nothing cites it; nothing is changed without `--apply` | Repository root |
@@ -26,7 +27,8 @@ which it keeps is in the `project-tools` skill.
 | `documentation/citation_files.py` | Nothing itself; lists the files that can cite a document and the lines that cite the archive | |
 | `documentation/design_views.py` | Nothing itself; renders the three generated views and reads and writes the blocks | |
 | `documentation/design_topics.py` | Nothing itself; reads a topic's name, metadata lines and phase ids and the links work folders make to them | |
-| `documentation/sushicore_bridge.py` | Nothing itself; loads `sushicore.backlog` and `sushicore.design`, installed or from a checkout beside the repository, for the checkers that run their rules | |
+| `documentation/tooling_bridge.py` | Nothing itself; loads the `backlog` and `design` modules of the package `K_TOOLING_PACKAGE` names, installed or from a checkout beside the repository, for the checkers that run their rules | |
+| `documentation/licence.py` | Nothing itself; reads the holder, the addresses and the licence text from `settings.py` for the license block checker and writer | |
 | `documentation/design_status.py` | Nothing itself; finds the design documents and work folders and reads their status lines | |
 | `documentation/check_docs_truth.py` | The manual against the source: named symbols, cited paths, example sources, history words, page length, duplicated passages, em dashes, the allow-list | Repository root, `--source` |
 | `layering/check_layering.py` | Declared tiers and domains, upward includes from a module or its tests, cross-domain and unlisted same-tier includes, reaches into another module's `source/`, dependencies the build file lists, internal headers in installed ones | Repository root |
@@ -71,6 +73,8 @@ against the includes and are the allowed edges between modules of one tier, and 
 `K_SAME_TIER_EDGES` lists each `(includer, included)` pair of one tier. `K_CLOSED` makes
 `check_source_comments.py` expect the closed licence lines. `check_docs_truth.py` takes a
 repository's macro prefixes from the source unless `K_MACRO_PREFIXES` names them.
+
+`K_TOOLING_PACKAGE`, `K_TOOLING_MINIMUM_VERSION` and `K_TOOLING_SIBLING_SOURCE` name the package the backlog and design checkers run; with none set they report that they cannot run. `K_LICENSE_HOLDER`, `K_LICENSE_COMPANY`, `K_LICENSE_SITE` and the four `K_LICENSE_*_LINES` tuples describe the licence block; with no holder set the license block checker and writer stop with a message. `K_MODULE_MANIFEST`, `K_MODULE_DEPENDENCY_FILE`, `K_MODULE_INSTALL_PAGE`, `K_MODULE_HEADINGS` and `K_MODULE_WORKSPACE_READ` describe a module for `check_module_install.py`, which skips a repository that sets no manifest. `K_LOGGER_NAMESPACE`, `K_LOGGER_C_PREFIX` and `K_LOGGER_MACRO_PREFIX` name the shared logger for the re-export rule of `check_logging.py`. `K_AGNOSTIC_PATHS`, `K_AGNOSTIC_TERMS` and `K_TECHNOLOGY_EXEMPT` set what `check_agnostic.py` reads.
 
 Every other `K_` constant sits at the top of its checker and is the same in every repository.
 `K_LINE_CEILINGS` in `check_docs_truth.py` is compared by a test with the table in the

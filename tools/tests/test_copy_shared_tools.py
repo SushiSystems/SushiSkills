@@ -85,9 +85,9 @@ class NewFileHeaderTest(unittest.TestCase):
 
     def test_a_new_python_file_takes_the_template_header_with_its_own_name(self) -> None:
         upstream = "# check_x.py\n# SushiSkills - url\n# Licensed A.\n\"\"\"Doc.\"\"\"\nbody\n"
-        template = "# check_all.py\n# SushiEngine - url\n# All rights reserved.\n\"\"\"Other.\"\"\"\n"
+        template = "# check_all.py\n# AcmeEngine - url\n# All rights reserved.\n\"\"\"Other.\"\"\"\n"
         self.assertEqual(merged("tools/testing/check_x.py", upstream, None, template),
-                         "# check_x.py\n# SushiEngine - url\n# All rights reserved.\n\"\"\"Doc.\"\"\"\nbody\n")
+                         "# check_x.py\n# AcmeEngine - url\n# All rights reserved.\n\"\"\"Doc.\"\"\"\nbody\n")
 
     def test_without_a_template_the_upstream_header_stays(self) -> None:
         upstream = "# check_x.py\n# SushiSkills - url\nbody\n"

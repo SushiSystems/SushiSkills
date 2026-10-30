@@ -80,7 +80,7 @@ class AgnosticTest(unittest.TestCase):
 
     def test_machine_paths_are_reported(self) -> None:
         self.write("skills/a/SKILL.md",
-                   "At D:/Projects/x.\nAt C:\\Users\\a.\nAt /home/a/b.\nAt ~/.config.\n")
+                   "At D:/Projects/x.\nAt C:\\Users\\a.\nAt /home/a/b.\nAt ~/.config.\n")  # agnostic: allow
         self.assertEqual(len(self.found(rule_machine_path)), 3)
 
     def test_urls_and_prose_about_paths_are_not_machine_paths(self) -> None:
@@ -96,6 +96,25 @@ class AgnosticTest(unittest.TestCase):
         self.write("skills/zephyr-layout/SKILL.md", "Zephyr by Jane Doe.\n")
         self.assertEqual(self.found(rule_technology_name), [])
         self.assertEqual(self.found(rule_identity), [("SKILL.md", 1)])
+
+    def test_leading_hash_header_of_a_script_is_not_read(self) -> None:
+        self.write("skills/a/tool.py", "# AcmeLog header\n# By Jane Doe\n'doc'\nx = 'AcmeLog'\n")
+        self.assertEqual(self.found(rule_product_name), [("tool.py", 4)])
+        self.assertEqual(self.found(rule_identity), [])
+
+    def test_a_line_with_the_allow_mark_is_not_read(self) -> None:
+        self.write("skills/a/SKILL.md", "AcmeLog at D:/Projects/x. <!-- agnostic: allow -->\nAcmeLog again.\n")
+        self.assertEqual(self.found(rule_product_name), [("SKILL.md", 2)])
+        self.assertEqual(self.found(rule_machine_path), [])
+
+    def test_an_escape_sequence_in_a_string_is_not_a_machine_path(self) -> None:
+        self.write("skills/a/tool.md", "x = 'a:\\nb: 1'\n")
+        self.assertEqual(self.found(rule_machine_path), [])
+
+    def test_the_settings_file_is_not_read(self) -> None:
+        self.write("tools/settings.py", "K_X = 'AcmeLog'\n")
+        with mock.patch.object(check_agnostic, "K_AGNOSTIC_PATHS", ("tools",)):
+            self.assertEqual(self.found(rule_product_name), [])
 
     def test_files_outside_the_checked_folders_are_not_read(self) -> None:
         self.write("docs/a.md", "AcmeLog and D:/x.\n")

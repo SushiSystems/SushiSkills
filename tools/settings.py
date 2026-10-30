@@ -25,6 +25,39 @@ K_CONSOLE_PATHS: tuple[str, ...] = ()
 K_DESIGN_TOPICS = True
 K_FOLDER_CEILING = 60
 K_CLOSED_GRACE_DAYS = 0
-K_AGNOSTIC_PATHS: tuple[str, ...] = ("skills", "claude")
+K_TOOLING_PACKAGE = "sushicore"
+K_TOOLING_MINIMUM_VERSION = "0.10.2"
+K_TOOLING_SIBLING_SOURCE = "sushicore/source"
+K_AGNOSTIC_PATHS: tuple[str, ...] = ("skills", "claude", "tools")
 K_AGNOSTIC_TERMS = "sushisystems/sushisystems-specific/terms.txt"
 K_TECHNOLOGY_EXEMPT: tuple[str, ...] = ("skills/gpu-development", "skills/unity-project-layout", "skills/humanizer")
+K_MODULE_MANIFEST = ""
+K_LICENSE_HOLDER = "Mustafa Garip & Sushi Systems"
+K_LICENSE_COMPANY = "Sushi Systems"
+K_LICENSE_SITE = "https://sushisystems.io"
+K_LICENSE_OPEN_LINES: tuple[str, ...] = (
+    "Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.",
+    "Commercial use requires a licence from Sushi Systems.",
+)
+K_LICENSE_CLOSED_LINES: tuple[str, ...] = ("All rights reserved. No licence is granted.",)
+K_LICENSE_OPEN_BOX_LINES: tuple[str, ...] = (
+    "Licensed under the PolyForm Noncommercial License 1.0.0 (the",
+    '"License"); you may not use this file except in compliance with the',
+    "License. You may obtain a copy of the License at",
+    "",
+    "    https://polyformproject.org/licenses/noncommercial/1.0.0",
+    "",
+    "Noncommercial use is free. Commercial use requires a separate licence",
+    "from Sushi Systems; see COMMERCIAL.md. The software is provided",
+    '"as is", without warranty of any kind.',
+)
+K_LICENSE_CLOSED_BOX_LINES: tuple[str, ...] = (
+    "All rights reserved.",
+    "",
+    "This file is proprietary and confidential. No licence is granted.",
+    "Copying, modifying, distributing or using it, in whole or in part,",
+    "requires prior written permission from Sushi Systems.",
+)
+K_LOGGER_MACRO_PREFIX = "SL"
+K_LOGGER_NAMESPACE = "SushiLog"
+K_LOGGER_C_PREFIX = "sl_"
