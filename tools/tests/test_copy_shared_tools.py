@@ -7,6 +7,9 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -14,11 +17,21 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from checking.copy_shared_tools import copy, merged, pending  # noqa: E402
+from checking.copy_shared_tools import (  # noqa: E402
+    LocalEditsError,
+    copy,
+    known_bodies,
+    local_edits,
+    main,
+    merged,
+    pending,
+)
 
 K_UPSTREAM_HEADER = "# check.py\n# Upstream - https://example.org/upstream\n"
 K_LOCAL_HEADER = "# check.py\n# Local - https://example.org/local\n"
 K_BODY = '"""Checks something."""\n\nK_VALUE = 2\n'
+K_OLD_BODY = '"""Checks something."""\n\nK_VALUE = 1\n'
+K_EDITED_BODY = '"""Checks something."""\n\nK_VALUE = 99\n'
 
 
 def _write(root: Path, relative: str, text: str) -> None:
@@ -26,6 +39,12 @@ def _write(root: Path, relative: str, text: str) -> None:
     path = root / relative
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
+
+
+def _git(root: Path, *arguments: str) -> None:
+    """Runs one git command in a repository with a fixed identity."""
+    identity = ["-c", "user.name=Test", "-c", "user.email=test@example.com", "-c", "commit.gpgsign=false"]
+    subprocess.run(["git", "-C", str(root), *identity, *arguments], check=True, capture_output=True)
 
 
 class MergedTest(unittest.TestCase):
@@ -49,9 +68,13 @@ class CopyTest(unittest.TestCase):
         self._folder = tempfile.TemporaryDirectory()
         self.upstream = Path(self._folder.name) / "upstream"
         self.root = Path(self._folder.name) / "repository"
+        _write(self.upstream, "tools/layering/check.py", K_UPSTREAM_HEADER + K_OLD_BODY)
+        _git(self.upstream, "init", "-q")
+        _git(self.upstream, "add", "-A")
+        _git(self.upstream, "commit", "-q", "-m", "first")
         _write(self.upstream, "tools/layering/check.py", K_UPSTREAM_HEADER + K_BODY)
         _write(self.upstream, "tools/settings.py", "K_TIER_ORDER = ()\n")
-        _write(self.root, "tools/layering/check.py", K_LOCAL_HEADER + '"""Checks something."""\n\nK_VALUE = 1\n')
+        _write(self.root, "tools/layering/check.py", K_LOCAL_HEADER + K_OLD_BODY)
         _write(self.root, "tools/settings.py", 'K_TIER_ORDER = ("core",)\n')
         _write(self.root, "tools/naming/check_naming.py", "local\n")
         _write(self.upstream, "tools/README.md", "# tools\nupstream\n")
@@ -78,6 +101,53 @@ class CopyTest(unittest.TestCase):
                          ["tools/layering/check.py", "tools/settings.py"])
         copy(self.upstream, self.root, self.shared)
         self.assertEqual((self.root / "tools/settings.py").read_text(encoding="utf-8"), "K_TIER_ORDER = ()\n")
+
+
+    def test_an_older_upstream_version_is_an_upgrade_not_a_local_edit(self) -> None:
+        self.assertEqual(local_edits(self.upstream, self.root, self.shared), [])
+
+    def test_a_text_no_upstream_version_held_is_a_local_edit(self) -> None:
+        _write(self.root, "tools/layering/check.py", K_LOCAL_HEADER + K_EDITED_BODY)
+        self.assertEqual(local_edits(self.upstream, self.root, self.shared), ["tools/layering/check.py"])
+
+    def test_a_copy_refuses_a_local_edit_and_writes_nothing(self) -> None:
+        _write(self.root, "tools/layering/check.py", K_LOCAL_HEADER + K_EDITED_BODY)
+        (self.root / "tools/settings.py").unlink()
+        with self.assertRaises(LocalEditsError) as refused:
+            copy(self.upstream, self.root, self.shared)
+        self.assertEqual(refused.exception.files, ["tools/layering/check.py"])
+        self.assertEqual((self.root / "tools/layering/check.py").read_text(encoding="utf-8"),
+                         K_LOCAL_HEADER + K_EDITED_BODY)
+        self.assertFalse((self.root / "tools/settings.py").exists())
+
+    def test_force_overwrites_a_local_edit(self) -> None:
+        _write(self.root, "tools/layering/check.py", K_LOCAL_HEADER + K_EDITED_BODY)
+        copy(self.upstream, self.root, self.shared, force=True)
+        self.assertEqual((self.root / "tools/layering/check.py").read_text(encoding="utf-8"), K_LOCAL_HEADER + K_BODY)
+
+    def test_a_file_the_repository_lacks_is_never_a_local_edit(self) -> None:
+        (self.root / "tools/layering/check.py").unlink()
+        self.assertEqual(local_edits(self.upstream, self.root, self.shared), [])
+
+    def test_crlf_newlines_alone_are_not_a_local_edit(self) -> None:
+        crlf = (K_LOCAL_HEADER + K_OLD_BODY).replace("\n", "\r\n")
+        (self.root / "tools/layering/check.py").write_bytes(crlf.encode("utf-8"))
+        self.assertEqual(local_edits(self.upstream, self.root, self.shared), [])
+
+    def test_an_upstream_without_history_knows_only_its_current_text(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            plain = Path(folder)
+            _write(plain, "tools/x.py", K_UPSTREAM_HEADER + K_BODY)
+            self.assertEqual(known_bodies(plain, "tools/x.py"), {K_BODY})
+
+    def test_the_command_reports_a_local_edit_and_refuses_to_copy_it(self) -> None:
+        _write(self.root, "tools/layering/check.py", K_LOCAL_HEADER + K_EDITED_BODY)
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertEqual(main([str(self.root), "--from", str(self.upstream), "--report"]), 1)
+        self.assertIn("tools/layering/check.py: differs from upstream (local edit)", output.getvalue())
+        with contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(main([str(self.root), "--from", str(self.upstream)]), 1)
 
 
 class NewFileHeaderTest(unittest.TestCase):
