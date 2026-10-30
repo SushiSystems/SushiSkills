@@ -25,6 +25,7 @@ repository. They are run by hand or through the project's CLI; they never build 
 | `tools/testing/check_test_sizes.py` | Every test writes its size in its source, from `testing` |
 | `tools/testing/check_probes.py` | Probes and scenario benchmarks live in `applications/probes/` and `applications/benchmarks/`, use no test framework, stay out of the test runner, carry a name of their own and are listed, from `testing` and `performance` |
 | `tools/logs/check_logging.py` | Log calls carry their module's category, library code writes no console output and hides no failure, from `logging` |
+| `tools/ci/check_workflows.py` | The workflow files GitHub would refuse before a job starts, from `continuous-integration` |
 
 A repository may add checkers; it may not rename or drop these twelve. `tools/check_all.py` runs
 all of them and the checker tests, and prints only what failed; it also runs every other
