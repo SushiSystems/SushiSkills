@@ -1,6 +1,6 @@
 ---
 name: performance
-description: Use when optimising code, claiming a change is faster or lighter, writing a benchmark, choosing a data layout for a hot path, or reviewing a perf commit, in a Sushi Systems repository.
+description: Use when optimising code, claiming a change is faster or lighter, writing a benchmark, choosing a data layout for a hot path, or reviewing a perf commit, in a repository.
 ---
 
 # Performance

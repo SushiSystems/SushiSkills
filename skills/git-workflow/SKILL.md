@@ -1,6 +1,6 @@
 ---
 name: git-workflow
-description: Use when creating a branch, merging, pushing, rebasing, resolving a conflict, or deciding where a piece of work should live in git, in a Sushi Systems repository.
+description: Use when creating a branch, merging, pushing, rebasing, resolving a conflict, or deciding where a piece of work should live in git, in a repository.
 ---
 
 # Git Workflow

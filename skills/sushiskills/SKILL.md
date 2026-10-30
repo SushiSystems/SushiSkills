@@ -1,11 +1,11 @@
 ---
 name: sushiskills
-description: Use when starting any work in a Sushi Systems repository (existing or new), or when unsure which Sushi rule covers a file, a name, a comment, a log line, a document or a commit.
+description: Use when starting any work in a repository (existing or new), or when unsure which rule covers a file, a name, a comment, a log line, a document or a commit.
 ---
 
 # SushiSkills
 
-One discipline for every Sushi Systems repository, so that a person or an agent who knows one
+One discipline for every repository, so that a person or an agent who knows one
 repository already knows them all. Maintenance cost is the thing being minimised; every rule
 below exists because its absence made a repository more expensive to change.
 
@@ -79,7 +79,7 @@ Each rule set is its own skill. Load the one your task touches.
 | Tests a change must carry, bug fix order, determinism, goldens | `testing` |
 | Adding, vendoring or upgrading a third-party library | `dependencies` |
 | Changing or removing a public surface, cross-repository upgrades | `api-stability` |
-| How a module is obtained, set up and recognised, with or without SushiHub | `module-install` |
+| How a module is obtained, set up and recognised, with or without its workspace tool | `module-install` |
 | Optimising, benchmarks, perf claims | `performance` |
 | A bug, a crash, a wrong value | `debugging` |
 | A persistent file format | `file-formats` |
@@ -91,7 +91,7 @@ Each rule set is its own skill. Load the one your task touches.
 
 ## Third-party skills
 
-The vendored superpowers skills name their own paths. In a Sushi repository a superpowers spec
+The vendored superpowers skills name their own paths. In a repository that follows this doctrine a superpowers spec
 is `SPEC.md` and a superpowers plan is `PLAN.md` in the work folder
 `docs/agent/<YYYY_MM_DD>_<WORK_NAME>/`. Nothing is written under `docs/superpowers/`.
 

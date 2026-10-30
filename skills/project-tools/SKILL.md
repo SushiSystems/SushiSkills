@@ -1,6 +1,6 @@
 ---
 name: project-tools
-description: Use when adding a repository's tools/ folder, writing or changing a checker, running a manual audit of comments, layering, documentation layout or changelog, or before reporting work as finished, in a Sushi Systems repository.
+description: Use when adding a repository's tools/ folder, writing or changing a checker, running a manual audit of comments, layering, documentation layout or changelog, or before reporting work as finished, in a repository.
 ---
 
 # Project Tools
@@ -15,10 +15,10 @@ repository. They are run by hand or through the project's CLI; they never build 
 | `tools/documentation/check_source_comments.py` | Every rule in `source-comments` |
 | `tools/documentation/check_docs_layout.py` | The tree, required documents, names, work folder contents, status lines, broken links and anchors, reachability from the index, closed work past its grace and the forbidden kinds of file from `documentation` |
 | `tools/documentation/check_changelog.py` | One line, 240 characters, one sentence, no nesting |
-| `tools/documentation/check_backlog.py` | `BACKLOG_FORMAT.md` in `documentation`, through sushicore's `backlog check`: the store's shape, values, IDs, paths, references, pins, the index, and a backlog entry for every open design topic |
-| `tools/documentation/check_design_format.py` | `DESIGN_FORMAT.md` in `documentation`, through sushicore's `design check`: the five sections in order, the status length, the phase table and its states, no commit hash, no dated record of work |
-| `tools/documentation/check_design_topics.py` | `DESIGN_FORMAT.md` and `AGENT_WORK.md` in `documentation`: through sushicore's `design check`, the `Modules` line on every topic, the modules exist, each module owned by one topic, no loose document, and the topics and phases a work folder names exist; then the generated views and the opt-in rules for a glossary entry per topic and the folder ceiling |
-| `tools/documentation/check_module_install.py` | `module-install`: the elements of a module, both install headings, no machine path, no SushiHub in code |
+| `tools/documentation/check_backlog.py` | `BACKLOG_FORMAT.md` in `documentation`, through the backlog tool's `backlog check`: the store's shape, values, IDs, paths, references, pins, the index, and a backlog entry for every open design topic |
+| `tools/documentation/check_design_format.py` | `DESIGN_FORMAT.md` in `documentation`, through the design tool's `design check`: the five sections in order, the status length, the phase table and its states, no commit hash, no dated record of work |
+| `tools/documentation/check_design_topics.py` | `DESIGN_FORMAT.md` and `AGENT_WORK.md` in `documentation`: through the design tool's `design check`, the `Modules` line on every topic, the modules exist, each module owned by one topic, no loose document, and the topics and phases a work folder names exist; then the generated views and the opt-in rules for a glossary entry per topic and the folder ceiling |
+| `tools/documentation/check_module_install.py` | `module-install`: the elements of a module, both install headings, no machine path, no workspace tool in code |
 | `tools/documentation/check_docs_truth.py` | The manual against the source, from `documentation`: every name and path a page writes in code exists, every example cites the file it is taken from, no history words, the page ceilings, no paragraph in two pages, no em dash in prose, a reason on every allow-list entry |
 | `tools/layering/check_layering.py` | Module dependencies follow the declared tier order; nothing reaches into another module's private `source/` |
 | `tools/testing/check_test_mirror.py` | `tests/` mirrors the public headers, from `repository-layout` |
@@ -70,7 +70,7 @@ needs to change is changed in SushiSkills first.
 - Every other file under a repository's `tools/` is its own tool, at any path SushiSkills does
   not use. The copy never touches it.
 
-`python tools/checking/copy_shared_tools.py ROOT --from SUSHISKILLS` copies the shared files;
+`python tools/checking/copy_shared_tools.py ROOT --from <the sushiskills checkout>` copies the shared files;
 with `--report` it lists the ones that differ and exits 1. It is run from the SushiSkills
 checkout, never from a repository's copy, so a fix to the copier applies on the run that brings
 it. A repository runs it after a checker changes upstream, and a report that lists a file is a local edit to move upstream or drop.

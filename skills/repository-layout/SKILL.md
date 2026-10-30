@@ -1,6 +1,6 @@
 ---
 name: repository-layout
-description: Use when creating a Sushi Systems repository, adding a module, file or top-level folder, moving code between folders, or when a file seems to have no obvious home.
+description: Use when creating a repository, adding a module, file or top-level folder, moving code between folders, or when a file seems to have no obvious home.
 ---
 
 # Repository Layout
@@ -13,7 +13,7 @@ The root holds only what a tool refuses to find anywhere else.
 
 ```
 README.md  LICENSE  NOTICE.md  COMMERCIAL.md  CMakeLists.txt  CMakePresets.json  AGENTS.md
-CLAUDE.md  sushi-module.toml  .clang-format  .editorconfig  .gitignore  .gitattributes
+CLAUDE.md  <manifest>  .clang-format  .editorconfig  .gitignore  .gitattributes
 .config/  .github/  cmake/  cli/  tools/  modules/  tests/  applications/  assets/  third_party/
 docs/
 ```
@@ -26,7 +26,7 @@ docs/
 | `CMakeLists.txt` | `project()`, options and `add_subdirectory`; no logic |
 | `CMakePresets.json` | The configure presets, when the project has them; CMake reads them from the root only |
 | `AGENTS.md`, `CLAUDE.md` | Agent instructions and skill declarations; names the skills the repository follows |
-| `sushi-module.toml` | The module manifest the stack's tooling reads from the root |
+| the module manifest | The file the workspace tool reads from the root; `module-install` names its contents |
 | `.config/` | Configuration a flag or a key can point a tool at, such as `doxygen/Doxyfile` and `docker/Dockerfile`; its `README.md` has one row per file, naming the tool and the call site that passes the path |
 | `.github/` | What GitHub resolves by name: workflows, templates, `SECURITY.md` and `CODE_OF_CONDUCT.md`; the last two are SushiSkills' own, copied unchanged by `copy_shared_tools.py` and edited only there |
 | `cmake/` | Every CMake function and the layer table |
@@ -129,8 +129,8 @@ nothing else.
   path, a module's name is unique within its tier, so two tiers may each hold a `training`.
 - An umbrella header includes every public header of its scope and sits at the include root, in
   a module named `umbrella`. The project's umbrella keeps the project folder's spelling
-  (`SushiAI/SushiAI.hpp`), the one file name that is not `snake_case`; a tier's umbrella is
-  `<Project>/<tier>.hpp` (`SushiAI/vision.hpp`). An umbrella saves a consumer the writing of
+  (`Acme/Acme.hpp`), the one file name that is not `snake_case`; a tier's umbrella is
+  `<Project>/<tier>.hpp` (`Acme/vision.hpp`). An umbrella saves a consumer the writing of
   many includes; no module includes one, except another umbrella.
 - Documents under `docs/` are the exception: `UPPER_SNAKE_CASE.md`.
 

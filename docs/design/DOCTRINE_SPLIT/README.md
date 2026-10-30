@@ -58,7 +58,7 @@ It must not erase a checker a repository changed for itself (backlog entry RW-29
 | --- | --- | --- |
 | P1 | A checker fails when skills/ names a product, company tool, person, host or machine path | built |
 | P2 | The sushisystems/ folder and the sushisystems-specific skill exist and the layout accepts them | built |
-| P3 | Every Sushi Systems rule moved out of skills/ into sushisystems/, the doctrine keeping the neutral rule | planned |
+| P3 | Every Sushi Systems rule moved out of skills/ into sushisystems/, the doctrine keeping the neutral rule | built |
 | P4 | Technology rules (Unity, GPU devices, build tools) sit in skills of their own, not inside general skills | planned |
 | P5 | tools/ holds no company-specific checker; the repository's backlog and design CLI is a setting | planned |
 | P6 | Backlog and design skills, the status-to-command table, the commit trailer and the tracked hook | planned |

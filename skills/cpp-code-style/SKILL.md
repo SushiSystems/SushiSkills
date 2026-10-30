@@ -1,6 +1,6 @@
 ---
 name: cpp-code-style
-description: Use when writing, reviewing or refactoring C++ in a Sushi Systems repository - formatting, braces, naming, class shape, includes, error handling, constants or macros.
+description: Use when writing, reviewing or refactoring C++ in a repository - formatting, braces, naming, class shape, includes, error handling, constants or macros.
 ---
 
 # C++ Code Style

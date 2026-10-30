@@ -1,6 +1,6 @@
 ---
 name: debugging
-description: Use when a bug, crash, wrong image, wrong number or unexpected behaviour appears, when a failure looks impossible given the code, or when tempted to theorise about a cause without data, in a Sushi Systems repository.
+description: Use when a bug, crash, wrong image, wrong number or unexpected behaviour appears, when a failure looks impossible given the code, or when tempted to theorise about a cause without data, in a repository.
 ---
 
 # Debugging

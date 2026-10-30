@@ -35,7 +35,7 @@ stands for the unit's test file. A unit has the file or the folder, never both.
 
 A Python or TypeScript module is mirrored the same way under `tests/<tier>/<module>/`. A header
 with no area, such as an umbrella at the include root (see Names in `SKILL.md`), has its test
-directly under the owner's folder: `tests/<tier>/umbrella/test_SushiAI.cpp` for `SushiAI/SushiAI.hpp`.
+directly under the owner's folder: `tests/<tier>/umbrella/test_Acme.cpp` for `Acme/Acme.hpp`.
 
 - A package's entry, `__main__.py`, is tested by `test_main.py`.
 - A private header under `source/`, any other Python file whose name starts with `_`, `__init__.py`

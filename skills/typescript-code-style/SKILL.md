@@ -1,6 +1,6 @@
 ---
 name: typescript-code-style
-description: Use when writing, reviewing or refactoring TypeScript in a Sushi Systems repository - a web application, a package, a service or tests - including its layout, brace symmetry, naming, class shape, errors and logging.
+description: Use when writing, reviewing or refactoring TypeScript in a repository - a web application, a package, a service or tests - including its layout, brace symmetry, naming, class shape, errors and logging.
 ---
 
 # TypeScript Code Style

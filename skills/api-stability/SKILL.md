@@ -1,6 +1,6 @@
 ---
 name: api-stability
-description: Use when changing, renaming or removing a public function, type, header, CLI command or file format, when deprecating something, or when a lower-tier Sushi Systems repository releases and repositories above it must follow.
+description: Use when changing, renaming or removing a public function, type, header, CLI command or file format, when deprecating something, or when a lower-tier repository releases and repositories above it must follow.
 ---
 
 # API Stability
@@ -41,7 +41,7 @@ A deprecated surface forwards to its replacement; it never keeps a second implem
 
 Repositories depend on each other in tiers, lowest first.
 
-1. Each repository pins every Sushi Systems dependency to an exact tag, `v0.3.2`, never to a
+1. Each repository pins every dependency on another of the organisation's repositories to an exact tag, `v0.3.2`, never to a
    branch or a range.
 2. When a lower repository releases, repositories above it upgrade in tier order, one at a time,
    each in its own upgrade commit (see `commits`) followed by its own release

@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: Use when creating, editing, moving or archiving any file under docs/ or a module README in a Sushi Systems repository, when adding, renaming or removing a public name, a signature, a header path, a CLI command or a behaviour a page may describe, when recording a spec, plan, report, design decision, backlog item or changelog entry, or when unsure where a written fact belongs.
+description: Use when creating, editing, moving or archiving any file under docs/ or a module README in a repository, when adding, renaming or removing a public name, a signature, a header path, a CLI command or a behaviour a page may describe, when recording a spec, plan, report, design decision, backlog item or changelog entry, or when unsure where a written fact belongs.
 ---
 
 # Documentation
@@ -17,7 +17,7 @@ docs/
     README.md                     manual index; reaches every document outside agent/ and archive/
     CONTRIBUTING.md               what must be documented, how a change lands
     DOCUMENTATION_STYLE_GUIDE.md
-    publish.toml                  what the repository publishes to docs.sushisystems.io
+    publish.toml                  what the repository publishes to its documentation host
     .docs_truth_allow             names the manual may write that the source cannot hold
     getting_started/  architecture/  guides/
     reference/

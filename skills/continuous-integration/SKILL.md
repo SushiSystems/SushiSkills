@@ -1,6 +1,6 @@
 ---
 name: continuous-integration
-description: Use when adding or changing a CI workflow, when CI fails, or before proposing a release, in a Sushi Systems repository.
+description: Use when adding or changing a CI workflow, when CI fails, or before proposing a release, in a repository.
 ---
 
 # Continuous Integration

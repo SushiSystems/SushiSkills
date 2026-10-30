@@ -1,6 +1,6 @@
 ---
 name: build-throughput
-description: Use when choosing a build configuration or a build tree, changing how a repository compiles or links (job counts, pools, caches, precompiled headers, unity batches, device targets, optimisation or debug-information levels), when a build runs out of memory or takes too long, or when deciding where heavy code such as GPU kernels is compiled, in a Sushi Systems repository.
+description: Use when choosing a build configuration or a build tree, changing how a repository compiles or links (job counts, pools, caches, precompiled headers, unity batches, device targets, optimisation or debug-information levels), when a build runs out of memory or takes too long, or when deciding where heavy code such as GPU kernels is compiled, in a repository.
 ---
 
 # Build throughput
@@ -31,8 +31,8 @@ slower than one that ran fewer jobs.
    machine, before and after, wall time and peak memory.
 5. **The CLI is the only door.** Every knob below is a CLI option or a machine-local CLI
    setting, never a command typed at the build system (`sushiskills`, default 2).
-6. **One copy of the machinery.** A CLI built on sushicore takes the tree rule, the gate, its
-   launcher entries and the report from sushicore (`build_tree`, `build_admission`,
+6. **One copy of the machinery.** A CLI built on the shared tooling library takes the tree rule, the gate, its
+   launcher entries and the report from it (`build_tree`, `build_admission`,
    `build_gate`, `build_report`) and keeps no copy of its own.
 7. **A module dependency is public only when a public header needs the whole type.** That is a
    type held by value or as a member, a base class, or a type used in an inline body. A type a

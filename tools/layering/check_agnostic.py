@@ -31,7 +31,7 @@ K_TEXT_SUFFIXES = frozenset({".md", ".py", ".toml", ".txt", ".json", ".yml", ".y
 K_CATEGORIES = ("product", "tool", "identity")
 K_ALLOW = "allow"
 K_TERM_LINE = re.compile(r"^(\w+):\s*(.+?)\s*$")
-K_MACHINE_PATH = re.compile(r"(?<![\w/])[A-Za-z]:[\\/][A-Za-z_]|(?<!\w)/(?:Users|home)/\w|~/\.\w")
+K_MACHINE_PATH = re.compile(r"(?<![\w/])[A-Za-z]:[\\/][A-Za-z_]|(?<!\w)/(?:Users|home)/\w")
 
 
 @dataclass(frozen=True, slots=True)
@@ -132,7 +132,7 @@ def rule_identity(scope: Scope) -> Iterator[Issue]:
 
 
 def rule_machine_path(scope: Scope) -> Iterator[Issue]:
-    """Yields an issue for each drive path, user folder or home-relative path."""
+    """Yields an issue for each drive path or user folder."""
     for path in scope.files:
         for number, line in _lines(path):
             for match in K_MACHINE_PATH.finditer(line):

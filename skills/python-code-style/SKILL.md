@@ -1,6 +1,6 @@
 ---
 name: python-code-style
-description: Use when writing, reviewing or refactoring Python in a Sushi Systems repository - a library, a service, a command line interface, a checker under tools/ or tests - including its package layout, naming, class shape, errors and logging.
+description: Use when writing, reviewing or refactoring Python in a repository - a library, a service, a command line interface, a checker under tools/ or tests - including its package layout, naming, class shape, errors and logging.
 ---
 
 # Python Code Style

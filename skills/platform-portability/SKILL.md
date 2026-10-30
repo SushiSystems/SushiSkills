@@ -1,6 +1,6 @@
 ---
 name: platform-portability
-description: Use when writing code that differs between Windows and Linux, adding a preprocessor platform check, exporting symbols from a shared library, handling file paths, or touching DLL and shared-object loading, in a Sushi Systems repository.
+description: Use when writing code that differs between Windows and Linux, adding a preprocessor platform check, exporting symbols from a shared library, handling file paths, or touching DLL and shared-object loading, in a repository.
 ---
 
 # Platform Portability

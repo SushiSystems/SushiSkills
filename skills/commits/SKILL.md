@@ -1,6 +1,6 @@
 ---
 name: commits
-description: Use when writing a git commit message, a pull request title or description, or staging changes in a Sushi Systems repository.
+description: Use when writing a git commit message, a pull request title or description, or staging changes in a repository.
 ---
 
 # Commits

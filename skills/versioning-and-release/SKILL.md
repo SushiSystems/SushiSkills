@@ -1,6 +1,6 @@
 ---
 name: versioning-and-release
-description: Use when changing a version number, tagging, cutting or proposing a release, when the Unreleased changelog section has grown, when a change breaks a public interface, or when asked whether a repository is ready to release, in a Sushi Systems repository.
+description: Use when changing a version number, tagging, cutting or proposing a release, when the Unreleased changelog section has grown, when a change breaks a public interface, or when asked whether a repository is ready to release, in a repository.
 ---
 
 # Versioning and Release

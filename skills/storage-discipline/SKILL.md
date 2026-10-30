@@ -1,6 +1,6 @@
 ---
 name: storage-discipline
-description: Use when about to write files outside the repository's source tree, in a scratchpad or temp directory, to capture command output, copy or back up files, compile a scratch binary, install a package, download data, or before reporting a session finished, in a Sushi Systems repository.
+description: Use when about to write files outside the repository's source tree, in a scratchpad or temp directory, to capture command output, copy or back up files, compile a scratch binary, install a package, download data, or before reporting a session finished, in a repository.
 ---
 
 # Storage discipline

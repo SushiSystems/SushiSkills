@@ -1,6 +1,6 @@
 ---
 name: file-formats
-description: Use when defining, reading, writing or changing a persistent file format - JSON, TOML, YAML, a binary asset, a save file, a cache or a manifest - in a Sushi Systems repository.
+description: Use when defining, reading, writing or changing a persistent file format - JSON, TOML, YAML, a binary asset, a save file, a cache or a manifest - in a repository.
 ---
 
 # File Formats

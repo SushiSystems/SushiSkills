@@ -1,6 +1,6 @@
 ---
 name: multi-agent-work
-description: Use when dispatching subagents, running agents in parallel, splitting a plan into tasks for other agents, or reviewing a report that came back from an agent, in a Sushi Systems repository.
+description: Use when dispatching subagents, running agents in parallel, splitting a plan into tasks for other agents, or reviewing a report that came back from an agent, in a repository.
 ---
 
 # Multi-Agent Work

@@ -19,13 +19,12 @@ docs/backlog/
     detail/<ID>.md     the explanation of an entry that does not fit its row
 ```
 
-Every file here is written by the `backlog` commands of sushicore: `<cli> backlog ...` in a
-repository with a module CLI, `python -m sushicore.backlog ...` in one without. Nobody edits a
+Every file here is written by the repository's `backlog` commands, `<cli> backlog ...`. Nobody edits a
 row by hand; `backlog check` fails a file out of the shape the tool writes. A detail file is
 prose the author writes, and `backlog close` deletes it with its entry.
 
-The columns, their values, the ceilings and the commands are in sushicore's
-`docs/reference/BACKLOG.md`. In short:
+The columns, their values, the ceilings and the commands are in the
+backlog tool's own reference. In short:
 
 | Kind | Columns |
 | --- | --- |

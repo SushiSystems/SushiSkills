@@ -1,6 +1,6 @@
 ---
 name: testing
-description: Use when fixing a bug, adding behaviour, writing or changing a test, updating a golden file, seeing a test fail intermittently, or deciding whether a change is tested enough, in a Sushi Systems repository.
+description: Use when fixing a bug, adding behaviour, writing or changing a test, updating a golden file, seeing a test fail intermittently, or deciding whether a change is tested enough, in a repository.
 ---
 
 # Testing

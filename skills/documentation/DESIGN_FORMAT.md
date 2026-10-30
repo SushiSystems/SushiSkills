@@ -80,14 +80,14 @@ one topic, and a path inside a module belongs to the topic that names the deepes
 it; `design owner <path>` says which. A topic of no module, such as a release, writes `none` and
 carries `**About:**` to say why.
 
-The `design` commands of sushicore write the frame: the title, the status line, the metadata
+The repository's `design` commands write the frame: the title, the status line, the metadata
 lines, the five headings and the phase table. `design new <TOPIC> --modules <paths> --about
 <text>` is the only way to open a topic; it refuses a module another topic owns, or one inside or
 around it, and names that topic. `design page` and `design phase` grow a topic, and `design
 phase-state` moves a phase and ships the topic when the last one is built. Two topics on one
 subject are found with `design overlap` and joined with `design merge <INTO> <FROM>`, which makes
 `FROM` a page of `INTO`, joins the phases and the modules, and rewrites every citation. The prose
-inside the sections is the author's. The commands are in sushicore's `docs/reference/DESIGN.md`.
+inside the sections is the author's. The commands are in the design tool's own reference.
 
 A repository that sets `K_DESIGN_TOPICS` in `tools/settings.py` also requires a term in
 `docs/reference/GLOSSARY.md` for each topic name, and the topic map.
@@ -122,7 +122,7 @@ no status and no fixed sections. `fold_design_topics.py --apply` gives a loose d
 
 `tools/documentation/check_design_topics.py` enforces the metadata, the ownership rule and the
 generated views; `tools/documentation/check_design_format.py` enforces the sections, the status
-length, the phase table, the hash rule and the dated-work rule; both run sushicore's `design
+length, the phase table, the hash rule and the dated-work rule; both run the design tool's `design
 check`. `check_docs_layout.py` enforces the size. The two
 content rules read form only: a hash anywhere in prose, and a line outside the status that sets a
 verb such as built, merged or reviewed beside an ISO date. A narrative with no date and no hash

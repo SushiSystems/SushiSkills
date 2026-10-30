@@ -26,4 +26,5 @@ Each topic is a folder beside this file. Read the folder when the task touches i
 | `../dependencies/DEPENDENCIES.md` | Pinning, finding or upgrading a Sushi library, or the shared logger's runtime file |
 | `../licence/LICENCE.md` | Writing or checking a licence block; the holder, the licence and the addresses |
 | `../brand/LICENCE_WORDING.md` | Writing copy that names a Sushi product's licence |
+| `../tooling/TOOLING.md` | Running the backlog or design tool, the build machinery, the manifest or the shared checkers; `sushicore` fills the roles |
 | `terms.txt` | Changing which names the doctrine must not carry; the checker reads it |

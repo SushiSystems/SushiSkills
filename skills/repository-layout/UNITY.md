@@ -113,7 +113,7 @@ An asset that only one feature's code uses lives in that feature's `Prefabs/`.
 | Folder under `Assets/` | `PascalCase`, no space, bracket or leading underscore | `Features/Ballistics` |
 | C# file | `PascalCase`, one type per file, named after it | `ProjectileFlight.cs` |
 | Test file | The unit's name and `Tests` | `ProjectileFlightTests.cs` |
-| Namespace | Follows the folder | `SushiSystems.MobileRTS.Ballistics.View` |
+| Namespace | Follows the folder | `Acme.MobileRts.Ballistics.View` |
 | Asset | `PascalCase` | `M1Abrams.prefab` |
 | Scene | `PascalCase` | `Match.unity` |
 | Unity special folder | Unity's exact spelling | `Editor`, `Resources` |

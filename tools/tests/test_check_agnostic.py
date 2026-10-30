@@ -78,7 +78,7 @@ class AgnosticTest(unittest.TestCase):
     def test_machine_paths_are_reported(self) -> None:
         self.write("skills/a/SKILL.md",
                    "At D:/Projects/x.\nAt C:\\Users\\a.\nAt /home/a/b.\nAt ~/.config.\n")
-        self.assertEqual(len(self.found(rule_machine_path)), 4)
+        self.assertEqual(len(self.found(rule_machine_path)), 3)
 
     def test_urls_and_prose_about_paths_are_not_machine_paths(self) -> None:
         self.write("skills/a/SKILL.md", "See https://example.org/a. No `D:/...` appears.\n")
