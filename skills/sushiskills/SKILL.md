@@ -47,9 +47,9 @@ why it exists so that a case it did not foresee is judged by its purpose.
    or a `std::variant` visited in one place. A switch there is clearer and faster, and an
    interface with a factory around it is a cost with no return.
 2. **The CLI is the only door.**
-   **Rule:** build, test and run through the repository's own CLI. Never call cmake, ninja,
-   ctest, npm or uv directly, and never run a program or a test from CMake (`ctest`, a custom
-   target, a post-build step).
+   **Rule:** build, test and run through the repository's own CLI. Never call the build, test or
+   package tools behind it directly, and never run a program or a test from the build system (a
+   test driver, a custom target, a post-build step). The language skills name those tools.
    **Why:** only the CLI sets up the runtime search path, so a binary launched any other way
    fails to find its DLLs or shared objects.
    **Not when:** a debugger launches one test or program with the environment the CLI prints
@@ -87,6 +87,8 @@ Each rule set is its own skill. Load the one your task touches.
 | CI workflows and CI failures | `continuous-integration` |
 | Windows and Linux differences, exports, paths | `platform-portability` |
 | Build configurations and trees, compile and link speed, build memory | `build-throughput` |
+| Code that runs on an accelerator: device builds, kernels, software test devices | `gpu-development` |
+| A Unity project's tree, assemblies, scenes and C# names | `unity-project-layout` |
 | Scratch files, temp output, copies, downloads, anything that writes to disk | `storage-discipline` |
 
 ## Third-party skills

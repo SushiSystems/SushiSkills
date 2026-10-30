@@ -89,7 +89,6 @@ nothing else.
 | --- | --- |
 | A header no consumer includes, a header-only module, an internal module | `INTERNAL_MODULES.md` |
 | A test, a test folder or a test program | `TESTS.md` |
-| A Unity repository | `UNITY.md` |
 
 ## Module rules
 

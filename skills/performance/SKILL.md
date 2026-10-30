@@ -48,7 +48,7 @@ application, so it lives with the applications.
 
 Every benchmark:
 
-- runs through the project CLI, never from CMake;
+- runs through the project CLI, never from the build system;
 - prints numbers and never passes or fails a test run;
 - states its input size and build type in its output.
 

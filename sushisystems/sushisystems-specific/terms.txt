@@ -14,3 +14,4 @@ identity: Mustafa|Garip
 identity: sushisystems
 identity: SushiSystems
 allow: Sushi[Ss]kills
+technology: (?:Unity|Lavapipe|SYCL|Vulkan|CUDA|ImGui|DirectX|OpenGL|OpenCL)

@@ -144,3 +144,8 @@ dependency private (`build-throughput`, boundary 7).
 | `bool` return for "failed for some reason" | A status enum naming the reason |
 | Boolean parameters (`load(path, true, false)`) | An enum or an options struct |
 | A switch over a growing set of kinds that every new kind edits | A table or an interface each kind implements; a small closed set keeps its switch (`sushiskills`, default 1) |
+
+## Tools behind the CLI
+
+`cmake`, `ninja` and `ctest` are called by the repository's CLI and by nothing else (`sushiskills`,
+default 2).

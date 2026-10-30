@@ -22,7 +22,7 @@ type(scope)!: the same, for a change that breaks a public interface, file format
 | `perf` | Same behaviour, fewer resources |
 | `test` | Tests only |
 | `docs` | Documentation only |
-| `build` | CMake, CLI, checkers, toolchain |
+| `build` | Build files, CLI, checkers, toolchain |
 | `chore` | Releases (`chore(release): v0.3.2`), housekeeping with no behaviour |
 
 - `scope` is the module or subsystem folder name: `matter`, `interop`, `cli`, `layering`. The

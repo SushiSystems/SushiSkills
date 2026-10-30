@@ -28,7 +28,7 @@ Each stage runs the tests whose size, from `testing`, fits its budget. No test c
 
 ## Shape
 
-1. CI calls the project CLI and nothing else: no cmake, ctest, npm or pytest invoked directly in
+1. CI calls the project CLI and nothing else: no build, test or package tool invoked directly in
    the workflow file, except where the doctrine's default 2 in `sushiskills` allows a direct call.
 2. One workflow file per trigger under the forge's workflow folder: `ci.yml` for pull requests
    and pushes, `nightly.yml` for the schedule, `release.yml` for tags.

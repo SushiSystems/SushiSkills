@@ -1,7 +1,12 @@
+---
+name: unity-project-layout
+description: Use when creating or reorganising a Unity project repository, adding a folder, assembly, scene, prefab or test under Assets/, or naming a C# file or namespace, in a repository.
+---
+
 # Unity repositories
 
 Unity fixes part of the tree and its community reads PascalCase, so a Unity repository keeps the
-rules of `SKILL.md` and swaps the tree and the names. Everything not named here is unchanged:
+rules of `repository-layout` and swaps the tree and the names. Everything not named here is unchanged:
 one responsibility per module, a README per module, dependencies that point one way.
 
 ## The root

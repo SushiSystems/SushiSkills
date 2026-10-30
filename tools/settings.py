@@ -27,3 +27,4 @@ K_FOLDER_CEILING = 60
 K_CLOSED_GRACE_DAYS = 0
 K_AGNOSTIC_PATHS: tuple[str, ...] = ("skills", "claude")
 K_AGNOSTIC_TERMS = "sushisystems/sushisystems-specific/terms.txt"
+K_TECHNOLOGY_EXEMPT: tuple[str, ...] = ("skills/gpu-development", "skills/unity-project-layout", "skills/humanizer")

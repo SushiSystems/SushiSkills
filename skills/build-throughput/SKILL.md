@@ -1,6 +1,6 @@
 ---
 name: build-throughput
-description: Use when choosing a build configuration or a build tree, changing how a repository compiles or links (job counts, pools, caches, precompiled headers, unity batches, device targets, optimisation or debug-information levels), when a build runs out of memory or takes too long, or when deciding where heavy code such as GPU kernels is compiled, in a repository.
+description: Use when choosing a build configuration or a build tree, changing how a repository compiles or links (job counts, pools, caches, precompiled headers, unity batches, optimisation or debug-information levels), when a build runs out of memory or takes too long, or when deciding where heavy code such as a large template set is compiled, in a repository.
 ---
 
 # Build throughput
@@ -48,8 +48,8 @@ slower than one that ran fewer jobs.
 
 ### Measure first
 
-**Rule:** the CLI can report a build: per kind of edge (host compile, device compile, host link,
-device link) the count, the total and longest wall time and the peak working set, the lowest free
+**Rule:** the CLI can report a build: per kind of edge (compile, link, and any other step the
+build has) the count, the total and longest wall time and the peak working set, the lowest free
 memory of the run, and the slowest edges. Time traces (`-ftime-trace` or the compiler's
 equivalent) are taken on the slowest units before any header or template is trimmed.
 **Why:** the edge that costs the most is rarely the one that looks heavy, and every decision
@@ -72,38 +72,20 @@ no launcher can be set.
 
 ### Heavy code compiled once, where it is owned
 
-**Rule:** a kernel, a large template instantiation set or any unit that needs a second
-compilation pass is instantiated in the module that owns it, for the types it supports, and
-exposed through plain host functions. Its consumers, tests above all, include declarations, not
-the kernel's body.
-**Why:** a header-only kernel is compiled, for every device target, in every unit that launches
-it; a test file then costs minutes and gigabytes.
-**Not when:** the kernel is a template over a user's type that the module cannot list.
-
-### Device code linked once per process
-
-**Rule:** code that needs a device link lives in a shared library, so each executable links an
-import library instead of repeating the device link over the same code.
-**Why:** a device link (bitcode link, post-link, device code generation, assembler) is the cost
-of a compile, and a static archive repeats it in every executable that links it.
-**Not when:** one executable links the archive.
-
-### Development builds target the machine they run on
-
-**Rule:** a development tree compiles device code for the device architectures of the machine
-building it; the package and CI lanes compile every architecture the product ships to.
-**Why:** each extra target is another full device pass in every device unit and every device
-link, for code the developer cannot run.
-**Not when:** the tests select a device of another kind on that machine.
+**Rule:** a large template instantiation set or any unit that needs a second compilation pass is
+instantiated in the module that owns it, for the types it supports, and exposed through plain
+functions. Its consumers, tests above all, include declarations, not the body.
+**Why:** a header-only body is compiled, for every target, in every unit that uses it; a test
+file then costs minutes and gigabytes.
+**Not when:** the body is a template over a user's type that the module cannot list.
 
 ### Debug information sized to its use
 
-**Rule:** the Debug configuration compiles host code without optimisation and with debug
-information at the level the repository measured as the best trade between build time, memory,
-disk and debugging; device code stays optimised in every configuration. RelWithDebInfo carries
-full debug information on optimised code.
+**Rule:** the Debug configuration compiles without optimisation and with debug information at the
+level the repository measured as the best trade between build time, memory, disk and debugging.
+RelWithDebInfo carries full debug information on optimised code.
 **Why:** full debug information multiplies object size, compile memory and link time on
-template-heavy code; unoptimised device code makes the tests that exercise it unusable.
+template-heavy code.
 **Not when:** a debugging session needs variable-level information on a module; that module's
 debugger build is its own tree.
 
@@ -118,21 +100,20 @@ Memory errors are the sanitizer tree's job.
 
 ### A compiler cache for units that are deterministic
 
-**Rule:** host units compile through a compiler cache inside the build directory, capped in size
-and keyed on the compiler's content. A unit whose object bundles several outputs, such as host
-and device slices, enters the cache only after a trial shows two cached builds produce identical
-slices.
+**Rule:** units compile through a compiler cache inside the build directory, capped in size and
+keyed on the compiler's content. A unit whose object bundles several outputs enters the cache
+only after a trial shows two cached builds produce identical outputs.
 **Why:** branch switches, reconfigures and clean builds then pay for what changed; a wrong hit on
-a bundled object is a missing kernel at run time that no build step reports.
+a bundled object is a defect at run time that no build step reports.
 **Not when:** the repository has no generated or repeated builds to hit.
 
 ### Batches for test targets
 
-**Rule:** host-only test targets compile in unity batches of about eight files; a name clash in
-an anonymous namespace is fixed, not excluded.
+**Rule:** test targets compile in unity batches of about eight files; a name clash in an
+anonymous namespace is fixed, not excluded.
 **Why:** each test file reparses the test framework and the headers it tests; batching removes
 most of that.
-**Not when:** the units are heavy device units, whose memory peak grows with the batch.
+**Not when:** the units are heavy, so that their memory peak grows with the batch.
 
 ### Secondary products share the engine's tree
 
@@ -153,12 +134,9 @@ excluded from real-time malware scanning, by the machine's owner.
 
 - "I will set `-j` to what worked last time." → admission by measured peak.
 - "I will switch this tree to Release for one measurement." → the Release tree.
-- "The test needs the kernel, so the test compiles it." → the module compiles it.
+- "The test needs the template set, so the test compiles it." → the module compiles it.
 - "Full debug information costs nothing." → measure its memory and link time first.
-- "The cache makes it faster, so device objects go in too." → the trial first.
-- "The shared library linked in seconds, so the device link is cheap." → count its device
-  images: a device driver that never sees the archives (`/WHOLEARCHIVE` passed through
-  `-Xlinker`) links an empty device image, and every kernel is missing at run time.
+- "The cache makes it faster, so bundled objects go in too." → the trial first.
 - "Release is the default because that is what ships." → Debug is the default; Release ships.
 - "The header names its type, so the dependency is public." → only by reference? Forward-declare
   it and keep the edge private.

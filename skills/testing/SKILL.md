@@ -23,7 +23,7 @@ A unit that is hard to reach is still tested:
 | --- | --- |
 | A device backend | The real device, labelled `large` |
 | A plugin or ABI boundary | A fake host that calls its entry points |
-| A GUI panel | The toolkit run without a window, such as ImGui's `NewFrame` and `Render` with no backend |
+| A GUI panel | The toolkit run without a window, such as an immediate-mode toolkit's frame calls with no rendering backend |
 
 A panel that cannot be tested that way holds logic that belongs in a unit of its own.
 
@@ -49,7 +49,7 @@ enforces as a timeout. Every test carries exactly one.
 | Size | The test may use | Timeout |
 | --- | --- | --- |
 | `small` | One process and one thread; no network, no sleep, no device, no file outside the build tree | 60 s |
-| `medium` | Threads and processes, localhost, files in a temporary folder, a software device: Lavapipe for Vulkan, a CPU SYCL device, a null audio driver, a fake plugin host | 300 s |
+| `medium` | Threads and processes, localhost, files in a temporary folder, a software device, a null audio driver, a fake plugin host | 300 s |
 | `large` | Real hardware, such as a GPU or an audio device, or a run longer than `medium` allows | 900 s |
 
 A test's size is written in its source, once, where the test is declared:
@@ -138,5 +138,5 @@ the command and its output.
 - "The fix is obvious, the test can come after." → the test first.
 - "The golden is outdated anyway, I regenerated it." → report and stop.
 - "It passed on the second run." → it is flaky; fix or quarantine.
-- "No GPU here, so the test counts as passing." → skipped.
+- "No device here, so the test counts as passing." → skipped.
 - "It is GUI, plugin or device code; list it as untested." → test it as above.

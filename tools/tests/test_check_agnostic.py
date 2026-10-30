@@ -22,6 +22,7 @@ from layering.check_agnostic import (  # noqa: E402
     rule_identity,
     rule_machine_path,
     rule_product_name,
+    rule_technology_name,
     rule_terms_file,
 )
 
@@ -30,6 +31,7 @@ K_TERMS = "\n".join((
     "product: Acme[A-Z][a-z]+",
     "tool: acmecli",
     "identity: Jane Doe",
+    "technology: Zephyr",
     "allow: AcmeSkills",
     "",
 ))
@@ -42,7 +44,8 @@ class AgnosticTest(unittest.TestCase):
         self._folder = tempfile.TemporaryDirectory()
         self.root = Path(self._folder.name)
         patches = [mock.patch.object(check_agnostic, "K_AGNOSTIC_PATHS", ("skills",)),
-                   mock.patch.object(check_agnostic, "K_AGNOSTIC_TERMS", "terms.txt")]
+                   mock.patch.object(check_agnostic, "K_AGNOSTIC_TERMS", "terms.txt"),
+                   mock.patch.object(check_agnostic, "K_TECHNOLOGY_EXEMPT", ("skills/zephyr-layout",))]
         for patch in patches:
             patch.start()
             self.addCleanup(patch.stop)
@@ -83,6 +86,16 @@ class AgnosticTest(unittest.TestCase):
     def test_urls_and_prose_about_paths_are_not_machine_paths(self) -> None:
         self.write("skills/a/SKILL.md", "See https://example.org/a. No `D:/...` appears.\n")
         self.assertEqual(self.found(rule_machine_path), [])
+
+    def test_technology_name_is_reported_outside_the_exempt_folders(self) -> None:
+        self.write("skills/a/SKILL.md", "Runs on Zephyr.\n")
+        self.write("skills/zephyr-layout/SKILL.md", "Zephyr is the subject here.\n")
+        self.assertEqual(self.found(rule_technology_name), [("SKILL.md", 1)])
+
+    def test_exempt_folder_still_answers_to_the_other_rules(self) -> None:
+        self.write("skills/zephyr-layout/SKILL.md", "Zephyr by Jane Doe.\n")
+        self.assertEqual(self.found(rule_technology_name), [])
+        self.assertEqual(self.found(rule_identity), [("SKILL.md", 1)])
 
     def test_files_outside_the_checked_folders_are_not_read(self) -> None:
         self.write("docs/a.md", "AcmeLog and D:/x.\n")

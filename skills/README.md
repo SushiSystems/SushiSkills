@@ -26,6 +26,8 @@ agent reads the descriptions first and loads a skill only when its task matches.
 | `api-stability` | Public surfaces, deprecation, exports, cross-repository upgrades |
 | `module-install` | The two equal ways into a module, standalone and with the workspace tool: the elements each module carries, the install pages, the checks |
 | `performance` | Hot path defaults, measured optimisation, benchmarks |
+| `gpu-development` | Device builds, kernels, software test devices |
+| `unity-project-layout` | A Unity project's tree, assemblies, scenes and C# names |
 | `debugging` | Known issues first, temporary instrumentation, root causes |
 | `file-formats` | `snake_case` keys, `format_version`, upgrading readers |
 | `git-workflow` | `main` and short branches, pushing, conflicts, shared trees |

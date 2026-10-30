@@ -23,7 +23,7 @@ list of units it skips; `testing` says how a hard unit is tested.
 A header under `include/<Project>/<tier>/<module>/` (see Names in `SKILL.md`) mirrors to the same
 `tests/<tier>/<module>/test_<name>.cpp`.
 
-A Unity repository mirrors under `Assets/<Product>/Tests/`; `UNITY.md` gives that tree.
+A game-engine project mirrors under the engine's own test folder; the layout skill named for the engine gives that tree.
 
 A test file is named for what it is of: `test_<name>`, and a benchmark `benchmark_<name>`.
 TypeScript keeps `<name>.test.ts`, the name vitest finds without configuration.

@@ -150,3 +150,8 @@ the license block, `@brief` on every symbol.
 `vitest`. One test file per source file, `<name>.test.ts`, at the path `TESTS.md` in
 `repository-layout` gives it. Test names read as behaviour:
 `it("evicts the oldest record when full")`.
+
+## Tools behind the CLI
+
+`npm` and `vitest` are called by the repository's CLI and by nothing else (`sushiskills`,
+default 2).

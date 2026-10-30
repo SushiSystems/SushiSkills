@@ -27,8 +27,9 @@ import settings  # noqa: E402
 
 K_AGNOSTIC_PATHS: tuple[str, ...] = getattr(settings, "K_AGNOSTIC_PATHS", ())
 K_AGNOSTIC_TERMS: str = getattr(settings, "K_AGNOSTIC_TERMS", "")
+K_TECHNOLOGY_EXEMPT: tuple[str, ...] = getattr(settings, "K_TECHNOLOGY_EXEMPT", ())
 K_TEXT_SUFFIXES = frozenset({".md", ".py", ".toml", ".txt", ".json", ".yml", ".yaml", ".sh"})
-K_CATEGORIES = ("product", "tool", "identity")
+K_CATEGORIES = ("product", "tool", "identity", "technology")
 K_ALLOW = "allow"
 K_TERM_LINE = re.compile(r"^(\w+):\s*(.+?)\s*$")
 K_MACHINE_PATH = re.compile(r"(?<![\w/])[A-Za-z]:[\\/][A-Za-z_]|(?<!\w)/(?:Users|home)/\w")
@@ -104,11 +105,21 @@ def _lines(path: Path) -> Iterator[tuple[int, str]]:
     yield from enumerate(text.splitlines(), 1)
 
 
+def _is_exempt(scope: Scope, path: Path, category: str) -> bool:
+    """Returns whether a file sits below a folder that settings exempt from a technology check."""
+    if category != "technology":
+        return False
+    relative = path.relative_to(scope.root).as_posix()
+    return any(relative.startswith(entry.rstrip("/") + "/") for entry in K_TECHNOLOGY_EXEMPT)
+
+
 def _term_issues(scope: Scope, category: str) -> Iterator[Issue]:
     """Yields an issue for each match of a category that the allowed patterns do not cover."""
     if scope.terms is None or scope.terms.error:
         return
     for path in scope.files:
+        if _is_exempt(scope, path, category):
+            continue
         for number, line in _lines(path):
             for pattern in scope.terms.patterns[category]:
                 for match in pattern.finditer(line):
@@ -124,6 +135,11 @@ def rule_product_name(scope: Scope) -> Iterator[Issue]:
 def rule_company_tool(scope: Scope) -> Iterator[Issue]:
     """Yields an issue for each company tool, command or file the terms list."""
     return _term_issues(scope, "tool")
+
+
+def rule_technology_name(scope: Scope) -> Iterator[Issue]:
+    """Yields an issue for each engine, vendor or device name in a skill that is not its own."""
+    return _term_issues(scope, "technology")
 
 
 def rule_identity(scope: Scope) -> Iterator[Issue]:
@@ -149,6 +165,7 @@ K_RULES = {
     "rule_product_name": rule_product_name,
     "rule_company_tool": rule_company_tool,
     "rule_identity": rule_identity,
+    "rule_technology_name": rule_technology_name,
     "rule_machine_path": rule_machine_path,
     "rule_terms_file": rule_terms_file,
 }

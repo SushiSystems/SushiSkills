@@ -121,3 +121,8 @@ K_LOGGER.warning(
 - Checkers under `tools/` use the standard library only, so they run without installing
   anything (see `project-tools`). Their tests in `tools/tests/` use `unittest` for the same
   reason; pytest runs them too.
+
+## Tools behind the CLI
+
+`uv` and `pytest` are called by the repository's CLI and by nothing else (`sushiskills`, default
+2).

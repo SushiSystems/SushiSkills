@@ -33,7 +33,7 @@ place; everything else is written once.
 
 - Default symbol visibility is hidden on every platform; only `<PREFIX>_API` symbols export.
 - The runtime search path for DLLs and shared objects is set by the project CLI, never by copying
-  binaries next to each other by hand and never by running from CMake.
+  binaries next to each other by hand and never by running from the build system.
 
 ## Paths and text
 
