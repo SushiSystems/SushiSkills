@@ -21,4 +21,5 @@ Each topic is a folder beside this file. Read the folder when the task touches i
 
 | Folder | Read when |
 | --- | --- |
+| `../logging/LOGGER.md`, `../logging/INTERFACE.md` | Adding or changing a log call, a front, a category, a sink or a host join; SushiLog is the logger |
 | `terms.txt` | Changing which names the doctrine must not carry; the checker reads it |

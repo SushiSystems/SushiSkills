@@ -1,6 +1,6 @@
 ---
 name: logging
-description: Use when adding, reviewing or removing a log call, a log category, a log level, a sink or a logger, or when handling an error or a fallback that might need to be recorded, in a Sushi Systems repository.
+description: Use when adding, reviewing or removing a log call, a log category, a log level, a sink or a logger, or when handling an error or a fallback that might need to be recorded, in a repository.
 ---
 
 # Logging
@@ -17,19 +17,18 @@ macro prefix and the paths that may write to the console from `tools/settings.py
 
 | Part | Rule |
 | --- | --- |
-| Logger | SushiLog, one shared library that every Sushi library links directly, never through another Sushi library. A process loads it once, so it holds one queue, one thread and one sink whatever it loads. A plug-in a host may load twice links SushiLog's static target, whose symbols are hidden, and joins the host as "Meeting another logger" says. SushiLog is the only code that writes a record |
-| Front | Every project keeps its own macros, `LogProject`, categories and environment variable, and writes through SushiLog. It adds no queue, thread or sink. A new project extends the logger by declaring categories, never by changing it. What a front holds and what it never does is "Fronts" below |
+| Logger | One shared library that every library of the organisation links directly, never through another of its libraries. A process loads it once, so it holds one queue, one thread and one sink whatever it loads. A plug-in a host may load twice links the logger's static target, whose symbols are hidden, and joins the host as "Meeting another logger" says. The logger is the only code that writes a record |
+| Front | Every project keeps its own macros, `LogProject`, categories and environment variable, and writes through the logger. It adds no queue, thread or sink. A new project extends the logger by declaring categories, never by changing it. What a front holds and what it never does is "Fronts" below |
 | Project | A value holding the project's name and the environment variable that sets its levels, declared once per project: `K_<PROJECT>_LOG_PROJECT` |
 | Category | A project and a module. Each module declares one, named after its folder, in `<module>_log_category.hpp`: `K_<MODULE>_LOG_CATEGORY`. A module logs only under its own |
 | Call | `<PREFIX>_LOG_<LEVEL>(category, "format {}", value)`, where `<PREFIX>` is the project's macro prefix |
-| Format | `SushiLog::text`, which the logger and every other message share: `format_text`, where each `{}` takes the next argument through `operator<<`, `{{` and `}}` are literal braces and there are no format specs; a value that needs a precision, a width, a form or hex goes first through its helpers (`fixed`, `general`, `scientific`, `hex`, `right`, `left`). No `std::format`, no concatenation at the call site, and no project keeps a formatter or such a helper of its own |
+| Format | The logger's own formatter, which the logger and every other message share: each `{}` takes the next argument through `operator<<`, `{{` and `}}` are literal braces and there are no format specs; a value that needs a precision, a width, a form or hex goes first through the formatter's helpers. No `std::format`, no concatenation at the call site, and no project keeps a formatter or such a helper of its own |
 
 ```cpp
-inline constexpr Logging::LogProject K_SUSHIENGINE_LOG_PROJECT{"sushiengine", "SE_LOG_LEVEL"};
-inline constexpr Logging::LogCategory K_ECS_LOG_CATEGORY =
-    Logging::make_log_category(K_SUSHIENGINE_LOG_PROJECT, "ecs");
+inline constexpr LogProject K_ACME_LOG_PROJECT{"acme", "AC_LOG_LEVEL"};
+inline constexpr LogCategory K_ECS_LOG_CATEGORY = make_log_category(K_ACME_LOG_PROJECT, "ecs");
 
-PX_LOG_WARN(K_ECS_LOG_CATEGORY,
+AC_LOG_WARN(K_ECS_LOG_CATEGORY,
             "archetype {} rejected component {}: already {} components, limit {}",
             archetype_id, component_name, count, K_MAX_COMPONENTS);
 ```
@@ -42,17 +41,15 @@ A project's front is the part of logging that belongs to the project, in its fou
 
 | A front holds | Example |
 | --- | --- |
-| Its `LogProject`, naming the project and its level variable | `K_SUSHIRUNTIME_LOG_PROJECT{"sushiruntime", "SR_LOG_LEVEL"}` |
-| Its ceiling, computed per translation unit | `K_LOG_LEVEL_FLOOR` from `SR_ENABLE_LOGGING` |
-| Its macros, each on `SL_LOG_FRONT_AT` | `SR_LOG_WARN(category, ...)` |
+| Its `LogProject`, naming the project and its level variable | `K_ACME_LOG_PROJECT{"acme", "AC_LOG_LEVEL"}` |
+| Its ceiling, computed per translation unit | `K_LOG_LEVEL_FLOOR` from `AC_ENABLE_LOGGING` |
+| Its macros, each on the logger's front macro | `AC_LOG_WARN(category, ...)` |
 | One category per module, in `<module>_log_category.hpp` | `K_MEMORY_LOG_CATEGORY` |
 
-A front never re-exports SushiLog: no alias of a SushiLog type (`using LogLevel =
-SushiLog::LogLevel`), no `using` of a SushiLog name into the project's namespace, no function or
-C function that only forwards to SushiLog (`sr_set_log_sink`). Code names SushiLog's types and
-calls as `SushiLog::...` and `sl_...`. One thing keeps one name; and a call such as
-`set_log_sink` or `set_log_synchronous` acts on the whole process, which a project-named copy
-would hide.
+A front never re-exports the logger: no alias of a logger type, no `using` of a logger name into
+the project's namespace, no function that only forwards to the logger. Code names the logger's types
+and calls as the logger names them. One thing keeps one name; and a call such as `set_log_sink` or
+`set_log_synchronous` acts on the whole process, which a project-named copy would hide.
 
 ## Levels
 
@@ -90,8 +87,8 @@ log call, and touches no other project's. It takes a level for all of them, then
 `module=level` pairs, in any case:
 
 ```
-SR_LOG_LEVEL=off
-SA_LOG_LEVEL=warn,autograd=trace
+AC_LOG_LEVEL=off
+BX_LOG_LEVEL=warn,autograd=trace
 ```
 
 These two lines silence one project and follow one module of another, in the same process. A
@@ -105,13 +102,13 @@ over the environment.
 A record is one line, with no line break inside it:
 
 ```
-[12:04:31.207] [WARN] [sushiruntime.memory] [t3] [usm_allocator.cpp:88] share refused for 64 MiB on device 1; falling back to a host copy
+[12:04:31.207] [WARN] [acme.memory] [t3] [usm_allocator.cpp:88] share refused for 64 MiB on device 1; falling back to a host copy
 ```
 
 The fields are local time to the millisecond, the level, the project and module of the
 category, the thread and the file and line of the call. The thread is a small number the logger
 gives each thread on its first record, so one thread's records can be followed through the log.
-The sink receives every field apart, as the `LogRecord` of [`INTERFACE.md`](INTERFACE.md), so a
+The sink receives every field apart, so a
 program can send one project's records to their own file and a host can file each field where
 its own logging system keeps it.
 
@@ -130,20 +127,19 @@ its own logging system keeps it.
 
 ## Meeting another logger
 
-A process can hold a logging system besides SushiLog: the host's own, as in Unity, a Python
-program or a game with a logging library, or a plug-in's private SushiLog. The program joins
-them at start-up, before its first log call, so one of them writes everything.
+A process can hold a logging system besides the logger: the host's own, as in a game engine, a
+Python program or a game with a logging library, or a plug-in's private copy of the logger. The
+program joins them at start-up, before its first log call, so one of them writes everything.
 
 | Host | Join |
 | --- | --- |
-| Its own logging system, in C++ | It sets SushiLog's sink to one that hands each record to its system |
-| Its own logging system, outside C++ | The same, through the C interface |
-| A host that wants its records in SushiLog's stream | It writes them through `log_forward_sink()` |
-| A plug-in with a private SushiLog | The plug-in sets its sink to the host's, as either row above |
+| Its own logging system, in C++ | It sets the logger's sink to one that hands each record to its system |
+| Its own logging system, outside C++ | The same, through the logger's C interface |
+| A host that wants its records in the logger's stream | It writes them through the logger's forwarding sink |
+| A plug-in with a private logger | The plug-in sets its sink to the host's, as either row above |
 
 A sink that belongs to a host is delivered on the calling thread, so the host sees records in
-the order they were made. The types, the calls, forwarding and the C interface are in
-[`INTERFACE.md`](INTERFACE.md).
+the order they were made.
 
 ## Python
 
@@ -201,7 +197,7 @@ try
 }
 catch (const std::exception& error)
 {
-    PX_LOG_WARN(K_SCHEDULER_LOG_CATEGORY, "wait() threw '{}'; treating the event as complete",
+    AC_LOG_WARN(K_SCHEDULER_LOG_CATEGORY, "wait() threw '{}'; treating the event as complete",
                 error.what());
     return EventStatus::CompletedWithError;
 }
@@ -213,7 +209,7 @@ Source: not compiled
 
 | Mistake | Fix |
 | --- | --- |
-| `PX_LOG_ERROR(category, "failed")` | Name the operation, the input and the consequence |
+| `AC_LOG_ERROR(category, "failed")` | Name the operation, the input and the consequence |
 | `INFO` inside the frame loop | A counter plus one `INFO` per interval, or `TRACE` |
 | A module logging under another module's category | Declare the module's own category |
 | `std::cout`, `printf` or `print` in library code | The logger |
