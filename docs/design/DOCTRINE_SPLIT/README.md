@@ -28,6 +28,14 @@ Decided by the owner on 2026-10-30.
 5. An agent writes nothing to memory unless the owner asks in that message.
 6. A general skill names no engine, vendor, device or build tool. An engine or a device class gets a
    skill of its own, and the language skills name the tools behind the CLI.
+7. A page that falls behind its subject fails the commit that caused it (P9). A manual page names what
+   it `Describes`, a module README describes its folder, and a commit that changes a described file
+   without the page fails in the hook and in CI unless the message says
+   `Docs: <page> unchanged (<reason>)`. The failure is an error, not a warning.
+8. A fact quoted in more than one page has one home and a stable id, never a position in a file. A
+   verbatim quote is generated from the home between markers and edited only there, like the design
+   views. A paraphrase names the fact it follows, so a change to the fact lists every page that
+   cites it. The map is computed by a command from the markers and is never stored (P10).
 
 ## Design
 
@@ -67,10 +75,9 @@ It must not erase a checker a repository changed for itself (backlog entry RW-29
 | P7 | Memory is written only on the owner's request, stated in claude/CLAUDE.md and DISPATCH.md | built |
 | P8 | The shared tools and skills reach the other repositories without erasing their local rules | built |
 | P9 | Documentation cannot go stale: a change to a documented fact updates every page that links or cites it, enforced by rule, to be designed with the owner | planned |
+| P10 | A fact quoted in more than one page has one home with a stable id, a verbatim quote is generated from it, and a command lists who cites it | planned |
 
 ## Open questions
 
-- How P9 stops a documentation page from going stale when the fact it describes, or the page it
-  links, changes. The proposal to settle with the owner: a page names what it `Describes`, a checker
-  fails a commit that changes a described file without the page unless the message says
-  `Docs: <page> unchanged (<reason>)`, and the same check runs in the hook and in CI.
+- The marker that gives a fact its id and the marker a quote carries, and which repeated passages
+  of the manual are the first facts to give a home (P10).
