@@ -129,3 +129,12 @@ Acceptance: `RW-29` closed here; each repository passes its own `check_all` afte
 The orchestrator writes the changelog line, dates the status lines of the topic and this folder,
 and closes or opens the backlog entries with the `backlog` commands. Nothing is deleted before the
 grace period.
+
+## P9: documentation that cannot go stale
+
+Added on 2026-10-30 at the owner's request. Agents sometimes change or add documentation and
+forget the places that link or quote it, so a project's documentation goes stale. The owner wants
+strict rules against it. The rules are designed with the owner when P8 closes, then built; this
+phase stays the last in the queue.
+
+Acceptance: the design is written into the topic and agreed with the owner before any rule is built.
