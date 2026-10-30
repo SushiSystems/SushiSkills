@@ -65,6 +65,9 @@ Backlog: none (typo in a comment)
   per clone; its setup command does it for the person.
 - A hook is never skipped with `--no-verify`.
 
+A commit that changes what a page describes also carries the pages, or a `Docs: <page> unchanged
+(<reason>)` line after the `Backlog:` line (`documentation`, "Pages follow what they describe").
+
 ## Staging
 
 Staging follows `git-workflow`, section "Shared working tree".

@@ -19,6 +19,8 @@ You are a subagent. These rules hold for this whole task, on top of the task its
    for it.
 9. Read what is left and what is designed through the `backlog` and `design` commands, never from
    a file or the git log, and paste the command and its output beside every such claim.
+10. When your change touches a file a page describes, name the page and the lines you updated, or
+    say why the page stays.
 
 The first line of your report is exactly:
 

@@ -148,6 +148,24 @@ README links.
 - No em dash in the prose of a page; `humanizer` gives the repair. The changelog entry and the
   design status line keep theirs.
 
+## Pages follow what they describe
+
+A page that falls behind its subject is a defect in the commit that caused it, and a rule catches
+it, not a reader.
+
+- A manual page names what it describes in a line of its first twelve lines:
+  ``**Describes:** `src/a.py`, `lib` ``. A path is a file or a folder, and a folder covers
+  everything below it.
+- A README also describes the entries of its own folder. A commit that adds an entry to that folder,
+  or removes one whole, needs the README in the same commit. Editing a file inside an entry does not.
+- A commit that changes a described file needs the page in the same commit, or a line in its message,
+  last, that says why the page stays: `Docs: <page> unchanged (<reason>)`. `Docs: none (<reason>)`
+  waives every page of the commit. A reason of no words is a refusal.
+- `docs/agent/`, `docs/design/`, `docs/backlog/` and `docs/archive/` are not followed; they are
+  written by their own commands or end with the work.
+- `tools/documentation/check_docs_follow.py` checks the commits after `K_DOCS_FOLLOW_SINCE` in
+  `tools/settings.py`, and the `commit-msg` hook of `commits` refuses the commit before it exists.
+
 ## Red flags
 
 - "I will write a quick note in a new file so the next agent sees it." → the work folder.
@@ -162,3 +180,4 @@ README links.
 - "I will add a note that this changed." → replace the text; the changelog holds the change.
 - "I will keep the old paragraph in case." → delete it; git keeps it.
 - "The page is long because the subject is large." → a subject that large is more than one page.
+- "The page still reads true, so I leave it." → add `Docs: <page> unchanged (<reason>)`; the reason is the proof.
