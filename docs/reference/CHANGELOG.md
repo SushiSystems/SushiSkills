@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-30 — tools: Added the test budget to `settings.py` and a test that keeps it equal to the table in the `testing` skill (`settings.py`, RW-35).
 - 2026-10-30 — testing: Defined what a test is, added value rules, a time and count budget with its directions to the agent, and a default of `small` and `medium` for a project's test command (`SKILL.md`, RW-35).
 - 2026-10-30 — general: Split the doctrine from everything specific to Sushi Systems (RW-30, `595c867`).
 - 2026-10-30 — documentation: Required a page to follow what it describes, with a `**Describes:**` line, a README that lists its folder and a `Docs:` commit line to say why a page stays (`check_docs_follow.py`).

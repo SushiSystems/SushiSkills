@@ -64,3 +64,17 @@ K_LOGGER_C_PREFIX = "sl_"
 K_TRAILER_SINCE = "2a6f3b82c3c10a44cb4fe54e8e0c89d685c2eded"
 K_EXTRA_TEST_FOLDERS: tuple[str, ...] = ("sushisystems/tooling/tests",)
 K_DOCS_FOLLOW_SINCE = "4d19a71ba72d076efb42ca8a6216992c143bf171"
+K_TEST_VALUE_SINCE = "f4c74c8e137bb2a825239767debe72035435e33c"
+K_TEST_ADDITIONS_SINCE = "f4c74c8e137bb2a825239767debe72035435e33c"
+K_TEST_BUDGET: dict[str, int] = {
+    "small_test_s": 1,
+    "medium_test_s": 10,
+    "large_test_s": 120,
+    "small_program_s": 10,
+    "large_program_s": 600,
+    "default_run_s": 300,
+    "large_tier_s": 1800,
+    "cases_per_commit": 20,
+    "cases_per_fix": 5,
+    "second_program": 0,
+}
