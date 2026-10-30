@@ -34,6 +34,7 @@ K_CHECKERS = (
     "documentation/check_module_install.py",
     "documentation/check_docs_truth.py",
     "documentation/check_docs_follow.py",
+    "documentation/check_docs_facts.py",
     "layering/check_layering.py",
     "layering/check_agnostic.py",
     "commits/check_backlog_trailer.py",

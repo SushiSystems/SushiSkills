@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-10-30 — documentation: Required a page to follow what it describes, with a `**Describes:**` line, a README that lists its folder and a `Docs:` commit line to say why a page stays (`check_docs_follow.py`).
+- 2026-10-30 — documentation: Gave a fact quoted in more than one page a home and an id, generated the quotes from it and added a command that lists who cites it (`check_docs_facts.py`, `facts_cli.py`).
 - 2026-10-30 — sushisystems: Moved everything specific to Sushi Systems out of the doctrine into `sushisystems/`, and added `check_agnostic.py` to keep it out (`sushisystems-specific`).
 - 2026-10-30 — skills: Added the `backlog`, `design`, `gpu-development` and `unity-project-layout` skills, and made the others name no product, company, engine or build tool (`SKILL.md`).
 - 2026-10-30 — tools: Read the tooling package, the licence text, the module install names and the logger names from `settings.py` instead of from the checkers (`settings.py`).

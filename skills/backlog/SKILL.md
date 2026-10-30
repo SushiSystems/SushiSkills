@@ -37,6 +37,16 @@ answers from a stale copy; running the command answers from the store.
 4. **A commit that serves no entry** ends with `Backlog: none (<reason>)`. The reason says why no
    entry exists.
 
+The line, last in the message, takes one of these forms:
+
+<!-- quote:begin backlog-line -->
+```
+Backlog: RW-123
+Backlog: RW-123, KI-4
+Backlog: none (typo in a comment)
+```
+<!-- quote:end backlog-line -->
+
 A worker reads with `backlog next` and reports what it found; the orchestrator writes the entries
 (`multi-agent-work`, "Roles").
 

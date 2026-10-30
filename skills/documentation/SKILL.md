@@ -166,6 +166,23 @@ it, not a reader.
 - `tools/documentation/check_docs_follow.py` checks the commits after `K_DOCS_FOLLOW_SINCE` in
   `tools/settings.py`, and the `commit-msg` hook of `commits` refuses the commit before it exists.
 
+## Facts with one home
+
+A fact that more than one page needs has one home and a stable id. The id is its identity; a line
+number or a heading is not.
+
+- The home wraps the text in `<!-- fact:begin ID -->` and `<!-- fact:end ID -->`. An id is lower-case
+  words joined by `-`, and unique in the repository.
+- A verbatim quote sits between `<!-- quote:begin ID -->` and `<!-- quote:end ID -->`. Nobody types
+  its text: `python tools/documentation/facts_cli.py apply` rewrites it from the home, and the
+  checker fails a quote that differs by one character.
+- A paraphrase carries the line `<!-- follows: ID -->` beside it, indented when it sits in a list
+  item. A commit that changes the fact needs each page that follows it, or a `Docs:` line for it.
+- `facts_cli.py cited-by ID` lists every quote and follow of a fact, `where ID` names its home and
+  `list` shows them all. The map is computed from the markers on every run and is never stored.
+- A link comes before a quote. A fact earns a home when two pages must say the same thing.
+- `tools/documentation/check_docs_facts.py` checks the markers, the ids and the quotes.
+
 ## Red flags
 
 - "I will write a quick note in a new file so the next agent sees it." → the work folder.
@@ -180,4 +197,5 @@ it, not a reader.
 - "I will add a note that this changed." → replace the text; the changelog holds the change.
 - "I will keep the old paragraph in case." → delete it; git keeps it.
 - "The page is long because the subject is large." → a subject that large is more than one page.
+- "I will copy the sentence into the other page." → give it a home and quote it, or link it.
 - "The page still reads true, so I leave it." → add `Docs: <page> unchanged (<reason>)`; the reason is the proof.

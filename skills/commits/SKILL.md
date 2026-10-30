@@ -50,11 +50,13 @@ for a design lives in a design document; the body may cite its path. Run the `hu
 
 Every commit ends with one line, last in the message, that says which backlog entry it serves.
 
+<!-- fact:begin backlog-line -->
 ```
 Backlog: RW-123
 Backlog: RW-123, KI-4
 Backlog: none (typo in a comment)
 ```
+<!-- fact:end backlog-line -->
 
 - An ID must be an entry open in the parent commit or in this commit, so the commit that closes an
   entry still names it (`backlog`).

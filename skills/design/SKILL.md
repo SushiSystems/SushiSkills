@@ -34,6 +34,7 @@ is designed answers from a stale copy.
    topic, never a second topic.
 4. **A phase moves** with `design phase-state`. The topic ships when its last phase is built or
    withdrawn.
+   <!-- follows: phase-ships-topic -->
 5. **Work that carries out a phase** says so in its work folder's `Implements` line.
 6. **The status line** says where the document stands and never how it got there.
 

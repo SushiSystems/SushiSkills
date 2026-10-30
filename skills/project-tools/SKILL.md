@@ -28,6 +28,7 @@ repository. They are run by hand or through the project's CLI; they never build 
 | `tools/testing/check_probes.py` | Probes and scenario benchmarks live in `applications/probes/` and `applications/benchmarks/`, use no test framework, stay out of the test runner, carry a name of their own and are listed, from `testing` and `performance` |
 | `tools/logs/check_logging.py` | Log calls carry their module's category, library code writes no console output and hides no failure, from `logging` |
 | `tools/commits/check_backlog_trailer.py` | The `Backlog:` line of `commits`: each commit after `K_TRAILER_SINCE` names an entry open in its parent or in itself, or says `none (<reason>)` |
+| `tools/documentation/check_docs_facts.py` | "Facts with one home" in `documentation`: the markers pair, each id has one home, every quote and follow names a fact, and every quote holds its fact's text exactly |
 | `tools/documentation/check_docs_follow.py` | "Pages follow what they describe" in `documentation`: each commit after `K_DOCS_FOLLOW_SINCE` updates the pages that describe what it changes, or says why not with a `Docs:` line |
 | `tools/layering/check_agnostic.py` | The folders `K_AGNOSTIC_PATHS` names hold no product, company tool, identity, machine path or technology name that the terms file lists; it checks nothing in a repository that names no folder |
 | `tools/ci/check_workflows.py` | The workflow files GitHub would refuse before a job starts, from `continuous-integration` |

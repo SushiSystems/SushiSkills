@@ -56,7 +56,9 @@ phase is named by its id in the table below, not described in the status.
 | `built` | Merged and working as designed |
 | `withdrawn` | Given up by the owner |
 
+<!-- fact:begin phase-ships-topic -->
 When every phase is `built` or `withdrawn`, the document's status becomes `Shipped`.
+<!-- fact:end phase-ships-topic -->
 
 ## The topic and its metadata
 

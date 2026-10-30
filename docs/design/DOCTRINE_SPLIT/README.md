@@ -1,6 +1,6 @@
 # Doctrine split
 
-**Status:** Open — P1 to P8 built, P9 waits for the design talk
+**Status:** Shipped — 2026-10-30
 **About:** The doctrine in skills/ names no product, company, person or machine; everything specific to Sushi Systems lives under sushisystems/.
 **Modules:** `skills`, `claude`
 
@@ -74,8 +74,8 @@ It must not erase a checker a repository changed for itself (backlog entry RW-29
 | P6 | Backlog and design skills, the status-to-command table, the commit trailer and the tracked hook | built |
 | P7 | Memory is written only on the owner's request, stated in claude/CLAUDE.md and DISPATCH.md | built |
 | P8 | The shared tools and skills reach the other repositories without erasing their local rules | built |
-| P9 | Documentation cannot go stale: a change to a documented fact updates every page that links or cites it, enforced by rule, to be designed with the owner | planned |
-| P10 | A fact quoted in more than one page has one home with a stable id, a verbatim quote is generated from it, and a command lists who cites it | planned |
+| P9 | Documentation cannot go stale: a change to a documented fact updates every page that links or cites it, enforced by a rule in the hook and in CI | built |
+| P10 | A fact quoted in more than one page has one home with a stable id, a verbatim quote is generated from it, and a command lists who cites it | built |
 
 ## Open questions
 

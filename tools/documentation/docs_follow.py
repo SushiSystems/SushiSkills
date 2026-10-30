@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import settings  # noqa: E402
 from commits.history import git  # noqa: E402
+from documentation import facts  # noqa: E402
 
 K_SINCE: str = getattr(settings, "K_DOCS_FOLLOW_SINCE", "")
 K_IGNORED: tuple[str, ...] = tuple(getattr(
@@ -85,15 +86,32 @@ def _exists(root: Path, revision: str | None, path: str) -> bool:
     return git(root, "cat-file", "-e", f"{revision}:{path}") is not None
 
 
-def _pages(root: Path, revision: str | None) -> dict[str, tuple[str, ...]]:
-    """Returns every markdown page of a revision (or the index) with the paths it describes."""
+def _text(root: Path, revision: str | None, path: str) -> str:
+    """Returns a file's text in a revision, or in the index when revision is None; empty when it is absent."""
+    return git(root, "show", f"{revision or ''}:{path}") or ""
+
+
+def _pages(root: Path, revision: str | None) -> dict[str, tuple[tuple[str, ...], tuple[str, ...]]]:
+    """Returns every followed markdown page of a revision (or the index) with what it describes and follows."""
     listing = git(root, "ls-tree", "-r", "--name-only", revision) if revision else git(root, "ls-files")
-    pages: dict[str, tuple[str, ...]] = {}
+    pages: dict[str, tuple[tuple[str, ...], tuple[str, ...]]] = {}
     for name in (listing or "").splitlines():
         if name.endswith(".md") and not _is_ignored(name):
-            text = git(root, "show", f"{revision or ''}:{name}")
-            pages[name] = describes_of(text or "")
+            text = _text(root, revision, name)
+            pages[name] = (describes_of(text), tuple(dict.fromkeys(fact_id for fact_id, _ in facts.parse(name, text).follows)))
     return pages
+
+
+def _changed_facts(root: Path, changes: list[Change], before: str | None, after: str | None) -> set[str]:
+    """Returns the ids of the facts whose text, or whose existence, differs between the two sides of a change."""
+    changed: set[str] = set()
+    for change in changes:
+        if not change.path.endswith(".md"):
+            continue
+        old = {block.id: block.body for block in facts.parse("", _text(root, before, change.old_path or change.path)).facts}
+        new = {block.id: block.body for block in facts.parse("", _text(root, after, change.path)).facts}
+        changed |= {fact_id for fact_id in old.keys() | new.keys() if old.get(fact_id) != new.get(fact_id)}
+    return changed
 
 
 def _moves(change: Change) -> list[tuple[str, bool]]:
@@ -133,18 +151,29 @@ def follow_problems(root: Path, changes: list[Change], message: str, before: str
     if waived:
         return []
     touched = {change.path for change in changes} | {change.old_path for change in changes if change.old_path}
+    changed_facts = _changed_facts(root, changes, before, after)
     problems: list[str] = []
-    for page, described in _pages(root, after).items():
+    for page, (described, followed) in _pages(root, after).items():
         if page in touched or page in unchanged:
             continue
-        for change in changes:
-            hits = [entry for entry in described if _covers(entry, change.path) or (change.old_path and _covers(entry, change.old_path))]
-            if hits:
-                problems.append(f"{page} describes {hits[0]}, which this commit changes; update the page or add `Docs: {page} unchanged (<reason>)`")
-                break
-        else:
-            if PurePosixPath(page).name == K_README:
-                for entry in _entry_changes(root, page, before, after, changes):
-                    problems.append(f"{page} lists its folder, and this commit {entry}; update the page or add `Docs: {page} unchanged (<reason>)`")
-                    break
+        reason = _reason(root, page, described, followed, changes, changed_facts, before, after)
+        if reason:
+            problems.append(f"{page} {reason}; update the page or add `Docs: {page} unchanged (<reason>)`")
     return problems
+
+
+def _reason(root: Path, page: str, described: tuple[str, ...], followed: tuple[str, ...], changes: list[Change],
+            changed_facts: set[str], before: str | None, after: str | None) -> str:
+    """Returns why a change leaves a page behind, or an empty text when it does not."""
+    for change in changes:
+        hits = [entry for entry in described
+                if _covers(entry, change.path) or (change.old_path and _covers(entry, change.old_path))]
+        if hits:
+            return f"describes {hits[0]}, which this commit changes"
+    cited = sorted(set(followed) & changed_facts)
+    if cited:
+        return f"follows the fact {cited[0]}, which this commit changes"
+    if PurePosixPath(page).name == K_README:
+        for entry in _entry_changes(root, page, before, after, changes):
+            return f"lists its folder, and this commit {entry}"
+    return ""
