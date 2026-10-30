@@ -1,6 +1,6 @@
 # Agnostic doctrine
 
-**Status:** Open — P1 to P7 built on 2026-10-30; P8 and P9 remain. The plan is `PLAN.md`.
+**Status:** Open — P1 to P8 built on 2026-10-30; P9 remains. The plan is `PLAN.md`.
 **Implements:** DOCTRINE_SPLIT#P1, DOCTRINE_SPLIT#P2, DOCTRINE_SPLIT#P3, DOCTRINE_SPLIT#P4, DOCTRINE_SPLIT#P5, DOCTRINE_SPLIT#P6, DOCTRINE_SPLIT#P7, DOCTRINE_SPLIT#P8
 
 The `sushiskills` doctrine becomes a global engineering doctrine that names no application, no

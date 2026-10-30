@@ -1,6 +1,6 @@
 # Agnostic doctrine plan
 
-**Status:** Open — inline; P1 to P7 built, P8 is rolling out to the other repositories, P9 waits for the design talk.
+**Status:** Open — inline; P1 to P8 built, P9 waits for the design talk.
 
 Carries out `SPEC.md` and the topic `docs/design/DOCTRINE_SPLIT/`. One session runs every task in
 order. Each task has one acceptance criterion and one build, `python tools/check_all.py .` unless

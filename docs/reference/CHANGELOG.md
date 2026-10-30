@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- 2026-10-30 — sushisystems: Moved everything specific to Sushi Systems out of the doctrine into `sushisystems/`, and added `check_agnostic.py` to keep it out (`sushisystems-specific`).
+- 2026-10-30 — skills: Added the `backlog`, `design`, `gpu-development` and `unity-project-layout` skills, and made the others name no product, company, engine or build tool (`SKILL.md`).
+- 2026-10-30 — tools: Read the tooling package, the licence text, the module install names and the logger names from `settings.py` instead of from the checkers (`settings.py`).
+- 2026-10-30 — commits: Required a `Backlog:` line on each commit after `K_TRAILER_SINCE`, checked by `check_backlog_trailer.py` and the tracked `commit-msg` hook (`SKILL.md`).
+- 2026-10-30 — claude: Wrote that no agent writes memory unless asked and that backlog and design state comes from the commands (`CLAUDE.md`, `DISPATCH.md`).
+- 2026-10-30 — tools: Added `--keep` to the shared tools copy and `apply_settings.py`, which adds the Sushi settings and the CLAUDE.md block to a repository (`copy_shared_tools.py`).
 - 2026-10-30 — tools: Made the shared tools copy refuse a shared checker that holds a local edit, with `--force` to overwrite it (`copy_shared_tools.py`, RW-29).
 - 2026-10-28 — tools: Raised the sushicore the checkers ask for to 0.10.2, whose import rebases moved links and whose frozen topics own no module (`sushicore_bridge.py`).
 - 2026-10-28 — tools: Left the generated design views out of the duplicated passage rule, since a topic's About line repeats in every module it owns (`check_docs_truth.py`).

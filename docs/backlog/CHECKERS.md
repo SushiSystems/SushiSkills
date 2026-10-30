@@ -19,6 +19,10 @@
 | RW-20 | P2 | open | Let the test mirror checker skip listed units | `check_test_mirror.py` skips the units a repository lists in `tools/settings.py` and fails on a listed unit that has gained a test |  |  | 2026-10-19 |
 | RW-21 | P2 | open | Read TypeScript imports in the layering check | `check_layering.py` reports a TypeScript import that crosses a boundary the repository's tier order forbids |  |  | 2026-10-19 |
 | RW-22 | P2 | open | Read C# in the comment, licence and layering checks | `check_source_comments.py` and `write_license_block.py` read `.cs` files, and `check_layering.py` reads a Unity tree's assembly definitions |  |  | 2026-10-19 |
+| RW-31 | P2 | open | Adopt the untested list of SushiDSP in the shared test mirror checker | check_test_mirror.py holds the untested list rule with a test, and SushiDSP takes the shared copy without --keep |  | `tools/testing/check_test_mirror.py` | 2026-10-30 |
+| RW-32 | P2 | open | Roll the shared tools out to SushiRuntime and SushiEngine once their trees are clean | both repositories pass check_all with the shared tools, copied with copy_shared_tools |  |  | 2026-10-30 |
+| RW-33 | P2 | open | Turn on the Backlog commit line in each repository after its CI fetches full history | K_TRAILER_SINCE is set and the hooks are installed in each repository that took the shared tools |  |  | 2026-10-30 |
+| RW-34 | P3 | open | Bring SushiStack and SushiWeb to a clean check_all so they can take the shared tools | both pass the shared checkers they fail today, then take the copy with copy_shared_tools |  |  | 2026-10-30 |
 
 ## Known issues
 
