@@ -4,7 +4,7 @@ These hold in every repository, before any project CLAUDE.md.
 
 ## Language
 
-Chat in Turkish. Every project artifact — code, comments, documentation, commit messages,
+Every project artifact — code, comments, documentation, commit messages,
 pull requests — in English unless told otherwise for a specific piece. All prose goes through
 the `humanizer` skill in the language it is written in.
 

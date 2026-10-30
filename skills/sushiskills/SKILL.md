@@ -101,8 +101,8 @@ is `SPEC.md` and a superpowers plan is `PLAN.md` in the work folder
 
 ## Language
 
-Chat in the owner's language. Code, comments, documentation, commits and pull requests are in
-English unless the owner says otherwise for a specific piece.
+Code, comments, documentation, commits and pull requests are in English unless the owner says
+otherwise for a specific piece.
 
 ## Red flags
 
