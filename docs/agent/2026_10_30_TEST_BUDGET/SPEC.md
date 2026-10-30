@@ -2,6 +2,8 @@
 
 **Status:** Open — phases A to C built, D0 released as sushicore v0.10.6; the measured run (RW-37) and the shared test command (RW-38) are next
 
+Implements: TEST_BUDGET D
+
 Closes `RW-35`. Rules go into the `testing` skill, enforcement into `tools/testing/`, measurement
 into each project's test command. SushiEngine is the first project to adopt it.
 

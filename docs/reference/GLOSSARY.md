@@ -12,3 +12,4 @@
 | Dispatch block | The numbered lines in `claude/CLAUDE.md` that open every worker's prompt verbatim |
 | Tier | A layer in a repository's module order; a module may depend only on tiers below its own |
 | Doctrine split | Keeping the company-neutral skills in `skills/` apart from everything specific to Sushi Systems, which lives under `sushisystems/` |
+| Test budget | The limits on the time of the tests and on the cases one commit adds, set in the `testing` skill and read by a checker and by the project test command |
