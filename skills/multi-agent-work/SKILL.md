@@ -65,6 +65,7 @@ The evidence a report must carry, and what a reviewer dispatch checks by name, a
 2. A report on work that changed a public name, a signature, a header path, a CLI command or a
    documented behaviour carries the output of `tools/documentation/check_docs_truth.py` and the
    pages and lines the change made false. Without both, the report is sent back.
+3. A report on work that added tests lists them, as "Directions to the agent" in `testing` says.
 
 A page a worker reports as false is handled as `AGENT_WORK.md` in `documentation` says.
 

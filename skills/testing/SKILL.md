@@ -1,6 +1,6 @@
 ---
 name: testing
-description: Use when fixing a bug, adding behaviour, writing or changing a test, updating a golden file, seeing a test fail intermittently, or deciding whether a change is tested enough, in a repository.
+description: Use when fixing a bug, adding behaviour, writing or changing a test, updating a golden file, seeing a test fail intermittently, deciding whether a change is tested enough, or when a test run is slow or the number of tests has grown, in a repository.
 ---
 
 # Testing
@@ -13,7 +13,7 @@ that fails without the change and passes with it.
 | Change | Required test |
 | --- | --- |
 | `fix` | A regression test that reproduces the defect, seen failing before the fix |
-| `feat` | A unit test for each behaviour of the public surface it adds; an integration test when it crosses a module boundary |
+| `feat` | A unit test for each behaviour of the public surface it adds, within the limits of "Budget"; an integration test when it crosses a module boundary |
 | `perf` | The existing tests unchanged and green, plus the measurement from `performance` |
 | `refactor` | No new test; every existing test green before and after |
 
@@ -29,6 +29,89 @@ A panel that cannot be tested that way holds logic that belongs in a unit of its
 
 Private details are not tested directly. If a private function seems to need its own test, it is
 a brick that wants its own module.
+
+## What a test is
+
+A test checks one promise the code makes, with the smallest input that can break it, at the
+cheapest level that can see it, and fails when the promise is broken.
+
+- A test has at least one assertion. A test that prints a value, or only runs the code, is an
+  observation, not a test.
+- Its name says the promise. If the name cannot say which defect the test would catch, there is no
+  test.
+- A test that repeats the implementation checks nothing, and a unit with every collaborator mocked
+  checks its mocks.
+- A helper that asserts is named `Expect*` or `Assert*`, so a checker can tell an assertion from a
+  call. An assertion on a literal, such as `EXPECT_TRUE(true)`, is a defect.
+
+## Value rules
+
+**Rule:**
+
+1. **Cheapest level.** What a `small` test can see is not written as `medium` or `large`.
+2. **One promise, one test.** A promise that a higher test already covers is not repeated below it.
+3. **Mocks sit at the unit's boundary:** the network, the disk, the device. The unit's own module
+   is used for real.
+4. **A regression test is the smallest reproduction,** a few lines that show the defect, not the
+   scenario that exposed it.
+5. **Rows, not copies.** The same promise over ten inputs is one parametrised test with ten rows.
+
+**Why:** every test costs run time on every later change. A test that keeps no promise pays that
+cost for nothing, and an agent told only to be thorough has no reason to stop.
+
+**Not when:** rule 3 does not hold when a collaborator inside the module is itself slow or needs a
+device; the test then uses a fake with that collaborator's interface. Rule 1 does not hold for a
+promise that shows only at a size the cheaper level cannot reach, such as a converged simulation;
+that test is `large`, listed in the exemption file below, and has the owner's ruling.
+
+A checker reads assertions and counts. Rules 1 to 3 and 5 are judged by a reviewer, from the list
+of added tests that the checker prints.
+
+## Budget
+
+Time is a budget, and every test spends it. The timeouts of the size table stay; they stop hangs.
+These limits are the budget.
+
+| Limit | Value |
+| --- | --- |
+| A `small` test | 1 s |
+| A `medium` test | 10 s |
+| A new `large` test | 120 s |
+| The `small` tests of one test program | 10 s in total |
+| The `large` tests of one test program | 600 s in total |
+| The default run (`small` and `medium`) of a repository | 300 s |
+| The whole `large` tier of a repository | 1 800 s |
+| Test cases added by one commit | 20 |
+| Test cases added by one `fix` commit | 5 |
+| A second test program in one module, added by one commit | 0 without the owner |
+
+- A parametrised case counts once as a case; its rows count in full in the time. A module's first
+  test program needs no approval.
+- The project's test command measures the time and prints one budget line: the sums, the wall time
+  and the cases added since the base. An agent reads that line and times nothing itself.
+- Counts gate at once. A single test fails the gate only when it exceeds its limit in a rerun of
+  that test alone; a total fails above 1.25 times its limit. A run that did not rebuild prints
+  "(not rebuilt)" and never gates.
+- A test already over its limit is listed in the project's `tests/budget_exemptions.toml`, one test
+  name and one open backlog ID. The checker fails an entry whose test no longer breaks its limit,
+  so the list only shrinks.
+- A project's test command runs `small` and `medium` unless a size is named. It runs `large` only
+  with a filter, or with the flag that means everything.
+
+## Directions to the agent
+
+1. Add a new test to the existing test program of its module. A second program in a module needs
+   the owner.
+2. Run the module's tests through the project's test command and read its budget line. The
+   default run's total appears only when the whole default run happened; pre-merge CI runs it, and
+   an agent does not run it to find out.
+3. When a limit is broken, merge, parametrise or delete the tests you added in this piece of work
+   first. When the cause is an old test, stop adding tests and report it under "Suggested
+   removals" in the work folder's `REPORT.md`; do not touch it.
+4. The report lists the tests added and the promise each keeps. The checker prints the list; check
+   it and do not write it from memory.
+5. Never run the whole `large` tier. Run the `large` suites of the module you changed, with a
+   filter. The owner runs the whole tier on the device machine.
 
 ## Bug fix order
 
@@ -50,7 +133,10 @@ enforces as a timeout. Every test carries exactly one.
 | --- | --- | --- |
 | `small` | One process and one thread; no network, no sleep, no device, no file outside the build tree | 60 s |
 | `medium` | Threads and processes, localhost, files in a temporary folder, a software device, a null audio driver, a fake plugin host | 300 s |
-| `large` | Real hardware, such as a GPU or an audio device, or a run longer than `medium` allows | 900 s |
+| `large` | Real hardware, such as a GPU or an audio device | 900 s |
+
+A test that needs no hardware and runs long is made shorter. It is not labelled `large` to hide
+its cost.
 
 A test's size is written in its source, once, where the test is declared:
 
@@ -140,3 +226,6 @@ the command and its output.
 - "It passed on the second run." → it is flaky; fix or quarantine.
 - "No device here, so the test counts as passing." → skipped.
 - "It is GUI, plugin or device code; list it as untested." → test it as above.
+- "I will cover every branch to be safe." → one promise, one test; the budget is the limit.
+- "The test prints the value so I can see it." → that is an observation; assert it or delete it.
+- "I will run all the large tests to be sure." → the large suites of the module you changed, with a filter.
