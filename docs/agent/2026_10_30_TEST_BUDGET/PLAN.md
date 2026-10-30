@@ -3,7 +3,8 @@
 **Spec:** `SPEC.md` in this folder. **Rules:** the `testing`, `project-tools`, `documentation` and
 `commits` skills. **Runs:** inline, one session per repository, in the order A, B, C, D0, D, E.
 Phases A to C and E are in SushiSkills, D0 is in SushiCore, and D is in SushiEngine and needs the
-owner's machine. A1 is done; its answers are in `REPORT.md` and `SPEC.md`.
+owner's machine. A1, A2, A3, B1 to B3, C1 and D0 are done; `REPORT.md` says where to resume. D0b is new: the shared test
+command in `sushicore` (RW-38), then the pilot in `sushitrack` (RW-39), then D1 (RW-37) and SushiEngine.
 
 ## Global constraints
 
@@ -135,6 +136,20 @@ to cut.
 
 **Acceptance:** a test in `sushicore` shows the argument reaching the command line and being absent
 by default; the owner has cut the release before D2 starts.
+
+## D0b. The shared test command in `sushicore`
+
+**Files:** `sushicore` only: a new module for the command, its tests, `docs/reference/COMMAND_SURFACE.md`,
+`docs/guides/CLI_INTEGRATION.md`, the changelog.
+
+`register_test_command(app, module)` declares `test` once: `--label`, `--filter`, `--repeat`, `--jobs`;
+the default of `small` and `medium`; `--label large` refused without a filter; a JUnit file through
+`ctest_run(output_junit=)`; the budget line from `tools/testing/test_budget.py` in the module's root,
+skipped when it is absent. A module supplies only its build tree, its environment and its labels.
+
+**Acceptance:** `--describe` of a CLI shows the same `test` options as any other; the module tests show each
+behaviour. Then `sushitrack` replaces its own `test` with it (RW-39) and prints a budget line from a real
+CTest JUnit file, which is also the first check of the reader of `test_budget.py`.
 
 ## D1. Measure
 

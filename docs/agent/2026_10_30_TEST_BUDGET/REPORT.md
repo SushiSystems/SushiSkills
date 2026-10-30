@@ -140,6 +140,43 @@ Phases A to C and B3 are done. What is left needs more than this repository: D0 
 and its release is the owner's, D1 needs the owner's machine, D2 to D4 edit SushiEngine, E1b opens
 entries in seven other repositories.
 
+## Where to resume
+
+Written on 2026-10-30 for the owner's other computer. State of each repository when this was written:
+
+| Repository | State |
+| --- | --- |
+| SushiSkills | Phases A to C done and committed: the rules in `testing`, `check_test_value.py`, `check_test_additions.py`, `added_tests.py`, `test_budget.py`. `check_all.py` is green |
+| SushiCore | `v0.10.6` tagged and pushed. It holds `ctest_run(output_junit=)` (RW-60), the manual corrected in fourteen places and the build gate headroom (RW-61). The `Release` workflow publishes it; whether the upload finished was not checked |
+| SushiTrack | Untouched; chosen as the pilot |
+| SushiEngine | Untouched; not built on the computer that wrote this |
+
+What to do, in order:
+
+1. **RW-37, on the computer that builds SushiEngine.** Run the small and medium tiers and one `large` module with a JUnit
+   file. This is the one direct CTest call the plan allows, because `se test` cannot write the file yet:
+
+   ```
+   ctest --test-dir build/default-debug -L "small|medium" -LE quarantined --output-junit <absolute path>/small_medium.xml
+   ctest --test-dir build/default-debug -L large -R "<suites of one module>" --output-junit <absolute path>/large_module.xml
+   ```
+
+   Note the wall time of each run and the module whose `large` tests took 700 s. Hand over the two files.
+2. **RW-38.** Write `register_test_command` in `sushicore` (phase D0b of `PLAN.md`).
+3. **RW-39.** Move `sushitrack` onto it; its build tree is built on the computer that wrote this.
+4. **RW-36 and RW-35.** The other CLIs follow; SushiEngine adopts it after step 1 sets the limits.
+
+Facts a new session needs, found the hard way:
+
+- Hooks are per clone. Run `python tools/hooks/install_hooks.py` once in each repository on the new computer.
+- `python -m sushicore.backlog` needs `sushicore/source` on `PYTHONPATH` unless `sushicore` is installed; inside the
+  `sushicore` repository use an absolute path, since an empty `sushicore/` folder at its root shadows the package.
+- `pytest` in `sushicore` needs `pytest-timeout`; without it run `python -m pytest -o addopts=""`.
+- Every pipx environment built here has `home = C:\ProgramData\Miniconda`, so removing Miniconda breaks `sl`, `st`, `se`
+  and the rest. Install a standalone Python and run `pipx reinstall-all` first.
+- `K_DOCS_FOLLOW_SINCE` in `tools/settings.py` was moved to `b02fc98`, the commit that missed its `Docs:` line.
+- A commit that adds a second test program to a folder needs a `Test program:` line from the owner.
+
 ## Suggested removals
 
 None yet.

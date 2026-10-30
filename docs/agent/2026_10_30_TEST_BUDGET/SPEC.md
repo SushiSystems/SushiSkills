@@ -1,6 +1,6 @@
 # Test budget
 
-**Status:** Open — spec and plan reviewed once on 2026-10-30; nothing built
+**Status:** Open — phases A to C built, D0 released as sushicore v0.10.6; the measured run (RW-37) and the shared test command (RW-38) are next
 
 Closes `RW-35`. Rules go into the `testing` skill, enforcement into `tools/testing/`, measurement
 into each project's test command. SushiEngine is the first project to adopt it.
@@ -80,6 +80,9 @@ Decided by the engineer on the owner's instruction to decide:
 6. An agent merges or deletes only tests it added itself. It reports old tests that look
    redundant and does not touch them, because deleting what it did not create is the owner's
    decision.
+8. The owner ruled on 2026-10-30 that every project CLI runs alike. The test command moves into
+   `sushicore` as one shared command, `sushitrack` is the pilot, and SushiEngine adopts it after the
+   measured run (RW-36, RW-37, RW-38, RW-39).
 7. A `fix` commit may add up to 5 cases, not 20, because a regression test is the smallest
    reproduction and a `fix` that needs more is a `feat`. It is held to the time budget; if it
    breaks the budget the fix lands and a backlog entry asks for the compression. Decisions 6 and
@@ -287,7 +290,8 @@ The engineer's own list; a reviewer adds to it.
 | A | Rules, table and constants; the drift test; changelog line | SushiSkills |
 | B | `check_test_value.py` and `check_test_additions.py`, with their tests, wired into `check_all` | SushiSkills |
 | C | `test_budget.py` and its JUnit fixture tests | SushiSkills |
-| D0 | An optional JUnit output on `CMakeDriver.ctest_run`; a release; the pin in SushiEngine follows | SushiCore, then SushiEngine |
+| D0 | Done: `CMakeDriver.ctest_run` takes `output_junit`, released as `v0.10.6` | SushiCore |
+| D0b | `register_test_command`: the shared test command with the JUnit file, the budget line, the default sizes and the `large` guard (RW-38) | SushiCore |
 | D | Measured run on the owner's machine; numbers set; `se test` writes JUnit, prints the budget line and refuses `--label large` without a filter; exemptions file; the engine's docs follow; report-only for a trial period, then the gate | SushiEngine |
 | E | Close: `RW-35` closed, follow-up entries opened, changelog, work folder deleted by its grace rule | SushiSkills |
 
