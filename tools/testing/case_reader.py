@@ -11,6 +11,7 @@ Supports C++ (GoogleTest), Python (pytest and unittest) and TypeScript (describe
 from __future__ import annotations
 
 import ast
+import hashlib
 import re
 from collections.abc import Iterator
 from dataclasses import dataclass
@@ -55,6 +56,14 @@ class Case:
     assertions: int
     literal_lines: tuple[int, ...]
     sleep_lines: tuple[int, ...]
+    digest: str = ""
+
+
+def is_test_file(path: Path) -> bool:
+    """Returns whether a file under a test folder declares test cases, by its name."""
+    if path.suffix in K_CPP_SUFFIXES or path.suffix == ".py":
+        return path.name.startswith("test_")
+    return path.name.endswith(K_TS_SUFFIXES)
 
 
 def cases_of(path: Path, text: str) -> list[Case]:
@@ -66,6 +75,11 @@ def cases_of(path: Path, text: str) -> list[Case]:
     if path.name.endswith(K_TS_SUFFIXES):
         return list(_typescript_cases(path, text))
     return []
+
+
+def _digest(body: str) -> str:
+    """Returns a short digest of a case body with its whitespace collapsed, so a renamed or moved case keeps it."""
+    return hashlib.sha256(" ".join(body.split()).encode("utf-8")).hexdigest()[:16]
 
 
 def _line(text: str, offset: int) -> int:
@@ -173,6 +187,7 @@ def _cpp_cases(path: Path, text: str) -> Iterator[Case]:
             assertions=len(K_CPP_ASSERT.findall(body)),
             literal_lines=_lines_of(K_CPP_LITERAL, text, code, opening + 1, closing),
             sleep_lines=_lines_of(K_CPP_SLEEP, text, code, opening + 1, closing),
+            digest=_digest(text[opening + 1:closing]),
         )
 
 
@@ -207,12 +222,12 @@ def _python_cases(path: Path, text: str) -> Iterator[Case]:
     file_size = _size_among(_file_marks(module))
     for node in module.body:
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name.startswith("test_"):
-            yield _python_case(path, node, file_size)
+            yield _python_case(path, text, node, file_size)
         elif isinstance(node, ast.ClassDef) and node.name.startswith("Test"):
             class_size = _size_among({name for item in node.decorator_list for name in _marks(item)}) or file_size
             for member in node.body:
                 if isinstance(member, (ast.FunctionDef, ast.AsyncFunctionDef)) and member.name.startswith("test_"):
-                    yield _python_case(path, member, class_size)
+                    yield _python_case(path, text, member, class_size)
 
 
 def _call_name(call: ast.Call) -> str:
@@ -223,7 +238,7 @@ def _call_name(call: ast.Call) -> str:
     return function.id if isinstance(function, ast.Name) else ""
 
 
-def _python_case(path: Path, node: ast.FunctionDef | ast.AsyncFunctionDef, outer_size: str | None) -> Case:
+def _python_case(path: Path, text: str, node: ast.FunctionDef | ast.AsyncFunctionDef, outer_size: str | None) -> Case:
     """Returns the case a Python test function declares; its own mark beats the size of its class or file."""
     own_marks = {name for item in node.decorator_list for name in _marks(item)}
     assertions = 0
@@ -242,7 +257,7 @@ def _python_case(path: Path, node: ast.FunctionDef | ast.AsyncFunctionDef, outer
                 sleeps.append(inner.lineno)
     return Case(path, node.name, node.lineno, node.end_lineno or node.lineno,
                 _size_among(own_marks) or outer_size,
-                assertions, tuple(literals), tuple(sleeps))
+                assertions, tuple(literals), tuple(sleeps), _digest(" ".join(ast.get_source_segment(text, statement) or "" for statement in node.body)))
 
 
 def _typescript_size(name: str) -> str | None:
@@ -273,4 +288,5 @@ def _typescript_cases(path: Path, text: str) -> Iterator[Case]:
             assertions=len(K_TS_ASSERT.findall(body)),
             literal_lines=_lines_of(K_TS_LITERAL, text, code, opening + 1, closing),
             sleep_lines=_lines_of(K_TS_SLEEP, text, code, opening + 1, closing),
+            digest=_digest(text[opening + 1:closing]),
         )

@@ -22,9 +22,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import settings  # noqa: E402
 from checking.checker import Checker, Issue, run  # noqa: E402
-from testing.case_reader import K_BENCHMARK, K_TS_SUFFIXES, Case, cases_of  # noqa: E402
+from testing.case_reader import K_BENCHMARK, Case, cases_of, is_test_file  # noqa: E402
 from testing.changed_lines import changed_lines  # noqa: E402
-from testing.check_test_sizes import K_CPP_SUFFIXES, discover  # noqa: E402
+from testing.check_test_sizes import discover  # noqa: E402
 
 K_SINCE: str = getattr(settings, "K_TEST_VALUE_SINCE", "")
 
@@ -34,13 +34,6 @@ class ValueTree:
     """Holds the cases of one repository that the rules judge."""
 
     cases: tuple[Case, ...]
-
-
-def _is_test_file(path: Path) -> bool:
-    """Returns whether a file under a test folder declares test cases."""
-    if path.suffix in K_CPP_SUFFIXES or path.suffix == ".py":
-        return path.name.startswith("test_")
-    return path.name.endswith(K_TS_SUFFIXES)
 
 
 def _is_touched(case: Case, changed: dict[Path, frozenset[int]] | None) -> bool:
@@ -54,7 +47,7 @@ def _is_touched(case: Case, changed: dict[Path, frozenset[int]] | None) -> bool:
 def build(root: Path, changed: dict[Path, frozenset[int]] | None) -> ValueTree:
     """Returns the touched, non-benchmark cases of the test files under a repository's test folders."""
     cases: list[Case] = []
-    for path in discover(root).of(_is_test_file):
+    for path in discover(root).of(is_test_file):
         text = path.read_text(encoding="utf-8", errors="ignore")
         cases.extend(case for case in cases_of(path, text)
                      if case.size != K_BENCHMARK and _is_touched(case, changed))
