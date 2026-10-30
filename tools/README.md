@@ -1,5 +1,7 @@
 # tools
 
+**Describes:** `tools/check_all.py`, `tools/settings.py`
+
 Reference implementations of the twelve checkers every repository carries. A rule is
 fixed here first and copied out with `checking/copy_shared_tools.py`; which files that copies and
 which it keeps is in the `project-tools` skill.
