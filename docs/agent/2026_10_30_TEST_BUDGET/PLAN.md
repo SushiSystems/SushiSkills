@@ -75,8 +75,8 @@ Rules, each a function in the checker's rule table: a C++ case with no `EXPECT_*
 `FAIL`, `SUCCEED` and no `expect_*` or `assert_*` call; a Python test with no `assert`,
 `pytest.raises` or `pytest.approx`; a TypeScript `it` with no `expect(`; an assertion on a literal
 such as `EXPECT_TRUE(true)` or `EXPECT_EQ(1, 1)`; `sleep_for`, `time.sleep` or `setTimeout` in a
-`small` test. Skips `Benchmark_` suites. Applies to files changed after `K_TEST_VALUE_SINCE`.
-`--report` prints the `EXPECT_CALL` and mock declaration count per test program, as a number.
+`small` test. Skips `Benchmark_` suites. Applies to the cases that have a line changed after
+`K_TEST_VALUE_SINCE`; a repository that sets none is not checked.
 
 **Acceptance:** the test file holds one passing and one failing example per rule per language,
 including a body that asserts through a helper, a body that only calls an unnamed helper, a

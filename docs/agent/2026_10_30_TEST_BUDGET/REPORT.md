@@ -69,6 +69,39 @@ normalised, and no skill states the commands, options or defaults a project CLI 
 `RW-36` (P2, decision) holds the question for the owner. This work does not wait for it: the budget
 reaches the CLIs through `CMakeDriver.ctest_run`, which they already share.
 
+## A3 and B1
+
+A3 is commit `b02fc98`, B1 is `d71e73a`. B1 split the work into `case_reader.py` (cases of C++,
+Python and TypeScript with their assertions, literal assertions and sleeps), `changed_lines.py`
+(the lines a working tree changes after a commit) and the checker. The mock-density report of the
+plan is not built: a checker's `--report` counts findings and cannot carry a number that is not a
+gate.
+
+Read on SushiEngine's sources, read-only, with no file written:
+
+| Measure | Value |
+| --- | --- |
+| Cases read | 7 379: 5 487 `small`, 1 778 `medium`, 114 `large`; the 12 `Benchmark_` cases are skipped |
+| Without an assertion | 27, after the reader learned `expect_*` and `assert_*` helpers, including template calls |
+| Assertions on a literal, sleeps in a `small` case | 0, 0 |
+| Where the 27 sit | `foundation/blas` 13, `foundation/native_blas` 6, `world/matter_scene` 3, `domain/matter` 2, `foundation/core` 2, `foundation/event_bus` 1 |
+
+Two kinds in the sample read: tests that call `check_*` helpers, which assert inside but sit
+outside the `expect_*` and `assert_*` naming (`test_lane_parity.cpp`), and a test that prints a
+sweep with `std::printf` and asserts nothing (`test_golden_crush.cpp`), which is an observation.
+The first run read 219: helpers named `expect_*` in snake_case were not recognised. The checker
+judges only cases with a changed line, so these 27 matter only when someone edits them.
+
+Defects in my own work, found by the checkers and the tests, and what became of them:
+
+- `b02fc98` changed `tools/settings.py` with no `Docs:` line for `tools/README.md`, which
+  `check_docs_follow.py` now reports as `commit-b02fc984e:1`. The hooks are not installed in this
+  clone (`core.hooksPath` is empty), so the `commit-msg` hook never refused it. The commit is on
+  the remote, so it cannot be amended. The finding stays until the owner decides: move
+  `K_DOCS_FOLLOW_SINCE` past it, or leave it failing.
+- A first draft of the Python size rule merged the marks of a file and a class into one set, so
+  the smallest size won; a test caught it and the nearest mark wins now.
+
 ## Suggested removals
 
 None yet.

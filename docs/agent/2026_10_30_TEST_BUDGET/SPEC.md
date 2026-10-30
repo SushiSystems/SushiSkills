@@ -262,8 +262,9 @@ The engineer's own list; a reviewer adds to it.
 6. **The assertion check misreads helpers.** *Answer:* only a body with no `EXPECT_*`,
    `ASSERT_*`, `FAIL`, `SUCCEED`, and no call to an `expect_*` or `assert_*` helper is a finding; a
    body that calls anything else is read by the reviewer.
-7. **Mock-at-the-boundary cannot be checked from source.** *Answer:* it stays a reviewed rule. The
-   report counts `EXPECT_CALL` and mock declarations per program, as a number, never a gate.
+7. **Mock-at-the-boundary cannot be checked from source.** *Answer:* it stays a reviewed rule. A
+   checker's report counts findings and cannot hold a number that is not a gate, so no mock count
+   is built; the reviewer reads the list of added tests.
 8. **The rules do not shorten the build.** A new test file still costs a compile and may cost a
    link; `BUILD_THROUGHPUT` handles that. *Answer:* out of scope here; direction 1 limits new
    programs, and that is the only overlap.
