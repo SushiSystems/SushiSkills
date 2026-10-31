@@ -36,7 +36,7 @@ repository. They are run by hand or through the project's CLI; they never build 
 | `tools/ci/check_workflows.py` | The workflow files GitHub would refuse before a job starts, from `continuous-integration` |
 
 A repository may add checkers; it may not rename or drop these twelve. `tools/check_all.py` runs
-all of them and the checker tests, and prints only what failed; it also runs every other
+all of them and the checker tests side by side, and prints only what failed, in the order they are listed; it also runs every other
 `tools/<area>/check_<what>.py` a repository holds as its own. A checker never reads a file git
 ignores.
 
