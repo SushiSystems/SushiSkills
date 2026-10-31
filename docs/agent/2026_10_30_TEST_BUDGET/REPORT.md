@@ -162,7 +162,7 @@ What to do, in order:
    ```
 
    Note the wall time of each run and the module whose `large` tests took 700 s. Hand over the two files.
-2. **The other CLIs** (RW-36): SushiLog, SushiProfiler, SushiDSP, SushiBLAS, SushiAI and SushiRuntime move onto the shared command the way `sushitrack` did, each with its `--sanitize` and `--cli` where it has them.
+2. **The other CLIs** (RW-36): SushiTrack, SushiLog and SushiProfiler are done. SushiDSP, SushiBLAS, SushiAI and SushiRuntime follow, each ending in `run_tests` with the options it has.
 3. **RW-35.** SushiEngine adopts the command after step 1 sets the limits.
 
 Facts a new session needs, found the hard way:
@@ -198,6 +198,25 @@ budget: small 5.6 s of 10 s (no program map), default 6 s sum, 8 s wall of 300 s
 So the reader parses a real `ctest --output-junit` file, which the earlier work could not check. What
 the run did not check: the `large` tier, the per-program totals (SushiTrack has no suite-to-program map
 yet) and the gate.
+
+## The CLIs that build first
+
+Done on 2026-10-31. SushiLog and SushiProfiler build before they test and carry `--type`, `--clean` and
+`--package`, which the shared command cannot hold. The owner chose to let such a CLI keep its command and
+take the options from one place, so `sushicore` v0.10.9 exports `label_option`, `filter_option`,
+`repeat_option`, `jobs_option`, `all_option` and `run_tests`. Both CLIs now end in `run_tests`, and the
+`Size` enum each had is the shared `TestLabel`. Their default changed from every size to `small` and
+`medium`; their CI already names its labels.
+
+First real runs, on each CLI's own built tree:
+
+| CLI | Tests | Wall | Budget line |
+| --- | --- | --- | --- |
+| SushiLog | 74 | 1 s | `small 0.3 s of 10 s (no program map), default 0 s sum, 1 s wall of 300 s` |
+| SushiProfiler | 446 | 11 s | `small 4.8 s of 10 s (no program map), default 9 s sum, 11 s wall of 300 s` |
+
+Both are unpushed. SushiDSP, SushiAI, SushiBLAS and SushiRuntime follow; SushiEngine waits for its measured
+run.
 
 ## Suggested removals
 
