@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-31 — testing: Wrote the shared test command in sushicore with the JUnit file, the budget line and the large guard (RW-38, `e086b04`).
 - 2026-10-30 — sushiskills: Removed the chat-language sentence from the Language section (`skills/sushiskills/SKILL.md`).
 - 2026-10-30 — claude: Removed the "Chat in Turkish" rule from the global rules, so chat follows the owner's language (`claude/CLAUDE.md`).
 - 2026-10-30 — testing: Added `test_budget.py`, which applies the budget to the times of a CTest JUnit run, prints one budget line and the findings, and judges a slow test by a rerun alone (RW-35).
