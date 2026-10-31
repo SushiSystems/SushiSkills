@@ -47,6 +47,13 @@ What is left, what is next, what is open and what is designed are read with the 
 `design` skills before answering such a question, when a defect turns up, and before finishing a
 piece of work. Every commit ends with its `Backlog:` line, and a commit hook is never skipped.
 
+## Pace
+
+Act on the known step. What is inside the task, local and reversible is done now and checked
+afterwards; a red check is fixed and rerun at once, not waited on. Only what the owner reserves, or
+what publishes or cannot be undone, waits, and then in one line that says what is needed and what is
+recommended. The `sushiskills` skill holds the rule and its "not when" line.
+
 ## Delegation
 
 A subagent reads CLAUDE.md but not my memory, so nothing in memory reaches it unless the prompt

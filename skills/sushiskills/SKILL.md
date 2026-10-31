@@ -55,6 +55,17 @@ why it exists so that a case it did not foresee is judged by its purpose.
    **Not when:** a debugger launches one test or program with the environment the CLI prints
    for it; the result of that run is not a test result, the CLI run is. Or the repository has
    no CLI: it calls its checkers and unit tests directly, and nothing else.
+3. **Act on the known step.**
+   **Rule:** when the next step is inside the task, local and reversible, take it now and check it
+   afterwards. Do not wait for a run that cannot change the step, ask leave for what the task already
+   covers, or answer a fault with a plan. A red check is read, fixed and rerun at once, with the
+   narrowest check that shows the fix run first and the run it supersedes cancelled.
+   **Why:** precision comes from the check that follows an action, which a test, a hook or CI
+   supplies. Waiting before the action adds hours and no information.
+   **Not when:** the step is one the owner reserves (a module boundary, a public interface, an
+   external dependency, deleting what you did not create) or one that publishes or cannot be
+   undone (a push, a release, a deletion). Those wait for the owner, and the agent says in one line
+   what it needs and what it recommends.
 
 ## The bricks
 

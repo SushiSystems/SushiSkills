@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-10-31 — sushiskills: Added the default to act on the known step, a CI rule to fix a red run at once, and a Pace section to the global rules (`skills/sushiskills/SKILL.md`).
 - 2026-10-31 — testing: Ran sushitrack on the shared test command and read its first real JUnit file with the budget reader (RW-39, `77b3f6f`).
 - 2026-10-31 — testing: Wrote the shared test command in sushicore with the JUnit file, the budget line and the large guard (RW-38, `e086b04`).
 - 2026-10-30 — sushiskills: Removed the chat-language sentence from the Language section (`skills/sushiskills/SKILL.md`).

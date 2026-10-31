@@ -54,6 +54,9 @@ Each stage runs the tests whose size, from `testing`, fits its budget. No test c
 
 ## When CI fails
 
+- A red run is read from the log of its first failed job as soon as that job ends. The fix is made, the
+  failing step is run locally, and the superseded run is cancelled; the rest of a red run is not waited
+  for, because its remaining jobs cannot change the fix.
 - A red `main` is fixed, or the change that broke it reverted, before any other work lands.
 - No release is proposed or cut while CI is red.
 - A failure that only CI shows is reproduced locally before it is fixed; if it is an environment
