@@ -147,8 +147,8 @@ Written on 2026-10-30 for the owner's other computer. State of each repository w
 | Repository | State |
 | --- | --- |
 | SushiSkills | Phases A to C done and committed: the rules in `testing`, `check_test_value.py`, `check_test_additions.py`, `added_tests.py`, `test_budget.py`. `check_all.py` is green |
-| SushiCore | `v0.10.6` tagged and pushed. It holds `ctest_run(output_junit=)` (RW-60), the manual corrected in fourteen places and the build gate headroom (RW-61). The `Release` workflow publishes it; whether the upload finished was not checked |
-| SushiTrack | Untouched; chosen as the pilot |
+| SushiCore | `v0.10.8` is on PyPI and tagged. It holds `register_test_command` with `--sanitize` and `--cli`, and `ctest_run(output_junit=)` |
+| SushiTrack | The pilot is done and committed locally, not pushed: `st test` is the shared command, the shared tools and the budget table are in |
 | SushiEngine | Untouched; not built on the computer that wrote this |
 
 What to do, in order:
@@ -162,9 +162,8 @@ What to do, in order:
    ```
 
    Note the wall time of each run and the module whose `large` tests took 700 s. Hand over the two files.
-2. **RW-38.** Write `register_test_command` in `sushicore` (phase D0b of `PLAN.md`).
-3. **RW-39.** Move `sushitrack` onto it; its build tree is built on the computer that wrote this.
-4. **RW-36 and RW-35.** The other CLIs follow; SushiEngine adopts it after step 1 sets the limits.
+2. **The other CLIs** (RW-36): SushiLog, SushiProfiler, SushiDSP, SushiBLAS, SushiAI and SushiRuntime move onto the shared command the way `sushitrack` did, each with its `--sanitize` and `--cli` where it has them.
+3. **RW-35.** SushiEngine adopts the command after step 1 sets the limits.
 
 Facts a new session needs, found the hard way:
 
@@ -176,6 +175,29 @@ Facts a new session needs, found the hard way:
   and the rest. Install a standalone Python and run `pipx reinstall-all` first.
 - `K_DOCS_FOLLOW_SINCE` in `tools/settings.py` was moved to `b02fc98`, the commit that missed its `Docs:` line.
 - A commit that adds a second test program to a folder needs a `Test program:` line from the owner.
+
+## D0b and the pilot
+
+Done on 2026-10-31. `sushicore` v0.10.7 added `register_test_command` (RW-38) and v0.10.8 added the two
+options the pilot needed. Writing the pilot showed the first plan wrong: the draft moved `--cli` to a
+command of its own and `--sanitize` to `build`, and the owner pointed out that no CLI has a `test-cli`
+and that five carry `--sanitize` on `test`. A read of the eight CLIs confirmed it, so the shared command
+carries both and a CLI without them hides the option.
+
+A fresh reader checked the manual twice against the code and found eleven false or loose sentences and
+three code defects (a silent drop of `--filter`, `--repeat`, `--jobs`, `--all` and `--sanitize` under
+`--cli`; a sanitizer name matched only after lower-casing; a function with four jobs). All are fixed.
+
+The first run on a real CTest tree, `sushitrack` at `build/default-debug`: 457 tests, 7.7 s wall, and
+`test_budget.py` read the JUnit file CTest wrote and printed
+
+```
+budget: small 5.6 s of 10 s (no program map), default 6 s sum, 8 s wall of 300 s
+```
+
+So the reader parses a real `ctest --output-junit` file, which the earlier work could not check. What
+the run did not check: the `large` tier, the per-program totals (SushiTrack has no suite-to-program map
+yet) and the gate.
 
 ## Suggested removals
 
