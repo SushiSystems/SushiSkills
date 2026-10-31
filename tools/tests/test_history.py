@@ -12,9 +12,10 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from commits.history import blob_texts, commits_since  # noqa: E402
-from tests.repo_builder import Repo  # noqa: E402
+from repo_builder import Repo  # noqa: E402
 
 
 class HistoryTest(unittest.TestCase):
