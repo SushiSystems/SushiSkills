@@ -215,8 +215,14 @@ First real runs, on each CLI's own built tree:
 | SushiLog | 74 | 1 s | `small 0.3 s of 10 s (no program map), default 0 s sum, 1 s wall of 300 s` |
 | SushiProfiler | 446 | 11 s | `small 4.8 s of 10 s (no program map), default 9 s sum, 11 s wall of 300 s` |
 
-Both are unpushed. SushiDSP, SushiAI, SushiBLAS and SushiRuntime follow; SushiEngine waits for its measured
-run.
+SushiDSP followed on 2026-11-01, on a Release tree because the Debug packages of SushiLog and SushiProfiler have
+no import library here: 1608 tests, 180 s wall, and the line reads `small 104.2 s of 10 s (no program map),
+default 157 s sum, 180 s wall of 300 s`. DSP has no suite-to-program map yet, so every small test counts as one
+program; the 10 s limit per program cannot be judged until the map exists, and the 300 s default limit is
+within reach (157 s). Both facts belong to the measured run (RW-37).
+
+Left: SushiAI and SushiBLAS are the owner's; SushiRuntime is on a feature branch with a red gate (RW-40);
+SushiEngine adopts the command after its measured run (RW-35).
 
 ## Suggested removals
 

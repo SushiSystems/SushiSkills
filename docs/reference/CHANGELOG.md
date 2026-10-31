@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-01 — testing: Moved SushiTrack, SushiLog, SushiProfiler and SushiDSP onto the shared test options; SushiAI and SushiBLAS are the owner's, SushiRuntime waits for a green gate and SushiEngine for its measured run (RW-36, `77b3f6f`).
 - 2026-10-31 — tools: Made `check_all.py` about five times faster on a long history by reading commits in one git call, caching backlog IDs and pages by object hash, and running the checkers side by side (`tools/check_all.py`).
 - 2026-10-31 — sushiskills: Added the default to act on the known step, a CI rule to fix a red run at once, and a Pace section to the global rules (`skills/sushiskills/SKILL.md`).
 - 2026-10-31 — testing: Ran sushitrack on the shared test command and read its first real JUnit file with the budget reader (RW-39, `77b3f6f`).
