@@ -224,6 +224,26 @@ within reach (157 s). Both facts belong to the measured run (RW-37).
 Left: SushiAI and SushiBLAS are the owner's; SushiRuntime is on a feature branch with a red gate (RW-40);
 SushiEngine adopts the command after its measured run (RW-35).
 
+## The rest of the stack
+
+- SushiDSP, SushiBLAS and SushiAI run `test` on the shared options. SushiBLAS dropped its own label
+  code. SushiAI keeps its suite names (`gating`, `all`, `package`) and routes only the CTest call
+  through `run_tests`, so a run writes JUnit and prints the budget line (RW-148 asks whether the
+  names should become the shared labels). None of the three was run against a real build tree here;
+  their unit tests and gates cover them, and the first real runs happen in CI.
+- SushiEngine and SushiRuntime wait: Engine's limits wait for the measured run (RW-37) and
+  Runtime's adoption waits for a green gate (RW-40).
+- Four repositories failed the same tools tests because their `tools/settings.py` lacked the Sushi
+  settings block; `sushisystems/tooling/apply_settings.py` adds it. SushiWeb has no CLI alias, so
+  the tool cannot run there; the alias is the owner's choice.
+- The gate showed a defect in `checking/ignored_paths.py`: `git check-ignore` exits 128 for a path
+  that resolves outside the repository, as a linked `dependencies/` folder does, and the filter
+  then returned every path, so the checkers read the third-party tree. A path below an ignored
+  folder is now dropped by the folder first.
+- SushiEngine (1369 untested units, layering and export-macro findings), SushiStack
+  (module-install elements, documentation truth) and SushiWeb (settings, documentation truth)
+  were red before the tools copy and stay red; each finding set has a backlog entry.
+
 ## Suggested removals
 
 None yet.
