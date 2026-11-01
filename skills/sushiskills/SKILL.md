@@ -54,7 +54,8 @@ why it exists so that a case it did not foresee is judged by its purpose.
    fails to find its DLLs or shared objects.
    **Not when:** a debugger launches one test or program with the environment the CLI prints
    for it; the result of that run is not a test result, the CLI run is. Or the repository has
-   no CLI: it calls its checkers and unit tests directly, and nothing else.
+   no CLI (see "Not every project has a CLI"): it uses its own scripts, such as `npm run`, and
+   nothing else behind them.
 3. **Act on the known step.**
    **Rule:** when the next step is inside the task, local and reversible, take it now and check it
    afterwards. Do not wait for a run that cannot change the step, ask leave for what the task already
@@ -66,6 +67,22 @@ why it exists so that a case it did not foresee is judged by its purpose.
    external dependency, deleting what you did not create) or one that publishes or cannot be
    undone (a push, a release, a deletion). Those wait for the owner, and the agent says in one line
    what it needs and what it recommends.
+
+## Not every project has a CLI
+
+A CLI is for a complex project: several modules, its own toolchain, a runtime search path to set up.
+A web application driven by its package manager, or a Unity project driven by the editor, does not
+need one, and none is built for it. The rules that name `<cli>` then read as follows:
+
+- Build, test and run go through the project's own scripts (`npm run`, the editor), and nothing is
+  called behind them.
+- The backlog and the design are read with the module form of the same commands, which the tooling
+  role of the company layer names.
+- The checkers under `tools/` run directly.
+- A Unity project follows `unity-project-layout` for its tree and does not carry the C++ and Python
+  module rules that assume a CLI.
+
+Adding a CLI to a project that has none is the owner's decision.
 
 ## The bricks
 

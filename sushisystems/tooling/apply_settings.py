@@ -62,15 +62,21 @@ def apply_to_settings(root: Path) -> list[str]:
     return [name for name, _ in added]
 
 
-def claude_block(alias: str) -> str:
-    """Returns the backlog and design block of the template, with the repository's CLI alias."""
+def claude_block(alias: str | None) -> str:
+    """Returns the backlog and design block of the template, with the repository's CLI alias.
+
+    A repository with no CLI gets the ``python -m sushicore`` form of the same commands.
+    """
     found = K_BLOCK.search(K_TEMPLATE.read_text(encoding="utf-8"))
     if found is None:
         raise ValueError(f"{K_TEMPLATE.name} holds no block")
-    return found.group(1).replace("<alias>", alias)
+    block = found.group(1)
+    if alias is None:
+        return block.replace("<alias> backlog", "python -m sushicore.backlog").replace("<alias> design", "python -m sushicore.design")
+    return block.replace("<alias>", alias)
 
 
-def apply_to_claude(root: Path, alias: str) -> bool:
+def apply_to_claude(root: Path, alias: str | None) -> bool:
     """Appends the block to a repository's CLAUDE.md unless it already has one; returns whether it wrote."""
     path = root / "CLAUDE.md"
     text = path.read_text(encoding="utf-8") if path.is_file() else ""
@@ -91,15 +97,12 @@ def main(argv: list[str] | None = None) -> int:
     """Applies the settings and the block to the repository named on the command line."""
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("root", type=Path)
-    parser.add_argument("--alias", help="the CLI alias; read from sushi-module.toml when omitted")
+    parser.add_argument("--alias", help="the CLI alias; read from sushi-module.toml when omitted, and none for a repository without a CLI")
     arguments = parser.parse_args(argv)
     if not (arguments.root / "tools" / "settings.py").is_file():
         print("ROOT has no tools/settings.py; copy the shared tools first", file=sys.stderr)
         return K_EXIT_USAGE
     alias = arguments.alias or alias_of(arguments.root)
-    if alias is None:
-        print("no alias: pass --alias or add one to sushi-module.toml", file=sys.stderr)
-        return K_EXIT_USAGE
     print("settings added: " + (", ".join(apply_to_settings(arguments.root)) or "none"))
     print("CLAUDE.md block: " + ("written" if apply_to_claude(arguments.root, alias) else "already there"))
     return K_EXIT_DONE

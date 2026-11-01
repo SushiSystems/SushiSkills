@@ -1,7 +1,9 @@
 # The backlog and design block of a repository's CLAUDE.md
 
 Every Sushi repository's `CLAUDE.md` carries this block, with `<alias>` replaced by the CLI of the
-repository (`se`, `sd`, `sr`). It gives the order of work as commands, not as a pointer to a file.
+repository (`se`, `sd`, `sr`). A repository with no CLI, such as a web application run by `npm`,
+has the same commands as `python -m sushicore.backlog` and `python -m sushicore.design`. The block
+gives the order of work as commands, not as a pointer to a file.
 
 ```
 ## Backlog and design

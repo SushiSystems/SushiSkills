@@ -8,7 +8,7 @@ tool. This page says who fills each role at Sushi Systems.
 | Role | At Sushi Systems |
 | --- | --- |
 | Shared tooling library | `sushicore` |
-| Backlog tool | `sushicore`'s `backlog` commands: `<cli> backlog ...` in a repository with a module CLI, `python -m sushicore.backlog ...` in one without. Reference: sushicore's `docs/reference/BACKLOG.md` |
+| Backlog tool | `sushicore`'s `backlog` commands: `<cli> backlog ...` in a repository with a module CLI, `python -m sushicore.backlog ...` in one without, such as a web application run by `npm`. Reference: sushicore's `docs/reference/BACKLOG.md` |
 | Design tool | `sushicore`'s `design` commands, run the same two ways. Reference: sushicore's `docs/reference/DESIGN.md` |
 | Build machinery | From sushicore: `build_tree`, `build_admission`, `build_gate`, `build_report` |
 | Module manifest | `sushi-module.toml` |

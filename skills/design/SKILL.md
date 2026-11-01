@@ -12,6 +12,8 @@ phases are in `AGENT_WORK.md`.
 
 ## State comes from the command
 
+`<cli>` is the repository's CLI. A repository with none runs the module form of the same commands, named by the tooling role.
+
 | Question | Command |
 | --- | --- |
 | What topics exist, and which phases are open? | `<cli> design list` |

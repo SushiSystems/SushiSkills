@@ -11,6 +11,8 @@ the repository's `backlog` commands and nowhere else. Its files and columns are 
 
 ## State comes from the command
 
+`<cli>` is the repository's CLI. A repository with none runs the module form of the same commands, named by the tooling role.
+
 A question about state is answered by a command, never by a file, the git log or memory.
 
 | Question | Command |

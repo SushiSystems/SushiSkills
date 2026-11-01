@@ -78,14 +78,20 @@ class ApplySettingsTest(unittest.TestCase):
         (self.root / "sushi-module.toml").unlink()
         self.assertIsNone(apply_settings.alias_of(self.root))
 
-    def test_the_command_needs_an_alias_and_a_settings_file(self) -> None:
+    def test_a_repository_without_a_cli_gets_the_module_form_of_the_commands(self) -> None:
+        (self.root / "sushi-module.toml").unlink()
+        self.assertTrue(apply_settings.apply_to_claude(self.root, None))
+        text = (self.root / "CLAUDE.md").read_text(encoding="utf-8")
+        self.assertIn("`python -m sushicore.backlog next`", text)
+        self.assertIn("`python -m sushicore.design owner <path>`", text)
+        self.assertNotIn("<alias>", text)
+
+    def test_the_command_needs_a_settings_file_and_no_alias(self) -> None:
         (self.root / "sushi-module.toml").unlink()
         with contextlib.redirect_stderr(io.StringIO()):
-            self.assertEqual(apply_settings.main([str(self.root)]), 2)
             self.assertEqual(apply_settings.main([str(self.root / "tools")]), 2)
         with contextlib.redirect_stdout(io.StringIO()):
-            self.assertEqual(apply_settings.main([str(self.root), "--alias", "sx"]), 0)
-
+            self.assertEqual(apply_settings.main([str(self.root)]), 0)
 
 if __name__ == "__main__":
     unittest.main()
