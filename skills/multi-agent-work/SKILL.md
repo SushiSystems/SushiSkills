@@ -31,11 +31,20 @@ The owner chooses how the plan runs.
 
 | Mode | Shape |
 | --- | --- |
-| Inline | One session implements the tasks in hierarchy order, without workers |
-| Waves | Tasks the hierarchy leaves independent are grouped into waves with disjoint file sets, one worker per task |
+| Inline | One session implements the jobs in hierarchy order, without workers |
+| Parallel | The orchestrator gives the jobs to subagents, several at once, and keeps no job for itself |
 
-A wave plan lists, per wave: the tasks, each task's files, what each waits on, and the build the
-owner runs to close the wave.
+Both modes start from the same job list: the jobs in hierarchy order, and per job its files, what
+it waits on, its acceptance criterion and the build that closes it.
+
+In parallel mode the orchestrator runs the list like this:
+
+- It decides which subagent takes which job, and hands the jobs out without waiting for any to finish.
+- When a subagent finishes a job it is free, and the orchestrator gives it the next job at once.
+  A subagent that is still working gets nothing.
+- The hierarchy is strict. A job starts only when everything it waits on is done. If the next job
+  is blocked, the orchestrator does not wait: it gives the free subagent the next job that is ready.
+- The orchestrator never holds two running jobs on the same file.
 
 ## Dispatch
 
@@ -48,7 +57,7 @@ Then: the task, its file list, its acceptance criterion, the skills it must load
 A worker does not see the orchestrator's memory or conversation. Anything it needs is in the
 dispatch.
 
-In a wave, a worker returns its report as its reply and the orchestrator writes `REPORT.md`;
+In parallel mode, a worker returns its report as its reply and the orchestrator writes `REPORT.md`;
 the work folder holds one report, and two workers never hold one file.
 
 ## Choosing a model
@@ -72,4 +81,4 @@ A page a worker reports as false is handled as `AGENT_WORK.md` in `documentation
 ## Shared working tree
 
 - Staging, stash and worktrees follow `git-workflow`, section "Shared working tree".
-- Two workers never hold the same file in one wave.
+- Two running jobs never hold the same file.

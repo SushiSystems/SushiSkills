@@ -80,4 +80,4 @@ items, not as "quality".
 ## Planning
 
 The `multi-agent-work` skill holds the planning rules: hierarchy first, one acceptance criterion
-and one build per task. I choose how a plan runs, inline or in waves; ask me.
+and one build per task. I choose how a plan runs, inline or in parallel; ask me.

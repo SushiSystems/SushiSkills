@@ -16,7 +16,7 @@ agent reads the descriptions first and loads a skill only when its task matches.
 | `source-comments` | License block, Doxygen file and symbol blocks, docstrings, what is forbidden |
 | `logging` | Categories, levels, what is and is not logged, silent failures |
 | `documentation` | The `docs/` tree, placement, design documents, agent work lifecycle, archive |
-| `multi-agent-work` | Orchestrator and workers, wave planning, dispatch, accepting reports |
+| `multi-agent-work` | Orchestrator and workers, job planning, dispatch, accepting reports |
 | `model-routing` | Model and effort per session seat and per dispatch, the escalation ladder, inline or subagent, what a report records |
 | `commits` | Commit subject grammar, body, staging |
 | `backlog` | State from the backlog commands, the order of a session, work or issue, priority |
