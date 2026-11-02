@@ -60,6 +60,7 @@ trial shows two cached builds produce identical slices.
 - A `medium` test uses a software device: a software implementation of the graphics API, or a CPU
   implementation of the compute API. Examples are Lavapipe for Vulkan and a CPU SYCL device.
 - A `large` test whose device is absent is reported as skipped, never as passed.
+- A kernel is checked against its host reference as "Numerical code" in `testing` says.
 
 ## Red flags
 

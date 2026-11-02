@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+- 2026-11-02 — testing: Added fixture, double and numerical-code rules, printed seeds, quarantined tests that keep running and retries only in a test's source (`skills/testing/SKILL.md`).
+- 2026-11-02 — continuous-integration: Ran pre-merge on the changed modules and those above them, shuffled, with sanitizers and fuzz corpora, and reverted a red `main` first (`SKILL.md`).
+- 2026-11-02 — gpu-development: Pointed device kernel tests at the numerical-code rules of `testing` (`skills/gpu-development/SKILL.md`).
 - 2026-11-02 — testing: Made the size checker reach every `tests` and `__tests__` folder and read C# categories (RW-35).
 - 2026-11-02 — testing: Counted `static_assert` and `EXPECT`/`ASSERT` macros as assertions and `SUCCEED()` as a literal one (RW-35).
-- 2026-11-02 — testing: Sized the checker tests with pytest marks and size timeouts (RW-35).
+- 2026-11-02 — testing: Sized the checker tests with a `K_TEST_SIZE` constant, so they run under `unittest` without pytest (RW-35, `tools/tests/conftest.py`).
 - 2026-11-02 — multi-agent-work: Added `next_jobs.py`, which prints the jobs of a plan's job table that may start now (RW-41, `skills/multi-agent-work/SKILL.md`).
 - 2026-11-02 — multi-agent-work: Replaced waves with a job list that the master agent gives to free subagents in hierarchy order; inline or parallel stays the owner's choice (`SKILL.md`).
 - 2026-11-01 — sushiskills: Stated that a CLI is for complex projects and that a web or Unity project runs without one, with the backlog and design read through the module form (`skills/sushiskills/SKILL.md`).

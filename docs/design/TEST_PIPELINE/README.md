@@ -31,7 +31,6 @@ TypeScript; `check_test_value.py` judges the cases a commit changes; `check_test
 judges how many a commit adds; `test_budget.py` reads a CTest JUnit file and prints the budget line.
 A limit gates only once it is measured: counts gate at once, times gate after a report-only trial.
 
-The CI stages, the module selection and the coverage report are in [PIPELINE.md](PIPELINE.md).
 
 ## Phases
 

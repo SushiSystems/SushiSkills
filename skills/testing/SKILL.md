@@ -16,7 +16,7 @@ that fails without the change and passes with it.
 | `feat` | A unit test for each behaviour of the public surface it adds, within the limits of "Budget"; an integration test when it crosses a module boundary |
 | `perf` | The existing tests unchanged and green, plus the measurement from `performance` |
 | `refactor` | No new test; every existing test green before and after |
-| A reader of a persistent file format or of untrusted input | A fuzz target beside its tests, run nightly; each crash it finds becomes a regression test |
+| A reader of a persistent file format or of untrusted input | A fuzz target beside its tests, run in the stage `continuous-integration` gives; each crash it finds becomes a regression test |
 | An invariant over a numeric range, such as a round trip or a conservation law | One property test with a fixed seed and a bounded case count, in place of many example rows |
 
 A unit that is hard to reach is still tested:
@@ -51,24 +51,30 @@ cheapest level that can see it, and fails when the promise is broken.
   `EXPECT_NO_THROW`, `pytest.raises` or its absence written as `expect(fn).not.toThrow()`. A body
   that only calls the code and ends is not such a test.
 
-## Suite shape
+## Fixtures and doubles
 
-**Rule:**
+1. Each test builds its own fixture. A fixture two tests share is immutable, and the README of its
+   test folder says why a fresh one costs too much. Mutable state shared between tests is a defect.
+2. Fixtures form a ladder: host, then device, then scene or system. A test takes the lowest rung its
+   promise needs. A check of arguments, shapes, offsets, dispatch or errors never opens a device, a
+   queue or a thread, and is `small`.
+3. A test uses the unit's real collaborators. Where one is slow or needs a device, it uses a fake
+   implementing the same interface, and the fake's contract tests run against the real
+   implementation too. A mock that asserts calls is used only where the call is the promise;
+   otherwise the test asserts state.
 
-1. At least 70% of a repository's tests are `small`, and `large` stays under 5%. The test command
-   prints the ratio beside the budget line.
-2. A fixture gives a test only what its promise needs. A check of arguments, shapes, offsets,
-   dispatch or errors runs on the host with no device, queue or thread, and is `small`.
-3. A numerical promise is kept once on the host against a reference, `small`. A device kernel adds
-   one parameterised `medium` test per kernel family that its output equals the reference; it
-   does not repeat the host rows.
+## Numerical code
 
-**Why:** a suite labelled honestly can still be shaped wrong. When one shared fixture opens a device
-for every test, everything becomes `medium`, the default run grows past its budget, and every
-promise is checked on the slowest path.
-
-**Not when:** a repository whose subject is the device itself, such as a driver probe library,
-states its own ratio in `tests/README.md` with the owner's ruling.
+1. A numerical routine has a host reference: a closed form, a naive implementation, or a pinned
+   reference library. Its reference tests are `small`.
+2. A comparison is a ratio without units against a threshold: the error scaled by the problem's
+   size, its norm and the type's machine epsilon, with a threshold of about 10 to 100. The
+   tolerance is written per type in the test, from the routine's error bound; a library-wide
+   epsilon is no acceptance criterion.
+3. A device kernel is checked by one parameterised test, written once and run per device and per
+   type, the host CPU device included. It is `medium` on a software device and `large` on hardware,
+   and it does not repeat the host reference rows.
+4. Input sizes cross the vector register length, so the vectorised paths run.
 
 ## Value rules
 
@@ -114,7 +120,9 @@ These limits are the budget.
 - A parametrised case counts once as a case; its rows count in full in the time. A module's first
   test program needs no approval.
 - The project's test command measures the time and prints one budget line: the sums, the wall time
-  and the cases added since the base. An agent reads that line and times nothing itself.
+  and the cases added since the base, and beside it the count of cases of each size. An agent reads
+  that line and times nothing itself. A reviewer asks of each `medium` and `large` suite why it is not
+  one size lower; there is no target ratio.
 - Counts gate at once. A single test fails the gate only when it exceeds its limit in a rerun of
   that test alone; a total fails above 1.25 times its limit. A run that did not rebuild prints
   "(not rebuilt)" and never gates.
@@ -169,7 +177,7 @@ A test's size is written in its source, once, where the test is declared:
 | Language | Where the size is written |
 | --- | --- |
 | C++ | The suite's name opens with `Small_`, `Medium_` or `Large_`: `TEST(Small_TensorShape, RejectsANegativeExtent)` |
-| Python | `pytest.mark.small`, `medium` or `large` on the test's class, or as `pytestmark` on its file |
+| Python | `pytest.mark.small`, `medium` or `large` on the test's class, or as `pytestmark` on its file; a `unittest` file that must run without pytest, such as a checker test, sets `K_TEST_SIZE = "small"` |
 | TypeScript | The `describe` block's name opens with `small:`, `medium:` or `large:` |
 | C# (NUnit, Unity) | `[Category("small")]`, `"medium"` or `"large"` on the fixture class; a `[UnityTest]` or a test that loads a scene is at least `medium` |
 
@@ -180,7 +188,8 @@ In C# a `[Timeout]` attribute is set from the category by the assembly's shared 
 
 The rule reaches every test in the repository, wherever its folder: `tests/`, `cli/tests/`,
 `tools/tests/`, a package's `__tests__/` and a sub-tree such as `gui/tests/`. The checker tests
-under `tools/tests/` are pytest, sized like any other.
+under `tools/tests/` are `unittest`, sized by `K_TEST_SIZE`; the checkers' own `conftest.py` reads it
+when pytest runs them.
 
 A test that writes a file, even in a temporary folder, is `medium`; `small` reads only what the
 build tree holds. A test whose promise is about time takes an injected clock and stays `small`; a
@@ -240,7 +249,10 @@ A probe:
 
 ## Determinism
 
-1. Every random source takes a fixed seed written in the test.
+1. Every random source takes a fixed seed written in the test. A shuffle or a property test that
+   draws its seed prints it, and the same seed replays the run. A property test in CI runs
+   derandomised with a bounded case count, and an input it found failing is pinned as an explicit
+   example in the test, never left in its database.
 2. Every floating-point comparison states its tolerance in the test, absolute and relative,
    never a bare `==`. A bare `==` is kept only where the value is copied, not computed, or is
    exactly representable, such as `0.0f` or a stored integer, and the test's name says so.
@@ -249,14 +261,17 @@ A probe:
 5. A test that fails intermittently is fixed the day it is seen, or quarantined: it gains the
    `quarantined` label, which takes it out of every gating stage, and a known issue whose
    detail file names the test, its owner and the date it is fixed by, as `BACKLOG_FORMAT.md` in
-   `documentation` gives. A quarantined test is never deleted silently.
+   `documentation` gives. One pass and one fail on the same commit is enough. A quarantined test
+   still runs in every stage, its result reported and never gating; on its fix-by date it is fixed,
+   or deleted with the owner's ruling. A quarantined test is never deleted silently.
 6. Tests run shuffled and in parallel. A test that passes only in one order, or alone, shares
    state with another and is a defect; each test builds its own fixture.
 7. C++ tests pass under AddressSanitizer and UndefinedBehaviorSanitizer; tests that start threads
    pass under ThreadSanitizer. A sanitizer report is a failure, never suppressed without an open
    backlog entry.
-8. A `small` test is never retried. A `medium` or `large` test that passes only on a retry is
-   intermittent, and rule 5 applies.
+8. A gating stage never retries a test. A retry exists only in the test's own source, as a named
+   annotation with its count, and is reported apart from a pass. A test that passes only on a retry
+   is intermittent, and rule 5 applies.
 
 ## Golden files
 
