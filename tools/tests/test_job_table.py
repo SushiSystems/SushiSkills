@@ -7,6 +7,7 @@
 
 from __future__ import annotations
 
+import pytest
 import sys
 import unittest
 from pathlib import Path
@@ -16,6 +17,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from routing.job_table import read_jobs  # noqa: E402
 
 K_HEAD = "# Plan\n\n## Jobs\n\n| Job | Files | Waits on | Status |\n| --- | --- | --- | --- |\n"
+
+
+pytestmark = pytest.mark.small
 
 
 class JobTableTest(unittest.TestCase):

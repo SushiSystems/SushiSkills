@@ -7,6 +7,7 @@
 
 from __future__ import annotations
 
+import pytest
 import sys
 import unittest
 from pathlib import Path
@@ -15,6 +16,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from routing.job_table import Job  # noqa: E402
 from routing.ready_jobs import graph_problems, ready_jobs  # noqa: E402
+
+
+pytestmark = pytest.mark.small
 
 
 def job(job_id: str, files: str = "", waits: str = "", status: str = "todo") -> Job:

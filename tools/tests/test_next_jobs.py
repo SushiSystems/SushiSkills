@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import contextlib
 import io
+import pytest
 import sys
 import tempfile
 import unittest
@@ -19,6 +20,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from routing.next_jobs import main  # noqa: E402
 
 K_HEAD = "## Jobs\n\n| Job | Files | Waits on | Status |\n| --- | --- | --- | --- |\n"
+
+
+pytestmark = pytest.mark.medium
 
 
 def run(rows: str, free: int = 1) -> tuple[int, str]:

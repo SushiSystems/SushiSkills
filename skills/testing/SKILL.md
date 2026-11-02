@@ -16,6 +16,8 @@ that fails without the change and passes with it.
 | `feat` | A unit test for each behaviour of the public surface it adds, within the limits of "Budget"; an integration test when it crosses a module boundary |
 | `perf` | The existing tests unchanged and green, plus the measurement from `performance` |
 | `refactor` | No new test; every existing test green before and after |
+| A reader of a persistent file format or of untrusted input | A fuzz target beside its tests, run nightly; each crash it finds becomes a regression test |
+| An invariant over a numeric range, such as a round trip or a conservation law | One property test with a fixed seed and a bounded case count, in place of many example rows |
 
 A unit that is hard to reach is still tested:
 
@@ -42,7 +44,12 @@ cheapest level that can see it, and fails when the promise is broken.
 - A test that repeats the implementation checks nothing, and a unit with every collaborator mocked
   checks its mocks.
 - A helper that asserts is named `expect_*` or `assert_*` (`expect*` or `assert*` in TypeScript),
-  so a checker can tell an assertion from a call. An assertion on a literal, such as `EXPECT_TRUE(true)`, is a defect.
+  so a checker can tell an assertion from a call. A project macro counts when its name opens
+  with `EXPECT` or `ASSERT`, such as `SA_EXPECT_OK` read past its prefix. An assertion on a
+  literal, such as `EXPECT_TRUE(true)` or `SUCCEED()`, is a defect.
+- A promise that the code compiles, or does not throw, is asserted: `static_assert`,
+  `EXPECT_NO_THROW`, `pytest.raises` or its absence written as `expect(fn).not.toThrow()`. A body
+  that only calls the code and ends is not such a test.
 
 ## Value rules
 
@@ -145,9 +152,28 @@ A test's size is written in its source, once, where the test is declared:
 | C++ | The suite's name opens with `Small_`, `Medium_` or `Large_`: `TEST(Small_TensorShape, RejectsANegativeExtent)` |
 | Python | `pytest.mark.small`, `medium` or `large` on the test's class, or as `pytestmark` on its file |
 | TypeScript | The `describe` block's name opens with `small:`, `medium:` or `large:` |
+| C# (NUnit, Unity) | `[Category("small")]`, `"medium"` or `"large"` on the fixture class; a `[UnityTest]` or a test that loads a scene is at least `medium` |
 
 In Python the timeout comes from `pytest-timeout`, a development dependency of every package
-with tests, which the project's `conftest.py` sets from each test's size.
+with tests, which the project's `conftest.py` sets from each test's size. In TypeScript the
+test configuration sets the timeout from the `describe` prefix, never one value for every test.
+In C# a `[Timeout]` attribute is set from the category by the assembly's shared base fixture.
+
+The rule reaches every test in the repository, wherever its folder: `tests/`, `cli/tests/`,
+`tools/tests/`, a package's `__tests__/` and a sub-tree such as `gui/tests/`. The checker tests
+under `tools/tests/` are pytest, sized like any other.
+
+A test that writes a file, even in a temporary folder, is `medium`; `small` reads only what the
+build tree holds. A test whose promise is about time takes an injected clock and stays `small`; a
+test that must wait on a real clock is `medium` and waits on an event with a deadline, never a
+fixed sleep.
+
+A module, for the one-program rule, is the source module the test folder mirrors. A host and a
+device program for one module are two programs and need the owner.
+
+A `Benchmark_` suite is a benchmark and carries no size; the size gate skips it. A suite that
+stresses the code and asserts, such as `Stress_*`, is a test and takes a size. A folder holding
+tests is never named `benchmarks/` or `Probe/`.
 
 The build reads the size from there and sets the label and the timeout; no build file lists
 suites or files by size. A suite that opens with no size fails the build, and in Python one
@@ -197,14 +223,20 @@ A probe:
 
 1. Every random source takes a fixed seed written in the test.
 2. Every floating-point comparison states its tolerance in the test, absolute and relative,
-   never a bare `==`.
+   never a bare `==`. A bare `==` is kept only where the value is copied, not computed, or is
+   exactly representable, such as `0.0f` or a stored integer, and the test's name says so.
 3. A `large` test whose hardware is absent is reported as skipped, never as passed.
 4. No test depends on wall-clock time, test order, network or a file outside the repository.
 5. A test that fails intermittently is fixed the day it is seen, or quarantined: it gains the
    `quarantined` label, which takes it out of every gating stage, and a known issue whose
    detail file names the test, its owner and the date it is fixed by, as `BACKLOG_FORMAT.md` in
    `documentation` gives. A quarantined test is never deleted silently.
-6. A `small` test is never retried. A `medium` or `large` test that passes only on a retry is
+6. Tests run shuffled and in parallel. A test that passes only in one order, or alone, shares
+   state with another and is a defect; each test builds its own fixture.
+7. C++ tests pass under AddressSanitizer and UndefinedBehaviorSanitizer; tests that start threads
+   pass under ThreadSanitizer. A sanitizer report is a failure, never suppressed without an open
+   backlog entry.
+8. A `small` test is never retried. A `medium` or `large` test that passes only on a retry is
    intermittent, and rule 5 applies.
 
 ## Golden files
