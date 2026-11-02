@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- 2026-11-02 — testing: Made the size checker reach every `tests` and `__tests__` folder and read C# categories (RW-35).
+- 2026-11-02 — testing: Counted `static_assert` and `EXPECT`/`ASSERT` macros as assertions and `SUCCEED()` as a literal one (RW-35).
+- 2026-11-02 — testing: Sized the checker tests with pytest marks and size timeouts (RW-35).
 - 2026-11-02 — multi-agent-work: Added `next_jobs.py`, which prints the jobs of a plan's job table that may start now (RW-41, `skills/multi-agent-work/SKILL.md`).
 - 2026-11-02 — multi-agent-work: Replaced waves with a job list that the master agent gives to free subagents in hierarchy order; inline or parallel stays the owner's choice (`SKILL.md`).
 - 2026-11-01 — sushiskills: Stated that a CLI is for complex projects and that a web or Unity project runs without one, with the backlog and design read through the module form (`skills/sushiskills/SKILL.md`).

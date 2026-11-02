@@ -1,7 +1,7 @@
-# Test budget
+# Test pipeline
 
 **Status:** Open — phases A to C built; the shared test command and the measured run are next
-**About:** A test is defined, and the tests an agent adds are capped by count and by run time, with a checker for each
+**About:** How every repository tests: what a test is, its size and budget, the CI stages and the industrial practices each stage runs
 **Modules:** `tools/testing`
 
 ## Problem
@@ -31,6 +31,8 @@ TypeScript; `check_test_value.py` judges the cases a commit changes; `check_test
 judges how many a commit adds; `test_budget.py` reads a CTest JUnit file and prints the budget line.
 A limit gates only once it is measured: counts gate at once, times gate after a report-only trial.
 
+The CI stages, the module selection and the coverage report are in [PIPELINE.md](PIPELINE.md).
+
 ## Phases
 
 | Id | Phase | State |
@@ -40,6 +42,11 @@ A limit gates only once it is measured: counts gate at once, times gate after a 
 | C | The budget reader of a CTest JUnit file | built |
 | D | One shared test command in the tooling package, then the measured run and the time gate | planned |
 | E | Roll the tools out to the other repositories | planned |
+| F | CI stages: pre-merge small and medium with the checkers, nightly large per changed module, weekly whole large tier, quarantine out of gating | planned |
+| G | Module selection: a change runs the tests of the modules it touches and of their dependants | planned |
+| H | Coverage report: nightly line and branch coverage, diff coverage printed pre-merge, never a gate | planned |
+| I | Refactor every repository to the doctrine, tier by tier: small, then medium, then large | planned |
+| J | Industrial practice: Windows and Linux matrix, sanitizers, shuffled parallel runs, fuzz targets, benchmark trends, JUnit results in CI | planned |
 
 ## Open questions
 
