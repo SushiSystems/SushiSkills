@@ -23,7 +23,6 @@
 | RW-32 | P2 | open | Roll the shared tools out to SushiRuntime and SushiEngine once their trees are clean | both repositories pass check_all with the shared tools, copied with copy_shared_tools |  |  | 2026-10-30 |
 | RW-33 | P2 | open | Turn on the Backlog commit line in each repository after its CI fetches full history | K_TRAILER_SINCE is set and the hooks are installed in each repository that took the shared tools |  |  | 2026-10-30 |
 | RW-34 | P3 | open | Bring SushiStack and SushiWeb to a clean check_all so they can take the shared tools | both pass the shared checkers they fail today, then take the copy with copy_shared_tools |  |  | 2026-10-30 |
-| RW-41 | P2 | open | Add a job scheduler for parallel multi-agent work | next_jobs.py lists the ready jobs of a PLAN.md table and its tests pass |  | `skills/multi-agent-work/SKILL.md` | 2026-11-02 |
 
 ## Known issues
 
