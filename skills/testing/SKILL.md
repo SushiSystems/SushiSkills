@@ -51,6 +51,25 @@ cheapest level that can see it, and fails when the promise is broken.
   `EXPECT_NO_THROW`, `pytest.raises` or its absence written as `expect(fn).not.toThrow()`. A body
   that only calls the code and ends is not such a test.
 
+## Suite shape
+
+**Rule:**
+
+1. At least 70% of a repository's tests are `small`, and `large` stays under 5%. The test command
+   prints the ratio beside the budget line.
+2. A fixture gives a test only what its promise needs. A check of arguments, shapes, offsets,
+   dispatch or errors runs on the host with no device, queue or thread, and is `small`.
+3. A numerical promise is kept once on the host against a reference, `small`. A device kernel adds
+   one parameterised `medium` test per kernel family that its output equals the reference; it
+   does not repeat the host rows.
+
+**Why:** a suite labelled honestly can still be shaped wrong. When one shared fixture opens a device
+for every test, everything becomes `medium`, the default run grows past its budget, and every
+promise is checked on the slowest path.
+
+**Not when:** a repository whose subject is the device itself, such as a driver probe library,
+states its own ratio in `tests/README.md` with the owner's ruling.
+
 ## Value rules
 
 **Rule:**
