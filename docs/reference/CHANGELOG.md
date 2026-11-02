@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-02 — multi-agent-work: Added `next_jobs.py`, which prints the jobs of a plan's job table that may start now (RW-41, `skills/multi-agent-work/SKILL.md`).
 - 2026-11-02 — multi-agent-work: Replaced waves with a job list that the master agent gives to free subagents in hierarchy order; inline or parallel stays the owner's choice (`SKILL.md`).
 - 2026-11-01 — sushiskills: Stated that a CLI is for complex projects and that a web or Unity project runs without one, with the backlog and design read through the module form (`skills/sushiskills/SKILL.md`).
 - 2026-11-01 — tools: Let `apply_settings.py` write the backlog block for a repository without a CLI alias (`sushisystems/tooling/apply_settings.py`).

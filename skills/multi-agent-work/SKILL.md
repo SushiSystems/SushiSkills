@@ -35,7 +35,11 @@ The owner chooses how the plan runs.
 | Parallel | The orchestrator gives the jobs to subagents, several at once, and keeps no job for itself |
 
 Both modes start from the same job list: the jobs in hierarchy order, and per job its files, what
-it waits on, its acceptance criterion and the build that closes it.
+it waits on, its acceptance criterion and the build that closes it. The list is a table under
+`## Jobs` in `PLAN.md`, with the columns `Job`, `Files`, `Waits on` and `Status`; the status is
+`todo`, `running`, `done` or `failed`, and the orchestrator edits it. In parallel mode
+`python tools/routing/next_jobs.py PLAN.md --free N` prints the ids of up to `N` jobs that may
+start now.
 
 In parallel mode the orchestrator runs the list like this:
 

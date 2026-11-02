@@ -57,6 +57,9 @@ which it keeps is in the `project-tools` skill.
 | `ci/check_workflows.py` | The files under `.github/workflows/`: a mapping key written twice in one block, which GitHub rejects before any job starts and a YAML library accepts | Repository root |
 | `licensing/write_license_block.py` | Nothing; writes the license block of `source-comments` into every tracked source file, or lists the files that lack it with `--report` | Repository root, `--project` |
 | `routing/summarize_dispatches.py` | Nothing; sums the dispatch lines of every `REPORT.md` per model and effort, for `model-routing` | Repository root |
+| `routing/next_jobs.py` | Nothing; prints the ids of up to `--free` jobs of a plan's `## Jobs` table that may start now, in list order: `todo`, everything they wait on `done`, no file shared with a running job; exits 0 on ids, 1 when none is ready, 2 when all are done, 3 on a malformed table | `PLAN.md`, `--free` |
+| `routing/job_table.py` | Nothing itself; reads the `## Jobs` table into job records and reports a bad row | |
+| `routing/ready_jobs.py` | Nothing itself; picks the ready jobs and reports unknown waits and cycles | |
 | `tests/` | Unit tests for the checker rules; run `python -m unittest discover -s tools/tests` | |
 
 `check_docs_layout.py` reads inline Markdown links, with or without a title, wrapped over a
