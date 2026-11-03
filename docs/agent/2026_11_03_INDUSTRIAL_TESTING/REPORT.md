@@ -26,6 +26,9 @@ budget. Replaces the direction of the deleted `2026_10_30_TEST_BUDGET`.
   `sushitest` repository.
 - 2026-11-03, the owner: finish the SushiSkills work and commit; the owner continues the rework of
   the other repositories later.
+- 2026-11-03, the owner: the time limits are calibrated on the desktop (Ryzen 7600X, RTX 3080 Ti),
+  not on the laptop this session ran on (Ryzen 5 7640HS, RTX 4050 Laptop, 15 GB); nothing is built
+  on the laptop. Until the desktop run, the limits report and never gate (RW-37).
 
 ## Progress
 
