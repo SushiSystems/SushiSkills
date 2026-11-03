@@ -1,8 +1,8 @@
 # Tests at Sushi Systems
 
-The `testing` skill names a project's test command, its budget line and its exemption file. This
-page says what fills those roles at Sushi Systems and what is known about the machines that run
-the tests.
+The `testing` skill names a project's test command, its time line, its exemption file and its
+tolerance helper. This page says what fills those roles at Sushi Systems and what is known about
+the machines that run the tests.
 
 ## The roles
 
@@ -10,28 +10,31 @@ the tests.
 | --- | --- |
 | The project's test command | `<cli> test`; the shared version is written in `sushicore` and each project CLI moves onto it in turn, SushiTrack first |
 | The CTest call | `CMakeDriver.ctest_run` of `sushicore`, which writes a JUnit file when it is given a path |
-| The budget reader | `tools/testing/test_budget.py`, called by the project's test command |
+| The time reader | `tools/testing/test_budget.py`, called by the project's test command |
 | The exemption file | `tests/budget_exemptions.toml` of the project |
-| The machine that runs the `large` tier | the owner's machine with an RTX 3080 Ti; no agent runs the whole tier |
+| The C++ tolerance helper | `tools/testing/support/tolerance.hpp`, copied from SushiSkills with the shared tools |
+| The machine that runs the `large` tier and calibrates the time limits | the owner's machine, a Ryzen 7600X with an RTX 3080 Ti; no agent runs the whole tier |
 
-## What the projects do today
+## Where each repository starts
 
-Surveyed on 2026-10-30 by reading each CLI's `test` command. The shared command replaces these
-differences, so the table is a record of where each project starts.
+Surveyed on 2026-11-03 by grep over each tree; the full table is in
+`docs/agent/2026_11_03_INDUSTRIAL_TESTING/SPEC.md` until that folder closes.
 
-| Project | Default sizes |
-| --- | --- |
-| SushiEngine | `small` and `medium` |
-| SushiLog, SushiProfiler, SushiDSP | every size, `large` included |
-| SushiTrack, SushiRuntime, SushiBLAS, SushiAI | not read |
+| Repository | Cases | Small share |
+| --- | --- | --- |
+| SushiBLAS | 2 342 | 22% |
+| SushiRuntime | 1 464 | 31% |
+| SushiAI | 4 578 C++ | 71% |
+| SushiEngine | 6 914 on its feature branch | 74% |
+| SushiDSP | 1 584 C++ | 81% |
+| SushiProfiler, SushiLog, SushiTrack | 956 C++ | 88% |
+
+Every C++ repository registers each case as its own CTest test today, so each case pays process
+start-up and, for `medium`, device start-up. No repository records test times yet.
 
 ## SushiEngine
 
 - Its suites are named `Small_`, `Medium_` and `Large_`; its `Benchmark_` cases belong to
   `se bench` and are not tests.
-- It declares a test program with a CMake function whose name ends in `add_test_program`, which is
-  what the additions checker counts.
-- The owner measured one run of the `large` tests at 700 s on the RTX 3080 Ti and reports that the
-  whole `large` tier takes hours. Which module took the 700 s is not recorded. The limits of the
-  `testing` budget for time stay unproven until the measured run names it.
-- The matter module's tests are reworked in their own piece of work and are outside the budget.
+- The owner measured one run of the `large` tests at 700 s and reports that the whole `large` tier
+  takes hours. One recorded test takes 117 s and another about 351 s.

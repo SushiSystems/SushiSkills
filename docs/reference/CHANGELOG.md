@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- 2026-11-03 — testing: Rewrote the skill around a test's value and the code's architecture: promise and oracle, forbidden kinds, sizes by what a test touches, derived tolerances, seams first, sharded runs (RW-35, `SKILL.md`).
+- 2026-11-03 — testing: Withdrew the per-commit case cap and the one-test-file-per-header idea (RW-35, `SKILL.md`).
+- 2026-11-03 — testing: Rejected weak-only checks, typed tolerances, sleeps at any size and small cases that reach a thread, file, clock or environment (RW-35, `check_test_value.py`).
+- 2026-11-03 — testing: Removed the case-cap checker; the time reader reads `K_TEST_TIMES` and prints the suite's shape (RW-35, `test_budget.py`).
+- 2026-11-03 — testing: Added a C++ header that derives floating-point tolerances from rounding bounds, with a self-check (RW-35, `tools/testing/support/tolerance.hpp`).
 - 2026-11-02 — testing: Made the size checker reach every `tests` and `__tests__` folder and read C# categories (RW-35).
 - 2026-11-02 — testing: Counted `static_assert` and `EXPECT`/`ASSERT` macros as assertions and `SUCCEED()` as a literal one (RW-35).
 - 2026-11-02 — testing: Sized the checker tests with pytest marks and size timeouts (RW-35).

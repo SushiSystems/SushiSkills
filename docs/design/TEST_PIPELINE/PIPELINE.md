@@ -1,53 +1,57 @@
 # Pipeline
 
-Decided by the owner on 2026-11-02, who left the choices to engineering judgement. Phases F, G
-and H carry it out; phase I brings every repository to it.
+Decided on 2026-11-03. Phases F, G and H carry it out.
 
 ## Stages
 
 | Stage | When | Runs | Gates |
 | --- | --- | --- | --- |
-| Pre-merge | Every pull request and push to a branch | The checkers, then `small` and `medium` of the selected modules | Yes |
-| Nightly | Once a day, on the device machine | `large` of the modules changed since the last nightly; coverage | Reports, opens backlog entries |
+| Pre-merge | Every pull request and push to a branch | The checkers, then `small` and `medium` of the selected modules, shuffled, under AddressSanitizer and UndefinedBehaviorSanitizer on Linux; diff coverage and diff mutation results printed | Yes |
+| Nightly | Once a day, on the device machine | `large` of the modules changed since the last nightly; ThreadSanitizer on `medium`; fuzz targets for a fixed time each; coverage; benchmarks against the last nightly | Reports, opens backlog entries |
 | Weekly | Once a week, on the device machine | The whole `large` tier | Reports, opens backlog entries |
 
-- A test that fails once and passes on the same commit is quarantined at once, as `testing`
-  gives; gating never retries.
+- Windows and Linux both build and run `small` and `medium` pre-merge.
+- A test that fails once and passes on the same commit is quarantined at once; gating never
+  retries.
 - A stage that skipped a size it was asked to run prints the skip and is not green.
-- `large` never runs pre-merge. Google's figures put large tests' flaky rate near 14% a week
-  against 0.5% for small ones (SPEC, "What the literature says"); in the merge path that is noise.
-
-## What each stage adds beyond the tests
-
-The owner widened the aim on 2026-11-02: the tests must match industrial practice, not only the
-budget. Each item follows the practice of Chromium, LLVM and Google's TAP.
-
-| Practice | Stage | Gates |
-| --- | --- | --- |
-| Windows and Linux both build and run `small` and `medium` | Pre-merge | Yes |
-| C++ under AddressSanitizer and UndefinedBehaviorSanitizer, `small` and `medium` | Pre-merge, Linux | Yes |
-| C++ under ThreadSanitizer, `medium` | Nightly | Opens backlog entries |
-| Test order shuffled with a printed seed (`--gtest_shuffle`, `pytest-randomly`, vitest `sequence.shuffle`) | Every stage | Yes; a failure reruns with the printed seed |
-| Tests run in parallel; a test that shares state with another fails the run | Every stage | Yes |
-| Fuzz targets for every reader of a persistent file format or untrusted input | Nightly, a fixed time per target | Opens backlog entries; the crashing input becomes a regression test |
-| Benchmarks recorded against the last nightly | Nightly | Reports a regression above its noise, never gates |
-| Results as JUnit, kept by CI | Every stage | No |
+- `large` never runs pre-merge: large tests were flaky in 14% of cases at Google against 0.5% for
+  small ones.
 
 ## Selection
 
-A change runs the tests of the modules it touches and of every module that depends on them,
-read from the module graph the build already has. A per-test impact map is not built: it goes
-stale, misses non-code inputs and needs build infrastructure no repository has. It is
-reconsidered only when the pre-merge run exceeds its 300 s budget after phase I.
+A change runs the tests of the modules it touches and of every module that depends on them, read
+from the module graph the build already has. A per-test impact map is not built: it goes stale and
+misses non-code inputs.
 
-## Coverage
+## Rework order
 
-Line and branch coverage is measured nightly and the diff's coverage is printed pre-merge.
-Neither gates. A coverage gate is met by tests that run code without asserting, the observation
-tests the literature finds agents write most.
+Lowest tier first, so each repository's tools and seams reach the ones above it.
 
-## Not adopted
+| Wave | Repositories |
+| --- | --- |
+| 0 | sushiskills |
+| 1 | sushicore: the shared test command |
+| 2 | sushilog, sushiprofiler, sushitrack, sushidsp, sushihub |
+| 3 | sushiruntime |
+| 4 | sushiblas |
+| 5 | sushiai, sushiengine |
+| any | sushiweb, project-mobilerts |
 
-Mutation testing costs many full runs, and Atlassian found generic mutation goals made agents
-write excess tests. A manual run on a numerical core module, such as SushiBLAS or SushiDSP, may be
-asked for by the owner.
+sushifx is vendored AMD FidelityFX with no tests and is out of scope.
+
+## Seams found by the survey
+
+Each adds or changes an interface and is approved by the owner in its repository's plan.
+
+| Repository | Seam |
+| --- | --- |
+| sushiblas | a shape-only tensor for validation; a host engine that runs the reference kernels; index and tail math out of the SYCL launch; ahead-of-time device code or a persistent kernel cache |
+| sushiruntime | a clock; a deterministic executor; a host-only graph and plan core; a threadless transport; a fake device |
+| sushiai | a host backend under the SushiBLAS engine for tensor values |
+| sushiengine | simulation registry and lifecycle without a runtime; serializers on streams; a fake render device; fakes for the audio and platform interfaces |
+| sushiprofiler | `Collector` passed in, not reached |
+| sushidsp | a clock or trigger for `CounterPollThread`; amp-node tests as rows |
+| sushitrack | environment and console out of `config_loader` |
+| sushicore, sushihub, sushiskills | subprocess, git, network and the file walk behind interfaces |
+| sushiweb | logic out of the large pages; Postgres only in adapter tests |
+| project-mobilerts | sizes as `small`, `medium`, `large`; MonoBehaviour logic into the Simulation assemblies |

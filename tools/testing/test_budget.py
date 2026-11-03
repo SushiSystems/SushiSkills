@@ -3,7 +3,7 @@
 # Copyright (c) 2026-present Mustafa Garip & Sushi Systems
 # Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.
 # Commercial use requires a licence from Sushi Systems.
-"""Applies the budget of `testing` to the times of one CTest run and prints a line and the findings.
+"""Applies the time limits of `testing` to the times of one test run and prints a line and the findings.
 
 Usage: python tools/testing/test_budget.py JUNIT [--programs MAP] [--exemptions TOML] [--rerun JUNIT]
            [--scope default|large|partial] [--wall SECONDS] [--root ROOT --base REVISION]
@@ -29,10 +29,10 @@ from commits.check_backlog_trailer import K_ID_PATTERN, open_ids  # noqa: E402
 from commits.history import commits_since  # noqa: E402
 from testing.added_tests import added_cases  # noqa: E402
 
-K_BUDGET: dict[str, int] = getattr(settings, "K_TEST_BUDGET", {})
+K_BUDGET: dict[str, float] = getattr(settings, "K_TEST_TIMES", {})
 K_NOISE_FACTOR: float = getattr(settings, "K_TEST_NOISE_FACTOR", 1.25)
 K_SIZES = ("small", "medium", "large")
-K_TEST_LIMITS = {"small": "small_test_s", "medium": "medium_test_s", "large": "large_test_s"}
+K_TEST_LIMITS = {"small": "small_test_s", "medium": "medium_test_s"}
 K_EXIT_CLEAN = 0
 K_EXIT_FINDINGS = 1
 K_EXIT_USAGE = 2
@@ -96,26 +96,34 @@ def _limit(key: str) -> float:
 def evaluate(timings: list[Timing], *, programs: dict[str, str], exemptions: dict[str, str],
              rerun: list[Timing] | None, scope: str, wall: float | None, factor: float,
              added: int | None, base: str, rebuilt: bool, open_backlog: frozenset[str] | None) -> Report:
-    """Applies the budget to a run and returns its line, its findings and the tests to rerun."""
+    """Applies the time limits to a run and returns its line, its findings and the tests to rerun.
+
+    A `large` test has no time limit, only its timeout, so it counts in the shape and the totals alone.
+    """
     alone = {timing.name: timing.seconds for timing in rerun or []}
     findings: list[str] = []
     over: list[str] = []
     totals: dict[tuple[str, str], float] = defaultdict(float)
     sized: dict[str, float] = defaultdict(float)
+    counts: dict[str, int] = defaultdict(int)
     exempt_seconds = 0.0
     for timing in timings:
         suite, size = suite_and_size(timing.name)
         if size is None or suite is None:
             continue
+        counts[size] += 1
+        key = K_TEST_LIMITS.get(size)
         if timing.name in exemptions:
             exempt_seconds += timing.seconds
-            if timing.seconds <= _limit(K_TEST_LIMITS[size]):
+            if key is not None and timing.seconds <= _limit(key):
                 findings.append(f"{timing.name}: exempt as {exemptions[timing.name]} but within its limit; "
                                 f"remove the entry")
             continue
         sized[size] += timing.seconds
         totals[(size, programs.get(suite, ""))] += timing.seconds
-        limit = _limit(K_TEST_LIMITS[size])
+        if key is None:
+            continue
+        limit = _limit(key)
         if timing.seconds > limit:
             over.append(timing.name)
             if rerun is not None and alone.get(timing.name, 0.0) > limit:
@@ -125,34 +133,38 @@ def evaluate(timings: list[Timing], *, programs: dict[str, str], exemptions: dic
     findings += _program_findings(totals, programs, factor)
     findings += _whole_run_findings(scope, sized, wall, factor)
     findings += _exemption_findings(exemptions, open_backlog)
-    return Report(_line(totals, sized, scope, wall, added, base, rebuilt, exempt_seconds, len(exemptions)),
+    return Report(_line(totals, sized, counts, scope, wall, added, base, rebuilt, exempt_seconds, len(exemptions)),
                   tuple(findings), tuple(sorted(over)))
 
 
 def _program_findings(totals: dict[tuple[str, str], float], programs: dict[str, str], factor: float) -> list[str]:
-    """Returns a finding for each test program whose small or large tests take longer than its total allows."""
+    """Returns a finding for each module's test program whose small tests take longer than its total allows."""
     if not programs:
         return []
     found = []
     for (size, program), seconds in sorted(totals.items()):
-        key = {"small": "small_program_s", "large": "large_program_s"}.get(size)
-        if key and program and seconds > _limit(key) * factor:
-            found.append(f"{program}: its {size} tests take {seconds:.1f} s, over {_limit(key):g} s x {factor:g}")
+        if size == "small" and program and seconds > _limit("module_small_s") * factor:
+            found.append(f"{program}: its small tests take {seconds:.1f} s, "
+                         f"over {_limit('module_small_s'):g} s x {factor:g}")
     return found
 
 
 def _whole_run_findings(scope: str, sized: dict[str, float], wall: float | None, factor: float) -> list[str]:
-    """Returns a finding when a whole default run or a whole large tier is over its limit."""
-    if scope == "default":
-        seconds = wall if wall is not None else sized["small"] + sized["medium"]
-        limit = _limit("default_run_s")
-        what = "wall time" if wall is not None else "sum of times"
-        return [f"default run: {seconds:.0f} s {what}, over {limit:g} s x {factor:g}"] if seconds > limit * factor else []
-    if scope == "large":
-        seconds = wall if wall is not None else sized["large"]
-        limit = _limit("large_tier_s")
-        return [f"large tier: {seconds:.0f} s, over {limit:g} s x {factor:g}"] if seconds > limit * factor else []
-    return []
+    """Returns a finding when a whole pre-merge run of small and medium tests is over its limit."""
+    if scope != "default":
+        return []
+    seconds = wall if wall is not None else sized["small"] + sized["medium"]
+    limit = _limit("pre_merge_s")
+    what = "wall time" if wall is not None else "sum of times"
+    return [f"pre-merge run: {seconds:.0f} s {what}, over {limit:g} s x {factor:g}"] if seconds > limit * factor else []
+
+
+def _shape(counts: dict[str, int]) -> str:
+    """Returns the share of each size among the cases that ran, such as `shape 80% small, 18% medium, 2% large`."""
+    total = sum(counts.values())
+    if total == 0:
+        return "shape: no sized cases"
+    return "shape " + ", ".join(f"{round(100 * counts[size] / total)}% {size}" for size in K_SIZES)
 
 
 def _exemption_findings(exemptions: dict[str, str], open_backlog: frozenset[str] | None) -> list[str]:
@@ -164,21 +176,24 @@ def _exemption_findings(exemptions: dict[str, str], open_backlog: frozenset[str]
     return found
 
 
-def _line(totals: dict[tuple[str, str], float], sized: dict[str, float], scope: str, wall: float | None,
-          added: int | None, base: str, rebuilt: bool, exempt_seconds: float, exempt_count: int) -> str:
+def _line(totals: dict[tuple[str, str], float], sized: dict[str, float], counts: dict[str, int], scope: str,
+          wall: float | None, added: int | None, base: str, rebuilt: bool, exempt_seconds: float,
+          exempt_count: int) -> str:
     """Returns the one-line summary of a run."""
     parts = []
     small = {program: seconds for (size, program), seconds in totals.items() if size == "small"}
     if small:
         worst = max(small, key=lambda program: small[program])
-        parts.append(f"small {small[worst]:.1f} s of {_limit('small_program_s'):g} s ({worst or 'no program map'})")
+        parts.append(f"small {small[worst]:.1f} s of {_limit('module_small_s'):g} s ({worst or 'no program map'})")
     if scope == "default":
         wall_text = f", {wall:.0f} s wall" if wall is not None else ""
-        parts.append(f"default {sized['small'] + sized['medium']:.0f} s sum{wall_text} of {_limit('default_run_s'):g} s")
+        parts.append(f"pre-merge {sized['small'] + sized['medium']:.0f} s sum{wall_text} of {_limit('pre_merge_s'):g} s")
     elif scope == "large":
-        parts.append(f"large tier {sized['large']:.0f} s of {_limit('large_tier_s'):g} s")
+        wall_text = f", {wall:.0f} s wall" if wall is not None else ""
+        parts.append(f"large tier {sized['large']:.0f} s sum{wall_text}")
     else:
         parts.append("whole run not measured")
+    parts.append(_shape(counts))
     if exempt_count:
         parts.append(f"{exempt_count} exempt, {exempt_seconds:.0f} s left out")
     if added is not None:
@@ -188,7 +203,7 @@ def _line(totals: dict[tuple[str, str], float], sized: dict[str, float], scope: 
 
 def _arguments(argv: list[str]) -> argparse.Namespace:
     """Returns the parsed command line."""
-    parser = argparse.ArgumentParser(description="Apply the test budget to one test run.")
+    parser = argparse.ArgumentParser(description="Apply the time limits of testing to one test run.")
     parser.add_argument("junit", type=Path)
     parser.add_argument("--programs", type=Path, help="JSON object from suite name to test program")
     parser.add_argument("--exemptions", type=Path)
@@ -214,7 +229,7 @@ def main(argv: list[str] | None = None) -> int:
     """
     arguments = _arguments(sys.argv[1:] if argv is None else argv)
     if not K_BUDGET:
-        print("no K_TEST_BUDGET in tools/settings.py", file=sys.stderr)
+        print("no K_TEST_TIMES in tools/settings.py", file=sys.stderr)
         return K_EXIT_USAGE
     exemptions = read_exemptions(arguments.exemptions) if arguments.exemptions else {}
     programs = json.loads(arguments.programs.read_text(encoding="utf-8")) if arguments.programs else {}

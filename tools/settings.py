@@ -66,15 +66,9 @@ K_EXTRA_TEST_FOLDERS: tuple[str, ...] = ("sushisystems/tooling/tests",)
 K_DOCS_FOLLOW_SINCE = "b02fc984e14c92e24e4cde55c043059a76e0f6e1"
 K_TEST_VALUE_SINCE = "f4c74c8e137bb2a825239767debe72035435e33c"
 K_TEST_ADDITIONS_SINCE = "f4c74c8e137bb2a825239767debe72035435e33c"
-K_TEST_BUDGET: dict[str, int] = {
-    "small_test_s": 1,
-    "medium_test_s": 10,
-    "large_test_s": 120,
-    "small_program_s": 10,
-    "large_program_s": 600,
-    "default_run_s": 300,
-    "large_tier_s": 1800,
-    "cases_per_commit": 20,
-    "cases_per_fix": 5,
-    "second_program": 0,
+K_TEST_TIMES: dict[str, float] = {
+    "small_test_s": 0.1,
+    "medium_test_s": 5,
+    "module_small_s": 10,
+    "pre_merge_s": 600,
 }

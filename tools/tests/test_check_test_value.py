@@ -22,7 +22,10 @@ from testing.check_test_value import (  # noqa: E402
     collect,
     rule_literal_assertion,
     rule_no_assertion,
-    rule_sleep_in_small,
+    rule_sleep,
+    rule_small_reaches_outside,
+    rule_tolerance_literal,
+    rule_weak_assertion_only,
 )
 
 
@@ -82,11 +85,38 @@ class TestValueTest(unittest.TestCase):
                    "TEST(Small_A, F) {\n  PREEXPECTED(f());\n}\n")
         self.assertEqual(self.found(rule_no_assertion), [("test_shape.cpp", 17)])
 
-    def test_reports_a_sleep_only_in_a_small_case(self) -> None:
+    def test_reports_a_sleep_in_a_case_of_any_size(self) -> None:
         self.write("tests/core/test_wait.cpp",
                    "TEST(Small_A, B) {\n  sleep_for(1ms);\n  EXPECT_TRUE(f());\n}\n\n"
                    "TEST(Medium_A, C) {\n  sleep_for(1ms);\n  EXPECT_TRUE(f());\n}\n")
-        self.assertEqual(self.found(rule_sleep_in_small), [("test_wait.cpp", 2)])
+        self.assertEqual(self.found(rule_sleep), [("test_wait.cpp", 2), ("test_wait.cpp", 7)])
+
+    def test_reports_a_case_that_only_succeeds_checks_at_compile_time_or_checks_no_throw(self) -> None:
+        self.write("tests/core/test_shape.cpp",
+                   "TEST(Small_A, B) {\n  static_assert(sizeof(int) == 4);\n  SUCCEED();\n}\n\n"
+                   "TEST(Small_A, C) {\n  EXPECT_NO_THROW(f());\n}\n\n"
+                   "TEST(Small_A, D) {\n  EXPECT_NO_THROW(f());\n  EXPECT_EQ(g(), 2);\n}\n")
+        self.assertEqual(self.found(rule_weak_assertion_only), [("test_shape.cpp", 1), ("test_shape.cpp", 6)])
+
+    def test_reports_a_typed_tolerance_and_keeps_a_derived_one(self) -> None:
+        self.write("tests/core/test_gemm.cpp",
+                   "TEST(Small_Gemm, A) {\n  EXPECT_NEAR(c(0), ref(0), 1e-5f);\n}\n\n"
+                   "TEST(Small_Gemm, B) {\n  EXPECT_NEAR(c(0), ref(0), bound(n));\n}\n")
+        self.write("tests/test_mix.py",
+                   "import pytest\n\npytestmark = pytest.mark.small\n\n"
+                   "def test_a():\n    assert f() == pytest.approx(1.0, abs=1e-6)\n\n"
+                   "def test_b():\n    assert f() == pytest.approx(1.0, abs=bound())\n")
+        self.assertEqual(sorted(self.found(rule_tolerance_literal)), [("test_gemm.cpp", 2), ("test_mix.py", 6)])
+
+    def test_reports_a_small_case_that_reaches_a_thread_a_file_or_the_clock(self) -> None:
+        self.write("tests/core/test_pool.cpp",
+                   "TEST(Small_Pool, A) {\n  std::thread t(f);\n  EXPECT_TRUE(g());\n}\n\n"
+                   "TEST(Medium_Pool, B) {\n  std::thread t(f);\n  EXPECT_TRUE(g());\n}\n")
+        self.write("tests/test_walk.py",
+                   "import pytest\n\npytestmark = pytest.mark.small\n\n"
+                   "def test_a(tmp_path):\n    assert walk(tmp_path) == []\n")
+        self.assertEqual(sorted(self.found(rule_small_reaches_outside)),
+                         [("test_pool.cpp", 2), ("test_walk.py", 5), ("test_walk.py", 6)])
 
     def test_judges_only_a_case_with_a_changed_line(self) -> None:
         path = self.write("tests/core/test_shape.cpp",

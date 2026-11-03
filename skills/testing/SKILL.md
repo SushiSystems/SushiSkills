@@ -1,211 +1,280 @@
 ---
 name: testing
-description: Use when fixing a bug, adding behaviour, writing or changing a test, updating a golden file, seeing a test fail intermittently, deciding whether a change is tested enough, or when a test run is slow or the number of tests has grown, in a repository.
+description: Use when fixing a bug, adding behaviour, writing or changing a test, updating a golden file, seeing a test fail intermittently, deciding whether a change is tested enough, making code testable, or when a test run is slow or the number of tests has grown, in a repository.
 ---
 
 # Testing
 
-A test states what the code promises. A change is finished when its promise is written as a test
-that fails without the change and passes with it.
+## Why tests matter
 
-## What a change must carry
-
-| Change | Required test |
-| --- | --- |
-| `fix` | A regression test that reproduces the defect, seen failing before the fix |
-| `feat` | A unit test for each behaviour of the public surface it adds, within the limits of "Budget"; an integration test when it crosses a module boundary |
-| `perf` | The existing tests unchanged and green, plus the measurement from `performance` |
-| `refactor` | No new test; every existing test green before and after |
-| A reader of a persistent file format or of untrusted input | A fuzz target beside its tests, run nightly; each crash it finds becomes a regression test |
-| An invariant over a numeric range, such as a round trip or a conservation law | One property test with a fixed seed and a bounded case count, in place of many example rows |
-
-A unit that is hard to reach is still tested:
-
-| Unit | Tested through |
-| --- | --- |
-| A device backend | The real device, labelled `large` |
-| A plugin or ABI boundary | A fake host that calls its entry points |
-| A GUI panel | The toolkit run without a window, such as an immediate-mode toolkit's frame calls with no rendering backend |
-
-A panel that cannot be tested that way holds logic that belongs in a unit of its own.
-
-Private details are not tested directly. If a private function seems to need its own test, it is
-a brick that wants its own module.
+A test is the only part of the code that says what the code promises. When someone changes the
+engine a year from now, the tests are what tell them whether they broke it. A good test fails
+exactly when a promise is broken, says which one, and costs milliseconds. A bad test fails for no
+reason, passes when the code is wrong, or costs seconds, and every one of those teaches the people
+who run it to stop reading test results. A suite of ten thousand tests nobody trusts is worth less
+than a suite of five hundred everyone does. Write the test that a reviewer would be sorry to lose,
+and no other.
 
 ## What a test is
 
-A test checks one promise the code makes, with the smallest input that can break it, at the
-cheapest level that can see it, and fails when the promise is broken.
+A test checks one promise of a public interface, against a named oracle, at the smallest size that
+can see the promise, and fails when the promise is broken.
 
-- A test has at least one assertion. A test that prints a value, or only runs the code, is an
-  observation, not a test.
-- Its name says the promise. If the name cannot say which defect the test would catch, there is no
-  test.
-- A test that repeats the implementation checks nothing, and a unit with every collaborator mocked
-  checks its mocks.
-- A helper that asserts is named `expect_*` or `assert_*` (`expect*` or `assert*` in TypeScript),
-  so a checker can tell an assertion from a call. A project macro counts when its name opens
-  with `EXPECT` or `ASSERT`, such as `SA_EXPECT_OK` read past its prefix. An assertion on a
-  literal, such as `EXPECT_TRUE(true)` or `SUCCEED()`, is a defect.
-- A promise that the code compiles, or does not throw, is asserted: `static_assert`,
-  `EXPECT_NO_THROW`, `pytest.raises` or its absence written as `expect(fn).not.toThrow()`. A body
-  that only calls the code and ends is not such a test.
+- **Promise.** The name states it as a sentence: `GemmWithBetaZeroIgnoresNanInC`, not `SimpleGemm`.
+  A name that cannot say which defect the test catches means there is no test. The name starts with
+  the unit it tests, so a failing name leads to its file.
+- **Oracle.** Where the expected value comes from. It never comes from running the code under test.
+  "Oracles and tolerances" lists the kinds.
+- **Can fail.** A new test kills at least one mutant of the code it tests, or reproduces the defect
+  its commit fixes. A test that passes whatever the code does is not a test.
+- **Public interface.** Private details are not tested directly. A private function that seems to
+  need its own test is a brick that wants its own module.
 
-## Suite shape
+A helper that asserts is named `expect_*` or `assert_*` (`expect*` or `assert*` in TypeScript), so a
+checker can tell an assertion from a call. A project macro counts when its name opens with `EXPECT`
+or `ASSERT`.
 
-**Rule:**
+## Forbidden tests
 
-1. At least 70% of a repository's tests are `small`, and `large` stays under 5%. The test command
-   prints the ratio beside the budget line.
-2. A fixture gives a test only what its promise needs. A check of arguments, shapes, offsets,
-   dispatch or errors runs on the host with no device, queue or thread, and is `small`.
-3. A numerical promise is kept once on the host against a reference, `small`. A device kernel adds
-   one parameterised `medium` test per kernel family that its output equals the reference; it
-   does not repeat the host rows.
+Never written. The rework of an old suite deletes or rewrites each one it meets.
 
-**Why:** a suite labelled honestly can still be shaped wrong. When one shared fixture opens a device
-for every test, everything becomes `medium`, the default run grows past its budget, and every
-promise is checked on the slowest path.
+| Kind | Example |
+| --- | --- |
+| No assertion, or only `SUCCEED()`, a `static_assert` run as a test, `EXPECT_NO_THROW` around code that cannot throw | `flush(); SUCCEED();` |
+| An assertion on a literal, or a value compared with itself | `EXPECT_TRUE(true)` |
+| Printing or logging in place of asserting | `print(result)` |
+| A sleep or a wall-clock wait, to synchronise or to prove that something did not happen | `std::this_thread::sleep_for(50ms)` |
+| A bare tolerance literal in a floating-point comparison | `EXPECT_NEAR(a, b, 1e-5)` |
+| A `small` test that reaches what its size forbids | a device queue in `Small_` |
+| A private header, a `Detail::` symbol or a `_private` name | `#include ".../source/x.hpp"` |
+| Control flow in a test body, outside a row table | `if (device) { EXPECT_... }` |
+| A mock of a type the repository owns | mocking the module's own class |
+| A test of trivial code: a getter, a default value, a constant, a log category, a version string | `EXPECT_EQ(kCategory, "Blas")` |
+| A change detector: asserting how the code works rather than what it promises | asserting the order of internal calls |
+| An expected value pasted from the code's current output | a golden array nobody derived |
+| The same promise again at a larger size or in another file | `SimpleAxpy` beside the reference axpy test |
 
-**Not when:** a repository whose subject is the device itself, such as a driver probe library,
-states its own ratio in `tests/README.md` with the owner's ruling.
+An expected value pasted from current output is allowed only in a test whose suite opens with
+`Characterization_`, written to pin behaviour before a refactor, with a backlog entry that removes it.
 
-## Value rules
+## Sizes
 
-**Rule:**
+A size is what a test may touch. Time follows from it; it does not define it.
 
-1. **Cheapest level.** What a `small` test can see is not written as `medium` or `large`.
-2. **One promise, one test.** A promise that a higher test already covers is not repeated below it.
-3. **Mocks sit at the unit's boundary:** the network, the disk, the device. The unit's own module
-   is used for real.
-4. **A regression test is the smallest reproduction,** a few lines that show the defect, not the
-   scenario that exposed it.
-5. **Rows, not copies.** The same promise over ten inputs is one parametrised test with ten rows.
+| Size | May touch | Never | Timeout | Runs |
+| --- | --- | --- | --- | --- |
+| `small` | the memory of its own process, one thread, an injected clock and seed | a device, a file, a socket, a thread, a sleep, the environment, the real clock, a process-wide instance | 60 s | every build, pre-merge |
+| `medium` | one machine: the shared device fixture, a per-test temporary folder, localhost, threads, a software device | a sleep, the network beyond localhost, a second device context, state left behind | 300 s | pre-merge |
+| `large` | anything, including whole scenes and real hardware at scale | — | 900 s | nightly or weekly, never pre-merge |
 
-**Why:** every test costs run time on every later change. A test that keeps no promise pays that
-cost for nothing, and an agent told only to be thorough has no reason to stop.
+The timeouts detect hangs. "Time" holds the limits a test is held to.
 
-**Not when:** rule 3 does not hold when a collaborator inside the module is itself slow or needs a
-device; the test then uses a fake with that collaborator's interface. Rule 1 does not hold for a
-promise that shows only at a size the cheaper level cannot reach, such as a converged simulation;
-that test is `large`, listed in the exemption file below, and has the owner's ruling.
+**A medium test checks a boundary:** that a kernel matches its host reference, that an adapter writes
+the bytes its port promises, that two threads hand a value over. Logic behind the boundary is tested
+`small`. A medium test that would pass with the device replaced by its host implementation is a small
+test in the wrong place.
 
-A checker reads assertions and counts. Rules 1 to 3 and 5 are judged by a reviewer, from the list
-of added tests that the checker prints.
+**Small first.** A promise is tested at the smallest size that can see it. When only a `medium` test
+can see a promise that is logic, the code lacks a seam: add it first ("Architecture for small
+tests"), then write the `small` test.
 
-## Budget
+**Suite shape.**
+**Rule:** at least 80% of a repository's cases are `small` and at most 5% are `large`. The test
+command prints the ratio per module.
+**Why:** a module below 80% `small` holds logic its tests can only reach through a device, a file or
+a thread, and every promise there is checked on the slowest, flakiest path.
+**Not when:** a module whose subject is the boundary itself, such as a device driver probe or a file
+format adapter, states its own ratio in `tests/README.md` with the owner's ruling.
 
-Time is a budget, and every test spends it. The timeouts of the size table stay; they stop hangs.
-These limits are the budget.
+A module below the ratio is a refactoring finding. It is never answered by adding small tests to
+raise the number.
+
+### Where the size is written
+
+| Language | Where |
+| --- | --- |
+| C++ | The suite name opens with `Small_`, `Medium_` or `Large_`: `TEST(Small_TensorShape, RejectsANegativeExtent)` |
+| Python | `pytest.mark.small`, `medium` or `large` on the test's class, or as `pytestmark` on its file |
+| TypeScript | The `describe` block's name opens with `small:`, `medium:` or `large:` |
+| C# (NUnit, Unity) | `[Category("small")]`, `"medium"` or `"large"` on the fixture class; a `[UnityTest]` or a test that loads a scene is at least `medium` |
+
+The build reads the size from there and sets the label and the timeout; no build file lists suites by
+size. A suite with no size fails the build, and in Python fails collection. In Python the timeout
+comes from `pytest-timeout`, set by the project's `conftest.py` from the size; in TypeScript the test
+configuration sets it from the prefix; in C# the assembly's shared base fixture sets `[Timeout]`.
+
+The rule reaches every test in the repository: `tests/`, `cli/tests/`, `tools/tests/`, a package's
+`__tests__/`, a sub-tree such as `gui/tests/`.
+
+`quarantined` is the one label a build file lists by name, because it is a state with a backlog
+entry, not a property of the test. A `Benchmark_` suite is a benchmark and carries no size.
+
+## Oracles and tolerances
+
+Strongest and cheapest first. A test uses the first that applies.
+
+1. **Exact by construction.** Integer-valued or dyadic inputs whose result is exact in the type,
+   compared bitwise. The default for BLAS, DSP and tensor kernels.
+2. **A host reference.** The naive host implementation of the same routine, accumulating in a wider
+   type. A device result is always checked against the host reference, never against values captured
+   from a device run.
+3. **A specified value** with its derivation in a comment beside it.
+4. **A metamorphic relation** where no reference exists: a transposed product, a scaled input, a
+   permuted batch, a serializer round trip.
+5. **An implicit oracle,** no crash and no sanitizer finding, only for a fuzz target or a stress test.
+6. **A golden file,** only when nothing above works.
+
+**Tolerances are derived, never typed.** A floating-point comparison that is not exact goes through
+the repository's tolerance helper, which computes `c · f(n) · u · gauge` (for a dot product or GEMM,
+`n · u · Σ|aᵢbᵢ|`) and fails when error over bound exceeds the repository's one threshold. The C++
+helper is `tests/support/tolerance.hpp`, copied from SushiSkills's `support/cpp/` as `project-tools`
+gives for shared files. A bare `==` is kept only where the value is copied, not computed, or exactly
+representable, and the name says so.
+
+**Small shapes.** A routine is tested on the sizes {0, 1, 2, 3, 5, 9}, on tile size ± 1, on every
+transpose and layout, on alpha and beta in {0, 1, another value}, with strides and leading dimensions
+larger than the extent, and with aliased arguments where the interface allows them. Large shapes are
+`large` tests and run nightly.
+
+**Special values have their own tests:** NaN, Inf, −0, subnormals, empty extents.
+
+**Rows, not copies.** The same promise over many inputs is one parametrised test (`TEST_P`,
+`TYPED_TEST`, `pytest.mark.parametrize`, `it.each`, `[TestCase]`).
+
+## Architecture for small tests
+
+Code is shaped so that most promises can be tested small. When it is not, the seam is built before
+the test, and building it is part of the task. A new or changed public interface is the owner's
+decision; an internal one is yours.
+
+1. **Functional core, imperative shell.** A module keeps its decisions in code that takes values and
+   returns values. Device launch, file access, threads, sockets and the clock live in a thin shell
+   around it.
+2. **Ports with in-memory adapters.** Every outside dependency is reached through an interface the
+   module owns, with a host or in-memory implementation beside the real one: clock, random seed, file
+   system or stream, executor, transport, device queue, logger and profiler sink. Both pass the same
+   contract tests. The in-memory one is the fake every other module's tests use; nobody mocks it.
+3. **Kernels call host-callable functions.** The arithmetic and index math of a device kernel is a
+   function compiled for host and device. Small tests call it on the host; one medium test per kernel
+   family checks the launch against the host reference.
+4. **No logic reaches a process-wide instance.** A singleton or a global context is passed in at the
+   shell.
+5. **Humble edges.** `main`, a MonoBehaviour, a React page, a kernel launcher and a CLI command only
+   wire parts together. Logic in them moves into the core.
+6. **Concurrency runs on an executor the code is given.** Tests pass a single-threaded executor that
+   runs a seeded schedule, so a race reproduces from its seed. Real threads are tested `medium`,
+   under ThreadSanitizer.
+7. **Waiting takes a clock.** A component that waits takes a clock the test advances. Absence is
+   proved by advancing the clock and asserting, never by sleeping.
+
+Mocks are for an out-of-process dependency the repository does not own, in the test of the adapter
+that reaches it. Everything else uses the real code or its in-memory port.
+
+## Running fast
+
+Tests run through the project's test command only. These rules shape how the command and the build
+register and run them.
+
+1. **One test program per module,** linking that module and what it uses, never a tier.
+2. **Batches, not a process per case.** CTest gets one entry per shard of a program, sharded with
+   `GTEST_TOTAL_SHARDS` and `GTEST_SHARD_INDEX` to about 10 s each; per-case results come from gtest's
+   XML. `gtest_discover_tests` is kept only for a program that needs a process per case, such as
+   death tests, and the program says why.
+3. **One device per process.** A gtest `Environment` creates the runtime and the queue once; buffers,
+   engines and graphs are per test, and teardown fails a test that leaks one. A device shard declares
+   `RESOURCE_GROUPS gpus:1`.
+4. **No recompilation.** Device code is compiled ahead of time for the build's targets, or the
+   persistent kernel cache is on for every run.
+5. **Shuffled.** Every run shuffles with a printed seed; a failure prints the command that
+   reproduces it.
+6. **Python and TypeScript** run in parallel workers. A small test takes no `tmp_path` and starts no
+   subprocess.
+
+## Time
+
+The test command measures and prints these every run. An agent reads them and times nothing itself.
+They gate once a measured run on the owner's machine has calibrated them; until then they report.
 
 | Limit | Value |
 | --- | --- |
-| A `small` test | 1 s |
-| A `medium` test | 10 s |
-| A new `large` test | 120 s |
-| The `small` tests of one test program | 10 s in total |
-| The `large` tests of one test program | 600 s in total |
-| The default run (`small` and `medium`) of a repository | 300 s |
-| The whole `large` tier of a repository | 1 800 s |
-| Test cases added by one commit | 20 |
-| Test cases added by one `fix` commit | 5 |
-| A second test program in one module, added by one commit | 0 without the owner |
+| A `small` test | 100 ms |
+| A `medium` test after the shared fixture | 5 s |
+| The `small` tests of one module | 10 s |
+| A repository's pre-merge run (`small` and `medium`), wall | 600 s |
 
-- A parametrised case counts once as a case; its rows count in full in the time. A module's first
-  test program needs no approval.
-- The project's test command measures the time and prints one budget line: the sums, the wall time
-  and the cases added since the base. An agent reads that line and times nothing itself.
-- Counts gate at once. A single test fails the gate only when it exceeds its limit in a rerun of
-  that test alone; a total fails above 1.25 times its limit. A run that did not rebuild prints
-  "(not rebuilt)" and never gates.
-- A test already over its limit is listed in the project's `tests/budget_exemptions.toml`, one test
-  name and one open backlog ID. The checker fails an entry whose test no longer breaks its limit,
-  so the list only shrinks. An exempt test is left out of every limit and total.
-- A project's test command runs `small` and `medium` unless a size is named. It runs `large` only
-  with a filter, or with the flag that means everything.
+The aims are a `small` test in 5 ms, a `medium` one in 200 ms and a pre-merge run in 3 minutes. A
+test already over its limit is listed in the project's `tests/budget_exemptions.toml`, one test name
+and one open backlog ID; the reader fails an entry whose test is back within its limit, so the list
+only shrinks.
 
-## Directions to the agent
+The project's test command runs `small` and `medium` unless a size is named, and runs `large` only
+with a filter or the flag that means everything.
 
-1. Add a new test to the existing test program of its module. A second program in a module needs
-   the owner.
-2. Run the module's tests through the project's test command and read its budget line. The
-   default run's total appears only when the whole default run happened; pre-merge CI runs it, and
-   an agent does not run it to find out.
-3. When a limit is broken, merge, parametrise or delete the tests you added in this piece of work
-   first. When the cause is an old test, stop adding tests and report it under "Suggested
-   removals" in the work folder's `REPORT.md`; do not touch it.
-4. The report lists the tests added and the promise each keeps. The checker prints the list; check
-   it and do not write it from memory.
-5. Never run the whole `large` tier. Run the `large` suites of the module you changed, with a
-   filter. The owner runs the whole tier on the device machine.
+## Proof of value
+
+- **Mutation testing of the diff** on host-compiled code: changed lines only, one mutant per line,
+  logging and capacity hints skipped. A surviving mutant on a changed line is a review finding.
+  Device code is reached through its host-callable functions.
+- **Coverage** of the diff is printed and measured nightly. It never gates: a coverage gate is met by
+  tests that run code without asserting.
+- **Sanitizers** are oracles too: AddressSanitizer and UndefinedBehaviorSanitizer on `small` and
+  `medium` pre-merge on Linux, ThreadSanitizer nightly. A report is a failure, never suppressed
+  without an open backlog entry.
+- **Fuzz targets** for every reader of a file format or of untrusted input. The corpus replays as a
+  `small` test on every run; the fuzzer runs nightly, and each crash becomes a regression test.
+
+## What a change carries
+
+| Change | Tests |
+| --- | --- |
+| `fix` | The smallest reproduction of the defect, seen failing before the fix |
+| `feat` | One test per promise it adds, at the smallest size that sees it, and the seam that makes that size possible |
+| `perf` | The existing tests unchanged and green, plus the measurement from `performance` |
+| `refactor` | No new test; every existing test green before and after |
+| A reader of a file format or of untrusted input | A fuzz target, as "Proof of value" gives |
+| An invariant over a range, such as a round trip or a conservation law | One property test with a fixed seed and a bounded case count, in place of many rows |
+
+## What the agent does
+
+1. List the promises the change makes before writing a test.
+2. Choose the smallest size that sees each. If only `medium` sees a promise that is logic, build the
+   seam first.
+3. Name the oracle. Use the tolerance helper; never type an epsilon.
+4. Use rows for one promise over many inputs.
+5. Run the module's tests through the project's test command and read the time and mutation lines
+   it prints.
+6. Report each test added with the promise it keeps. `tools/testing/added_tests.py` prints the list;
+   check it rather than write it from memory.
+7. Never run the whole `large` tier. Run the `large` suites of the module you changed, with a filter.
+
+**Reworking an old suite** is done module by module: write the module's promise list from its public
+interface, then take each existing test and keep, relabel, rewrite, merge into rows or delete it. A
+deletion is listed in the work folder's report with the forbidden kind or the duplicate it repeats.
+Missing promises get tests. The owner ruled on 2026-11-03 that the rework may delete tests other
+people wrote.
 
 ## Bug fix order
 
-1. Write the regression test in the test file of the unit the defect lives in, its name naming
-   the defect.
-2. Run it through the project CLI and see it fail for the reason the defect describes.
+1. Write the regression test in the test file of the unit the defect lives in, its name naming the
+   defect.
+2. Run it through the project's test command and see it fail for the reason the defect describes.
 3. Fix the code.
 4. Run it again and see it pass, with the rest of the module's tests.
 
 A fix whose test was never seen failing is not verified.
 
-## Sizes, scopes and names
+## Determinism
 
-Where a test file lives is `TESTS.md` in `repository-layout`: the test tree mirrors the source.
-What a test needs to run is its size, a label that CI chooses stages by and the test runner
-enforces as a timeout. Every test carries exactly one.
-
-| Size | The test may use | Timeout |
-| --- | --- | --- |
-| `small` | One process and one thread; no network, no sleep, no device, no file outside the build tree | 60 s |
-| `medium` | Threads and processes, localhost, files in a temporary folder, a software device, a null audio driver, a fake plugin host | 300 s |
-| `large` | Real hardware, such as a GPU or an audio device | 900 s |
-
-A test that needs no hardware and runs long is made shorter. It is not labelled `large` to hide
-its cost.
-
-A test's size is written in its source, once, where the test is declared:
-
-| Language | Where the size is written |
-| --- | --- |
-| C++ | The suite's name opens with `Small_`, `Medium_` or `Large_`: `TEST(Small_TensorShape, RejectsANegativeExtent)` |
-| Python | `pytest.mark.small`, `medium` or `large` on the test's class, or as `pytestmark` on its file |
-| TypeScript | The `describe` block's name opens with `small:`, `medium:` or `large:` |
-| C# (NUnit, Unity) | `[Category("small")]`, `"medium"` or `"large"` on the fixture class; a `[UnityTest]` or a test that loads a scene is at least `medium` |
-
-In Python the timeout comes from `pytest-timeout`, a development dependency of every package
-with tests, which the project's `conftest.py` sets from each test's size. In TypeScript the
-test configuration sets the timeout from the `describe` prefix, never one value for every test.
-In C# a `[Timeout]` attribute is set from the category by the assembly's shared base fixture.
-
-The rule reaches every test in the repository, wherever its folder: `tests/`, `cli/tests/`,
-`tools/tests/`, a package's `__tests__/` and a sub-tree such as `gui/tests/`. The checker tests
-under `tools/tests/` are pytest, sized like any other.
-
-A test that writes a file, even in a temporary folder, is `medium`; `small` reads only what the
-build tree holds. A test whose promise is about time takes an injected clock and stays `small`; a
-test that must wait on a real clock is `medium` and waits on an event with a deadline, never a
-fixed sleep.
-
-A module, for the one-program rule, is the source module the test folder mirrors. A host and a
-device program for one module are two programs and need the owner.
-
-A `Benchmark_` suite is a benchmark and carries no size; the size gate skips it. A suite that
-stresses the code and asserts, such as `Stress_*`, is a test and takes a size. A folder holding
-tests is never named `benchmarks/` or `Probe/`.
-
-The build reads the size from there and sets the label and the timeout; no build file lists
-suites or files by size. A suite that opens with no size fails the build, and in Python one
-that carries none fails collection. `quarantined` is the one label a build file lists, by test
-name, because it is a state with a known issue in the backlog, not a property of the test.
-
-Size is the only kind label. What a test covers, why it exists and how it checks, such as a
-defect it guards or a golden file it compares, are written in its name and its body. A benchmark is not a test; it
-is a program of its own, from `performance`.
-
-- Names read as behaviour: `StepRejectsNegativeTime`, `test_step_rejects_negative_time`,
-  `it("rejects a negative time step")`.
-- A test's name starts with the unit it tests, so a failing name leads to its file.
+1. Every random source takes a fixed seed written in the test.
+2. A `large` test whose hardware is absent is reported as skipped, never as passed.
+3. No test depends on wall-clock time, test order, the network or a file outside the repository.
+4. A test that fails once and passes on the same commit is failing. The test command reruns a failed
+   case once, alone, and reports a pass on rerun as flaky; gating never retries. A flaky test is
+   fixed the day it is seen or quarantined: it gains the `quarantined` label and a known issue whose
+   detail file names the test, its owner and the date it is fixed by, as `BACKLOG_FORMAT.md` in
+   `documentation` gives.
+5. Tests run shuffled and in parallel. A test that passes only in one order, or alone, shares state
+   with another and is a defect; each test builds its own fixture.
 
 ## Tests, benchmarks, probes and programs
 
@@ -218,65 +287,44 @@ Every program a repository runs on purpose is one of four kinds, told apart by w
 | Probe | What does this device, driver or simulation do? | Numbers or files a person reads, no verdict | `applications/probes/<name>/` | `<cli> probe <name>` |
 | Program | How is the library used? | Whatever the program does | `applications/` | `<cli> run` |
 
-A program that decides pass or fail is a test, whatever it measures: a frame compared against
-its golden, a device checked against its own capability report, two pixels read back. It is
-written as a test of the size its hardware needs, usually `large`, and runs with the other tests
-of that size. A command that only runs tests of one size is `<cli> test --label <size>`, never a
+A program that decides pass or fail is a test, whatever it measures, written at the size its
+hardware needs. A command that only runs tests of one size is `<cli> test --label <size>`, never a
 probe.
 
 A probe:
 
-- measures one subsystem, and a subsystem has one probe; a variant of it, such as a regional
-  nest against the global core, is an argument (`--scope global`), never a second probe;
-- has a name that no other probe's name starts with, so two probes are never told apart by a
-  suffix;
+- measures one subsystem, and a subsystem has one probe; a variant is an argument, never a second
+  probe;
+- has a name no other probe's name starts with;
 - returns 0 whenever it ran, and non-zero only when it could not run, saying why on stderr;
-- prints each measurement on stdout as one line, `<name> <value> <unit>`, or writes its files
-  under one folder it names on start;
-- takes every input that changes its numbers, such as a seed, a viewpoint or a duration, from
-  its arguments, so two runs with the same arguments can be compared;
+- prints each measurement as one line, `<name> <value> <unit>`, or writes its files under one folder
+  it names on start;
+- takes every input that changes its numbers from its arguments;
 - is listed in `applications/probes/README.md` with what it measures and an example run;
 - is never added to the test runner and never gates CI.
 
-## Determinism
-
-1. Every random source takes a fixed seed written in the test.
-2. Every floating-point comparison states its tolerance in the test, absolute and relative,
-   never a bare `==`. A bare `==` is kept only where the value is copied, not computed, or is
-   exactly representable, such as `0.0f` or a stored integer, and the test's name says so.
-3. A `large` test whose hardware is absent is reported as skipped, never as passed.
-4. No test depends on wall-clock time, test order, network or a file outside the repository.
-5. A test that fails intermittently is fixed the day it is seen, or quarantined: it gains the
-   `quarantined` label, which takes it out of every gating stage, and a known issue whose
-   detail file names the test, its owner and the date it is fixed by, as `BACKLOG_FORMAT.md` in
-   `documentation` gives. A quarantined test is never deleted silently.
-6. Tests run shuffled and in parallel. A test that passes only in one order, or alone, shares
-   state with another and is a defect; each test builds its own fixture.
-7. C++ tests pass under AddressSanitizer and UndefinedBehaviorSanitizer; tests that start threads
-   pass under ThreadSanitizer. A sanitizer report is a failure, never suppressed without an open
-   backlog entry.
-8. A `small` test is never retried. A `medium` or `large` test that passes only on a retry is
-   intermittent, and rule 5 applies.
+A folder holding tests is never named `benchmarks/` or `Probe/`.
 
 ## Golden files
 
 - A golden file is updated only with the owner's approval.
-- When a golden test fails, the agent reports the difference (image diff, changed values) and
-  stops. It does not regenerate the file to make the test pass.
+- When a golden test fails, the agent reports the difference (image diff, changed values) and stops.
+  It does not regenerate the file to make the test pass.
 - An approved update is its own commit: `test(scope): update the <name> golden`.
 
-## Running
-
-Tests run through the project CLI only, scoped to what changed. A claim that tests pass carries
-the command and its output.
+Where a test file lives is `TESTS.md` in `repository-layout`: the test tree mirrors the source. The
+mirror says where a test goes; it never requires a test file for each header.
 
 ## Red flags
 
 - "The fix is obvious, the test can come after." → the test first.
-- "The golden is outdated anyway, I regenerated it." → report and stop.
+- "It needs the device, so it is medium." → which promise is logic? Build the seam and test it small.
+- "Every public header should have a test file." → every promise should have a test.
+- "1e-5 is close enough." → derive the tolerance with the helper.
+- "I will sleep a little to be sure it did not happen." → take a clock and advance it.
+- "I will cover every branch to be safe." → one promise, one test, and a mutant it kills.
+- "The test prints the value so I can see it." → assert it or delete it.
 - "It passed on the second run." → it is flaky; fix or quarantine.
 - "No device here, so the test counts as passing." → skipped.
-- "It is GUI, plugin or device code; list it as untested." → test it as above.
-- "I will cover every branch to be safe." → one promise, one test; the budget is the limit.
-- "The test prints the value so I can see it." → that is an observation; assert it or delete it.
+- "The golden is outdated anyway, I regenerated it." → report and stop.
 - "I will run all the large tests to be sure." → the large suites of the module you changed, with a filter.
