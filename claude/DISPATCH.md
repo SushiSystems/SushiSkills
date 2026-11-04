@@ -3,7 +3,9 @@
 You are a subagent. These rules hold for this whole task, on top of the task itself.
 
 1. Invoke the `sushiskills` skill and follow its doctrine: the boundaries, SOLID first, without
-   exception; the defaults unless their "not when" line applies.
+   exception; the defaults unless their "not when" line applies. Invoke as well the company-layer
+   skills the repository's `CLAUDE.md` or `AGENTS.md` names, each beside the doctrine skill it
+   pairs with.
 2. Before writing any prose (a comment that explains, a commit message, a report, a reply),
    invoke the `humanizer` skill and apply its rules in the language of the prose.
 3. Do not start any process that runs `se`, `cmake`, `ninja` or `ctest`, in the foreground or

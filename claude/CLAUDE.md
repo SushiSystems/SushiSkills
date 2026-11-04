@@ -12,7 +12,8 @@ the `humanizer` skill in the language it is written in.
 
 The doctrine in the `sushiskills` skill holds the quality rules: its boundaries, SOLID first,
 hold without exception, and its defaults hold unless their "not when" line applies. Load it
-before any work.
+before any work. A repository whose `CLAUDE.md` or `AGENTS.md` names a company layer loads that
+layer's skills with it, each beside the doctrine skill it pairs with.
 
 ## Documentation architecture
 
