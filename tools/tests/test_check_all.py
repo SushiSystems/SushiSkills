@@ -7,17 +7,23 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+import check_all  # noqa: E402
 from check_all import (  # noqa: E402
     K_CHECKERS,
     Check,
     _read_found,
+    _read_suite_folders,
+    _run_all,
     _run_check,
     own_checker_names,
     plan_checks,
@@ -88,6 +94,19 @@ class ReportTest(unittest.TestCase):
         self.assertEqual((lines, code), (["== a\none", "== c\nthree", "failed: a, c"], 1))
 
 
+class EnvironmentTest(unittest.TestCase):
+    """Covers which variables a test suite's environment drops."""
+
+    K_TEST_SIZE = "small"
+
+    def test_drops_every_variable_that_points_git_at_a_repository(self) -> None:
+        names = ("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "GIT_OBJECT_DIRECTORY",
+                 "GIT_ALTERNATE_OBJECT_DIRECTORIES", "GIT_COMMON_DIR", "GIT_PREFIX",
+                 "GIT_NAMESPACE")
+        environment = {"PATH": "/bin", **{name: "x" for name in names}}
+        self.assertEqual(check_all.suite_environment(environment), {"PATH": "/bin"})
+
+
 class ShellTest(unittest.TestCase):
     """Covers the disk and process edges: own checkers found on disk, and a check's output."""
 
@@ -103,6 +122,28 @@ class ShellTest(unittest.TestCase):
             own = own_checker_names(_read_found(tools))
             self.assertEqual(own, ("layering/check_package_layers.py",))
 
+
+    def test_runs_each_command_and_returns_its_exit_code_in_order(self) -> None:
+        checks = [Check("passes", (sys.executable, "-c", "raise SystemExit(0)"), False),
+                  Check("fails", (sys.executable, "-c", "raise SystemExit(1)"), False)]
+        self.assertEqual([code for code, _ in _run_all(checks)], [0, 1])
+
+    def test_lists_only_the_test_folders_that_exist(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "present").mkdir()
+            with mock.patch.object(check_all, "K_EXTRA_TEST_FOLDERS", ("present", "absent")):
+                folders = _read_suite_folders(root)
+            self.assertEqual(folders, [check_all.K_TOOLS / "tests", root / "present"])
+
+    def test_main_returns_one_when_a_check_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            def fake_run_all(checks: list[Check]) -> list[tuple[int, str]]:
+                return [(1, "finding") if index == 0 else (0, "") for index in range(len(checks))]
+
+            with mock.patch.object(check_all, "_run_all", fake_run_all), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(check_all.main([folder]), 1)
 
     def test_reads_a_non_ascii_finding(self) -> None:
         """Reads an em dash a checker prints, whatever the console's code page."""

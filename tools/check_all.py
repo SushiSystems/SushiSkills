@@ -16,7 +16,7 @@ from __future__ import annotations
 import os
 import subprocess
 import sys
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -29,6 +29,17 @@ K_TOOLS = Path(__file__).resolve().parent
 #: How many checks run at once.
 K_WORKERS = min(8, os.cpu_count() or 1)
 K_EXTRA_TEST_FOLDERS: tuple[str, ...] = getattr(settings, "K_EXTRA_TEST_FOLDERS", ())
+#: The variables that point git at a repository; a test suite runs without them.
+K_REPOSITORY_VARIABLES: tuple[str, ...] = (
+    "GIT_DIR",
+    "GIT_WORK_TREE",
+    "GIT_INDEX_FILE",
+    "GIT_OBJECT_DIRECTORY",
+    "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+    "GIT_COMMON_DIR",
+    "GIT_PREFIX",
+    "GIT_NAMESPACE",
+)
 K_CHECKERS = (
     "documentation/check_source_comments.py",
     "documentation/check_docs_layout.py",
@@ -129,18 +140,31 @@ def _read_suite_folders(root: Path) -> list[Path]:
     return [folder for folder in candidates if folder.is_dir()]
 
 
-def _run_check(command: Sequence[str]) -> tuple[int, str]:
+def suite_environment(environment: Mapping[str, str]) -> dict[str, str]:
+    """Returns a copy of an environment without the variables that point git at a repository."""
+    return {name: value for name, value in environment.items()
+            if name not in K_REPOSITORY_VARIABLES}
+
+
+def _run_check(command: Sequence[str],
+               environment: Mapping[str, str] | None = None) -> tuple[int, str]:
     """Runs one check and returns its exit code and everything it printed, read as UTF-8."""
-    environment = {**os.environ, "PYTHONIOENCODING": "utf-8"}
+    base = os.environ if environment is None else environment
     completed = subprocess.run(list(command), capture_output=True, text=True, encoding="utf-8",
-                               env=environment)
+                               env={**base, "PYTHONIOENCODING": "utf-8"})
     return completed.returncode, f"{completed.stdout}{completed.stderr}"
+
+
+def _run_checked(check: Check) -> tuple[int, str]:
+    """Runs one check; a test suite runs without the variables that point git at a repository."""
+    environment = suite_environment(os.environ) if check.is_suite else None
+    return _run_check(check.command, environment)
 
 
 def _run_all(checks: Sequence[Check]) -> list[tuple[int, str]]:
     """Runs every check on a thread pool and returns the results in the order of the checks."""
     with ThreadPoolExecutor(max_workers=K_WORKERS) as pool:
-        return list(pool.map(lambda check: _run_check(check.command), checks))
+        return list(pool.map(_run_checked, checks))
 
 
 if __name__ == "__main__":

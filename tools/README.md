@@ -8,7 +8,7 @@ which it keeps is in the `project-tools` skill.
 
 | Path | Checks | Takes |
 | --- | --- | --- |
-| `check_all.py` | Nothing itself; runs the twelve checkers, then the repository's own `<area>/check_<what>.py` files and the tests, and prints only what failed | Repository root |
+| `check_all.py` | Nothing itself; runs the twelve checkers, then the repository's own `<area>/check_<what>.py` files and the tests, the tests without git's repository variables (`GIT_DIR` and its kin), and prints only what failed | Repository root |
 | `checking/checker.py` | Nothing itself; runs a checker's rule table and prints findings | |
 | `checking/source_file.py` | Nothing itself; holds a file's path and text for a checker's pure rules, the line of an offset, and the shell helper that reads the files a checker wants | |
 | `checking/tests_tree.py` | Nothing itself; finds a repository's test files, under every folder named `tests` or `__tests__` at any depth, for the checkers that read them | |

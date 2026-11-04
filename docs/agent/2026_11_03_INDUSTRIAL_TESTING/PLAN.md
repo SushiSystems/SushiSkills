@@ -1,6 +1,6 @@
 # Industrial testing: plan
 
-**Status:** Open — triage done; phase D's split mostly built, J3e2, J3f, J4c2, J4d and J2b2 left
+**Status:** Open — triage done; phase D's split mostly built, J3e2, J3f, J4d and J2b2 left
 
 Carries out phase D of `SPEC.md` and clears the working trees the 2026-11-02 rollout left
 uncommitted, so wave 1 starts from clean branches. Parallel mode, at most four subagents at once (the owner, 2026-11-04), sharing one checkout as `git-workflow`
@@ -20,7 +20,7 @@ says (no worktree unless the owner asks, no stash), models from `model-routing`.
 | J3d | `tools/documentation/check_docs_facts.py`, `facts.py`, `facts_cli.py` and their tests | J3 | done |
 | J3e | `tools/documentation/check_design_topics.py`, `check_design_format.py` and their helpers and tests | J3 | done |
 | J3e2 | `tools/documentation/repair_design_citations.py`, `fold_design_topics.py`, `retire_archive.py`, a test module for `design_status.py` and `citation_files.py`, line numbers asserted in `test_check_design_topics.py` | J3e | running |
-| J4c2 | `tools/tests/test_check_all.py`: the three shell lines of `check_all.py` no test reaches | J4c | running |
+| J4c2 | `tools/tests/test_check_all.py`: the three shell lines of `check_all.py` no test reaches | J4c | done |
 | J3f | `tools/documentation/check_module_install.py`, `check_changelog.py` and their tests | J3 | running |
 | J2b1 | `tools/testing/case_reader.py`, `check_test_sizes.py`, `tools/tests/conftest.py` and their tests: every `TestCase` class read (KI-3), and a class-level `K_TEST_SIZE` | J2 | done |
 | J2b2 | the size marks of every `tools/tests/test_*`: `pytest.mark` replaced by the class-level `K_TEST_SIZE`, so the checker tests run without pytest | J2b1, J3a to J3f, J4a to J4d | todo |

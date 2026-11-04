@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-05 — tools: Ran the test suites of `check_all.py` without the variables that point git at a repository, so a commit hook's tests no longer write into its config (KI-5, `suite_environment`).
 - 2026-11-04 — tools: Split the facts, logging, workflow, routing and design tools and `check_all.py` into pure logic and a shell, with one status parser in `design_status.py` (RW-42, `tools/documentation/`).
 - 2026-11-04 — testing: Made the share of each size a reading, never a target: work is accepted on purity, one medium class for the boundary and killed mutants, not on a percentage (RW-42, `SKILL.md`).
 - 2026-11-04 — claude: Let a subagent run the reading commands of a repository's CLI, `backlog next`, `list`, `show` and `design show`, so the backlog rule and the no-build rule hold together (`claude/DISPATCH.md`).
