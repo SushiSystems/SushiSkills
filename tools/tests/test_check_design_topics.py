@@ -14,8 +14,6 @@ from collections.abc import Iterable
 from dataclasses import replace
 from pathlib import Path, PurePosixPath
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.checker import Issue  # noqa: E402
@@ -121,15 +119,27 @@ def _messages(issues: Iterable[Issue]) -> list[str]:
     return [issue.message for issue in issues]
 
 
+def _located(issues: Iterable[Issue]) -> list[tuple[str, int, str]]:
+    """Returns the path, the line and the message of each issue, the path as a POSIX name below the test root."""
+    return [(Path(issue.path).relative_to("alpha").as_posix(), issue.line, issue.message) for issue in issues]
+
+
 def _check(rule, overrides: dict[str, str] | None = None, is_required: bool = False, ceiling: int = 0, untracked: bool = False) -> list[str]:
     """Returns the messages a rule gives for the valid files with some of them replaced."""
     files = {**K_FILES, **(overrides or {})}
     return _messages(rule(_repository(files, is_required, ceiling, untracked)))
 
 
-@pytest.mark.small
+def _issues(rule, overrides: dict[str, str] | None = None, is_required: bool = False, ceiling: int = 0, untracked: bool = False) -> list[Issue]:
+    """Returns the issues a rule gives for the valid files with some of them replaced."""
+    files = {**K_FILES, **(overrides or {})}
+    return list(rule(_repository(files, is_required, ceiling, untracked)))
+
+
 class RegistrationTest(unittest.TestCase):
     """Checks the rule table."""
+
+    K_TEST_SIZE = "small"
 
     def test_names_every_rule(self) -> None:
         """Holds the ten rules under their names."""
@@ -150,22 +160,29 @@ class RegistrationTest(unittest.TestCase):
         )
 
 
-@pytest.mark.small
 class GlossaryTest(unittest.TestCase):
     """Covers the glossary term of each topic."""
+
+    K_TEST_SIZE = "small"
 
     def test_is_silent_when_not_asked(self) -> None:
         """Reports nothing while the repository does not ask for glossary entries."""
         self.assertEqual(_check(rule_glossary_entry), [])
 
     def test_reports_a_topic_the_glossary_lacks(self) -> None:
-        """Reports a topic with no term when the glossary exists and does not name it."""
+        """Reports a topic with no term when the glossary exists and does not name it, on the first line of its document."""
         glossary = {K_GLOSSARY: "# Glossary\n\n**mixer**: the sum of the sources.\n"}
-        self.assertEqual(_check(rule_glossary_entry, glossary, True), ["the glossary has no entry for the topic 'AUDIO'"])
+        self.assertEqual(
+            _located(_issues(rule_glossary_entry, glossary, True)),
+            [("docs/design/AUDIO.md", 1, "the glossary has no entry for the topic 'AUDIO'")],
+        )
 
     def test_reports_every_topic_when_there_is_no_glossary(self) -> None:
-        """Reports a topic when the repository has no glossary at all."""
-        self.assertEqual(len(_check(rule_glossary_entry, None, True)), 1)
+        """Reports a topic when the repository has no glossary at all, on the first line of it."""
+        self.assertEqual(
+            _located(_issues(rule_glossary_entry, None, True)),
+            [("docs/design/AUDIO.md", 1, "the glossary has no entry for the topic 'AUDIO'")],
+        )
 
     def test_reads_a_table_cell_and_a_heading_with_separators(self) -> None:
         """Takes a table first cell, and a topic name written with underscores."""
@@ -179,24 +196,28 @@ class GlossaryTest(unittest.TestCase):
         self.assertEqual(len(_check(rule_glossary_entry, glossary, True)), 1)
 
 
-@pytest.mark.small
 class FolderCeilingTest(unittest.TestCase):
     """Covers the entry limit of docs/design and docs/agent."""
+
+    K_TEST_SIZE = "small"
 
     def test_is_off_at_zero(self) -> None:
         """Reports nothing when the ceiling is zero."""
         self.assertEqual(_check(rule_folder_ceiling, None, False, 0), [])
 
     def test_reports_a_folder_over_the_ceiling(self) -> None:
-        """Reports the folder that holds more entries than the ceiling."""
+        """Reports the folder that holds more entries than the ceiling, on its first line."""
         extra = {f"docs/agent/2026_10_2{index}_W/SPEC.md": "# W\n" for index in range(3)}
-        messages = _check(rule_folder_ceiling, extra, False, 3)
-        self.assertEqual(messages, ["4 entries; the ceiling is 3"])
+        self.assertEqual(
+            _located(_issues(rule_folder_ceiling, extra, False, 3)),
+            [("docs/agent", 1, "4 entries; the ceiling is 3")],
+        )
 
 
-@pytest.mark.small
 class ArchiveCitationTest(unittest.TestCase):
     """Covers the ban on citing an archive the repository does not track."""
+
+    K_TEST_SIZE = "small"
 
     CITING = {"docs/guides/use.md": "See docs/archive/design/OLD.md and [x](../archive/y.md).\nPlain line.\n"}
 
@@ -205,9 +226,11 @@ class ArchiveCitationTest(unittest.TestCase):
         self.assertEqual(_check(rule_archive_not_cited, self.CITING), [])
 
     def test_reports_each_line_that_cites_the_archive(self) -> None:
-        """Reports the one line that cites the archive by path and by link."""
-        messages = _check(rule_archive_not_cited, self.CITING, untracked=True)
-        self.assertEqual(messages, ["the archive is not tracked; cite the topic that holds the decision"])
+        """Reports the one line that cites the archive by path and by link, with the number of that line."""
+        self.assertEqual(
+            _located(_issues(rule_archive_not_cited, self.CITING, untracked=True)),
+            [("docs/guides/use.md", 1, "the archive is not tracked; cite the topic that holds the decision")],
+        )
 
     def test_does_not_read_the_archive_itself(self) -> None:
         """Does not report a citation inside the archive."""
@@ -215,31 +238,38 @@ class ArchiveCitationTest(unittest.TestCase):
         self.assertEqual(_check(rule_archive_not_cited, files, untracked=True), [])
 
 
-@pytest.mark.small
 class ViewsTest(unittest.TestCase):
     """Covers the generated blocks."""
+
+    K_TEST_SIZE = "small"
 
     BLOCKS = {"docs/design/README.md": "# Design\n\n<!-- topics:begin -->\nstale\n<!-- topics:end -->\n"}
 
     def test_reports_a_stale_block(self) -> None:
-        """Reports a block whose text is not what the metadata gives."""
-        messages = _check(rule_views_current, self.BLOCKS)
-        self.assertEqual(messages, ["the generated block 'topics' is stale; run generate_design_views.py"])
+        """Reports a block whose text is not what the metadata gives, on the first line of its file."""
+        self.assertEqual(
+            _located(_issues(rule_views_current, self.BLOCKS)),
+            [("docs/design/README.md", 1, "the generated block 'topics' is stale; run generate_design_views.py")],
+        )
 
     def test_leaves_a_file_without_markers_alone(self) -> None:
         """Reports nothing while no file carries a marker."""
         self.assertEqual(_check(rule_views_current, {"docs/design/README.md": "# Design\n"}), [])
 
     def test_asks_for_the_topic_map_when_topics_are_required(self) -> None:
-        """Reports a design index with no topic map once the repository asks for topics."""
+        """Reports a design index with no topic map once the repository asks for topics, on its first line."""
         overrides = {"docs/design/README.md": "# Design\n"}
         self.assertEqual(_check(rule_views_present, overrides), [])
-        self.assertEqual(len(_check(rule_views_present, overrides, True)), 1)
+        self.assertEqual(
+            _located(_issues(rule_views_present, overrides, True)),
+            [("docs/design/README.md", 1, "the topic map is generated; run generate_design_views.py --init")],
+        )
 
 
-@pytest.mark.medium
 class ShellTest(unittest.TestCase):
     """Covers the rules that run through the tooling package, and the whole table over files on disk."""
+
+    K_TEST_SIZE = "medium"
 
     def test_reports_a_module_two_topics_name(self) -> None:
         """The second topic that names a module is the finding."""

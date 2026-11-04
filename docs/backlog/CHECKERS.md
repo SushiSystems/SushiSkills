@@ -31,4 +31,3 @@
 
 | ID | Origin | Symptom | Workaround | Fix | Source | Opened |
 | --- | --- | --- | --- | --- | --- | --- |
-| KI-3 | own | The size checker skips a unittest TestCase class whose name does not start with Test | name each test class Test<Thing> | RW-42 | `tools/testing/case_reader.py` | 2026-11-04 |

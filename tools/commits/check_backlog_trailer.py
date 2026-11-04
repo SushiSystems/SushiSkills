@@ -33,12 +33,13 @@ K_NONE = re.compile(r"^none \(\s*(\S.*?)\s*\)$")
 
 @dataclass(frozen=True, slots=True)
 class TrailerCheck:
-    """Holds one commit to judge: its repository, hash and message, and the IDs open for it as values."""
+    """Holds one commit to judge: its repository, hash and message, the IDs open for it and the shape of an ID."""
 
     root: Path
     sha: str
     message: str
     known: frozenset[str]
+    id_pattern: str
 
 
 def ids_in(text: str) -> frozenset[str]:
@@ -92,8 +93,11 @@ def trailer_value(message: str) -> str | None:
     return found[-1] if found else None
 
 
-def trailer_problems(message: str, known: frozenset[str]) -> list[str]:
-    """Returns what is wrong with the `Backlog:` line of a message; empty when it is right."""
+def trailer_problems(message: str, known: frozenset[str], id_pattern: str) -> list[str]:
+    """Returns what is wrong with the `Backlog:` line of a message; empty when it is right.
+
+    *id_pattern* is the regular expression an ID must match in full.
+    """
     value = trailer_value(message)
     if value is None:
         return ["the message has no `Backlog:` line; write `Backlog: <ID>` or `Backlog: none (<reason>)`"]
@@ -101,16 +105,16 @@ def trailer_problems(message: str, known: frozenset[str]) -> list[str]:
         return [] if K_NONE.match(value) else ["`Backlog: none` needs its reason in brackets: `none (<reason>)`"]
     ids = [item.strip() for item in value.split(",")]
     problems = [f"`Backlog:` names {item!r}, which is not a backlog ID" for item in ids
-                if not re.fullmatch(K_ID_PATTERN, item)]
+                if not re.fullmatch(id_pattern, item)]
     problems += [f"`Backlog:` names {item}, which is not an entry open at the parent or in this commit"
-                 for item in ids if re.fullmatch(K_ID_PATTERN, item) and item not in known]
+                 for item in ids if re.fullmatch(id_pattern, item) and item not in known]
     return problems
 
 
 def _check_of(commit: Commit) -> TrailerCheck:
     """Returns a commit with the IDs open at its parent and in itself, read from git."""
     known = open_ids(commit.root, commit.parent) | open_ids(commit.root, commit.sha)
-    return TrailerCheck(commit.root, commit.sha, commit.message, known)
+    return TrailerCheck(commit.root, commit.sha, commit.message, known, K_ID_PATTERN)
 
 
 def collect(paths: list[Path]) -> Iterable[TrailerCheck]:
@@ -127,7 +131,7 @@ def collect(paths: list[Path]) -> Iterable[TrailerCheck]:
 def rule_trailer(check: TrailerCheck) -> Iterator[Issue]:
     """Yields an issue for each fault of the `Backlog:` line of a commit, placed on its short hash."""
     path = check.root / f"commit-{check.sha[:9]}"
-    for problem in trailer_problems(check.message, check.known):
+    for problem in trailer_problems(check.message, check.known, check.id_pattern):
         yield Issue(path, 1, problem)
 
 

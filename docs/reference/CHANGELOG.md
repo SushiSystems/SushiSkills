@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-11-05 — tools: Split the changelog, module-install, design-citation, fold, archive, history and hook tools into pure logic and a shell, so their logic is tested small (RW-42, `tools/hooks/commit_msg.py`, `tools/commits/history.py`).
+- 2026-11-05 — testing: Closed the size checker's blind spot for a `unittest.TestCase` class not named `Test<Thing>` (KI-3, `tools/testing/case_reader.py`).
 - 2026-11-05 — layering: Reported a domain tier missing from `K_TIER_ORDER` instead of crashing in `Layout.rank` (KI-4, `tools/layering/check_layering.py`).
 - 2026-11-05 — tools: Ran the test suites of `check_all.py` without the variables that point git at a repository, so a commit hook's tests no longer write into its config (KI-5, `suite_environment`).
 - 2026-11-04 — tools: Split the facts, logging, workflow, routing and design tools and `check_all.py` into pure logic and a shell, with one status parser in `design_status.py` (RW-42, `tools/documentation/`).
