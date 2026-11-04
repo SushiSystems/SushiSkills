@@ -1,6 +1,6 @@
 # Industrial testing: plan
 
-**Status:** Open — triage done; phase D's split mostly built, J3e2, J3f, J4d and J2b2 left
+**Status:** Open — triage done; phase D's split built, J2b2 left; J10 next
 
 Carries out phase D of `SPEC.md` and clears the working trees the 2026-11-02 rollout left
 uncommitted, so wave 1 starts from clean branches. Parallel mode, at most four subagents at once (the owner, 2026-11-04), sharing one checkout as `git-workflow`
@@ -19,17 +19,17 @@ says (no worktree unless the owner asks, no stash), models from `model-routing`.
 | J3c | `tools/documentation/check_source_comments.py` and its tests | J3 | done |
 | J3d | `tools/documentation/check_docs_facts.py`, `facts.py`, `facts_cli.py` and their tests | J3 | done |
 | J3e | `tools/documentation/check_design_topics.py`, `check_design_format.py` and their helpers and tests | J3 | done |
-| J3e2 | `tools/documentation/repair_design_citations.py`, `fold_design_topics.py`, `retire_archive.py`, a test module for `design_status.py` and `citation_files.py`, line numbers asserted in `test_check_design_topics.py` | J3e | running |
+| J3e2 | `tools/documentation/repair_design_citations.py`, `fold_design_topics.py`, `retire_archive.py`, a test module for `design_status.py` and `citation_files.py`, line numbers asserted in `test_check_design_topics.py` | J3e | done |
 | J4c2 | `tools/tests/test_check_all.py`: the three shell lines of `check_all.py` no test reaches | J4c | done |
-| J3f | `tools/documentation/check_module_install.py`, `check_changelog.py` and their tests | J3 | running |
+| J3f | `tools/documentation/check_module_install.py`, `check_changelog.py` and their tests | J3 | done |
 | J2b1 | `tools/testing/case_reader.py`, `check_test_sizes.py`, `tools/tests/conftest.py` and their tests: every `TestCase` class read (KI-3), and a class-level `K_TEST_SIZE` | J2 | done |
 | J2b2 | the size marks of every `tools/tests/test_*`: `pytest.mark` replaced by the class-level `K_TEST_SIZE`, so the checker tests run without pytest | J2b1, J3a to J3f, J4a to J4d | todo |
 | J4 | `tools/licensing/write_license_block.py`, `tools/commits/check_backlog_trailer.py` and their tests (the rest split below) | J1b | done |
 | J4a | `tools/layering/` and its tests | J4 | done |
 | J4b | `tools/logs/`, `tools/ci/` and their tests | J4 | done |
 | J4c | `tools/routing/`, `tools/check_all.py` and their tests | J4 | done |
-| J4d | `tools/commits/history.py`, `tools/hooks/` and their tests, with the injection seam the hook tests need, and `trailer_problems` given its pattern | J4 | running |
-| J10 | the copied `tools/` of every repository in the rework table, through `checking/copy_shared_tools.py`, and its commit hooks installed | J2, J3, J4 | todo |
+| J4d | `tools/commits/history.py`, `tools/hooks/` and their tests, with the injection seam the hook tests need, and `trailer_problems` given its pattern | J4 | done |
+| J10 | the copied `tools/` of every repository in the rework table, through `checking/copy_shared_tools.py`, its commit hooks installed, and the Skills block of `CLAUDE_TEMPLATE.md` in its `CLAUDE.md` | J2, J3, J4 | todo |
 | J11 | `tools/testing/mutate_diff.py` (new) and its tests: mutation of the changed Python lines, standard library only | J1b | done |
 | J12 | sushicore `source/sushicore/testing/`: read-only map of what the shared test command already does against `Running fast` and `Time` in `testing` | | done |
 | J13 | `PLAN.md` of phase F in sushicore, written by the orchestrator from J12 | J12 | done |

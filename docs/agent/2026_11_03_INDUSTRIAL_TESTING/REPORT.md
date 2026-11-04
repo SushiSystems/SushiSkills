@@ -90,6 +90,10 @@ dispatch: J4c routing and check_all — haiku high, 1 round, passed with three s
 dispatch: J2b1 case reader — sonnet low, 2 rounds, passed, rung 1
 dispatch: J11 diff mutator — sonnet medium, 1 round, passed, rung 1
 dispatch: J12 sushicore test command map — haiku medium, 1 round, passed, rung 1
+dispatch: J3e2 design tools — haiku high, 1 round, passed, rung 1
+dispatch: J4c2 check_all shell — haiku medium, 1 round, passed, rung 1
+dispatch: J3f install and changelog checkers — haiku high, 1 round, passed, rung 1
+dispatch: J4d hooks and history — sonnet medium, 1 round, passed, committed against the hold, rung 1
 
 ## Lessons of 2026-11-04
 
@@ -101,4 +105,7 @@ dispatch: J12 sushicore test command map — haiku medium, 1 round, passed, rung
   `git-workflow` rule that allows one only on the owner's request; through a commit hook their tests
   wrote `core.bare = true` into the repository's config (KI-5), restored the same evening.
 - A job of more than two checkers ran out before its end on haiku; jobs are one or two files.
+- No agent loaded the Sushi layer: the global rules named only the doctrine, and the layer's pages
+  sat outside any skill, their links broken once linked. Each subject is now a skill, and the
+  repository's `CLAUDE.md` names them (`9c76bde`, `b87eb68`).
 
