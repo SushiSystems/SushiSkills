@@ -55,7 +55,7 @@ Every checker has the same shape.
 | `--report` | Counts per rule; exit 0 |
 | `--rule NAME` | Runs one rule only |
 | Rules | One function per rule, `rule_<what>`, registered in one table |
-| Configuration | `K_` constants at the top of the file. What differs between repositories is read from `tools/settings.py`; no other configuration file, except the allow-list `docs/.docs_truth_allow` that `check_docs_truth.py` reads |
+| Configuration | `K_` constants at the top of the file. What differs between repositories is read from `tools/settings.py`; no other configuration file, except the allow-list `docs/.docs_truth_allow` that `check_docs_truth.py` reads and the baseline of "Known findings" that `check_all.py` reads |
 | Side effects | None. A checker reads; it never rewrites a file |
 
 ```python
@@ -89,6 +89,19 @@ overwrites it. Move the edit upstream first, or drop it.
 `tools/hooks/` is tracked, and `python tools/hooks/install_hooks.py` points git at it once per clone.
 `pre-commit` runs `tools/check_all.py`, and `commit-msg` runs `tools/hooks/commit_msg.py`, which
 refuses a message without the `Backlog:` line of `commits`. A hook is never skipped.
+
+## Known findings
+
+The shared tools find what a repository broke before they arrived, and the commit hook would then
+refuse the commit that brings them. A repository keeps those findings in its own
+`known_findings.toml` beside `settings.py`, which the copy never touches. Each entry allows a count of
+findings of one rule of one checker in one file, and names an open backlog entry.
+
+`check_all.py` passes the findings an entry allows. It fails a finding no entry allows, a group found
+fewer times than its entry says, an entry found no more, and an entry whose ID is not open, so the list
+only shrinks. A failing test is never listed. `python tools/checking/known_findings.py ROOT --write
+--backlog <ID>` writes the list from the findings of the moment, once, when the tools arrive, and
+refuses to overwrite one; nobody grows it by hand.
 
 ## When to run
 

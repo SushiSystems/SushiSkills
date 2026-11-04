@@ -24,6 +24,17 @@ from pathlib import Path, PurePosixPath
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import settings  # noqa: E402
+from checking.known_findings import (  # noqa: E402
+    K_BASELINE_FILE,
+    K_ID_PATTERN,
+    Entry,
+    KnownFindingsError,
+    apply_baseline,
+    orphan_lines,
+    read_baseline,
+    summary,
+)
+from commits.check_backlog_trailer import open_ids  # noqa: E402
 
 K_TOOLS = Path(__file__).resolve().parent
 #: How many checks run at once.
@@ -97,14 +108,22 @@ def plan_checks(root: Path, tools: Path, interpreter: str, own: Sequence[str],
     return [*checks, *suites]
 
 
-def report(checks: Sequence[Check], results: Sequence[tuple[int, str]]) -> tuple[list[str], int]:
-    """Returns the lines to print for the failed checks, and the exit code."""
-    failed = [check for check, (code, _) in zip(checks, results) if code != 0]
+def report(checks: Sequence[Check], results: Sequence[tuple[int, str]], known: str = "",
+           orphans: Sequence[str] = ()) -> tuple[list[str], int]:
+    """Returns the lines to print for the failed checks, and the exit code.
+
+    *known* ends the clean line, such as `; 3 known findings in 1 entry`; *orphans* are the lines
+    for baseline entries that name no checker, which fail under the baseline file's own name.
+    """
+    failed = [check.name for check, (code, _) in zip(checks, results) if code != 0]
     lines = [f"== {check.name}\n{output}".rstrip()
              for check, (code, output) in zip(checks, results) if code != 0]
+    if orphans:
+        failed.append(K_BASELINE_FILE)
+        lines.append("\n".join([f"== {K_BASELINE_FILE}", *orphans]))
     checkers = sum(not check.is_suite for check in checks)
-    lines.append(f"failed: {', '.join(check.name for check in failed)}" if failed
-                 else f"clean: {checkers} checkers, tests")
+    lines.append(f"failed: {', '.join(failed)}" if failed
+                 else f"clean: {checkers} checkers, tests{known}")
     return lines, 1 if failed else 0
 
 
@@ -116,12 +135,36 @@ def main(argv: list[str] | None = None) -> int:
     """
     arguments = sys.argv[1:] if argv is None else argv
     root = Path(arguments[0]) if arguments else Path.cwd()
-    checks = plan_checks(root, K_TOOLS, sys.executable, own_checker_names(_read_found(K_TOOLS)),
-                         _read_suite_folders(root))
-    lines, code = report(checks, _run_all(checks))
+    try:
+        entries = read_baseline(root)
+    except KnownFindingsError as error:
+        print(error)
+        return 1
+    checks, results = run_plan(root)
+    names = [check.name for check in checks if not check.is_suite]
+    lines, code = report(checks, _judged(root, checks, results, entries), summary(entries),
+                         orphan_lines(entries, names))
     for line in lines:
         print(line)
     return code
+
+
+def run_plan(root: Path) -> tuple[list[Check], list[tuple[int, str]]]:
+    """Plans every check over a root, runs them and returns the checks with their raw results."""
+    checks = plan_checks(root, K_TOOLS, sys.executable, own_checker_names(_read_found(K_TOOLS)),
+                         _read_suite_folders(root))
+    return checks, _run_all(checks)
+
+
+def _judged(root: Path, checks: Sequence[Check], results: Sequence[tuple[int, str]],
+            entries: Sequence[Entry]) -> list[tuple[int, str]]:
+    """Returns the results with each checker's known findings taken out; test suites keep theirs."""
+    if not entries:
+        return list(results)
+    open_backlog = open_ids(root, None) or None
+    return [(code, output) if check.is_suite
+            else apply_baseline(check.name, code, output, entries, K_ID_PATTERN, open_backlog)
+            for check, (code, output) in zip(checks, results)]
 
 
 def _suite_name(root: Path, tools: Path, folder: Path) -> str:

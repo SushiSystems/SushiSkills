@@ -8,10 +8,11 @@ which it keeps is in the `project-tools` skill.
 
 | Path | Checks | Takes |
 | --- | --- | --- |
-| `check_all.py` | Nothing itself; runs the twelve checkers, then the repository's own `<area>/check_<what>.py` files and the tests, the tests without git's repository variables (`GIT_DIR` and its kin), and prints only what failed | Repository root |
+| `check_all.py` | Nothing itself; runs the twelve checkers, then the repository's own `<area>/check_<what>.py` files and the tests, the tests without git's repository variables (`GIT_DIR` and its kin), and prints only what failed; findings that `known_findings.toml` in the repository's tools folder allows are left out, and the clean line counts them | Repository root |
 | `checking/checker.py` | Nothing itself; runs a checker's rule table and prints findings | |
 | `checking/source_file.py` | Nothing itself; holds a file's path and text for a checker's pure rules, the line of an offset, and the shell helper that reads the files a checker wants | |
 | `checking/tests_tree.py` | Nothing itself; finds a repository's test files, under every folder named `tests` or `__tests__` at any depth, for the checkers that read them | |
+| `checking/known_findings.py` | Nothing itself; the core judges a checker's output against `known_findings.toml` in the repository's tools folder (a group found more often or not listed keeps its lines, a group found less often or never and a bad or closed backlog ID each fail, a traceback is never covered); `--write --backlog ID` writes that file from the findings the checkers print now, `--replace` overwrites an existing one | Repository root |
 | `checking/copy_shared_tools.py` | Nothing; copies these files, `.github/CODE_OF_CONDUCT.md` and `.github/SECURITY.md` into a repository, keeping its license blocks, `settings.py`, this README and its own tools, or lists the files that differ with `--report` | Repository root, `--from` |
 | `settings.py` | Nothing; holds the settings that differ between repositories | |
 | `checking/ignored_paths.py` | Nothing itself; names the files and folders git ignores, which no checker reads | |

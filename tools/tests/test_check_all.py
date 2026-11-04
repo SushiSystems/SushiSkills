@@ -11,6 +11,7 @@ import contextlib
 import io
 import sys
 import tempfile
+import tomllib
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -18,18 +19,28 @@ from unittest import mock
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import check_all  # noqa: E402
+from checking.known_findings import parse_entries  # noqa: E402
 from check_all import (  # noqa: E402
     K_CHECKERS,
     Check,
     _read_found,
     _read_suite_folders,
     _run_all,
+    _judged,
     _run_check,
     own_checker_names,
     plan_checks,
     report,
 )
 
+K_BASELINE_TEXT = (
+    "[[finding]]\n"
+    'checker = "documentation/check_source_comments.py"\n'
+    'rule = "rule_x"\n'
+    'path = "a.cs"\n'
+    "count = 1\n"
+    'backlog = "RW-1"\n'
+)
 K_ROOT = Path("repo")
 K_TOOLS = K_ROOT / "tools"
 
@@ -94,6 +105,33 @@ class ReportTest(unittest.TestCase):
         self.assertEqual((lines, code), (["== a\none", "== c\nthree", "failed: a, c"], 1))
 
 
+    def test_known_findings_end_the_clean_line(self) -> None:
+        checks = [Check("a", (), False), Check("tests", (), True)]
+        lines, code = report(checks, [(0, ""), (0, "")], "; 3 known findings in 1 entry")
+        self.assertEqual((lines, code), (["clean: 1 checkers, tests; 3 known findings in 1 entry"], 0))
+
+    def test_orphans_fail_under_the_baseline_file_name(self) -> None:
+        checks = [Check("a", (), False)]
+        lines, code = report(checks, [(0, "")], "; 1 known finding in 1 entry", ["names no checker"])
+        self.assertEqual((lines, code), (["== tools/known_findings.toml\nnames no checker",
+                                          "failed: tools/known_findings.toml"], 1))
+
+    def test_orphans_follow_the_failed_checks(self) -> None:
+        checks = [Check("a", (), False)]
+        lines, _ = report(checks, [(1, "bad")], "", ["orphan"])
+        self.assertEqual(lines[-1], "failed: a, tools/known_findings.toml")
+
+
+class JudgedTest(unittest.TestCase):
+    """Covers which results the baseline may change."""
+
+    K_TEST_SIZE = "small"
+
+    def test_no_entries_return_the_results_as_they_are(self) -> None:
+        checks = [Check("a", (), False)]
+        self.assertEqual(_judged(K_ROOT, checks, [(1, "x")], []), [(1, "x")])
+
+
 class EnvironmentTest(unittest.TestCase):
     """Covers which variables a test suite's environment drops."""
 
@@ -144,6 +182,51 @@ class ShellTest(unittest.TestCase):
             with mock.patch.object(check_all, "_run_all", fake_run_all), \
                     contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(check_all.main([folder]), 1)
+
+    def test_a_baseline_makes_a_red_checker_pass_and_the_clean_line_counts_it(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            (Path(folder) / "tools").mkdir()
+            (Path(folder) / "tools" / "known_findings.toml").write_text(K_BASELINE_TEXT, encoding="utf-8")
+
+            def fake_run_all(checks: list[Check]) -> list[tuple[int, str]]:
+                return [(1, "a.cs:1: rule_x: bad\n") if index == 0 else (0, "")
+                        for index in range(len(checks))]
+
+            out = io.StringIO()
+            with mock.patch.object(check_all, "_run_all", fake_run_all), contextlib.redirect_stdout(out):
+                code = check_all.main([folder])
+        self.assertEqual((code, out.getvalue().splitlines()[-1].split(";", 1)[1]),
+                         (0, " 1 known finding in 1 entry"))
+
+    def test_a_baseline_entry_for_no_checker_fails(self) -> None:
+        text = K_BASELINE_TEXT.replace("documentation/check_source_comments.py", "nope/check_x.py")
+        with tempfile.TemporaryDirectory() as folder:
+            (Path(folder) / "tools").mkdir()
+            (Path(folder) / "tools" / "known_findings.toml").write_text(text, encoding="utf-8")
+            out = io.StringIO()
+            with mock.patch.object(check_all, "_run_all", lambda checks: [(0, "")] * len(checks)), \
+                    contextlib.redirect_stdout(out):
+                code = check_all.main([folder])
+        self.assertEqual(code, 1)
+        self.assertIn("known finding names no checker", out.getvalue())
+
+    def test_a_broken_baseline_file_returns_one(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            (Path(folder) / "tools").mkdir()
+            (Path(folder) / "tools" / "known_findings.toml").write_text("[[finding", encoding="utf-8")
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(check_all.main([folder]), 1)
+
+    def test_a_closed_backlog_id_fails_when_the_root_lists_its_open_ones(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "docs" / "backlog").mkdir(parents=True)
+            (root / "docs" / "backlog" / "OPEN.md").write_text("| RW-2 | P1 | x |\n", encoding="utf-8")
+            checks = [Check("documentation/check_source_comments.py", (), False)]
+            entries = parse_entries(tomllib.loads(K_BASELINE_TEXT))
+            judged = _judged(root, checks, [(1, "a.cs:1: rule_x: bad\n")], entries)
+        self.assertEqual(judged[0][0], 1)
+        self.assertIn("is not an open backlog ID", judged[0][1])
 
     def test_reads_a_non_ascii_finding(self) -> None:
         """Reads an em dash a checker prints, whatever the console's code page."""
