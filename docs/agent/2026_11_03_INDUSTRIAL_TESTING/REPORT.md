@@ -95,7 +95,10 @@ dispatch: J12 sushicore test command map — haiku medium, 1 round, passed, rung
 
 - A dispatch that names a share of sizes as acceptance invites tests split or added to move it; the
   owner ruled the share a reading. Acceptance is purity, one medium class and killed mutants.
-- Workers sharing one tree blocked every commit hook and the mutation baseline, and deleted each
-  other's scratch folders. Each worker now runs in its own worktree with its own scratch folder.
+- Workers sharing one tree blocked the commit hook and the mutation baseline while their files were
+  half edited, and deleted each other's scratch folders. Each worker now has its own scratch folder,
+  and the orchestrator commits by path once a job's files are done. Worktrees, tried once, broke the
+  `git-workflow` rule that allows one only on the owner's request; through a commit hook their tests
+  wrote `core.bare = true` into the repository's config (KI-5), restored the same evening.
 - A job of more than two checkers ran out before its end on haiku; jobs are one or two files.
 
