@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- 2026-11-03 — testing: Rewrote the skill around a test's value and the code's architecture: promise and oracle, forbidden kinds, sizes by what a test touches, derived tolerances, seams first, sharded runs (RW-35, `SKILL.md`).
+- 2026-11-03 — testing: Withdrew the per-commit case cap and the one-test-file-per-header idea (RW-35, `SKILL.md`).
+- 2026-11-03 — testing: Rejected weak-only checks, typed tolerances, sleeps at any size and small cases that reach a thread, file, clock or environment (RW-35, `check_test_value.py`).
+- 2026-11-03 — testing: Removed the case-cap checker; the time reader reads `K_TEST_TIMES` and prints the suite's shape (RW-35, `test_budget.py`).
+- 2026-11-03 — testing: Added a C++ header that derives floating-point tolerances from rounding bounds, with a self-check (RW-35, `tools/testing/support/tolerance.hpp`).
 - 2026-11-02 — testing: Added fixture, double and numerical-code rules, printed seeds, quarantined tests that keep running and retries only in a test's source (`skills/testing/SKILL.md`).
 - 2026-11-02 — continuous-integration: Ran pre-merge on the changed modules and those above them, shuffled, with sanitizers and fuzz corpora, and reverted a red `main` first (`SKILL.md`).
 - 2026-11-02 — gpu-development: Pointed device kernel tests at the numerical-code rules of `testing` (`skills/gpu-development/SKILL.md`).

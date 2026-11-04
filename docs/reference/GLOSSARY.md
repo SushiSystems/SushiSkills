@@ -12,5 +12,5 @@
 | Dispatch block | The numbered lines in `claude/CLAUDE.md` that open every worker's prompt verbatim |
 | Tier | A layer in a repository's module order; a module may depend only on tiers below its own |
 | Doctrine split | Keeping the company-neutral skills in `skills/` apart from everything specific to Sushi Systems, which lives under `sushisystems/` |
-| Test budget | The limits on the time of the tests and on the cases one commit adds, set in the `testing` skill and read by a checker and by the project test command |
-| Test pipeline | The stages that run a repository's tests (pre-merge, nightly, weekly) and the practices each runs: sizes, the test budget, sanitizers, shuffled parallel runs, fuzzing, coverage |
+| Test time limits | The limits on how long a test, a module's small tests and a pre-merge run take, set in the `testing` skill and read by the project test command; they gate once calibrated |
+| Test pipeline | The stages that run a repository's tests (pre-merge, nightly, weekly) and the practices each runs: sizes, the time limits, sanitizers, shuffled parallel runs, fuzzing, coverage |

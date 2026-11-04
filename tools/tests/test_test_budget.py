@@ -21,8 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from testing import test_budget  # noqa: E402
 from testing.test_budget import Timing, evaluate, main, read_exemptions, read_junit, suite_and_size  # noqa: E402
 
-K_LIMITS = {"small_test_s": 1, "medium_test_s": 10, "large_test_s": 120, "small_program_s": 10,
-            "large_program_s": 600, "default_run_s": 300, "large_tier_s": 1800}
+K_LIMITS = {"small_test_s": 1, "medium_test_s": 10, "module_small_s": 10, "pre_merge_s": 300}
 
 
 K_TEST_SIZE = "medium"
@@ -86,7 +85,15 @@ class EvaluateTest(unittest.TestCase):
                      scope="default")
         self.assertEqual(report.findings, ())
         self.assertEqual(report.line,
-                         "budget: small 0.2 s of 10 s (core), default 3 s sum of 300 s, cases: 1 small, 1 medium, 0 large")
+                         "budget: small 0.2 s of 10 s (core), pre-merge 3 s sum of 300 s, shape 50% small, 50% medium, 0% large")
+
+    def test_a_large_test_has_no_time_limit_and_counts_in_the_shape(self) -> None:
+        report = run({"Large_M.Crush": 5000.0, "Small_A.One": 0.1, "Small_A.Two": 0.1, "Small_A.Three": 0.1},
+                     scope="large", wall=5001.0)
+        self.assertEqual(report.findings, ())
+        self.assertEqual(report.rerun, ())
+        self.assertIn("large tier 5000 s sum, 5001 s wall", report.line)
+        self.assertIn("shape 75% small, 0% medium, 25% large", report.line)
 
     def test_a_test_over_its_limit_is_named_for_a_rerun_and_judged_by_the_rerun(self) -> None:
         first = run({"Small_A.Slow": 1.5})
@@ -106,7 +113,7 @@ class EvaluateTest(unittest.TestCase):
 
     def test_the_default_run_is_judged_by_wall_time_when_given(self) -> None:
         timings = {"Medium_B.One": 9.0, "Medium_C.Two": 9.0}
-        self.assertEqual(run(timings, scope="default", wall=500.0).findings[-1][:12], "default run:")
+        self.assertEqual(run(timings, scope="default", wall=500.0).findings[-1][:14], "pre-merge run:")
         self.assertEqual(run(timings, scope="default", wall=100.0).findings, ())
 
     def test_a_partial_run_judges_no_whole_run_limit(self) -> None:
@@ -115,21 +122,21 @@ class EvaluateTest(unittest.TestCase):
         self.assertIn("whole run not measured", report.line)
 
     def test_an_exempt_test_is_left_out_and_a_stale_exemption_is_a_finding(self) -> None:
-        exempt = {"Large_M.Crush": "RW-40", "Small_A.Fine": "RW-41"}
-        report = run({"Large_M.Crush": 700.0, "Small_A.Fine": 0.1}, exemptions=exempt, scope="large",
+        exempt = {"Medium_M.Crush": "RW-40", "Small_A.Fine": "RW-41"}
+        report = run({"Medium_M.Crush": 700.0, "Small_A.Fine": 0.1}, exemptions=exempt, scope="default",
                      open_backlog=frozenset({"RW-40", "RW-41"}))
         self.assertEqual(len(report.findings), 1)
         self.assertIn("Small_A.Fine: exempt as RW-41 but within its limit", report.findings[0])
         self.assertIn("2 exempt, 700 s left out", report.line)
 
     def test_an_exemption_needs_an_open_backlog_id(self) -> None:
-        report = run({"Large_M.Crush": 700.0}, exemptions={"Large_M.Crush": "RW-40"}, open_backlog=frozenset())
+        report = run({"Medium_M.Crush": 700.0}, exemptions={"Medium_M.Crush": "RW-40"}, open_backlog=frozenset())
         self.assertIn("'RW-40' is not an open backlog ID", report.findings[0])
 
     def test_a_run_that_did_not_rebuild_says_so_and_a_count_is_printed(self) -> None:
         report = run({"Small_A.One": 0.1}, rebuilt=False, added=7, base="origin/main")
-        self.assertTrue(report.line.startswith("budget (not rebuilt): "))
-        self.assertTrue(report.line.endswith("7 cases added since origin/main, cases: 1 small, 0 medium, 0 large"))
+        self.assertTrue(report.line.startswith("budget: "))
+        self.assertTrue(report.line.endswith("7 cases added since origin/main (not rebuilt)"))
 
 
 class MainTest(unittest.TestCase):
@@ -162,7 +169,7 @@ class MainTest(unittest.TestCase):
         self.assertEqual(self.call("--gate")[0], 1)
         self.assertEqual(self.call("--gate", "--not-rebuilt")[0], 0)
 
-    def test_the_line_ends_with_the_count_of_cases_of_each_size_from_the_name_or_the_property(self) -> None:
+    def test_the_shape_counts_a_case_by_its_name_or_its_size_property(self) -> None:
         self.path.write_text(
             '<?xml version="1.0"?><testsuite name="(empty)">'
             '<testcase name="Small_A.One" classname="Small_A.One" time="0.1" status="run"/>'
@@ -175,7 +182,7 @@ class MainTest(unittest.TestCase):
             encoding="utf-8")
         code, lines = self.call()
         self.assertEqual(code, 0)
-        self.assertTrue(lines[0].endswith(", cases: 1 small, 0 medium, 2 large"))
+        self.assertIn("shape 33% small, 0% medium, 67% large", lines[0])
 
     def test_reads_the_program_map(self) -> None:
         programs = Path(self._folder.name) / "map.json"

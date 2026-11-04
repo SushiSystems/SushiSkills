@@ -32,6 +32,11 @@ K_CPP_SLEEP = re.compile(r"\b(?:sleep_for|sleep_until|usleep|Sleep)\s*\(")
 K_CPP_LITERAL = re.compile(
     r"\b(?:GTEST_)?SUCCEED\s*\(\s*\)|\b(?:EXPECT|ASSERT)_TRUE\s*\(\s*(?:true|1)\s*\)|\b(?:EXPECT|ASSERT)_FALSE\s*\(\s*(?:false|0)\s*\)"
     r"|\b(?:EXPECT|ASSERT)_EQ\s*\(\s*(-?\d[\w.]*|true|false|\"[^\"]*\")\s*,\s*\1\s*\)")
+K_CPP_WEAK = re.compile(
+    r"\bstatic_assert\s*\(|\b(?:GTEST_)?SUCCEED\s*\(|\b(?:[A-Za-z0-9]+_)*(?:EXPECT|ASSERT)_NO_THROW\s*\(")
+K_NUMBER_LITERAL = r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?[fFlL]?"
+K_CPP_TOLERANCE = re.compile(
+    rf"\b(?:EXPECT|ASSERT)_NEAR\s*\((?:[^;()]|\([^;()]*\))*,\s*{K_NUMBER_LITERAL}\s*\)")
 K_TS_DESCRIBE = re.compile(r"^describe\s*\(\s*([\"'`])(.*?)\1", re.MULTILINE)
 K_TS_CASE = re.compile(
     r"\b(?:it|test)(?:\.\w+)?\s*\(\s*(?P<q>[\"'`])(?P<name>[^\"'`]*)(?P=q)\s*,\s*(?:async\s*)?"
@@ -43,6 +48,7 @@ K_TS_LITERAL = re.compile(
     r"|\bexpect\(\s*true\s*\)\s*\.\s*toBeTruthy\(")
 K_RAW_STRING = re.compile(r'R"([^()\\ ]*)\(')
 K_PYTHON_ASSERTING = frozenset({"raises", "warns", "approx", "fail"})
+K_PYTHON_TOLERANCE_KEYWORDS = frozenset({"abs", "rel", "delta", "atol", "rtol"})
 
 
 @dataclass(frozen=True, slots=True)
@@ -58,6 +64,8 @@ class Case:
     literal_lines: tuple[int, ...]
     sleep_lines: tuple[int, ...]
     digest: str = ""
+    weak_only: bool = False
+    tolerance_lines: tuple[int, ...] = ()
 
 
 def is_test_file(path: Path) -> bool:
@@ -189,6 +197,8 @@ def _cpp_cases(path: Path, text: str) -> Iterator[Case]:
             literal_lines=_lines_of(K_CPP_LITERAL, text, code, opening + 1, closing),
             sleep_lines=_lines_of(K_CPP_SLEEP, text, code, opening + 1, closing),
             digest=_digest(text[opening + 1:closing]),
+            weak_only=0 < len(K_CPP_ASSERT.findall(body)) == len(K_CPP_WEAK.findall(body)),
+            tolerance_lines=_lines_of(K_CPP_TOLERANCE, text, code, opening + 1, closing),
         )
 
 
@@ -249,6 +259,7 @@ def _python_case(path: Path, text: str, node: ast.FunctionDef | ast.AsyncFunctio
     assertions = 0
     literals: list[int] = []
     sleeps: list[int] = []
+    tolerances: list[int] = []
     for inner in ast.walk(node):
         if isinstance(inner, ast.Assert):
             assertions += 1
@@ -260,9 +271,14 @@ def _python_case(path: Path, text: str, node: ast.FunctionDef | ast.AsyncFunctio
                 assertions += 1
             if name == "sleep":
                 sleeps.append(inner.lineno)
+            if any(keyword.arg in K_PYTHON_TOLERANCE_KEYWORDS and isinstance(keyword.value, ast.Constant)
+                   and isinstance(keyword.value.value, float) for keyword in inner.keywords):
+                tolerances.append(inner.lineno)
     return Case(path, node.name, node.lineno, node.end_lineno or node.lineno,
                 _size_among(own_marks) or outer_size,
-                assertions, tuple(literals), tuple(sleeps), _digest(" ".join(ast.get_source_segment(text, statement) or "" for statement in node.body)))
+                assertions, tuple(literals), tuple(sleeps),
+                _digest(" ".join(ast.get_source_segment(text, statement) or "" for statement in node.body)),
+                tolerance_lines=tuple(tolerances))
 
 
 def _typescript_size(name: str) -> str | None:

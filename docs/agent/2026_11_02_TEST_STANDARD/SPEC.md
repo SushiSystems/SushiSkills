@@ -1,7 +1,7 @@
 # Test standard
 
 **Status:** Open — written; every point decided by the orchestrator on the owner's instruction
-**Implements:** `TEST_PIPELINE#I`, `TEST_PIPELINE#J`
+**Implements:** `TEST_PIPELINE#A`
 
 ## Problem
 

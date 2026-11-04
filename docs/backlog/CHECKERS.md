@@ -23,6 +23,8 @@
 | RW-32 | P2 | open | Roll the shared tools out to SushiRuntime and SushiEngine once their trees are clean | both repositories pass check_all with the shared tools, copied with copy_shared_tools |  |  | 2026-10-30 |
 | RW-33 | P2 | open | Turn on the Backlog commit line in each repository after its CI fetches full history | K_TRAILER_SINCE is set and the hooks are installed in each repository that took the shared tools |  |  | 2026-10-30 |
 | RW-34 | P3 | open | Bring SushiStack and SushiWeb to a clean check_all so they can take the shared tools | both pass the shared checkers they fail today, then take the copy with copy_shared_tools |  |  | 2026-10-30 |
+| RW-43 | P2 | open | Report gtest_discover_tests in a build file that gives no reason for it | a shared checker reports each such call after a base commit, with tests |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
+| RW-44 | P2 | open | Read NUnit cases so the forbidden-kind rules reach C# tests | case_reader reads [Test], [UnityTest] and [TestCase] in C# and check_test_value judges them, with tests |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
 
 ## Known issues
 
