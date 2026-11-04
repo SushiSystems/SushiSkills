@@ -7,8 +7,9 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
 import sys
-import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
@@ -17,6 +18,7 @@ from unittest import mock
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from documentation import check_source_comments, licence  # noqa: E402
+from documentation.licence import K_UNSET_MESSAGE  # noqa: E402
 from licensing import write_license_block  # noqa: E402
 
 K_SETTINGS = SimpleNamespace(
@@ -31,7 +33,7 @@ K_SETTINGS = SimpleNamespace(
 )
 
 
-K_TEST_SIZE = "medium"
+K_TEST_SIZE = "small"
 
 
 class LicenceTest(unittest.TestCase):
@@ -66,15 +68,16 @@ class LicenceTest(unittest.TestCase):
             self.assertFalse(licence.load().reserved_line.search("Made by Acme Corp"))
 
     def test_the_checker_stops_when_no_licence_is_configured(self) -> None:
-        with tempfile.TemporaryDirectory() as folder, mock.patch.object(check_source_comments, "K_LICENCE", None):
+        with mock.patch.object(check_source_comments, "K_LICENCE", None):
             with self.assertRaises(SystemExit) as stopped:
-                check_source_comments.collect([Path(folder)])
+                check_source_comments.collect([Path("unused")])
         self.assertIn("K_LICENSE_HOLDER", str(stopped.exception))
 
     def test_the_writer_stops_when_no_licence_is_configured(self) -> None:
-        with mock.patch.object(write_license_block, "K_LICENCE", None):
-            with self.assertRaises(write_license_block.LicenseWriterError):
-                write_license_block.Header("P - https://x.example").hashed_rows("a.py", 2026)
+        with mock.patch.object(write_license_block, "K_LICENCE", None), \
+                contextlib.redirect_stderr(io.StringIO()) as stderr:
+            code = write_license_block.main(["unused", "--project", "P - https://x.example"])
+        self.assertEqual((code, stderr.getvalue().strip()), (2, K_UNSET_MESSAGE))
 
 
 if __name__ == "__main__":

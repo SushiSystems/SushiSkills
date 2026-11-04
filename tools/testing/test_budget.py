@@ -56,21 +56,25 @@ class Report:
     rerun: tuple[str, ...]
 
 
-def read_junit(path: Path) -> list[Timing]:
+def parse_junit(data: bytes, name: str) -> list[Timing]:
     """Returns the time of each test that ran in a JUnit file; skipped and not-run tests are left out.
 
     A file with a DOCTYPE or an ENTITY is refused unread: CTest writes neither, and the standard
     library parser, the only one a checker may use, expands them.
     """
-    data = path.read_bytes()
     if b"<!DOCTYPE" in data or b"<!ENTITY" in data:
-        raise SystemExit(f"{path}: a JUnit file from CTest has no DOCTYPE or ENTITY; refusing to parse it")
+        raise SystemExit(f"{name}: a JUnit file from CTest has no DOCTYPE or ENTITY; refusing to parse it")
     timings: list[Timing] = []
     for case in ElementTree.fromstring(data).iter("testcase"):
         if case.find("skipped") is not None or case.get("status") == "notrun":
             continue
         timings.append(Timing(case.get("name", ""), float(case.get("time", "0") or 0), _property_size(case)))
     return timings
+
+
+def read_junit(path: Path) -> list[Timing]:
+    """Returns the times of the tests in a JUnit file on disk."""
+    return parse_junit(path.read_bytes(), str(path))
 
 
 def _property_size(case: ElementTree.Element) -> str | None:
@@ -90,11 +94,15 @@ def suite_and_size(name: str) -> tuple[str | None, str | None]:
     return None, None
 
 
-def read_exemptions(path: Path) -> dict[str, str]:
-    """Returns the test name and backlog ID of each entry under `[exempt]` in a TOML file."""
-    with path.open("rb") as handle:
-        table = tomllib.load(handle).get("exempt", {})
+def parse_exemptions(text: str) -> dict[str, str]:
+    """Returns the test name and backlog ID of each entry under `[exempt]` in TOML text."""
+    table = tomllib.loads(text).get("exempt", {})
     return {str(name): str(entry) for name, entry in table.items()}
+
+
+def parse_programs(text: str) -> dict[str, str]:
+    """Returns the test program of each suite, from a JSON object of suite name to program."""
+    return json.loads(text)
 
 
 def _limit(key: str) -> float:
@@ -211,6 +219,20 @@ def _line(totals: dict[tuple[str, str], float], sized: dict[str, float], counts:
     return "budget: " + ", ".join(parts) + ("" if rebuilt else " (not rebuilt)")
 
 
+def render(report: Report, *, rerun_given: bool) -> list[str]:
+    """Returns the lines a run prints: the budget line, the rerun line when tests need one, the findings."""
+    lines = [report.line]
+    if report.rerun and not rerun_given:
+        lines.append("rerun: ^(" + "|".join(re.escape(name) for name in report.rerun) + ")$")
+    lines.extend(report.findings)
+    return lines
+
+
+def exit_code(report: Report, *, gate: bool, rebuilt: bool) -> int:
+    """Returns the exit code of a run: a finding fails it only when the run gates and was rebuilt."""
+    return K_EXIT_FINDINGS if gate and rebuilt and report.findings else K_EXIT_CLEAN
+
+
 def _arguments(argv: list[str]) -> argparse.Namespace:
     """Returns the parsed command line."""
     parser = argparse.ArgumentParser(description="Apply the time limits of testing to one test run.")
@@ -241,8 +263,8 @@ def main(argv: list[str] | None = None) -> int:
     if not K_BUDGET:
         print("no K_TEST_TIMES in tools/settings.py", file=sys.stderr)
         return K_EXIT_USAGE
-    exemptions = read_exemptions(arguments.exemptions) if arguments.exemptions else {}
-    programs = json.loads(arguments.programs.read_text(encoding="utf-8")) if arguments.programs else {}
+    exemptions = parse_exemptions(arguments.exemptions.read_text(encoding="utf-8")) if arguments.exemptions else {}
+    programs = parse_programs(arguments.programs.read_text(encoding="utf-8")) if arguments.programs else {}
     added = None
     open_backlog = None
     if arguments.root:
@@ -254,13 +276,9 @@ def main(argv: list[str] | None = None) -> int:
         rerun=read_junit(arguments.rerun) if arguments.rerun else None, scope=arguments.scope,
         wall=arguments.wall, factor=arguments.factor, added=added, base=arguments.base,
         rebuilt=not arguments.not_rebuilt, open_backlog=open_backlog)
-    print(report.line)
-    if report.rerun and not arguments.rerun:
-        print("rerun: ^(" + "|".join(re.escape(name) for name in report.rerun) + ")$")
-    for finding in report.findings:
-        print(finding)
-    gates = arguments.gate and not arguments.not_rebuilt and report.findings
-    return K_EXIT_FINDINGS if gates else K_EXIT_CLEAN
+    for line in render(report, rerun_given=arguments.rerun is not None):
+        print(line)
+    return exit_code(report, gate=arguments.gate, rebuilt=not arguments.not_rebuilt)
 
 
 if __name__ == "__main__":

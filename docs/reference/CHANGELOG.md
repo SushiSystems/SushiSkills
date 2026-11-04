@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-04 — tools: Split the test, docs-truth, licence-writer and backlog-trailer checkers into pure rules and a shell, so most of their tests are small (RW-42, `tools/testing/`).
 - 2026-11-04 — tools: Split the size checker into pure rules and a file-reading shell, and moved test-tree discovery to `checking/tests_tree.py` so no checker imports another (RW-42, `tools/testing/check_test_sizes.py`).
 - 2026-11-04 — testing: Held the 80% small ratio per module, placed port contract tests in one `<Port>Contract` suite per port, and corrected the tolerance header's source path (RW-35, `SKILL.md`).
 - 2026-11-03 — testing: Rewrote the skill around a test's value and the code's architecture: promise and oracle, forbidden kinds, sizes by what a test touches, derived tolerances, seams first, sharded runs (RW-35, `SKILL.md`).

@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import re
 import sys
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -23,9 +23,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import settings  # noqa: E402
 from checking.checker import Checker, Issue, run  # noqa: E402
+from checking.source_file import SourceFile, read_files  # noqa: E402
+from checking.tests_tree import discover  # noqa: E402
 from testing.case_reader import K_BENCHMARK, Case, cases_of, is_test_file  # noqa: E402
 from testing.changed_lines import changed_lines  # noqa: E402
-from checking.tests_tree import discover  # noqa: E402
 
 K_SINCE: str = getattr(settings, "K_TEST_VALUE_SINCE", "")
 K_SMALL_FORBIDDEN_BASE: tuple[str, ...] = (
@@ -41,9 +42,10 @@ K_SMALL_FORBIDDEN = re.compile("|".join(
 
 @dataclass(frozen=True, slots=True)
 class ValueTree:
-    """Holds the cases of one repository that the rules judge."""
+    """Holds the cases of one repository that the rules judge, and the files they came from."""
 
     cases: tuple[Case, ...]
+    sources: tuple[SourceFile, ...]
 
 
 def _is_touched(case: Case, changed: dict[Path, frozenset[int]] | None) -> bool:
@@ -54,21 +56,11 @@ def _is_touched(case: Case, changed: dict[Path, frozenset[int]] | None) -> bool:
     return any(case.first <= line <= case.last for line in lines)
 
 
-def build(root: Path, changed: dict[Path, frozenset[int]] | None) -> ValueTree:
-    """Returns the touched, non-benchmark cases of the test files under a repository's test folders."""
-    cases: list[Case] = []
-    for path in discover(root).of(is_test_file):
-        text = path.read_text(encoding="utf-8", errors="ignore")
-        cases.extend(case for case in cases_of(path, text)
-                     if case.size != K_BENCHMARK and _is_touched(case, changed))
-    return ValueTree(tuple(cases))
-
-
-def collect(paths: list[Path]) -> Iterable[ValueTree]:
-    """Returns the value tree of each given folder, or none when the repository sets no base commit."""
-    if not K_SINCE:
-        return []
-    return [build(path, changed_lines(path, K_SINCE)) for path in paths if path.is_dir()]
+def build_tree(sources: Sequence[SourceFile], changed: dict[Path, frozenset[int]] | None) -> ValueTree:
+    """Returns the touched, non-benchmark cases of the given test files, with the files they came from."""
+    cases = [case for source in sources for case in cases_of(source.path, source.text)
+             if case.size != K_BENCHMARK and _is_touched(case, changed)]
+    return ValueTree(tuple(cases), tuple(sources))
 
 
 def rule_no_assertion(tree: ValueTree) -> Iterator[Issue]:
@@ -110,16 +102,24 @@ def rule_tolerance_literal(tree: ValueTree) -> Iterator[Issue]:
 
 def rule_small_reaches_outside(tree: ValueTree) -> Iterator[Issue]:
     """Yields an issue for each line of a `small` case that reaches a thread, a file, the clock or the environment."""
-    texts: dict[Path, list[str]] = {}
+    texts = {source.path: source.text.splitlines() for source in tree.sources}
     for case in tree.cases:
         if case.size != "small":
             continue
-        lines = texts.setdefault(case.path, case.path.read_text(encoding="utf-8", errors="ignore").splitlines())
+        lines = texts.get(case.path, [])
         for number in range(case.first, min(case.last, len(lines)) + 1):
             match = K_SMALL_FORBIDDEN.search(lines[number - 1])
             if match:
                 yield Issue(case.path, number,
                             f"{case.name} is small and reaches `{match.group()}`; make it medium or pass the seam in")
+
+
+def collect(paths: list[Path]) -> Iterable[ValueTree]:
+    """Returns the value tree of each given folder, or none when the repository sets no base commit."""
+    if not K_SINCE:
+        return []
+    return [build_tree(read_files(discover(path).files, is_test_file), changed_lines(path, K_SINCE))
+            for path in paths if path.is_dir()]
 
 
 K_CHECKER = Checker(

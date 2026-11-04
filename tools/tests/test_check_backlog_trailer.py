@@ -3,7 +3,11 @@
 # Copyright (c) 2026-present Mustafa Garip & Sushi Systems
 # Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.
 # Commercial use requires a licence from Sushi Systems.
-"""Tests the commit trailer checker, the commit-msg hook that shares its rules and the hook installer."""
+"""Tests the commit trailer checker, the commit-msg hook that shares its rules and the hook installer.
+
+The judgement of a message and the IDs it may name are checked on values in memory; the history of
+a git repository is checked once, in the one medium class of this file.
+"""
 
 from __future__ import annotations
 
@@ -17,12 +21,16 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from commits import check_backlog_trailer  # noqa: E402
 from commits.check_backlog_trailer import (  # noqa: E402
     K_CHECKER,
+    TrailerCheck,
     collect,
+    ids_in,
     open_ids,
     rule_trailer,
     trailer_problems,
@@ -33,11 +41,15 @@ from hooks import commit_msg, install_hooks  # noqa: E402
 K_AREA = "docs/backlog/GENERAL.md"
 K_TABLE = "| ID | Pri |\n| --- | --- |\n| AB-1 | P1 |\n| AB-22 | P2 |\n"
 K_KNOWN = frozenset({"AB-1", "AB-22"})
+K_SHA = "0123456789abcdef"
 
 
-K_TEST_SIZE = "medium"
+def _check(message: str, known: frozenset[str] = K_KNOWN) -> TrailerCheck:
+    """Returns a commit in memory, with the given message and the IDs open for it."""
+    return TrailerCheck(Path("repo"), K_SHA, message, known)
 
 
+@pytest.mark.small
 class TrailerProblemsTest(unittest.TestCase):
     """Covers the judgement of one message against a set of open entries."""
 
@@ -68,8 +80,36 @@ class TrailerProblemsTest(unittest.TestCase):
         self.assertEqual(trailer_problems(message, K_KNOWN), [])
 
 
+@pytest.mark.small
+class TrailerRuleTest(unittest.TestCase):
+    """Covers the rule over one commit held in memory, with the IDs open for it."""
+
+    def test_reads_the_rows_of_a_backlog_table(self) -> None:
+        self.assertEqual(ids_in(K_TABLE), K_KNOWN)
+
+    def test_an_id_open_at_the_parent_or_in_the_commit_passes(self) -> None:
+        self.assertEqual(list(rule_trailer(_check("fix: close AB-1\n\nBacklog: AB-1\n"))), [])
+
+    def test_a_commit_without_the_line_is_reported_on_its_short_hash(self) -> None:
+        issues = list(rule_trailer(_check("fix: a thing\n")))
+        self.assertEqual(len(issues), 1)
+        self.assertEqual(issues[0].path.name, f"commit-{K_SHA[:9]}")
+
+    def test_an_id_closed_before_the_commit_is_refused(self) -> None:
+        issues = list(rule_trailer(_check("fix: again\n\nBacklog: AB-9\n", frozenset({"AB-22"}))))
+        self.assertEqual(len(issues), 1)
+
+    def test_nothing_is_checked_without_a_base(self) -> None:
+        with mock.patch.object(check_backlog_trailer, "K_SINCE", ""):
+            self.assertEqual(list(collect([Path("unused")])), [])
+
+    def test_registers_one_rule(self) -> None:
+        self.assertEqual(list(K_CHECKER.rules), ["rule_trailer"])
+
+
+@pytest.mark.medium
 class RepositoryTest(unittest.TestCase):
-    """Builds a git repository with a backlog for each test."""
+    """Builds a git repository with a backlog for each test and runs the checker and the hooks on it."""
 
     def setUp(self) -> None:
         self._folder = tempfile.TemporaryDirectory()
@@ -99,71 +139,9 @@ class RepositoryTest(unittest.TestCase):
 
     def _findings(self) -> list[str]:
         with mock.patch.object(check_backlog_trailer, "K_SINCE", self.base):
-            return [issue.message for commit in collect([self.root]) for issue in rule_trailer(commit)]
+            return [issue.message for check in collect([self.root]) for issue in rule_trailer(check)]
 
-
-class OpenIdsTest(RepositoryTest):
-    """Covers reading the open entries from disk and from a revision."""
-
-    def test_reads_the_rows_on_disk_and_at_a_revision(self) -> None:
-        self.assertEqual(open_ids(self.root, None), K_KNOWN)
-        self.assertEqual(open_ids(self.root, "HEAD"), K_KNOWN)
-
-    def test_a_folder_without_a_backlog_holds_no_ids(self) -> None:
-        with tempfile.TemporaryDirectory() as empty:
-            self.assertEqual(open_ids(Path(empty), None), frozenset())
-
-
-class CommitsTest(RepositoryTest):
-    """Covers the commits after the base."""
-
-    def test_nothing_is_checked_without_a_base(self) -> None:
-        self._commit("fix: no line at all")
-        with mock.patch.object(check_backlog_trailer, "K_SINCE", ""):
-            self.assertEqual(list(collect([self.root])), [])
-
-    def test_a_commit_with_an_open_id_passes(self) -> None:
-        self._commit("fix: a thing\n\nBacklog: AB-1")
-        self.assertEqual(self._findings(), [])
-
-    def test_a_commit_without_the_line_is_reported_with_its_hash(self) -> None:
-        self._commit("fix: a thing")
-        findings = self._findings()
-        self.assertEqual(len(findings), 1)
-        with mock.patch.object(check_backlog_trailer, "K_SINCE", self.base):
-            commit = next(iter(collect([self.root])))
-            issue = next(iter(rule_trailer(commit)))
-        self.assertIn(commit.sha[:9], issue.path.name)
-
-    def test_a_commit_that_closes_its_entry_still_names_it(self) -> None:
-        self._write(K_AREA, "| ID | Pri |\n| --- | --- |\n| AB-22 | P2 |\n")
-        self._commit("fix: close AB-1\n\nBacklog: AB-1")
-        self.assertEqual(self._findings(), [])
-
-    def test_a_commit_that_names_an_entry_closed_earlier_is_refused(self) -> None:
-        self._write(K_AREA, "| ID | Pri |\n| --- | --- |\n| AB-22 | P2 |\n")
-        self._commit("fix: close AB-1\n\nBacklog: AB-1")
-        self._commit("fix: again\n\nBacklog: AB-1")
-        self.assertEqual(len(self._findings()), 1)
-
-    def test_a_commit_that_adds_and_names_a_new_entry_passes(self) -> None:
-        self._write(K_AREA, K_TABLE + "| AB-23 | P1 |\n")
-        self._commit("fix: add AB-23\n\nBacklog: AB-23")
-        self.assertEqual(self._findings(), [])
-
-    def test_a_history_that_cannot_be_read_stops_the_check(self) -> None:
-        with mock.patch.object(check_backlog_trailer, "K_SINCE", "0" * 40):
-            with self.assertRaises(SystemExit):
-                collect([self.root])
-
-    def test_registers_one_rule(self) -> None:
-        self.assertEqual(list(K_CHECKER.rules), ["rule_trailer"])
-
-
-class HookTest(RepositoryTest):
-    """Covers the commit-msg hook against the repository it runs in."""
-
-    def _run(self, message: str) -> tuple[int, str]:
+    def _run_hook(self, message: str) -> tuple[int, str]:
         path = self.root / "MESSAGE"
         path.write_text(message, encoding="utf-8")
         errors = io.StringIO()
@@ -177,20 +155,54 @@ class HookTest(RepositoryTest):
             os.chdir(previous)
         return code, errors.getvalue()
 
+    def test_reads_the_rows_on_disk_and_at_a_revision(self) -> None:
+        self.assertEqual(open_ids(self.root, None), K_KNOWN)
+        self.assertEqual(open_ids(self.root, "HEAD"), K_KNOWN)
+
+    def test_a_folder_without_a_backlog_holds_no_ids(self) -> None:
+        with tempfile.TemporaryDirectory() as empty:
+            self.assertEqual(open_ids(Path(empty), None), frozenset())
+
+    def test_a_commit_that_names_an_entry_closed_earlier_is_refused(self) -> None:
+        self._write(K_AREA, "| ID | Pri |\n| --- | --- |\n| AB-22 | P2 |\n")
+        self._commit("fix: close AB-1\n\nBacklog: AB-1")
+        self._commit("fix: again\n\nBacklog: AB-1")
+        self.assertEqual(len(self._findings()), 1)
+
+    def test_a_commit_that_closes_its_entry_and_one_that_adds_an_entry_both_pass(self) -> None:
+        self._write(K_AREA, "| ID | Pri |\n| --- | --- |\n| AB-22 | P2 |\n")
+        self._commit("fix: close AB-1\n\nBacklog: AB-1")
+        self._write(K_AREA, "| ID | Pri |\n| --- | --- |\n| AB-22 | P2 |\n| AB-23 | P1 |\n")
+        self._commit("fix: add AB-23\n\nBacklog: AB-23")
+        self.assertEqual(self._findings(), [])
+
+    def test_a_commit_without_the_line_is_reported_with_its_hash(self) -> None:
+        self._commit("fix: a thing")
+        with mock.patch.object(check_backlog_trailer, "K_SINCE", self.base):
+            check = next(iter(collect([self.root])))
+            issue = next(iter(rule_trailer(check)))
+        self.assertEqual(len(self._findings()), 1)
+        self.assertIn(check.sha[:9], issue.path.name)
+
+    def test_a_history_that_cannot_be_read_stops_the_check(self) -> None:
+        with mock.patch.object(check_backlog_trailer, "K_SINCE", "0" * 40):
+            with self.assertRaises(SystemExit):
+                collect([self.root])
+
     def test_refuses_a_message_without_the_line(self) -> None:
-        code, errors = self._run("fix: a thing\n")
+        code, errors = self._run_hook("fix: a thing\n")
         self.assertEqual(code, 1)
         self.assertIn("commit refused", errors)
 
     def test_accepts_an_open_id_and_ignores_git_comment_lines(self) -> None:
-        self.assertEqual(self._run("fix: a thing\n\nBacklog: AB-1\n# Please enter the message\n")[0], 0)
+        self.assertEqual(self._run_hook("fix: a thing\n\nBacklog: AB-1\n# Please enter the message\n")[0], 0)
 
     def test_accepts_an_entry_added_but_not_yet_committed(self) -> None:
         self._write(K_AREA, K_TABLE + "| AB-30 | P1 |\n")
-        self.assertEqual(self._run("fix: a thing\n\nBacklog: AB-30\n")[0], 0)
+        self.assertEqual(self._run_hook("fix: a thing\n\nBacklog: AB-30\n")[0], 0)
 
     def test_leaves_a_merge_alone(self) -> None:
-        self.assertEqual(self._run("Merge branch 'x'\n")[0], 0)
+        self.assertEqual(self._run_hook("Merge branch 'x'\n")[0], 0)
 
     def test_checks_nothing_without_a_base(self) -> None:
         path = self.root / "MESSAGE"
@@ -202,10 +214,6 @@ class HookTest(RepositoryTest):
     def test_wants_exactly_one_argument(self) -> None:
         with contextlib.redirect_stderr(io.StringIO()):
             self.assertEqual(commit_msg.main([]), 1)
-
-
-class InstallTest(RepositoryTest):
-    """Covers pointing git at the tracked hooks."""
 
     def test_sets_the_hooks_path(self) -> None:
         self.assertTrue(install_hooks.install(self.root))

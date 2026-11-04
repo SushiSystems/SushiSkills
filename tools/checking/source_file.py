@@ -26,9 +26,9 @@ def line_of(text: str, offset: int) -> int:
 
 
 def read_files(paths: Iterable[Path], wanted: Callable[[Path], bool]) -> tuple[SourceFile, ...]:
-    """Reads each path the predicate accepts as UTF-8, dropping bytes that do not decode."""
+    """Reads each path the predicate accepts as UTF-8, replacing bytes that do not decode."""
     return tuple(
-        SourceFile(path, path.read_text(encoding="utf-8", errors="ignore"))
+        SourceFile(path, path.read_text(encoding="utf-8", errors="replace"))
         for path in paths
         if wanted(path)
     )
