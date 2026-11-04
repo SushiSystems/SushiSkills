@@ -44,6 +44,9 @@ budget. Replaces the direction of the deleted `2026_10_30_TEST_BUDGET`.
 | Phase D: SushiSkills's own tests made mostly small | not started, RW-42 |
 | Registration and C# checkers, mutation pilot | not started, RW-43, RW-44, RW-45 |
 | Rework waves in the other repositories | not started, RW-35 |
+| 2026-11-04: superseded `2026_11_02_TEST_STANDARD` deleted; its D1 to D9 were already in `testing` | done |
+| 2026-11-04: triage of the trees the 2026-11-02 rollout left (J5 to J9) | done: sushicore 2 commits, sushiengine 2, the rest left with reasons |
+| 2026-11-04: J1 and J1b, the core and shell pattern on the size checker | done, `a70043a` |
 
 ## SOLID breaches and unneeded dependencies met
 
@@ -55,3 +58,44 @@ budget. Replaces the direction of the deleted `2026_10_30_TEST_BUDGET`.
 - The checkers under `tools/testing/` mix file walking with their rules, which is why 36 of 41
   test files here are `medium` (RW-42).
 - The size checker and the case reader read no C# cases for the forbidden kinds (RW-44).
+
+## Owner's decisions waiting
+
+- sushiruntime: work entries for the GLOBAL_HANDLE phases H0 to H9 and KI-23's Source path.
+- sushiengine: whether the 7.4 MB `assets/astro/de440_1950_2050.sushiephemeris` is added.
+- project-mobilerts: whether the editor re-save is kept; `ProjectSettings.asset` empties `preloadedAssets`.
+- `claude/DISPATCH.md` rule 3 forbids `se`, while rule 9 needs `<cli> backlog`; a read-only exception is proposed.
+- C++ mutation tool for RW-45.
+
+## Dispatches
+
+dispatch: J1 core/shell pattern — opus low, 2 rounds, passed, rung 1 (returned once for evidence)
+dispatch: J1b move test-tree discovery — haiku high, 1 round, passed, rung 1
+dispatch: J5 sushicore triage — sonnet medium, 2 rounds, passed, rung 1
+dispatch: J6 sushiruntime triage — sonnet medium, 2 rounds, passed, rung 1
+dispatch: J7 sushiengine triage — sonnet medium, 2 rounds, passed, rung 1
+dispatch: J8 sushiweb triage — sonnet medium, 2 rounds, passed, rung 1
+dispatch: J9 project-mobilerts triage — sonnet medium, 2 rounds, passed, rung 1
+dispatch: J2 split testing checkers — haiku high, 1 round, passed, rung 1
+dispatch: J3 split documentation checkers — haiku high, 1 round, partial (one checker), rung 1
+dispatch: J3a check_docs_layout — haiku high, 1 round, passed, rung 1
+dispatch: J3b check_docs_follow — haiku high, 1 round, passed, rung 1
+dispatch: J3c check_source_comments — haiku high, 1 round, passed, rung 1
+dispatch: J3d facts — haiku high, 1 round, passed, rung 1
+dispatch: J3e design tools and RW-46 — haiku high, 1 round, partial (8 of 11), rung 1
+dispatch: J4 remaining checkers — haiku high, 1 round, partial (two checkers), rung 1
+dispatch: J4a layering — haiku high, 1 round, passed, rung 1
+dispatch: J4b logs and ci — haiku high, 1 round, passed, rung 1
+dispatch: J4c routing and check_all — haiku high, 1 round, passed with three survivors, rung 1
+dispatch: J2b1 case reader — sonnet low, 2 rounds, passed, rung 1
+dispatch: J11 diff mutator — sonnet medium, 1 round, passed, rung 1
+dispatch: J12 sushicore test command map — haiku medium, 1 round, passed, rung 1
+
+## Lessons of 2026-11-04
+
+- A dispatch that names a share of sizes as acceptance invites tests split or added to move it; the
+  owner ruled the share a reading. Acceptance is purity, one medium class and killed mutants.
+- Workers sharing one tree blocked every commit hook and the mutation baseline, and deleted each
+  other's scratch folders. Each worker now runs in its own worktree with its own scratch folder.
+- A job of more than two checkers ran out before its end on haiku; jobs are one or two files.
+

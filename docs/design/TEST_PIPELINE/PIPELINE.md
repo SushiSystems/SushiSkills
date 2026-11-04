@@ -31,13 +31,13 @@ Lowest tier first, so each repository's tools and seams reach the ones above it.
 | --- | --- |
 | 0 | sushiskills |
 | 1 | sushicore: the shared test command |
-| 2 | sushilog, sushiprofiler, sushitrack, sushidsp, sushihub |
+| 2 | sushilog, sushiprofiler, sushitrack, sushidsp, sushistack |
 | 3 | sushiruntime |
 | 4 | sushiblas |
 | 5 | sushiai, sushiengine |
 | any | sushiweb, project-mobilerts |
 
-sushifx is vendored AMD FidelityFX with no tests and is out of scope.
+sushifx is vendored AMD FidelityFX with no tests and is out of scope. sushicars, sushiconverter and project-fs are out of scope by the owner's ruling of 2026-11-04.
 
 ## Seams found by the survey
 
@@ -52,6 +52,6 @@ Each adds or changes an interface and is approved by the owner in its repository
 | sushiprofiler | `Collector` passed in, not reached |
 | sushidsp | a clock or trigger for `CounterPollThread`; amp-node tests as rows |
 | sushitrack | environment and console out of `config_loader` |
-| sushicore, sushihub, sushiskills | subprocess, git, network and the file walk behind interfaces |
+| sushicore, sushistack, sushiskills | subprocess, git, network and the file walk behind interfaces |
 | sushiweb | logic out of the large pages; Postgres only in adapter tests |
 | project-mobilerts | sizes as `small`, `medium`, `large`; MonoBehaviour logic into the Simulation assemblies |
