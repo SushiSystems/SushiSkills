@@ -1,3 +1,8 @@
+---
+name: sushisystems-logging
+description: Use in a Sushi Systems repository together with the logging skill, when adding or changing a log call, a front, a category, a level variable, a sink or a host join; SushiLog is the logger, and this skill holds its projects, types and calls.
+---
+
 # The Sushi Systems logger
 
 The `logging` skill names roles: the logger, the front, the format, the host's own logging system.

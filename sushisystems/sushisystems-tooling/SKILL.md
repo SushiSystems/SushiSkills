@@ -1,3 +1,8 @@
+---
+name: sushisystems-tooling
+description: Use in a Sushi Systems repository together with the backlog, design, project-tools, build-throughput or versioning-and-release skill, to know that sushicore fills the tooling roles, how its backlog and design commands run with and without a module CLI, what tools/settings.py sets, and the CLAUDE.md block every repository carries.
+---
+
 # Tooling at Sushi Systems
 
 The doctrine's tooling skills name roles: the shared tooling library, the backlog tool, the design
@@ -27,7 +32,7 @@ tool. This page says who fills each role at Sushi Systems.
 | `K_LICENSE_HOLDER` | `"Mustafa Garip & Sushi Systems"` |
 | `K_LICENSE_COMPANY` | `"Sushi Systems"` |
 | `K_LICENSE_SITE` | `"https://sushisystems.io"` |
-| `K_LICENSE_OPEN_LINES`, `K_LICENSE_CLOSED_LINES`, `K_LICENSE_OPEN_BOX_LINES`, `K_LICENSE_CLOSED_BOX_LINES` | the rows of `../licence/LICENCE.md` |
+| `K_LICENSE_OPEN_LINES`, `K_LICENSE_CLOSED_LINES`, `K_LICENSE_OPEN_BOX_LINES`, `K_LICENSE_CLOSED_BOX_LINES` | the rows of the `sushisystems-licence` skill |
 | `K_MODULE_MANIFEST` | `"sushi-module.toml"` in a module, empty elsewhere |
 | `K_MODULE_DEPENDENCY_FILE` | `"cli/sushistack.deps.toml"` |
 | `K_MODULE_HEADINGS` | `("## Standalone", "## With SushiHub")` |

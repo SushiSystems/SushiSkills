@@ -1,3 +1,8 @@
+---
+name: sushisystems-dependencies
+description: Use in a Sushi Systems repository together with the dependencies or api-stability skill, when pinning, finding, fetching or upgrading a Sushi library, or shipping the shared logger's runtime file.
+---
+
 # Dependencies at Sushi Systems
 
 The `dependencies` skill names the roles: the dependency tool, the dependency declaration, the
@@ -32,7 +37,7 @@ no module uses any more, and `hub clean` removes it.
 
 SushiLog is the shared library whose runtime file, `sushilog.dll`, is copied beside every
 executable that loads it and listed in `NOTICE.md`. Its binary-interface check is "ABI version" in
-`../logging/INTERFACE.md`.
+`INTERFACE.md` of the `sushisystems-logging` skill.
 
 ## The manual
 

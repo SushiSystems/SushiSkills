@@ -2,7 +2,8 @@
 
 This repository holds the Sushi Systems skills. It follows them itself.
 
-Load `sushiskills` before working here; it names the skill each task needs.
+Load `sushiskills` and `sushisystems-specific` before working here; they name the skill each task
+needs and the Sushi skill loaded beside it.
 
 A rule lives in one file; see `docs/CONTRIBUTING.md` before changing one.
 

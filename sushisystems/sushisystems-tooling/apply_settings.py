@@ -5,7 +5,7 @@
 # Commercial use requires a licence from Sushi Systems.
 """Adds the Sushi settings the shared tools read to a repository, and the backlog block to its CLAUDE.md.
 
-Usage: python sushisystems/tooling/apply_settings.py ROOT [--alias ALIAS]
+Usage: python sushisystems/sushisystems-tooling/apply_settings.py ROOT [--alias ALIAS]
 """
 
 from __future__ import annotations

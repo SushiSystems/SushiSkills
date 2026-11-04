@@ -1,3 +1,8 @@
+---
+name: sushisystems-testing
+description: Use in a Sushi Systems repository together with the testing or continuous-integration skill, to know the project's test command, the CTest call, the time reader, the exemption file, the tolerance helper and which machine runs the large tier.
+---
+
 # Tests at Sushi Systems
 
 The `testing` skill names a project's test command, its time line, its exemption file and its

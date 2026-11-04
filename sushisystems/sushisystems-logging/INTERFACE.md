@@ -1,7 +1,7 @@
 # Logger interface
 
 SushiLog offers this interface, in namespace `SushiLog`, as the one logger of every Sushi
-library. `SKILL.md` holds the rules; this page holds the types and what each call does.
+library. The `logging` skill holds the rules and `SKILL.md` beside this page says who fills its roles; this page holds the types and what each call does.
 
 ## Values
 
@@ -72,7 +72,7 @@ Source: not compiled
 | `thread` | The sending logger's number for the calling thread |
 | `time_ns` | System clock time of the call, in nanoseconds since the Unix epoch |
 | `message` | The formatted message alone |
-| `text` | The whole line of `SKILL.md`'s "Record" |
+| `text` | The whole line of "Record" in the `logging` skill |
 
 Every view is valid only during the sink call.
 
@@ -118,7 +118,7 @@ The receiver is never destroyed, so a sender may forward during process exit.
 
 ## Compile-time ceiling
 
-A front computes the ceiling of `SKILL.md`'s "Two gates" in its own translation unit, from
+A front computes the ceiling of "Two gates" in the `logging` skill in its own translation unit, from
 `NDEBUG` and its `<PREFIX>_ENABLE_LOGGING`, through a function with internal linkage
 (`static constexpr`). An `inline` function whose body reads `NDEBUG` would differ between
 translation units and break the one-definition rule.

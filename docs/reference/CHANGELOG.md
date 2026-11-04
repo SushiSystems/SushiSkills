@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-05 — sushisystems: Made each subject of the Sushi layer its own skill, named by `sushisystems-specific` beside the doctrine skill it pairs with, so its pages load and resolve (`sushisystems/`, `CLAUDE_TEMPLATE.md`).
 - 2026-11-05 — tools: Split the changelog, module-install, design-citation, fold, archive, history and hook tools into pure logic and a shell, so their logic is tested small (RW-42, `tools/hooks/commit_msg.py`, `tools/commits/history.py`).
 - 2026-11-05 — testing: Closed the size checker's blind spot for a `unittest.TestCase` class not named `Test<Thing>` (KI-3, `tools/testing/case_reader.py`).
 - 2026-11-05 — layering: Reported a domain tier missing from `K_TIER_ORDER` instead of crashing in `Layout.rank` (KI-4, `tools/layering/check_layering.py`).

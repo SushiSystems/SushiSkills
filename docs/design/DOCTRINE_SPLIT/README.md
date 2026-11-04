@@ -19,8 +19,10 @@ Decided by the owner on 2026-10-30.
 
 1. The doctrine keeps the name `sushiskills` and names nothing specific.
 2. Everything specific to Sushi Systems lives under `sushisystems/`, in this repository, tracked.
-   Its skill is `sushisystems/sushisystems-specific/`. It is not git-ignored and not a second
-   repository.
+   Each folder there is a skill (the owner, 2026-11-05): `sushisystems-specific` is loaded with `sushiskills` in every
+   Sushi repository and names, for each doctrine skill, the Sushi skill loaded beside it, one per
+   subject (`sushisystems-tooling`, `sushisystems-testing`, ...). The doctrine reaches them through
+   the repository's `CLAUDE.md`, never by name. It is not git-ignored and not a second repository.
 3. The dependency runs one way: the specific skill builds on the doctrine, the doctrine never names it.
    A checker enforces it.
 4. Backlog and design are used strictly: state from the repository's CLI, entries written only

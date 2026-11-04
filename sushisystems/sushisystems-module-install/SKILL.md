@@ -1,3 +1,8 @@
+---
+name: sushisystems-module-install
+description: Use in a Sushi Systems repository together with the module-install skill, for SushiHub, the sushi-module.toml manifest, the dependency declaration, the catalog and the two install headings.
+---
+
 # Module install at Sushi Systems
 
 The `module-install` skill names the roles: the workspace tool, the manifest, the dependency
@@ -12,7 +17,7 @@ Systems. The workspace tool is SushiHub, and the shared tooling library is `sush
 | Its marker files and variable | `.sushistack`, `workspace.toml`, `SUSHISTACK_HOME`, `~/.sushisystems` |
 | Shared tooling library | `sushicore`, pinned in the module's `cli/pyproject.toml` |
 | Manifest | `sushi-module.toml` at the root: the module's name (equal to its folder), alias, distribution and repository. Format: SushiStack `docs/reference/MODULE_MANIFEST.md` |
-| Dependency declaration | `cli/sushistack.deps.toml`: `[module] depends_on` and `cli`, the pins of each Sushi library as `[sushisystems.<name>]`, and the third-party ports. The search order for a Sushi library is in `../dependencies/DEPENDENCIES.md` |
+| Dependency declaration | `cli/sushistack.deps.toml`: `[module] depends_on` and `cli`, the pins of each Sushi library as `[sushisystems.<name>]`, and the third-party ports. The search order for a Sushi library is in the `sushisystems-dependencies` skill |
 | Module CLI | `cli/`, installable with `pip`, scripts `<alias>` and `<name>` |
 | Build path variables | `<NAME>_DIR`, `CMAKE_PREFIX_PATH` or `VCPKG_ROOT`, handed by the CLI |
 | Catalog | SushiStack `cli/sushihub/catalog.toml`: the clone URL, directory and alias behind `hub add <module>` |
