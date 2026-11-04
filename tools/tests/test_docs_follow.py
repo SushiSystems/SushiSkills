@@ -22,8 +22,6 @@ from collections.abc import Iterable
 from pathlib import Path
 from unittest import mock
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from commits import check_backlog_trailer  # noqa: E402
@@ -79,9 +77,9 @@ def _problems(follow: Follow) -> list[str]:
     return [issue.message for issue in check_docs_follow.rule_pages_follow(subject)]
 
 
-@pytest.mark.small
 class TestParsing(unittest.TestCase):
     """Covers reading the describes line, the status listing and the acknowledgements."""
+    K_TEST_SIZE = "small"
 
     def test_the_describes_line_lists_its_code_spans(self) -> None:
         self.assertEqual(describes_of("# T\n\n**Describes:** `a/b.py`, `c/`\n"), ("a/b.py", "c"))
@@ -105,9 +103,9 @@ class TestParsing(unittest.TestCase):
         self.assertEqual(acknowledged("x\n\nDocs: none\n")[0], False)
 
 
-@pytest.mark.small
 class TestExplicitRule(unittest.TestCase):
     """Covers a page that names its files, judged on the values of one commit."""
+    K_TEST_SIZE = "small"
 
     def test_a_changed_described_file_without_its_page_is_a_problem(self) -> None:
         problems = _problems(_follow([Change("M", "src/a.py")], [K_GUIDE]))
@@ -156,9 +154,9 @@ class TestExplicitRule(unittest.TestCase):
         self.assertEqual(problems, [])
 
 
-@pytest.mark.small
 class TestReadmeRule(unittest.TestCase):
     """Covers a README that lists the entries of its folder, judged on the trees either side."""
+    K_TEST_SIZE = "small"
 
     def test_a_new_entry_needs_the_readme(self) -> None:
         problems = _problems(_follow([Change("A", "lib/new.py")], [K_LIB_README],
@@ -203,9 +201,9 @@ class TestReadmeRule(unittest.TestCase):
         self.assertEqual(problems, [])
 
 
-@pytest.mark.small
 class TestFactRule(unittest.TestCase):
     """Covers a page that follows a fact by its id, judged on the fact's text before and after."""
+    K_TEST_SIZE = "small"
 
     def test_a_page_following_a_changed_fact_is_a_problem(self) -> None:
         versions = [Versions(K_FACT_OLD, K_FACT_NEW)]
@@ -220,9 +218,9 @@ class TestFactRule(unittest.TestCase):
         self.assertEqual(problems, [])
 
 
-@pytest.mark.small
 class TestPages(unittest.TestCase):
     """Covers which paths the checker follows as pages."""
+    K_TEST_SIZE = "small"
 
     def test_only_markdown_outside_the_ignored_folders_is_followed(self) -> None:
         self.assertTrue(is_followed_page("docs/GUIDE.md", K_IGNORED))
@@ -231,9 +229,9 @@ class TestPages(unittest.TestCase):
         self.assertFalse(is_followed_page("src/a.py", K_IGNORED))
 
 
-@pytest.mark.medium
 class TestRepository(unittest.TestCase):
     """Runs the checker and the commit hook on a temporary git repository."""
+    K_TEST_SIZE = "medium"
 
     def setUp(self) -> None:
         self._folder = tempfile.TemporaryDirectory()

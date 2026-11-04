@@ -16,8 +16,6 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.source_file import SourceFile  # noqa: E402
@@ -53,9 +51,9 @@ def _messages(rule, pages: dict[str, str]) -> list[str]:
     return [issue.message for issue in rule(_manual(pages))]
 
 
-@pytest.mark.small
 class TestParsing(unittest.TestCase):
     """Covers how the markers of one page are read, from text in memory."""
+    K_TEST_SIZE = "small"
 
     def test_a_fact_has_its_id_lines_and_body(self) -> None:
         block = facts.parse("a.md", K_HOME).facts[0]
@@ -110,9 +108,9 @@ class TestParsing(unittest.TestCase):
         )
 
 
-@pytest.mark.small
 class TestRegeneration(unittest.TestCase):
     """Covers how a quote is rewritten from the body of its home."""
+    K_TEST_SIZE = "small"
 
     def test_regenerate_replaces_only_the_quote_bodies(self) -> None:
         stale = K_QUOTE.replace("last phase is built", "old text")
@@ -141,9 +139,9 @@ class TestRegeneration(unittest.TestCase):
         )
 
 
-@pytest.mark.small
 class TestRules(unittest.TestCase):
     """Covers the four rules of the facts checker, on manuals built in memory."""
+    K_TEST_SIZE = "small"
 
     def test_a_current_quote_passes_every_rule(self) -> None:
         pages = {"home.md": K_HOME, "page.md": K_QUOTE + K_FOLLOW}
@@ -197,9 +195,9 @@ class TestRules(unittest.TestCase):
         self.assertEqual(_manual({"page.md": K_QUOTE}).homes(), {})
 
 
-@pytest.mark.small
 class TestCitations(unittest.TestCase):
     """Covers which places the command lists for a fact, from manuals built in memory."""
+    K_TEST_SIZE = "small"
 
     def test_citations_list_quotes_and_follows_in_page_order(self) -> None:
         manual = _manual({"quote.md": K_QUOTE, "follow.md": K_FOLLOW})
@@ -220,9 +218,9 @@ class TestCitations(unittest.TestCase):
         self.assertEqual(facts_cli.citations(_manual({"home.md": K_HOME}), "shipping"), [])
 
 
-@pytest.mark.small
 class TestPlanApply(unittest.TestCase):
     """Covers which pages the rewrite changes, and with what text, before anything is written."""
+    K_TEST_SIZE = "small"
 
     def test_a_stale_quote_is_planned_with_its_new_text(self) -> None:
         stale = K_QUOTE.replace("last phase", "final phase")
@@ -245,9 +243,9 @@ class TestPlanApply(unittest.TestCase):
         self.assertEqual([page for page, _ in facts_cli.plan_apply(manual)], ["b.md", "a.md"])
 
 
-@pytest.mark.small
 class TestPageSelection(unittest.TestCase):
     """Covers which pages the manual reads and the names it gives them, from paths in memory."""
+    K_TEST_SIZE = "small"
 
     def test_build_folders_are_skipped(self) -> None:
         self.assertFalse(check_docs_facts.is_checked_page(K_ROOT, K_ROOT / "build" / "a.md"))
@@ -265,9 +263,9 @@ class TestPageSelection(unittest.TestCase):
         self.assertEqual(_manual({"docs/guides/a.md": K_HOME}).pages[0].path, "docs/guides/a.md")
 
 
-@pytest.mark.medium
 class TestTreeOnDisk(unittest.TestCase):
     """Runs the command, the checker and the follow rule on tiny trees in temporary folders."""
+    K_TEST_SIZE = "medium"
 
     def setUp(self) -> None:
         self._folder = tempfile.TemporaryDirectory()

@@ -7,7 +7,6 @@
 
 from __future__ import annotations
 
-import pytest
 import re
 import sys
 import unittest
@@ -30,7 +29,7 @@ K_LABELS = {
 }
 
 
-pytestmark = pytest.mark.medium
+K_TEST_SIZE = "medium"
 
 
 def read_times(text: str) -> dict[str, float]:

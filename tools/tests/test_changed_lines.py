@@ -13,8 +13,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from testing.changed_lines import changed_lines, changed_lines_of  # noqa: E402
@@ -27,9 +25,9 @@ K_EDIT_AND_ADD = (
 )
 
 
-@pytest.mark.small
 class TestChangedLinesParse(unittest.TestCase):
     """Reads a diff text and the line counts of untracked files."""
+    K_TEST_SIZE = "small"
 
     def test_names_the_edited_and_the_added_lines_only(self) -> None:
         self.assertEqual(changed_lines_of(K_ROOT, "base", K_EDIT_AND_ADD, {}),
@@ -53,9 +51,9 @@ class TestChangedLinesParse(unittest.TestCase):
             changed_lines_of(K_ROOT, "0" * 40, None, {})
 
 
-@pytest.mark.medium
 class TestChangedLinesShell(unittest.TestCase):
     """Builds a repository with one commit, then a second commit and an untracked file, and reads it with git."""
+    K_TEST_SIZE = "medium"
 
     def setUp(self) -> None:
         self._folder = tempfile.TemporaryDirectory()

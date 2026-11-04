@@ -16,8 +16,6 @@ import unittest
 from collections.abc import Iterable
 from pathlib import Path, PurePosixPath
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.checker import Issue  # noqa: E402
@@ -85,9 +83,9 @@ def _days_ago(days: int) -> str:
     return (K_TODAY - datetime.timedelta(days=days)).isoformat()
 
 
-@pytest.mark.small
 class RequiredEntriesTest(unittest.TestCase):
     """Checks that each required document is demanded."""
+    K_TEST_SIZE = "small"
 
     def test_is_registered(self) -> None:
         """Runs both rules as part of the checker's rule table."""
@@ -105,9 +103,9 @@ class RequiredEntriesTest(unittest.TestCase):
         self.assertEqual(list(rule_required_entries(repository)), [])
 
 
-@pytest.mark.small
 class ReachabilityTest(unittest.TestCase):
     """Checks which documents count as reached from the index."""
+    K_TEST_SIZE = "small"
 
     def test_follows_links_through_an_index(self) -> None:
         """Reaches a document linked from an index the root index links, anchor included."""
@@ -203,12 +201,12 @@ class ReachabilityTest(unittest.TestCase):
         self.assertEqual(list(rule_reachable_from_index(repository)), [])
 
 
-@pytest.mark.small
 class DocsEntriesTest(unittest.TestCase):
     """Checks which entries may sit directly under docs/.
 
     The shell drops the entries git ignores before the rule sees them; ShellTest checks that.
     """
+    K_TEST_SIZE = "small"
 
     def test_accepts_the_publish_list(self) -> None:
         """Accepts docs/publish.toml and still reports any other loose file."""
@@ -221,9 +219,9 @@ class DocsEntriesTest(unittest.TestCase):
         self.assertEqual(_names(rule_docs_entries(_repository(files))), [])
 
 
-@pytest.mark.small
 class LinkAnchorsTest(unittest.TestCase):
     """Covers the rule that a link's anchor names a heading of the document it reaches."""
+    K_TEST_SIZE = "small"
 
     def test_accepts_a_heading_slug_and_a_label(self) -> None:
         """Checks that a slugged heading, a repeated heading and a {#label} all resolve."""
@@ -252,9 +250,9 @@ class LinkAnchorsTest(unittest.TestCase):
         self.assertEqual(len(list(rule_link_anchors(_repository(files)))), 1)
 
 
-@pytest.mark.small
 class StatusLinesTest(unittest.TestCase):
     """Covers the four status forms in design documents and work folders."""
+    K_TEST_SIZE = "small"
 
     def test_accepts_the_four_forms(self) -> None:
         """Reports nothing for each form, with and without text after the date."""
@@ -291,9 +289,9 @@ class StatusLinesTest(unittest.TestCase):
                          ["agent/2026_10_01_B/REPORT.md"])
 
 
-@pytest.mark.small
 class ClosedWorkTest(unittest.TestCase):
     """Covers the clock on closed work, which reads the date in the status line."""
+    K_TEST_SIZE = "small"
 
     def test_counts_from_the_status_date(self) -> None:
         """Lists a withdrawn document and a folder dated 91 days ago, not ones dated 89 days ago."""
@@ -329,9 +327,9 @@ class ClosedWorkTest(unittest.TestCase):
         )
 
 
-@pytest.mark.small
 class ForbiddenKindsTest(unittest.TestCase):
     """Covers the files that repeat the backlog or the changelog."""
+    K_TEST_SIZE = "small"
 
     def test_reports_each_kind_outside_agent_and_archive(self) -> None:
         """Reports roadmap, journal, handover, milestone, priority and to-do files."""
@@ -367,9 +365,9 @@ def _docs_entry_names(root: Path) -> list[str]:
                   for issue in rule_docs_entries(repository))
 
 
-@pytest.mark.medium
 class ShellTest(unittest.TestCase):
     """Runs the shell on temporary trees: git's ignores, the clock across a commit, the CLI."""
+    K_TEST_SIZE = "medium"
 
     def test_leaves_out_a_folder_git_ignores(self) -> None:
         """Reports a loose docs/ entry until git ignores it, then reports nothing for it."""

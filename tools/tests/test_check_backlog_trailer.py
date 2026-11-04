@@ -19,8 +19,6 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from commits import check_backlog_trailer  # noqa: E402
@@ -46,9 +44,9 @@ def _check(message: str, known: frozenset[str] = K_KNOWN, id_pattern: str = K_PA
     return TrailerCheck(Path("repo"), K_SHA, message, known, id_pattern)
 
 
-@pytest.mark.small
 class TrailerProblemsTest(unittest.TestCase):
     """Covers the judgement of one message against a set of open entries."""
+    K_TEST_SIZE = "small"
 
     def test_a_message_without_the_line_is_refused(self) -> None:
         self.assertIn("no `Backlog:` line", trailer_problems("fix: a thing\n", K_KNOWN, K_PATTERN)[0])
@@ -85,9 +83,9 @@ class TrailerProblemsTest(unittest.TestCase):
         self.assertEqual(trailer_problems(message, K_KNOWN, K_PATTERN), [])
 
 
-@pytest.mark.small
 class TrailerRuleTest(unittest.TestCase):
     """Covers the rule over one commit held in memory, with the IDs open for it."""
+    K_TEST_SIZE = "small"
 
     def test_reads_the_rows_of_a_backlog_table(self) -> None:
         self.assertEqual(ids_in(K_TABLE), K_KNOWN)
@@ -116,9 +114,9 @@ class TrailerRuleTest(unittest.TestCase):
         self.assertEqual(list(K_CHECKER.rules), ["rule_trailer"])
 
 
-@pytest.mark.medium
 class RepositoryTest(unittest.TestCase):
     """Builds a git repository with a backlog for each test and runs the checker on it."""
+    K_TEST_SIZE = "medium"
 
     def setUp(self) -> None:
         self._folder = tempfile.TemporaryDirectory()

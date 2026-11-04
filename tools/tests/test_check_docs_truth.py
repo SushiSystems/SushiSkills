@@ -16,8 +16,6 @@ import unittest
 from collections.abc import Callable, Iterator
 from pathlib import Path, PurePosixPath
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.checker import Issue  # noqa: E402
@@ -91,9 +89,9 @@ def _found(
     return [(issue.path.relative_to(manual.root).as_posix(), issue.line) for issue in rule(manual)]
 
 
-@pytest.mark.small
 class RuleTableTest(unittest.TestCase):
     """Checks that every rule runs as part of the checker."""
+    K_TEST_SIZE = "small"
 
     def test_registers_every_rule(self) -> None:
         """Holds each rule function under its own name in the rule table."""
@@ -104,9 +102,9 @@ class RuleTableTest(unittest.TestCase):
         self.assertEqual(dict(K_CHECKER.rules), {rule.__name__: rule for rule in rules})
 
 
-@pytest.mark.small
 class NamedSymbolsTest(unittest.TestCase):
     """Checks which names in code count as names the source must hold."""
+    K_TEST_SIZE = "small"
 
     def test_reports_each_shape_of_absent_name(self) -> None:
         """Reports a qualified name, a call, a type, a snake name, a constant and a macro."""
@@ -149,9 +147,9 @@ class NamedSymbolsTest(unittest.TestCase):
         self.assertEqual(_found(rule_named_symbols, files), [])
 
 
-@pytest.mark.small
 class CitedPathsTest(unittest.TestCase):
     """Checks which cited paths must exist."""
+    K_TEST_SIZE = "small"
 
     def test_reports_a_missing_path(self) -> None:
         """Reports a path under a top-level folder, an include and a path in a text block."""
@@ -184,9 +182,9 @@ class CitedPathsTest(unittest.TestCase):
                          [("tests/core/engine/test_world.md", 3)])
 
 
-@pytest.mark.small
 class ExampleSourceTest(unittest.TestCase):
     """Checks that an example in a manual page is taken from a file."""
+    K_TEST_SIZE = "small"
 
     def test_reports_an_uncited_and_a_drifted_example(self) -> None:
         """Reports a block without a citation, a line its file lacks and a missing file."""
@@ -215,9 +213,9 @@ class ExampleSourceTest(unittest.TestCase):
         self.assertEqual(_found(rule_example_source, {"modules/core/engine/README.md": page}), [])
 
 
-@pytest.mark.small
 class HistoryWordsTest(unittest.TestCase):
     """Checks which prose narrates history."""
+    K_TEST_SIZE = "small"
 
     def test_reports_each_history_phrase(self) -> None:
         """Reports one issue per line that says what the code was."""
@@ -241,9 +239,9 @@ class HistoryWordsTest(unittest.TestCase):
         self.assertEqual(_found(rule_history_words, files), [])
 
 
-@pytest.mark.small
 class PageLengthTest(unittest.TestCase):
     """Checks the line ceiling of each kind of page."""
+    K_TEST_SIZE = "small"
 
     def test_reports_a_page_one_line_above_its_ceiling(self) -> None:
         """Reports the root README, a manual page and a module README above their ceilings."""
@@ -265,9 +263,9 @@ class PageLengthTest(unittest.TestCase):
         self.assertEqual(_found(rule_page_length, files), [])
 
 
-@pytest.mark.small
 class DuplicatedPassagesTest(unittest.TestCase):
     """Checks that a long paragraph has one home."""
+    K_TEST_SIZE = "small"
 
     def test_reports_the_second_copy_whatever_its_wrapping(self) -> None:
         """Reports the later page of two that hold one paragraph wrapped differently."""
@@ -307,9 +305,9 @@ class DuplicatedPassagesTest(unittest.TestCase):
         self.assertEqual(_found(rule_duplicated_passages, files), [])
 
 
-@pytest.mark.small
 class EmDashTest(unittest.TestCase):
     """Checks where an em dash is refused."""
+    K_TEST_SIZE = "small"
 
     def test_reports_an_em_dash_in_prose(self) -> None:
         """Reports the prose line that holds the dash."""
@@ -327,9 +325,9 @@ class EmDashTest(unittest.TestCase):
         self.assertEqual(_found(rule_em_dash, files), [])
 
 
-@pytest.mark.small
 class AllowListTest(unittest.TestCase):
     """Checks that the allow-list stays justified and in use."""
+    K_TEST_SIZE = "small"
 
     def test_reports_a_bare_a_broken_and_an_unused_entry(self) -> None:
         """Reports an entry without a reason, one that does not compile and one nothing uses."""
@@ -359,9 +357,9 @@ def _write_tree(folder: str, files: dict[str, str]) -> Path:
     return root
 
 
-@pytest.mark.medium
 class ShellTest(unittest.TestCase):
     """Runs the command line on a tree in a temporary folder, and reads the documentation skill."""
+    K_TEST_SIZE = "medium"
 
     def test_source_option_replaces_the_default_folders(self) -> None:
         """Finds a name only when --source names the folder that holds it."""

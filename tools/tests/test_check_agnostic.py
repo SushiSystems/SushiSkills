@@ -15,8 +15,6 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.checker import run  # noqa: E402
@@ -65,9 +63,9 @@ def _found(rule, files: dict[str, str], **kwargs) -> list[tuple[str, int]]:
     return [(issue.path.name, issue.line) for issue in rule(_scope(files, **kwargs))]
 
 
-@pytest.mark.small
 class ProductTermsTest(unittest.TestCase):
     """Covers the rules that match the terms file against the checked text."""
+    K_TEST_SIZE = "small"
 
     def test_product_name_is_reported_with_its_line(self) -> None:
         self.assertEqual(_found(rule_product_name, {"skills/a/SKILL.md": "Clean line.\nUse AcmeLog here.\n"}),
@@ -102,9 +100,9 @@ class ProductTermsTest(unittest.TestCase):
         self.assertEqual(_found(rule_machine_path, files), [])
 
 
-@pytest.mark.small
 class MachinePathTest(unittest.TestCase):
     """Covers the rule that names a drive path or a user folder."""
+    K_TEST_SIZE = "small"
 
     def test_machine_paths_are_reported(self) -> None:
         files = {"skills/a/SKILL.md":
@@ -119,9 +117,9 @@ class MachinePathTest(unittest.TestCase):
         self.assertEqual(_found(rule_machine_path, {"skills/a/tool.md": "x = 'a:\\nb: 1'\n"}), [])
 
 
-@pytest.mark.small
 class CheckedFilesTest(unittest.TestCase):
     """Covers which paths the shell reads: text files below a checked folder, but never a settings file."""
+    K_TEST_SIZE = "small"
 
     def test_the_settings_file_is_not_read(self) -> None:
         self.assertFalse(is_checked_file("tools/settings.py", ("tools",)))
@@ -137,9 +135,9 @@ class CheckedFilesTest(unittest.TestCase):
         self.assertFalse(is_checked_file("skills/a/image.png", ("skills",)))
 
 
-@pytest.mark.small
 class TermsFileTest(unittest.TestCase):
     """Covers a terms file that is missing, unreadable or holds a pattern that does not compile."""
+    K_TEST_SIZE = "small"
 
     def test_missing_terms_file_is_one_issue_and_silences_the_term_rules(self) -> None:
         missing = _scope({"skills/a/SKILL.md": "AcmeLog\n"}, terms=parse_terms(K_ROOT / "terms.txt", None))
@@ -157,9 +155,9 @@ class TermsFileTest(unittest.TestCase):
         self.assertIn("terms.txt:1", parse_terms(K_ROOT / "terms.txt", "product: (\n").error)
 
 
-@pytest.mark.medium
 class ShellTest(unittest.TestCase):
     """Runs the command line on a tree on disk, so the files and terms the shell reads reach the rules."""
+    K_TEST_SIZE = "medium"
 
     def test_cli_reads_the_text_files_of_the_checked_folders_only(self) -> None:
         """Reports the one checked line that names a product, and skips a file outside the folders and the settings."""

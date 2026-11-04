@@ -14,8 +14,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.checker import run  # noqa: E402
@@ -44,9 +42,9 @@ def found(rule, texts: dict[str, str]) -> list[str]:
     return [issue.path.relative_to(K_ROOT).as_posix() for issue in rule(repository_of(texts))]
 
 
-@pytest.mark.small
 class TestProbeRules(unittest.TestCase):
     """Runs each rule on repositories held in memory."""
+    K_TEST_SIZE = "small"
 
     def test_reports_a_probes_folder_outside_applications(self) -> None:
         texts = {
@@ -95,9 +93,9 @@ class TestProbeRules(unittest.TestCase):
         self.assertEqual(found(rule_unlisted_program, texts), ["applications/benchmarks/README.md"])
 
 
-@pytest.mark.medium
 class TestProbeCommand(unittest.TestCase):
     """Runs the checker's command line once on a tree written to a temporary folder."""
+    K_TEST_SIZE = "medium"
 
     def test_command_reports_each_rule_with_its_line_and_exits_non_zero(self) -> None:
         files = {

@@ -13,8 +13,6 @@ import sys
 import unittest
 from pathlib import Path
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -30,9 +28,9 @@ K_BUILD = Path("tests/core/CMakeLists.txt")
 K_NEW_BUILD = Path("tests/new/CMakeLists.txt")
 
 
-@pytest.mark.small
 class TestAddedCases(unittest.TestCase):
     """Works out which cases and programs a change adds, from the text of the files before and after."""
+    K_TEST_SIZE = "small"
 
     def test_names_the_cases_a_commit_adds(self) -> None:
         self.assertEqual(new_case_names({K_CASE: K_ONE}, {K_CASE: K_ONE + "\n" + K_TWO}), ["Small_A.Two"])
@@ -70,9 +68,9 @@ class TestAddedCases(unittest.TestCase):
                                                 + K_PROGRAM.format(name="b")}), [K_NEW_BUILD])
 
 
-@pytest.mark.medium
 class TestAddedCommand(unittest.TestCase):
     """Builds a repository with one base commit, then commits changes, and lists them with the command."""
+    K_TEST_SIZE = "medium"
 
     def setUp(self) -> None:
         self.repo = Repo()

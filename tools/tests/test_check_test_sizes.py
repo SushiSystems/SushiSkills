@@ -14,8 +14,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.checker import run  # noqa: E402
@@ -44,9 +42,9 @@ def found(rule, files: dict[str, str]) -> list[tuple[str, int]]:
     return [(issue.path.as_posix(), issue.line) for issue in rule(sources)]
 
 
-@pytest.mark.small
 class TestSizesRuleTest(unittest.TestCase):
     """Runs each rule on files held in memory."""
+    K_TEST_SIZE = "small"
 
     def test_cpp_rule_reports_an_unsized_suite_in_a_test_file_only(self) -> None:
         files = {
@@ -123,9 +121,9 @@ class TestSizesRuleTest(unittest.TestCase):
         self.assertEqual([finding for rule in rules for finding in found(rule, files)], [])
 
 
-@pytest.mark.medium
 class TestSizesShellTest(unittest.TestCase):
     """Runs the checker's command line once on a tree written to a temporary folder."""
+    K_TEST_SIZE = "medium"
 
     def test_command_reads_every_test_folder_at_any_depth_and_nothing_outside(self) -> None:
         files = {

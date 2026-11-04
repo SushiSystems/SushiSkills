@@ -16,8 +16,6 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from testing import test_budget  # noqa: E402
@@ -60,9 +58,9 @@ def run(timings: dict[str, float], **overrides) -> Report:
     return judge([Timing(name, seconds) for name, seconds in timings.items()], **overrides)
 
 
-@pytest.mark.small
 class TestReadingAndNames(unittest.TestCase):
     """Reads the JUnit text, the names, the exemption table and the program map."""
+    K_TEST_SIZE = "small"
 
     def test_reads_times_and_leaves_out_a_skipped_test(self) -> None:
         self.assertEqual(parse_junit(junit({"Small_A.One": 0.25}, skipped=("Large_B.Gpu",)).encode(), "a.xml"),
@@ -97,9 +95,9 @@ class TestReadingAndNames(unittest.TestCase):
         self.assertIn("shape 33% small, 0% medium, 67% large", report.line)
 
 
-@pytest.mark.small
 class TestEvaluate(unittest.TestCase):
     """Applies the limits."""
+    K_TEST_SIZE = "small"
 
     def test_a_run_inside_every_limit_has_no_finding(self) -> None:
         report = run({"Small_A.One": 0.2, "Medium_B.Two": 3.0}, programs={"Small_A": "core", "Medium_B": "io"},
@@ -160,9 +158,9 @@ class TestEvaluate(unittest.TestCase):
         self.assertTrue(report.line.endswith("7 cases added since origin/main (not rebuilt)"))
 
 
-@pytest.mark.small
 class TestRendering(unittest.TestCase):
     """Prints the lines of a run and decides its exit code."""
+    K_TEST_SIZE = "small"
 
     def test_prints_the_rerun_line_and_exits_clean_without_gate(self) -> None:
         report = run({"Small_A.Slow": 5.0})
@@ -175,9 +173,9 @@ class TestRendering(unittest.TestCase):
                          (1, 0))
 
 
-@pytest.mark.medium
 class TestMainCommand(unittest.TestCase):
     """Runs the command on a JUnit file and a program map written to a temporary folder."""
+    K_TEST_SIZE = "medium"
 
     def setUp(self) -> None:
         self._folder = tempfile.TemporaryDirectory()

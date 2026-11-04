@@ -15,8 +15,6 @@ import unittest
 from collections.abc import Iterable, Mapping
 from pathlib import Path, PurePosixPath
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.checker import run  # noqa: E402
@@ -98,9 +96,9 @@ def names(issues) -> list[str]:
     return [issue.path.name for issue in issues]
 
 
-@pytest.mark.small
 class TestMultiModule(unittest.TestCase):
     """Covers modules/<tier>/<module>/ mirrored to tests/<tier>/<module>/."""
+    K_TEST_SIZE = "small"
 
     def test_a_header_without_its_test_is_reported(self) -> None:
         self.assertEqual(names(rule_untested_unit(mirror_of(K_MULTI_MODULE))), ["contact_solver.hpp"])
@@ -134,9 +132,9 @@ class TestMultiModule(unittest.TestCase):
         self.assertEqual(list(rule_orphan_test(mirror)), [])
 
 
-@pytest.mark.small
 class TestPrivateInclude(unittest.TestCase):
     """Covers tests that include a header from a module's or the root's source/ folder."""
+    K_TEST_SIZE = "small"
 
     def private_found(self, path: str, text: str, *extra: str) -> list[tuple[str, int]]:
         """Returns the file name and line of every private include in one test file, with extra files beside it."""
@@ -163,9 +161,9 @@ class TestPrivateInclude(unittest.TestCase):
                                             "tests/physics/rigid_body/island_builder.hpp"), [])
 
 
-@pytest.mark.small
 class TestLanguagesAndApplications(unittest.TestCase):
     """Covers Python and TypeScript sources and the headers of an application."""
+    K_TEST_SIZE = "small"
 
     def test_python_mirrors_each_source_file_below_its_package(self) -> None:
         mirror = mirror_of(("source/acme_cli/commands/build.py", "source/acme_cli/__init__.py",
@@ -182,9 +180,9 @@ class TestLanguagesAndApplications(unittest.TestCase):
         self.assertEqual(findings(mirror), [])
 
 
-@pytest.mark.small
 class TestUnity(unittest.TestCase):
     """Covers Assets/<Product>/ mirrored to Assets/<Product>/Tests/ with <Name>Tests.cs."""
+    K_TEST_SIZE = "small"
 
     def unity_findings(self, files: Iterable[str]) -> list[tuple[str, str]]:
         """Returns the rule and the file name of every finding over each product of a Unity project."""
@@ -202,9 +200,9 @@ class TestUnity(unittest.TestCase):
         ])
 
 
-@pytest.mark.small
 class TestSingleModule(unittest.TestCase):
     """Covers include/<Project>/<area>/ mirrored to tests/<area>/."""
+    K_TEST_SIZE = "small"
 
     def test_a_mirrored_tree_is_clean(self) -> None:
         self.assertEqual(findings(mirror_of(K_SINGLE_MODULE)), [])
@@ -219,9 +217,9 @@ class TestSingleModule(unittest.TestCase):
         ])
 
 
-@pytest.mark.medium
 class TestMirrorCommand(unittest.TestCase):
     """Runs the checker's command line once on each of two trees written to a temporary folder."""
+    K_TEST_SIZE = "medium"
 
     def write(self, root: Path, files: Mapping[str, str]) -> None:
         """Writes each file, with its folders, below the root."""

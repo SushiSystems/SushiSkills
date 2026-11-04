@@ -21,8 +21,6 @@ from datetime import date
 from pathlib import Path
 from unittest import mock
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.source_file import SourceFile  # noqa: E402
@@ -115,9 +113,9 @@ def _write(name: str, text: str, header: Header = K_HEADER, year: int = 2026) ->
     return rewrite(name, text, header, year)
 
 
-@pytest.mark.small
 class RewriteTest(unittest.TestCase):
     """Checks the text the writer produces for each file opening."""
+    K_TEST_SIZE = "small"
 
     def test_replaces_an_old_box(self) -> None:
         """Replaces a boxed Apache block and keeps the file block one blank line below."""
@@ -259,9 +257,9 @@ class RewriteTest(unittest.TestCase):
         self.assertIn("Copyright (c) 2024-present Jane Doe & Acme Corp", _write("graph.py", "", year=2024))
 
 
-@pytest.mark.small
 class ParseFirstYearsTest(unittest.TestCase):
     """Reads the first year of each listed file from the text of git's listing and log."""
+    K_TEST_SIZE = "small"
 
     def test_first_year_follows_a_rename(self) -> None:
         """Dates a renamed file from the commit that first added it."""
@@ -270,9 +268,9 @@ class ParseFirstYearsTest(unittest.TestCase):
         self.assertEqual(parse_first_years(listing, log), {"graph.py": 2024})
 
 
-@pytest.mark.small
 class PlanChangesTest(unittest.TestCase):
     """Plans the writes for source files held in memory."""
+    K_TEST_SIZE = "small"
 
     def test_plans_only_the_candidates_whose_text_would_change(self) -> None:
         """Leaves out a skipped file, a file that is not source and a file already written."""
@@ -287,9 +285,9 @@ class PlanChangesTest(unittest.TestCase):
         self.assertEqual(changes, [SourceFile(Path("graph.hpp"), f"{K_BOX}\n\n{K_DOC}")])
 
 
-@pytest.mark.medium
 class RepositoryTest(unittest.TestCase):
     """Checks the writer against a real git repository and the checker against its output."""
+    K_TEST_SIZE = "medium"
 
     def setUp(self) -> None:
         """Makes the made-up company's licence the one the writer and the checker use."""

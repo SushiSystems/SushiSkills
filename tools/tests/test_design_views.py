@@ -14,8 +14,6 @@ import tempfile
 import unittest
 from pathlib import Path, PurePosixPath
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from documentation.design_status import Tree  # noqa: E402
@@ -99,9 +97,9 @@ def _write(folder: str, files: dict[str, str]) -> Path:
     return root
 
 
-@pytest.mark.small
 class RenderTest(unittest.TestCase):
     """Covers the text of each view, rendered from the texts of a tree."""
+    K_TEST_SIZE = "small"
 
     def test_renders_the_topic_map(self) -> None:
         """Lists each topic with its link, state and About line."""
@@ -144,9 +142,9 @@ class RenderTest(unittest.TestCase):
         self.assertEqual(names, ["designs", "topics", "work"])
 
 
-@pytest.mark.small
 class BlockTest(unittest.TestCase):
     """Covers reading and writing between markers, on the text of a file."""
+    K_TEST_SIZE = "small"
 
     def test_returns_none_without_markers(self) -> None:
         """Reads no block from a text that has no markers."""
@@ -175,9 +173,9 @@ class BlockTest(unittest.TestCase):
         self.assertGreater(topic.index("### Work"), topic.index("| A1 |"))
 
 
-@pytest.mark.medium
 class GeneratorTest(unittest.TestCase):
     """Covers the command that writes the views to the files on disk."""
+    K_TEST_SIZE = "medium"
 
     def test_initialises_then_fills_every_block(self) -> None:
         """Adds the markers and writes the three views."""

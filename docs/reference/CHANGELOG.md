@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-05 — tools: Marked the size of every checker test with `K_TEST_SIZE` instead of a pytest mark, so `tools/tests` runs under `unittest` alone (RW-42, `tools/tests/`).
 - 2026-11-05 — claude: Had every session and subagent load the company-layer skills the repository's `CLAUDE.md` or `AGENTS.md` names, beside the doctrine skill each pairs with (`claude/CLAUDE.md`, `claude/DISPATCH.md`).
 - 2026-11-05 — sushisystems: Made each subject of the Sushi layer its own skill, named by `sushisystems-specific` beside the doctrine skill it pairs with, so its pages load and resolve (`sushisystems/`, `CLAUDE_TEMPLATE.md`).
 - 2026-11-05 — tools: Split the changelog, module-install, design-citation, fold, archive, history and hook tools into pure logic and a shell, so their logic is tested small (RW-42, `tools/hooks/commit_msg.py`, `tools/commits/history.py`).

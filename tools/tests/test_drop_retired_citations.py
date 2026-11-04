@@ -14,8 +14,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from documentation.drop_retired_citations import drop_text, main, phrase, run  # noqa: E402
@@ -30,9 +28,9 @@ def _drop(text: str, prefixes: list[str] | None = None) -> str:
     return drop_text(K_FILE, text, prefixes or K_ARCHIVE)[0]
 
 
-@pytest.mark.small
 class PhraseTest(unittest.TestCase):
     """Covers the words that stand for a cited file."""
+    K_TEST_SIZE = "small"
 
     def test_names_a_spec_by_its_file(self) -> None:
         """Drops the date and the extension and adds the kind from the folder."""
@@ -58,9 +56,9 @@ class PhraseTest(unittest.TestCase):
         self.assertEqual(phrase("archive/design/OLD_THING.md"), "the old thing document in the version history")
 
 
-@pytest.mark.small
 class RelativeLinkTest(unittest.TestCase):
     """Covers a link written relative to its own folder rather than to docs/."""
+    K_TEST_SIZE = "small"
 
     def test_replaces_a_sibling_topic_link_given_the_retired_folder(self) -> None:
         """Turns a design page's link to a deleted sibling topic into its text, and leaves a live one."""
@@ -78,9 +76,9 @@ class RelativeLinkTest(unittest.TestCase):
         self.assertEqual(drop_text("docs/design/LIVE/README.md", text, ["docs/design/OLD"])[0], text)
 
 
-@pytest.mark.small
 class DropTest(unittest.TestCase):
     """Covers each form a citation takes."""
+    K_TEST_SIZE = "small"
 
     def test_replaces_a_code_span_and_keeps_the_section(self) -> None:
         """Replaces a path in a code span, backticks included, and leaves the section mark after it."""
@@ -118,9 +116,9 @@ class DropTest(unittest.TestCase):
         self.assertEqual(_drop(text), text)
 
 
-@pytest.mark.medium
 class RunTest(unittest.TestCase):
     """Covers walking a repository and the command, which read and write the disk."""
+    K_TEST_SIZE = "medium"
 
     def _root(self, folder: str) -> Path:
         """Writes a small repository and returns its root."""

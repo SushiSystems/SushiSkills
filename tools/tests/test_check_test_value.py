@@ -14,8 +14,6 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -53,9 +51,9 @@ def found(rule, files: dict[str, str], changed: dict[Path, frozenset[int]] | Non
     return [(issue.path.name, issue.line) for issue in rule(build_tree(sources, changed))]
 
 
-@pytest.mark.small
 class TestValueRules(unittest.TestCase):
     """Runs each rule on test files held in memory, with every case judged."""
+    K_TEST_SIZE = "small"
 
     def test_reports_a_cpp_case_without_an_assertion_and_keeps_one_with_a_helper(self) -> None:
         files = {"tests/core/test_shape.cpp":
@@ -129,9 +127,9 @@ class TestValueRules(unittest.TestCase):
         self.assertEqual(found(rule_no_assertion, files, {}), [])
 
 
-@pytest.mark.medium
 class TestValueCommand(unittest.TestCase):
     """Runs the checker's command line on a git repository with a base commit and a change after it."""
+    K_TEST_SIZE = "medium"
 
     def setUp(self) -> None:
         self.repo = Repo()

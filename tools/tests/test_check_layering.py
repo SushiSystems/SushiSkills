@@ -15,8 +15,6 @@ import unittest
 from pathlib import Path, PurePosixPath
 from unittest import mock
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.checker import run  # noqa: E402
@@ -104,9 +102,9 @@ def _messages(issues) -> list[str]:
     return [issue.message for issue in issues]
 
 
-@pytest.mark.small
 class RuleUpwardIncludesTest(unittest.TestCase):
     """Covers the rule that a module and its tests include nothing from a higher tier."""
+    K_TEST_SIZE = "small"
 
     def test_reports_an_include_of_a_higher_module(self) -> None:
         files = {**K_GEOMETRY, "modules/foundation/blas/include/Project/blas/backend.hpp":
@@ -144,9 +142,9 @@ class RuleUpwardIncludesTest(unittest.TestCase):
                           "foundation/training includes up into domain/umbrella"])
 
 
-@pytest.mark.small
 class RuleDeclaredTiersTest(unittest.TestCase):
     """Covers the declared tier order and domains."""
+    K_TEST_SIZE = "small"
 
     def test_reports_an_empty_order_and_an_undeclared_tier(self) -> None:
         files = {"modules/extra/tool/include/Project/tool/tool.hpp": ""}
@@ -161,9 +159,9 @@ class RuleDeclaredTiersTest(unittest.TestCase):
                          ["domain tier 'language' is not in K_TIER_ORDER"])
 
 
-@pytest.mark.small
 class RuleCrossDomainIncludesTest(unittest.TestCase):
     """Covers domain tiers, which share a rank and never include each other."""
+    K_TEST_SIZE = "small"
 
     def test_reports_one_domain_including_another_and_allows_a_lower_tier(self) -> None:
         files = {
@@ -178,9 +176,9 @@ class RuleCrossDomainIncludesTest(unittest.TestCase):
         self.assertEqual(list(rule_upward_includes(tree)), [])
 
 
-@pytest.mark.small
 class DomainNameResolutionTest(unittest.TestCase):
     """Covers a bare build name that a domain module shares with a lower one."""
+    K_TEST_SIZE = "small"
 
     def test_a_bare_name_means_the_module_outside_the_domains(self) -> None:
         files = {
@@ -194,9 +192,9 @@ class DomainNameResolutionTest(unittest.TestCase):
         self.assertEqual(list(rule_declared_dependencies(tree)) + list(rule_unused_dependencies(tree)), [])
 
 
-@pytest.mark.small
 class RuleSameTierIncludesTest(unittest.TestCase):
     """Covers the listed edges between modules of one tier."""
+    K_TEST_SIZE = "small"
 
     def test_reports_an_edge_that_is_not_listed(self) -> None:
         files = {
@@ -215,9 +213,9 @@ class RuleSameTierIncludesTest(unittest.TestCase):
         self.assertEqual(list(rule_same_tier_includes(_tree(files))), [])
 
 
-@pytest.mark.small
 class BuildDeclarationTest(unittest.TestCase):
     """Covers the rules that read a module's declaring call in its build file."""
+    K_TEST_SIZE = "small"
 
     def test_reports_an_include_the_build_file_does_not_list(self) -> None:
         files = {**K_CORE, "modules/foundation/log/CMakeLists.txt":
@@ -282,9 +280,9 @@ class BuildDeclarationTest(unittest.TestCase):
         self.assertEqual(list(rule_declared_dependencies(tree)) + list(rule_public_headers(tree)), [])
 
 
-@pytest.mark.medium
 class ShellTest(unittest.TestCase):
     """Runs the command line on a tree on disk, so the files the shell reads reach every rule."""
+    K_TEST_SIZE = "medium"
 
     def test_cli_reads_the_module_tree_and_reports_each_finding(self) -> None:
         """Prints the findings of a module and its test in path order, and exits non-zero."""

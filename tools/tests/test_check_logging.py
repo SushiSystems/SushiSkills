@@ -15,8 +15,6 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.checker import run  # noqa: E402
@@ -63,9 +61,9 @@ def _found(rule, files: dict[str, str], **kwargs) -> list[tuple[str, int]]:
     return [(issue.path.name, issue.line) for issue in rule(_tree(files, **kwargs))]
 
 
-@pytest.mark.small
 class ConsoleOutputTest(unittest.TestCase):
     """Covers the console writes library code may not make, outside the paths settings allow."""
+    K_TEST_SIZE = "small"
 
     def test_reports_console_writes_outside_comments_and_allowed_paths(self) -> None:
         files = {
@@ -79,9 +77,9 @@ class ConsoleOutputTest(unittest.TestCase):
                          [("world.cpp", 2), ("world.cpp", 4), ("world.cpp", 5), ("store.py", 1)])
 
 
-@pytest.mark.small
 class SwallowedErrorTest(unittest.TestCase):
     """Covers the empty catch and the except that only passes."""
+    K_TEST_SIZE = "small"
 
     def test_reports_an_empty_catch_and_an_except_that_only_passes(self) -> None:
         files = {
@@ -91,9 +89,9 @@ class SwallowedErrorTest(unittest.TestCase):
         self.assertEqual(_found(rule_swallowed_error, files), [("world.cpp", 1), ("store.py", 3)])
 
 
-@pytest.mark.small
 class CategoryCallTest(unittest.TestCase):
     """Covers the C++ log calls and the category each one names."""
+    K_TEST_SIZE = "small"
 
     def test_reports_a_call_without_a_category(self) -> None:
         files = {
@@ -117,9 +115,9 @@ class CategoryCallTest(unittest.TestCase):
         self.assertEqual(_found(rule_foreign_category, files, settings_=K_NO_PREFIX), [])
 
 
-@pytest.mark.small
 class CategoryHeaderTest(unittest.TestCase):
     """Covers a module that logs and has no `<module>_log_category.hpp` below its folder."""
+    K_TEST_SIZE = "small"
 
     def test_reports_a_module_that_logs_without_its_category_header(self) -> None:
         files = {
@@ -130,9 +128,9 @@ class CategoryHeaderTest(unittest.TestCase):
         self.assertEqual(_found(rule_missing_category_header, files, headers=headers), [("world.cpp", 1)])
 
 
-@pytest.mark.small
 class PythonLoggerTest(unittest.TestCase):
     """Covers the root-logger call, the named logger and the f-string record in Python."""
+    K_TEST_SIZE = "small"
 
     def test_reports_root_named_and_fstring_python_logging(self) -> None:
         files = {
@@ -143,9 +141,9 @@ class PythonLoggerTest(unittest.TestCase):
         self.assertEqual(_found(rule_python_logger, files), [("store.py", 3), ("store.py", 4), ("store.py", 5)])
 
 
-@pytest.mark.small
 class FrontReexportTest(unittest.TestCase):
     """Covers a front that re-exports the shared logger's names or forwards to them."""
+    K_TEST_SIZE = "small"
 
     def test_reports_a_front_that_re_exports_the_logger(self) -> None:
         files = {  # in the path order the shell reads them
@@ -162,9 +160,9 @@ class FrontReexportTest(unittest.TestCase):
                          [("log_c_sink.h", 1), ("log_level.hpp", 1), ("log_level.hpp", 2)])
 
 
-@pytest.mark.medium
 class ShellTest(unittest.TestCase):
     """Runs the command line on a tree on disk, so the shell's discovery and settings reach every rule."""
+    K_TEST_SIZE = "medium"
 
     def test_cli_reads_the_source_folders_and_reports_each_finding(self) -> None:
         """Prints the findings of the source folders, skips the tests and the console paths, and exits non-zero."""

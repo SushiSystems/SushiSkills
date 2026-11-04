@@ -15,8 +15,6 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.checker import run  # noqa: E402
@@ -92,18 +90,18 @@ def _foreign(text: str) -> str:
     return f"license block carries a line this repository's licence does not allow: '{text}'"
 
 
-@pytest.mark.small
 class RuleTableTest(unittest.TestCase):
     """Checks that the license block rule runs as part of the checker."""
+    K_TEST_SIZE = "small"
 
     def test_registers_the_license_block_rule(self) -> None:
         """Holds the license block rule under its own name in the rule table."""
         self.assertIs(K_CHECKER.rules["rule_license_block"], rule_license_block)
 
 
-@pytest.mark.small
 class LicenseBlockTest(unittest.TestCase):
     """Checks which file openings the license block rule accepts."""
+    K_TEST_SIZE = "small"
 
     def test_accepts_boxed_block(self) -> None:
         """Accepts a C++ header that opens with the full boxed block."""
@@ -176,9 +174,9 @@ class LicenseBlockTest(unittest.TestCase):
         self.assertEqual(_messages("graph.hpp", text), [_foreign(other)])
 
 
-@pytest.mark.small
 class PythonCommentTest(unittest.TestCase):
     """Checks which Python lines the comment rules read as comments."""
+    K_TEST_SIZE = "small"
 
     def _runs(self, body: str) -> list[int]:
         """Returns the line numbers the comment-run rule reports for a Python file body."""
@@ -205,9 +203,9 @@ class PythonCommentTest(unittest.TestCase):
         self.assertEqual(self._runs(body), [self._head_lines() + 1])
 
 
-@pytest.mark.small
 class DateTagTest(unittest.TestCase):
     """Checks that both spellings of the date tag are reported, in shader files too."""
+    K_TEST_SIZE = "small"
 
     def test_reports_both_spellings_in_a_ray_tracing_shader(self) -> None:
         """Reports the at and the backslash spelling in a `.rgen` file."""
@@ -216,9 +214,9 @@ class DateTagTest(unittest.TestCase):
         self.assertEqual(len(found), 2)
 
 
-@pytest.mark.medium
 class CommandLineTest(unittest.TestCase):
     """Runs the checker on a tiny tree in a temporary folder, reading its files from the disk."""
+    K_TEST_SIZE = "medium"
 
     def setUp(self) -> None:
         """Makes the made-up company's licence the one the checker enforces for these runs."""

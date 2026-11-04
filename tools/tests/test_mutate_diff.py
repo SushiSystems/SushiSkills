@@ -15,8 +15,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from testing.mutate_diff import (  # noqa: E402
@@ -42,9 +40,9 @@ K_DIFF = (
 )
 
 
-@pytest.mark.small
 class TestCore(unittest.TestCase):
     """Checks the pure functions on in-memory text."""
+    K_TEST_SIZE = "small"
 
     def test_parse_changed_lines_reads_added_ranges_and_skips_deletions(self) -> None:
         self.assertEqual(
@@ -161,9 +159,9 @@ def _git(root: Path, *arguments: str) -> None:
     subprocess.run(["git", "-C", str(root), *identity, *arguments], check=True, capture_output=True)
 
 
-@pytest.mark.medium
 class TestShell(unittest.TestCase):
     """Checks the command line on a temporary repository with one function and one test."""
+    K_TEST_SIZE = "medium"
 
     def test_main_reports_one_killed_and_one_survived_mutant(self) -> None:
         with tempfile.TemporaryDirectory() as folder:

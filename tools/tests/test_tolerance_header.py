@@ -18,8 +18,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-import pytest
-
 K_HEADER = Path(__file__).resolve().parents[1] / "testing" / "support" / "tolerance.hpp"
 K_COMPILERS = ("c++", "g++", "clang++", "cl")
 K_CHECK = r"""
@@ -66,7 +64,7 @@ int main()
 """
 
 
-pytestmark = pytest.mark.medium
+K_TEST_SIZE = "medium"
 
 
 def find_compiler() -> str | None:
