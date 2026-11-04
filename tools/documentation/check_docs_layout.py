@@ -27,10 +27,12 @@ from checking.ignored_paths import drop_ignored  # noqa: E402
 from checking.source_file import read_files  # noqa: E402
 from documentation.design_status import (  # noqa: E402
     K_DESIGN_INDEXES,
-    K_REVISION_FOLDER,
-    K_STATUS_FORMS,
     K_WORK_FILES_IN_ORDER,
-    Status,
+    Tree,
+    children,
+    design_documents,
+    parse_status,
+    status_documents,
 )
 
 K_DOCS_ENTRIES = frozenset(
@@ -85,14 +87,15 @@ class Repository:
         """Returns the path below the root that a root-relative name stands for."""
         return self.root / relative
 
+    @property
+    def tree(self) -> Tree:
+        """Returns the listing and the texts of the repository as the design functions read them."""
+        return Tree(self.folders, self.files, self.texts)
+
 
 def _children(repository: Repository, folder: str) -> list[str]:
     """Returns the root-relative name of each folder and file directly inside a folder, sorted."""
-    prefix = f"{folder}/"
-    return sorted(
-        name for name in (*repository.folders, *repository.files)
-        if name.startswith(prefix) and "/" not in name.removeprefix(prefix)
-    )
+    return children(repository.tree, folder)
 
 
 def _documents(repository: Repository) -> list[str]:
@@ -216,71 +219,6 @@ def _reachable(repository: Repository) -> set[str]:
     return reached
 
 
-def _first_content_line(text: str) -> tuple[int, str]:
-    """Returns the number and text of the first non-empty line after the title."""
-    for index, line in enumerate(text.splitlines()[1:], start=2):
-        if line.strip():
-            return index, line
-    return 1, ""
-
-
-def _status(text: str) -> Status:
-    """Returns the status of a document's text, unknown when it is in none of the four forms."""
-    number, line = _first_content_line(text)
-    match = K_STATUS_FORMS.match(line)
-    if match is None:
-        return Status(number, False, False, None)
-    if match["open"]:
-        return Status(number, True, True, None)
-    closed_text = match["shipped"] or match["superseded"] or match["withdrawn"]
-    try:
-        closed_on = datetime.date.fromisoformat(closed_text)
-    except ValueError:
-        return Status(number, False, False, None)
-    return Status(number, True, False, closed_on, bool(match["shipped"]))
-
-
-def _design_documents(repository: Repository) -> list[str]:
-    """Returns every design document, a split topic's README counting as its document.
-
-    The topics under revision are included too.
-    """
-    design = "docs/design"
-    revision = f"{design}/{K_REVISION_FOLDER}"
-    children = _children(repository, design)
-    documents = [
-        name for name in children
-        if PurePosixPath(name).name not in K_DESIGN_INDEXES
-        and (name in repository.texts or (name in repository.folders and name.endswith(".md")))
-    ]
-    documents += [
-        f"{folder}/README.md" for folder in children
-        if folder in repository.folders and folder != revision
-    ]
-    if revision in repository.folders:
-        documents += [
-            f"{folder}/README.md" for folder in _children(repository, revision)
-            if folder in repository.folders
-        ]
-    return documents
-
-
-def _status_documents(repository: Repository) -> list[str]:
-    """Returns each design document that exists and the first status file of each work folder."""
-    documents = [name for name in _design_documents(repository) if name in repository.files]
-    for folder in _children(repository, "docs/agent"):
-        first = next(
-            (
-                f"{folder}/{name}" for name in K_WORK_FILES_IN_ORDER
-                if f"{folder}/{name}" in repository.files
-            ),
-            None,
-        )
-        if first is not None:
-            documents.append(first)
-    return documents
-
-
 def rule_docs_entries(repository: Repository) -> Iterator[Issue]:
     """Yields an issue for each entry directly under docs/ that the tree does not name."""
     for name in sorted(repository.docs_entries):
@@ -321,11 +259,11 @@ def rule_work_folders(repository: Repository) -> Iterator[Issue]:
 
 def rule_status_lines(repository: Repository) -> Iterator[Issue]:
     """Yields an issue for each design document or work folder with a status in no known form."""
-    for name in _design_documents(repository):
+    for name in design_documents(repository.tree):
         if name not in repository.files:
             yield Issue(repository.path_of(name), 1, "a split design topic needs its README.md")
-    for name in _status_documents(repository):
-        status = _status(repository.texts[name])
+    for name in status_documents(repository.tree):
+        status = parse_status(repository.texts[name])
         if not status.is_known:
             yield Issue(
                 repository.path_of(name), status.line,
@@ -410,8 +348,8 @@ def rule_closed_work(repository: Repository) -> Iterator[Issue]:
     """
     today = repository.today
     grace = repository.closed_grace_days
-    for name in _status_documents(repository):
-        status = _status(repository.texts[name])
+    for name in status_documents(repository.tree):
+        status = parse_status(repository.texts[name])
         if status.closed_on is None or (today - status.closed_on).days < grace:
             continue
         path = PurePosixPath(name)

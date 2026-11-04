@@ -24,6 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from documentation.citation_files import citing_files  # noqa: E402
 from documentation.design_status import K_REVISION_FOLDER  # noqa: E402
+from documentation.design_status import read_tree  # noqa: E402
 from documentation.design_topics import topics  # noqa: E402
 
 K_PATH = re.compile(r"(?<![A-Za-z0-9_.-])(?P<docs>docs/)?design/(?P<tail>[A-Za-z0-9_]+(?:\.md)?(?:/[A-Za-z0-9_.-]+)*)")
@@ -150,7 +151,7 @@ def repair_text(
 
 def run(root: Path, apply: bool, moves: dict[str, str] | None = None) -> list[Repair]:
     """Repairs, or with apply False only lists, every moved citation below root."""
-    known = topics(root / "docs")
+    known = {name: root / path for name, path in topics(read_tree(root)).items()}
     design = (root / "docs" / "design").resolve()
     found: list[Repair] = []
     for path in citing_files(root):

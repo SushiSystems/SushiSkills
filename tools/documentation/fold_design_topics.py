@@ -21,6 +21,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from documentation.design_status import read_tree  # noqa: E402
 from documentation.design_topics import loose_documents  # noqa: E402
 from documentation.repair_design_citations import run as repair  # noqa: E402
 
@@ -56,7 +57,7 @@ def _move(root: Path, old: Path, new: Path) -> None:
 def fold(root: Path, apply: bool) -> dict[str, str]:
     """Folds each loose document and returns the moves, old to new, as paths from the root."""
     moves: dict[str, str] = {}
-    for old in loose_documents(root):
+    for old in (root / name for name in loose_documents(read_tree(root))):
         new = old.with_suffix("") / "README.md"
         moves[old.relative_to(root).as_posix()] = new.relative_to(root).as_posix()
         if not apply:

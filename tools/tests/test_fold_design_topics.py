@@ -13,10 +13,11 @@ import os
 import sys
 import tempfile
 import unittest
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from documentation.design_status import read_tree  # noqa: E402
 from documentation.fold_design_topics import fold, loose_documents, main, relink  # noqa: E402
 
 K_FILES = {
@@ -49,7 +50,7 @@ class LooseDocumentsTest(unittest.TestCase):
     def test_skips_the_indexes_and_the_folders(self) -> None:
         """Lists only the topic documents that sit directly in docs/design."""
         with tempfile.TemporaryDirectory() as folder:
-            names = [path.name for path in loose_documents(_root(folder))]
+            names = [PurePosixPath(name).name for name in loose_documents(read_tree(_root(folder)))]
             self.assertEqual(names, ["AUDIO.md", "ECS.md"])
 
 
@@ -105,7 +106,7 @@ class FoldTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             root = _root(folder)
             fold(root, True)
-            self.assertEqual(loose_documents(root), [])
+            self.assertEqual(loose_documents(read_tree(root)), [])
             self.assertTrue((root / "docs/design/AUDIO/README.md").is_file())
             self.assertTrue((root / "docs/design/README.md").is_file())
 
