@@ -78,17 +78,13 @@ test in the wrong place.
 can see a promise that is logic, the code lacks a seam: add it first ("Architecture for small
 tests"), then write the `small` test.
 
-**Suite shape.**
-**Rule:** at least 80% of each module's cases are `small` and at most 5% are `large`. The test
-command prints the ratio per module.
-**Why:** a module below 80% `small` holds logic its tests can only reach through a device, a file or
-a thread, and every promise there is checked on the slowest, flakiest path. A repository-wide ratio
-would let one heavy module hide behind light ones.
-**Not when:** a module whose subject is the boundary itself, such as a device driver probe or a file
-format adapter, states its own ratio in `tests/README.md` with the owner's ruling.
-
-A module below the ratio is a refactoring finding. It is never answered by adding small tests to
-raise the number.
+**Suite shape.** The test command prints the share of each size per module. The share is a reading,
+never a target: no task, plan or acceptance criterion names a percentage. A module whose tests are
+mostly `medium` holds logic that only a device, a file or a thread can reach, so every promise there
+is checked on the slowest, flakiest path; the reading points at where a seam is missing. It is never
+answered by adding, splitting or relabelling tests. Work is accepted on what it proves: the logic it
+touched runs in tests that reach no file, process, clock or device, each test file keeps the
+boundary in one `medium` class, and the mutants on its changed lines are killed.
 
 ### Where the size is written
 

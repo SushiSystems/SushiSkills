@@ -11,7 +11,7 @@
 | RW-35 | P1 | open | Carry the industrial testing design into every repository, wave by wave | every repository named in the Rework table of the testing design has measured, reworked and remeasured its suite, each in its own work folder |  | `docs/design/TEST_PIPELINE/README.md` | 2026-10-30 |
 | RW-37 | P1 | decision | Run one repository's small and medium tests with JUnit and approve the time limits | the owner has run one measured baseline and the testing Time table holds limits calibrated from it, so the time lines can gate |  | `docs/agent/2026_11_03_INDUSTRIAL_TESTING/REPORT.md` | 2026-10-30 |
 | RW-40 | P2 | blocked | Run sr test through the shared test options of sushicore once its gate is green | sr test takes the shared options and prints a time line from a real JUnit file | external: SushiRuntime's check_all is red on its feature branch |  | 2026-11-01 |
-| RW-42 | P1 | open | Split the checkers into a pure core and a file-walking shell so their tests are small | at least 80% of the cases under tools/tests are small, read no files and start no subprocess |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
+| RW-42 | P1 | open | Split the checkers into a pure core and a file-walking shell so their tests are small | every checker's rules pass the purity run, each test file keeps the shell in at most one medium class, and no mutant survives on the changed lines |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
 | RW-45 | P2 | open | Pilot mutation testing of the diff on host-compiled code in one repository | one repository prints surviving mutants on changed lines from its test command, and its time is recorded |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
 
 ## Known issues
