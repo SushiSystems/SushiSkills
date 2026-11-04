@@ -25,8 +25,10 @@
 | RW-34 | P3 | open | Bring SushiStack and SushiWeb to a clean check_all so they can take the shared tools | both pass the shared checkers they fail today, then take the copy with copy_shared_tools |  |  | 2026-10-30 |
 | RW-43 | P2 | open | Report gtest_discover_tests in a build file that gives no reason for it | a shared checker reports each such call after a base commit, with tests |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
 | RW-44 | P2 | open | Read NUnit cases so the forbidden-kind rules reach C# tests | case_reader reads [Test], [UnityTest] and [TestCase] in C# and check_test_value judges them, with tests |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
+| RW-46 | P2 | open | Give design_status a pure status parser that check_docs_layout reuses | check_docs_layout keeps no copy of the design listing or status parse, and design_status reads no disk in its parser |  | `tools/documentation/design_status.py` | 2026-11-04 |
 
 ## Known issues
 
 | ID | Origin | Symptom | Workaround | Fix | Source | Opened |
 | --- | --- | --- | --- | --- | --- | --- |
+| KI-3 | own | The size checker skips a unittest TestCase class whose name does not start with Test | name each test class Test<Thing> | RW-42 | `tools/testing/case_reader.py` | 2026-11-04 |
