@@ -67,8 +67,9 @@ Adding a rule adds one function and one table row. Nothing else in the checker c
 
 ## Shared and own tools
 
-The files git tracks under SushiSkills' `tools/` are shared. A repository holds them as
-SushiSkills ships them, under its own license block, and never edits them. A shared checker that
+The files SushiSkills' `tools/` holds at its last commit are shared. A repository holds them as
+SushiSkills committed them, every source file under the repository's own license block, and never
+edits them. A shared checker that
 needs to change is changed in SushiSkills first.
 
 - `tools/settings.py` is shared by name only. It holds what differs between repositories, such
@@ -77,8 +78,9 @@ needs to change is changed in SushiSkills first.
 - Every other file under a repository's `tools/` is its own tool, at any path SushiSkills does
   not use. The copy never touches it.
 
-`python tools/checking/copy_shared_tools.py ROOT --from <the sushiskills checkout>` copies the shared files;
-with `--report` it lists the ones that differ and exits 1. It is run from the SushiSkills
+`python tools/checking/copy_shared_tools.py ROOT --from <the sushiskills checkout>` copies the shared files as
+the checkout's last commit holds them, never its working tree, and names the uncommitted changes it
+left out; with `--report` it lists the ones that differ and exits 1. It is run from the SushiSkills
 checkout, never from a repository's copy, so a fix to the copier applies on the run that brings
 it. A repository runs it after a checker changes upstream. A shared file whose text no upstream version
 ever held is a local edit: the copy refuses, writes nothing and names the file, and `--force`

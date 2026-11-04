@@ -55,6 +55,12 @@ class LicenceTest(unittest.TestCase):
         self.assertEqual(loaded.hash_lines, ("Closed row.",))
         self.assertEqual(loaded.box_lines, ("Closed box row.",))
 
+    def test_settings_that_do_not_set_closed_take_the_open_rows(self) -> None:
+        values = {name: value for name, value in vars(K_SETTINGS).items() if name != "K_CLOSED"}
+        unset = SimpleNamespace(**values)
+        loaded = licence.from_module(unset)
+        self.assertEqual(loaded.hash_lines, ("Open row.",))
+
     def test_settings_without_a_holder_describe_no_licence(self) -> None:
         with mock.patch.object(licence, "settings", SimpleNamespace()):
             self.assertIsNone(licence.load())

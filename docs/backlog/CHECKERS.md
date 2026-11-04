@@ -29,6 +29,7 @@
 | RW-47 | P3 | open | Move check_all's plan into its own module so known_findings needs no lazy import | known_findings.py and check_all.py both import the plan module and neither imports the other |  | `tools/checking/known_findings.py` | 2026-11-05 |
 | RW-48 | P2 | open | Make mutate_diff remove its temporary tree on Windows and print its totals | a run on Windows leaves no mutate_diff_* folder and always ends with the mutants line |  | `tools/testing/mutate_diff.py` | 2026-11-05 |
 | RW-49 | P2 | open | Make mutate_diff mutate the lines of files the diff adds | a file added after the base and not yet committed has its lines mutated |  | `tools/testing/mutate_diff.py` | 2026-11-05 |
+| RW-50 | P1 | open | Stop mutate_diff from leaving test process chains behind | a stopped or finished run leaves no python process of its temporary tree, and each mutant runs only the tests that import the file |  | `tools/testing/mutate_diff.py` | 2026-11-05 |
 
 ## Known issues
 

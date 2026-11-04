@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-05 — tools: Copied the shared tools as SushiSkills last committed them, never its working tree, and gave every copied source file the repository's own licence block (`copy_shared_tools.py`).
 - 2026-11-05 — tools: Let `check_all.py` pass the findings a repository's `known_findings.toml` allows, failing new and fixed ones so the list only shrinks (RW-42, `checking/known_findings.py`).
 - 2026-11-05 — testing: Removed the 10 s limit on a module's small tests, which a module of 2000 fast tests could never meet; the total is printed and never gates (`SKILL.md`, `test_budget.py`, `K_TEST_TIMES`).
 - 2026-11-05 — testing: Cut the size timeouts to 1 s, 10 s and 120 s per test case, a C++ shard's being its size's timeout times its cases (`SKILL.md`, `tools/tests/conftest.py`).
