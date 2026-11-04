@@ -95,7 +95,7 @@ raise the number.
 | Language | Where |
 | --- | --- |
 | C++ | The suite name opens with `Small_`, `Medium_` or `Large_`: `TEST(Small_TensorShape, RejectsANegativeExtent)` |
-| Python | `pytest.mark.small`, `medium` or `large` on the test's class, or as `pytestmark` on its file; a `unittest` file that must run without pytest, such as a checker test, sets `K_TEST_SIZE = "small"` |
+| Python | `pytest.mark.small`, `medium` or `large` on the test's class, or as `pytestmark` on its file; a `unittest` file that must run without pytest, such as a checker test, sets `K_TEST_SIZE = "small"` at file level, or as a class attribute on the test class, which overrides the file's |
 | TypeScript | The `describe` block's name opens with `small:`, `medium:` or `large:` |
 | C# (NUnit, Unity) | `[Category("small")]`, `"medium"` or `"large"` on the fixture class; a `[UnityTest]` or a test that loads a scene is at least `medium` |
 
@@ -218,7 +218,8 @@ with a filter or the flag that means everything.
 
 - **Mutation testing of the diff** on host-compiled code: changed lines only, one mutant per line,
   logging and capacity hints skipped. A surviving mutant on a changed line is a review finding.
-  Device code is reached through its host-callable functions.
+  Device code is reached through its host-callable functions. For Python,
+  `tools/testing/mutate_diff.py --base <commit>` runs it on the diff.
 - **Coverage** of the diff is printed and measured nightly. It never gates: a coverage gate is met by
   tests that run code without asserting.
 - **Sanitizers** are oracles too: AddressSanitizer and UndefinedBehaviorSanitizer on `small` and

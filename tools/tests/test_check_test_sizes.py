@@ -70,6 +70,16 @@ class TestSizesRuleTest(unittest.TestCase):
         files = {"tests/test_a.py": "K_TEST_SIZE = \"small\"\n\ndef test_x():\n    pass\n"}
         self.assertEqual(found(rule_unsized_python_test, files), [])
 
+    def test_python_rule_reports_an_unsized_testcase_subclass_whatever_its_name(self) -> None:
+        files = {"tests/test_a.py": "import unittest\n\nclass RuleTableTest(unittest.TestCase):\n    pass\n"}
+        self.assertEqual(found(rule_unsized_python_test, files), [("tests/test_a.py", 3)])
+
+    def test_python_rule_accepts_a_class_size_attribute(self) -> None:
+        files = {"tests/test_a.py": "import unittest\n\nclass AlphaTest(unittest.TestCase):\n"
+                                    "    K_TEST_SIZE = \"small\"\n\n"
+                                    "class BetaTest(unittest.TestCase):\n    K_TEST_SIZE: str = \"large\"\n"}
+        self.assertEqual(found(rule_unsized_python_test, files), [])
+
     def test_python_rule_reports_a_test_when_file_and_test_carry_no_size(self) -> None:
         files = {
             "tests/test_c.py": "import pytest\n\n@pytest.mark.large\ndef test_x():\n    pass\n\n"

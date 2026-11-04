@@ -32,3 +32,4 @@
 | ID | Origin | Symptom | Workaround | Fix | Source | Opened |
 | --- | --- | --- | --- | --- | --- | --- |
 | KI-3 | own | The size checker skips a unittest TestCase class whose name does not start with Test | name each test class Test<Thing> | RW-42 | `tools/testing/case_reader.py` | 2026-11-04 |
+| KI-4 | own | check_layering crashes in Layout.rank when a domain tier is missing from K_TIER_ORDER | list every domain tier in K_TIER_ORDER | none, a small fix with its regression test is next | `tools/layering/check_layering.py` | 2026-11-04 |

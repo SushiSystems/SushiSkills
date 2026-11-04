@@ -24,6 +24,8 @@ K_SETTINGS = 'K_CLOSED = True\nK_LICENSE_HOLDER = "Kept Holder"\n'
 class ApplySettingsTest(unittest.TestCase):
     """Builds a repository with a settings file and a manifest for each test."""
 
+    K_TEST_SIZE = "medium"
+
     def setUp(self) -> None:
         self._folder = tempfile.TemporaryDirectory()
         self.root = Path(self._folder.name)

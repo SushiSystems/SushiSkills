@@ -47,6 +47,7 @@ K_TS_LITERAL = re.compile(
     r"\bexpect\(\s*(true|false|\d+)\s*\)\s*\.\s*(?:toBe|toEqual|toStrictEqual)\(\s*\1\s*\)"
     r"|\bexpect\(\s*true\s*\)\s*\.\s*toBeTruthy\(")
 K_RAW_STRING = re.compile(r'R"([^()\\ ]*)\(')
+K_TESTCASE_BASES = frozenset({"TestCase", "unittest.TestCase"})
 K_PYTHON_ASSERTING = frozenset({"raises", "warns", "approx", "fail"})
 K_PYTHON_TOLERANCE_KEYWORDS = frozenset({"abs", "rel", "delta", "atol", "rtol"})
 
@@ -228,6 +229,28 @@ def _file_marks(module: ast.Module) -> set[str]:
     return names
 
 
+def is_test_class(node: ast.ClassDef) -> bool:
+    """Returns whether a class is collected as a test class: named `Test...` or derived from `TestCase`."""
+    return node.name.startswith("Test") or any(
+        ast.unparse(base) in K_TESTCASE_BASES for base in node.bases)
+
+
+def class_size(node: ast.ClassDef) -> str | None:
+    """Returns the size a test class sets for its tests, by a size mark or a `K_TEST_SIZE` class attribute."""
+    names = {name for item in node.decorator_list for name in _marks(item)}
+    for member in node.body:
+        if isinstance(member, ast.Assign):
+            targets = [target for target in member.targets if isinstance(target, ast.Name)]
+            value = member.value
+        elif isinstance(member, ast.AnnAssign) and isinstance(member.target, ast.Name):
+            targets, value = [member.target], member.value
+        else:
+            continue
+        if any(target.id == "K_TEST_SIZE" for target in targets) and isinstance(value, ast.Constant)                 and isinstance(value.value, str):
+            names.add(value.value)
+    return _size_among(names)
+
+
 def _python_cases(path: Path, text: str) -> Iterator[Case]:
     """Yields the pytest and unittest test functions of a Python file."""
     try:
@@ -238,11 +261,11 @@ def _python_cases(path: Path, text: str) -> Iterator[Case]:
     for node in module.body:
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name.startswith("test_"):
             yield _python_case(path, text, node, file_size)
-        elif isinstance(node, ast.ClassDef) and node.name.startswith("Test"):
-            class_size = _size_among({name for item in node.decorator_list for name in _marks(item)}) or file_size
+        elif isinstance(node, ast.ClassDef) and is_test_class(node):
+            outer_size = class_size(node) or file_size
             for member in node.body:
                 if isinstance(member, (ast.FunctionDef, ast.AsyncFunctionDef)) and member.name.startswith("test_"):
-                    yield _python_case(path, text, member, class_size)
+                    yield _python_case(path, text, member, outer_size)
 
 
 def _call_name(call: ast.Call) -> str:

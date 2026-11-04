@@ -23,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from checking.checker import Checker, Issue, run  # noqa: E402
 from checking.source_file import SourceFile, line_of, read_files  # noqa: E402
 from checking.tests_tree import discover  # noqa: E402
+from testing.case_reader import class_size, is_test_class  # noqa: E402
 
 K_SIZES = ("small", "medium", "large")
 K_BENCHMARK_PREFIX = "Benchmark_"
@@ -122,7 +123,7 @@ def _is_python_test_node(node: ast.stmt) -> bool:
     """Returns whether a top-level statement is a test function or a test class."""
     if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
         return node.name.startswith("test_")
-    return isinstance(node, ast.ClassDef) and node.name.startswith("Test")
+    return isinstance(node, ast.ClassDef) and is_test_class(node)
 
 
 def rule_unsized_python_test(files: Sequence[SourceFile]) -> Iterator[Issue]:
@@ -135,7 +136,8 @@ def rule_unsized_python_test(files: Sequence[SourceFile]) -> Iterator[Issue]:
             if not _is_python_test_node(node):
                 continue
             is_benchmark = node.name.removeprefix("Test").startswith(K_BENCHMARK_PREFIX)
-            if not is_benchmark and not _sizes_of(node.decorator_list):
+            sized = class_size(node) if isinstance(node, ast.ClassDef) else _sizes_of(node.decorator_list)
+            if not is_benchmark and not sized:
                 yield Issue(
                     file.path,
                     node.lineno,

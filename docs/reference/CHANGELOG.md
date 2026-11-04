@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- 2026-11-04 — testing: Read every `unittest.TestCase` class as a test class and let a class set its own `K_TEST_SIZE`, so a checker test of two sizes runs without pytest (KI-3, `tools/testing/case_reader.py`).
+- 2026-11-04 — tools: Split the layering and agnostic checkers into pure rules and a shell (RW-42, `tools/layering/`).
+- 2026-11-04 — testing: Added `mutate_diff.py`, which mutates each changed Python line once, runs the tests that import the file and prints the survivors (RW-45, `tools/testing/mutate_diff.py`).
 - 2026-11-04 — tools: Split the test, docs-truth, licence-writer and backlog-trailer checkers into pure rules and a shell, so most of their tests are small (RW-42, `tools/testing/`).
 - 2026-11-04 — tools: Split the size checker into pure rules and a file-reading shell, and moved test-tree discovery to `checking/tests_tree.py` so no checker imports another (RW-42, `tools/testing/check_test_sizes.py`).
 - 2026-11-04 — testing: Held the 80% small ratio per module, placed port contract tests in one `<Port>Contract` suite per port, and corrected the tolerance header's source path (RW-35, `SKILL.md`).
