@@ -63,11 +63,12 @@ A size is what a test may touch. Time follows from it; it does not define it.
 
 | Size | May touch | Never | Timeout | Runs |
 | --- | --- | --- | --- | --- |
-| `small` | the memory of its own process, one thread, an injected clock and seed | a device, a file, a socket, a thread, a sleep, the environment, the real clock, a process-wide instance | 60 s | every build, pre-merge |
-| `medium` | one machine: the shared device fixture, a per-test temporary folder, localhost, threads, a software device | a sleep, the network beyond localhost, a second device context, state left behind | 300 s | pre-merge |
-| `large` | anything, including whole scenes and real hardware at scale | — | 900 s | nightly or weekly, never pre-merge |
+| `small` | the memory of its own process, one thread, an injected clock and seed | a device, a file, a socket, a thread, a sleep, the environment, the real clock, a process-wide instance | 1 s | every build, pre-merge |
+| `medium` | one machine: the shared device fixture, a per-test temporary folder, localhost, threads, a software device | a sleep, the network beyond localhost, a second device context, state left behind | 10 s | pre-merge |
+| `large` | anything, including whole scenes and real hardware at scale | — | 120 s | nightly or weekly, never pre-merge |
 
-The timeouts detect hangs. "Time" holds the limits a test is held to.
+The timeouts detect hangs. Each holds for one test case, never for a run; a C++ shard's timeout is its
+size's timeout times the number of cases in it. "Time" holds the limits a test is held to.
 
 **A medium test checks a boundary:** that a kernel matches its host reference, that an adapter writes
 the bytes its port promises, that two threads hand a value over. Logic behind the boundary is tested

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import pytest
 
-K_TIMEOUTS_IN_SECONDS = {"small": 60, "medium": 300, "large": 900}
+K_TIMEOUTS_IN_SECONDS = {"small": 1, "medium": 10, "large": 120}
 
 
 def pytest_configure(config: pytest.Config) -> None:
