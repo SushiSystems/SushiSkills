@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-04 — claude: Let a subagent run the reading commands of a repository's CLI, `backlog next`, `list`, `show` and `design show`, so the backlog rule and the no-build rule hold together (`claude/DISPATCH.md`).
 - 2026-11-04 — testing: Read every `unittest.TestCase` class as a test class and let a class set its own `K_TEST_SIZE`, so a checker test of two sizes runs without pytest (KI-3, `tools/testing/case_reader.py`).
 - 2026-11-04 — tools: Split the layering and agnostic checkers into pure rules and a shell (RW-42, `tools/layering/`).
 - 2026-11-04 — testing: Added `mutate_diff.py`, which mutates each changed Python line once, runs the tests that import the file and prints the survivors (RW-45, `tools/testing/mutate_diff.py`).
