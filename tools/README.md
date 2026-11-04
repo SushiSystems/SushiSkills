@@ -10,6 +10,8 @@ which it keeps is in the `project-tools` skill.
 | --- | --- | --- |
 | `check_all.py` | Nothing itself; runs the twelve checkers, then the repository's own `<area>/check_<what>.py` files and the tests, and prints only what failed | Repository root |
 | `checking/checker.py` | Nothing itself; runs a checker's rule table and prints findings | |
+| `checking/source_file.py` | Nothing itself; holds a file's path and text for a checker's pure rules, the line of an offset, and the shell helper that reads the files a checker wants | |
+| `checking/tests_tree.py` | Nothing itself; finds a repository's test files, under every folder named `tests` or `__tests__` at any depth, for the checkers that read them | |
 | `checking/copy_shared_tools.py` | Nothing; copies these files, `.github/CODE_OF_CONDUCT.md` and `.github/SECURITY.md` into a repository, keeping its license blocks, `settings.py`, this README and its own tools, or lists the files that differ with `--report` | Repository root, `--from` |
 | `settings.py` | Nothing; holds the settings that differ between repositories | |
 | `checking/ignored_paths.py` | Nothing itself; names the files and folders git ignores, which no checker reads | |

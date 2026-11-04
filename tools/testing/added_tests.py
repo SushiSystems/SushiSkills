@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import settings  # noqa: E402
 from commits.history import Commit, commits_since, git  # noqa: E402
 from testing.case_reader import K_BENCHMARK, Case, cases_of, is_test_file  # noqa: E402
-from testing.check_test_sizes import K_TEST_FOLDERS  # noqa: E402
+from checking.tests_tree import K_TEST_FOLDERS  # noqa: E402
 
 K_SINCE: str = getattr(settings, "K_TEST_ADDITIONS_SINCE", "")
 K_PROGRAM = re.compile(

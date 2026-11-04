@@ -25,7 +25,7 @@ import settings  # noqa: E402
 from checking.checker import Checker, Issue, run  # noqa: E402
 from testing.case_reader import K_BENCHMARK, Case, cases_of, is_test_file  # noqa: E402
 from testing.changed_lines import changed_lines  # noqa: E402
-from testing.check_test_sizes import discover  # noqa: E402
+from checking.tests_tree import discover  # noqa: E402
 
 K_SINCE: str = getattr(settings, "K_TEST_VALUE_SINCE", "")
 K_SMALL_FORBIDDEN_BASE: tuple[str, ...] = (
