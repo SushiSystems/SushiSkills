@@ -30,6 +30,12 @@ budget. Replaces the direction of the deleted `2026_10_30_TEST_BUDGET`.
   not on the laptop this session ran on (Ryzen 5 7640HS, RTX 4050 Laptop, 15 GB); nothing is built
   on the laptop. Until the desktop run, the limits report and never gate (RW-37).
 
+- 2026-11-05, the owner: the size timeouts are 1 s, 10 s and 120 s per case; the module small total
+  limit goes; the Sushi layer is one skill per subject; a shrinking known-findings baseline lets the
+  tools land in a red repository; every repository's tests get a full review, orchestrated from this
+  session, which also builds. A subagent can open subagents of its own when its dispatch says so. The
+  review starts after J16 rewrites how the skill explains a test; the owner set the checkpoint there.
+
 ## Progress
 
 | Step | State |
@@ -99,6 +105,9 @@ dispatch: J3f install and changelog checkers — haiku high, 1 round, passed, ru
 dispatch: J4d hooks and history — sonnet medium, 1 round, passed, committed against the hold, rung 1
 dispatch: J2b2 class-level size marks — haiku high, 1 round, passed, rung 1
 dispatch: J10a layering rules upstream — sonnet low, 1 round, passed, rung 1
+dispatch: J10 copy into ten repositories — haiku high, 1 round, stopped (copied a half-edited check_all from the working tree), rung 1
+dispatch: J10b known findings — sonnet medium, 1 round, passed, rung 1
+dispatch: J10c and J10d copier — sonnet low, 2 rounds, passed (returned once for rules 1, 2 and 9), rung 1
 
 ## Lessons of 2026-11-04
 
@@ -113,4 +122,8 @@ dispatch: J10a layering rules upstream — sonnet low, 1 round, passed, rung 1
 - No agent loaded the Sushi layer: the global rules named only the doctrine, and the layer's pages
   sat outside any skill, their links broken once linked. Each subject is now a skill, and the
   repository's `CLAUDE.md` names them (`9c76bde`, `b87eb68`).
+- The copier read SushiSkills' working tree while another worker edited `check_all.py` there, and
+  carried the half-edited file into SushiEngine. It now copies HEAD (`4298c6b`).
+- `mutate_diff.py`, stopped mid-run, left 131 test processes (about 2.7 GB) and its monitors behind;
+  a narrow `--test-command` per file avoids it until RW-50 is fixed.
 

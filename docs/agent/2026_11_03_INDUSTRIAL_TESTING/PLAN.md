@@ -30,12 +30,15 @@ says (no worktree unless the owner asks, no stash), models from `model-routing`.
 | J4c | `tools/routing/`, `tools/check_all.py` and their tests | J4 | done |
 | J4d | `tools/commits/history.py`, `tools/hooks/` and their tests, with the injection seam the hook tests need, and `trailer_problems` given its pattern | J4 | done |
 | J10 | the copied `tools/` of every repository in the rework table, through `checking/copy_shared_tools.py`, its commit hooks installed, and the Skills block of `CLAUDE_TEMPLATE.md` in its `CLAUDE.md`; project-mobilerts by the session working there | J2b2, J10a | todo |
+| J10c | `tools/checking/copy_shared_tools.py`: copy what upstream committed, never its working tree; the target's own licence block on every copied source file | J10b | done |
 | J10a | `tools/layering/check_layering.py` and its tests: `rule_declared_libraries` and `rule_restricted_includes` moved up from sushiengine's copy, read from settings and silent where a repository sets none | J2b2 | done |
 | J11 | `tools/testing/mutate_diff.py` (new) and its tests: mutation of the changed Python lines, standard library only | J1b | done |
 | J12 | sushicore `source/sushicore/testing/`: read-only map of what the shared test command already does against `Running fast` and `Time` in `testing` | | done |
 | J13 | `PLAN.md` of phase F in sushicore, written by the orchestrator from J12 | J12 | done |
 | J14 | sushiengine: the 13 red checkers, triaged into fixes and backlog entries | J10 | todo |
-| J15 | waves 2 to 5 and "any" of `PIPELINE.md`, one work folder per repository, each opened when its wave starts | J10, J11, J13 | todo |
+| J10b | `tools/checking/known_findings.py` (new), `tools/check_all.py` and their tests: a known-findings baseline that only shrinks, so the commit that brings the tools into a red repository lands | J10a | done |
+| J16 | `skills/testing/SKILL.md` and a new `skills/testing/REVIEWING.md`: how the promises of an interface are found, one good test whole beside a bad one, the signs of a long test, and the verdict table of a suite review | J10 | todo |
+| J15 | the full review of every repository's tests, wave by wave of `PIPELINE.md`: per repository a read-only survey writes the promise list and a verdict per test into its work folder, then module workers apply it; the orchestrator builds and runs every repository's tests itself | J10, J10b, J11, J13, J16 | todo |
 | J5 | sushicore working tree | | done |
 | J6 | sushiruntime working tree | | done |
 | J7 | sushiengine working tree | | done |
@@ -64,6 +67,13 @@ says (no worktree unless the owner asks, no stash), models from `model-routing`.
 - **J12, J13.** The gap between sushicore's test command and the skill is listed per rule; the phase F
   plan closes each gap with one job.
 - **J14.** Every red line is fixed or has an open backlog entry. Build: sushiengine's checkers.
+- **J10b.** On a red repository the written baseline makes `check_all` pass, a new finding makes it fail,
+  and a fixed one makes it fail until its count is lowered. Build: a scratch repository and `check_all`.
+- **J16.** A reviewer given only the skill reaches the same verdict on a test as the table gives. Build:
+  `check_docs_truth.py`; the owner reads the draft before it is committed.
+- **J15.** Every test of a repository has a recorded verdict, and the kept and new tests pass the proof of
+  RW-42's done-when. Build: the repository's own test command, run by the orchestrator. Paused by the
+  owner on 2026-11-05 at the checkpoint; it starts after J16.
 - **J2 to J4.** The same split for their checkers. Build: `python tools/check_all.py .` green.
   Accepted on proof, not on a share: the rules pass the purity run, the shell sits in one `medium`
   class, outputs equal the old checker's, and `mutate_diff.py` leaves no survivor unexplained (RW-42).

@@ -29,6 +29,16 @@ Decided by the owner on 2026-11-03, the rest by the engineer on the owner's inst
    its reason.
 8. The shared C++ test support lives in SushiSkills and each repository copies it with the tools;
    no new repository or module is made.
+9. The share of each size is a reading, never a target (the owner, 2026-11-04). Work is accepted on
+   purity, one medium class for the boundary and killed mutants.
+10. A timeout holds for one test case: 1 s small, 10 s medium, 120 s large; a C++ shard's is its
+    size's timeout times its cases. The limit on a module's small total is dropped (the owner,
+    2026-11-05).
+11. A repository brings in the shared tools with a baseline of its known findings that only shrinks,
+    each entry tied to an open backlog entry, so the commit hook gates new findings from the first
+    commit (the owner, 2026-11-05).
+12. Every repository's tests are reviewed in full, not only split: the promise list first, then a
+    verdict for every test, wave by wave (the owner, 2026-11-05).
 
 ## Design
 
