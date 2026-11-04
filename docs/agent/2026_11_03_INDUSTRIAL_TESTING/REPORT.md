@@ -53,6 +53,8 @@ budget. Replaces the direction of the deleted `2026_10_30_TEST_BUDGET`.
 | 2026-11-04: superseded `2026_11_02_TEST_STANDARD` deleted; its D1 to D9 were already in `testing` | done |
 | 2026-11-04: triage of the trees the 2026-11-02 rollout left (J5 to J9) | done: sushicore 2 commits, sushiengine 2, the rest left with reasons |
 | 2026-11-04: J1 and J1b, the core and shell pattern on the size checker | done, `a70043a` |
+| 2026-11-05: J10, the shared tools with a known-findings baseline in eleven repositories, committed and pushed on `feature/test_pipeline`; project-mobilerts commits once its workers finish | done but project-mobilerts |
+| 2026-11-05: branches other than `main` and `feature/test_pipeline` deleted in every repository, on the owner's instruction | done |
 
 ## SOLID breaches and unneeded dependencies met
 
