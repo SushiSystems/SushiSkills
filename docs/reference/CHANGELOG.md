@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-04 — testing: Held the 80% small ratio per module, placed port contract tests in one `<Port>Contract` suite per port, and corrected the tolerance header's source path (RW-35, `SKILL.md`).
 - 2026-11-03 — testing: Rewrote the skill around a test's value and the code's architecture: promise and oracle, forbidden kinds, sizes by what a test touches, derived tolerances, seams first, sharded runs (RW-35, `SKILL.md`).
 - 2026-11-03 — testing: Withdrew the per-commit case cap and the one-test-file-per-header idea (RW-35, `SKILL.md`).
 - 2026-11-03 — testing: Rejected weak-only checks, typed tolerances, sleeps at any size and small cases that reach a thread, file, clock or environment (RW-35, `check_test_value.py`).

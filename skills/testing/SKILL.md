@@ -79,10 +79,11 @@ can see a promise that is logic, the code lacks a seam: add it first ("Architect
 tests"), then write the `small` test.
 
 **Suite shape.**
-**Rule:** at least 80% of a repository's cases are `small` and at most 5% are `large`. The test
+**Rule:** at least 80% of each module's cases are `small` and at most 5% are `large`. The test
 command prints the ratio per module.
 **Why:** a module below 80% `small` holds logic its tests can only reach through a device, a file or
-a thread, and every promise there is checked on the slowest, flakiest path.
+a thread, and every promise there is checked on the slowest, flakiest path. A repository-wide ratio
+would let one heavy module hide behind light ones.
 **Not when:** a module whose subject is the boundary itself, such as a device driver probe or a file
 format adapter, states its own ratio in `tests/README.md` with the owner's ruling.
 
@@ -127,7 +128,7 @@ Strongest and cheapest first. A test uses the first that applies.
 **Tolerances are derived, never typed.** A floating-point comparison that is not exact goes through
 the repository's tolerance helper, which computes `c · f(n) · u · gauge` (for a dot product or GEMM,
 `n · u · Σ|aᵢbᵢ|`) and fails when error over bound exceeds the repository's one threshold. The C++
-helper is `tests/support/tolerance.hpp`, copied from SushiSkills's `support/cpp/` as `project-tools`
+helper is `tests/support/tolerance.hpp`, copied from SushiSkills's `tools/testing/support/` as `project-tools`
 gives for shared files. A bare `==` is kept only where the value is copied, not computed, or exactly
 representable, and the name says so.
 
@@ -154,6 +155,9 @@ decision; an internal one is yours.
    module owns, with a host or in-memory implementation beside the real one: clock, random seed, file
    system or stream, executor, transport, device queue, logger and profiler sink. Both pass the same
    contract tests. The in-memory one is the fake every other module's tests use; nobody mocks it.
+   The contract tests are one typed or parametrised suite, `<Port>Contract`, in the test file of the
+   port's own module, instantiated once per implementation: `small` for the in-memory one, the size
+   its boundary needs for the real one.
 3. **Kernels call host-callable functions.** The arithmetic and index math of a device kernel is a
    function compiled for host and device. Small tests call it on the host; one medium test per kernel
    family checks the launch against the host reference.
