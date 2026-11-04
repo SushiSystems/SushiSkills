@@ -23,13 +23,14 @@ says (no worktree unless the owner asks, no stash), models from `model-routing`.
 | J4c2 | `tools/tests/test_check_all.py`: the three shell lines of `check_all.py` no test reaches | J4c | done |
 | J3f | `tools/documentation/check_module_install.py`, `check_changelog.py` and their tests | J3 | done |
 | J2b1 | `tools/testing/case_reader.py`, `check_test_sizes.py`, `tools/tests/conftest.py` and their tests: every `TestCase` class read (KI-3), and a class-level `K_TEST_SIZE` | J2 | done |
-| J2b2 | the size marks of every `tools/tests/test_*`: `pytest.mark` replaced by the class-level `K_TEST_SIZE`, so the checker tests run without pytest | J2b1, J3a to J3f, J4a to J4d | todo |
+| J2b2 | the size marks of every `tools/tests/test_*`: `pytest.mark` replaced by the class-level `K_TEST_SIZE`, so the checker tests run without pytest | J2b1, J3a to J3f, J4a to J4d | done |
 | J4 | `tools/licensing/write_license_block.py`, `tools/commits/check_backlog_trailer.py` and their tests (the rest split below) | J1b | done |
 | J4a | `tools/layering/` and its tests | J4 | done |
 | J4b | `tools/logs/`, `tools/ci/` and their tests | J4 | done |
 | J4c | `tools/routing/`, `tools/check_all.py` and their tests | J4 | done |
 | J4d | `tools/commits/history.py`, `tools/hooks/` and their tests, with the injection seam the hook tests need, and `trailer_problems` given its pattern | J4 | done |
-| J10 | the copied `tools/` of every repository in the rework table, through `checking/copy_shared_tools.py`, its commit hooks installed, and the Skills block of `CLAUDE_TEMPLATE.md` in its `CLAUDE.md` | J2, J3, J4 | todo |
+| J10 | the copied `tools/` of every repository in the rework table, through `checking/copy_shared_tools.py`, its commit hooks installed, and the Skills block of `CLAUDE_TEMPLATE.md` in its `CLAUDE.md`; project-mobilerts by the session working there | J2b2, J10a | todo |
+| J10a | `tools/layering/check_layering.py` and its tests: `rule_declared_libraries` and `rule_restricted_includes` moved up from sushiengine's copy, read from settings and silent where a repository sets none | J2b2 | done |
 | J11 | `tools/testing/mutate_diff.py` (new) and its tests: mutation of the changed Python lines, standard library only | J1b | done |
 | J12 | sushicore `source/sushicore/testing/`: read-only map of what the shared test command already does against `Running fast` and `Time` in `testing` | | done |
 | J13 | `PLAN.md` of phase F in sushicore, written by the orchestrator from J12 | J12 | done |
@@ -48,8 +49,13 @@ says (no worktree unless the owner asks, no stash), models from `model-routing`.
   J4 copy. Build: `python tools/check_all.py .` green.
 - **J1b.** Test-tree discovery (`TestTree`, `discover`, `K_TEST_FOLDERS`) lives in
   `tools/checking/tests_tree.py`; no checker imports another checker. Build: `check_all` green.
+- **J10a.** sushiengine's two layering rules run upstream with their tests, and a repository that sets
+  none of their settings gets no finding from them. Build: `check_all` green, and sushiengine's
+  `check_layering.py` output equal before and after the copy.
 - **J10.** Every repository's copies equal SushiSkills's, local forks reported before they are
-  overwritten (sushicore's `test_budget.py` fork is known). Build: each repository's checkers.
+  overwritten (sushicore's uncommitted `test_budget.py` fork is committed first, so history keeps it;
+  sushidsp's skip list is dropped, as `TESTS.md` forbids one, and its findings become backlog
+  entries). Build: each repository's checkers.
 - **J11.** Given a base commit, it mutates each changed Python line once (comparison, boolean,
   constant, return), runs that module's tests per mutant and prints the survivors; it needs no
   package outside the standard library. Pulled ahead of the waves so the triage of every repository

@@ -23,6 +23,7 @@ from layering import check_layering  # noqa: E402
 from layering.check_layering import (  # noqa: E402
     K_BUILD_FILE,
     K_CHECKER,
+    K_INCLUDE_ROOTS,
     K_PUBLIC_FOLDER,
     K_SOURCE_SUFFIXES,
     Layout,
@@ -31,8 +32,10 @@ from layering.check_layering import (  # noqa: E402
     ModuleTree,
     rule_cross_domain_includes,
     rule_declared_dependencies,
+    rule_declared_libraries,
     rule_declared_tiers,
     rule_public_headers,
+    rule_restricted_includes,
     rule_same_tier_includes,
     rule_unused_dependencies,
     rule_upward_includes,
@@ -42,6 +45,16 @@ K_ROOT = Path("repo")
 K_LAYOUT = Layout(("foundation", "domain"))
 K_DOMAINS = Layout(("core", "vision", "language"), domain_tiers=("vision", "language"))
 K_BUILD = Layout(("foundation",), module_function="project_add_module")
+K_DOORS = Layout(
+    ("foundation",),
+    include_doors=(("Vendor/", ("modules/foundation/front/", "tests/foundation/front/", "applications/tool/vendor_")),),
+)
+K_FOREIGN = Layout(
+    ("foundation",),
+    module_function="project_add_module",
+    foreign_roots=(("Runtime", "execution"),),
+    foreign_providers=(("runtime_sdk", "Runtime"), ("other_sdk", "Other")),
+)
 K_GEOMETRY = {"modules/domain/geometry/include/Project/geometry/mesh.hpp": ""}
 K_CORE = {
     "modules/foundation/core/include/Project/core/core.hpp": "",
@@ -81,6 +94,11 @@ def _module_files(module: Module, files: dict[str, str]) -> ModuleFiles:
         sources=_sources(files, folder),
         tests=_sources(files, PurePosixPath("tests", module.tier, module.name)),
         build_text=files.get((folder / K_BUILD_FILE).as_posix()),
+        build_files=tuple(
+            SourceFile(K_ROOT / name, text)
+            for name, text in sorted(files.items())
+            if PurePosixPath(name).is_relative_to(folder) and PurePosixPath(name).name == K_BUILD_FILE
+        ),
     )
 
 
@@ -91,10 +109,13 @@ def _tree(files: dict[str, str], layout: Layout = K_LAYOUT) -> ModuleTree:
         for name in files
         if PurePosixPath(name).parts[:1] == ("modules",) and len(PurePosixPath(name).parts) > 3
     })
+    restricted = [
+        source for folder in K_INCLUDE_ROOTS for source in _sources(files, PurePosixPath(folder))
+    ]
     return ModuleTree(K_ROOT, layout, [
         _module_files(Module(tier, name, K_ROOT / "modules" / tier / name), files)
         for tier, name in keys
-    ])
+    ], restricted)
 
 
 def _messages(issues) -> list[str]:
@@ -278,6 +299,116 @@ class BuildDeclarationTest(unittest.TestCase):
     def test_skips_the_build_rules_when_no_function_is_named(self) -> None:
         tree = _tree(K_CORE, Layout(("foundation",)))
         self.assertEqual(list(rule_declared_dependencies(tree)) + list(rule_public_headers(tree)), [])
+
+
+class RuleDeclaredLibrariesTest(unittest.TestCase):
+    """Covers the rule that every library under modules/ is declared through the module function."""
+    K_TEST_SIZE = "small"
+
+    def _issues(self, files: dict[str, str], layout: Layout = K_BUILD) -> list[tuple[str, int]]:
+        """Returns the file and line of each finding."""
+        return [(issue.path.relative_to(K_ROOT).as_posix(), issue.line)
+                for issue in rule_declared_libraries(_tree(files, layout))]
+
+    def test_reports_a_plain_add_library_with_its_file_and_line(self) -> None:
+        files = {"modules/domain/physics/CMakeLists.txt":
+                 "project_add_module(NAME physics)\nadd_library(physics_cooking STATIC cook.cpp)"}
+        self.assertEqual(self._issues(files), [("modules/domain/physics/CMakeLists.txt", 2)])
+
+    def test_reports_any_case_and_any_compiled_type(self) -> None:
+        files = {"modules/domain/physics/CMakeLists.txt":
+                 "ADD_LIBRARY(a OBJECT x.cpp)\nAdd_Library (b STATIC z.cpp)\nadd_library(c SHARED y.cpp)"}
+        self.assertEqual([line for _path, line in self._issues(files)], [1, 2, 3])
+
+    def test_ignores_a_target_that_compiles_nothing(self) -> None:
+        files = {"modules/domain/physics/CMakeLists.txt":
+                 "add_library(sdk INTERFACE)\nadd_library(vendor SHARED IMPORTED GLOBAL)"}
+        self.assertEqual(self._issues(files), [])
+
+    def test_reports_a_build_file_below_the_module_folder(self) -> None:
+        files = {"modules/domain/physics/tools/CMakeLists.txt": "add_library(cook STATIC cook.cpp)"}
+        self.assertEqual(self._issues(files), [("modules/domain/physics/tools/CMakeLists.txt", 1)])
+
+    def test_ignores_the_module_function_a_comment_and_a_longer_name(self) -> None:
+        files = {"modules/domain/physics/CMakeLists.txt":
+                 "project_add_module(NAME physics)\n# add_library(x STATIC y.cpp)\n"
+                 "project_add_library(physics_cooking)\nadd_library_alias(z)"}
+        self.assertEqual(self._issues(files), [])
+
+    def test_is_silent_when_the_layout_names_no_module_function(self) -> None:
+        files = {"modules/domain/physics/CMakeLists.txt": "add_library(a STATIC x.cpp)"}
+        self.assertEqual(self._issues(files, K_LAYOUT), [])
+
+
+class RuleRestrictedIncludesTest(unittest.TestCase):
+    """Covers the rule that a restricted include prefix appears only in the listed paths."""
+    K_TEST_SIZE = "small"
+
+    def _issues(self, files: dict[str, str], layout: Layout = K_DOORS) -> list:
+        """Returns the findings of the rule on a tree with these files."""
+        return list(rule_restricted_includes(_tree(files, layout)))
+
+    def test_include_outside_the_door_is_refused(self) -> None:
+        files = {"modules/foundation/front/include/Project/front/front.hpp": "#include <Vendor/capture.hpp>",
+                 "modules/foundation/other/source/other.cpp": "#include <Vendor/capture.hpp>"}
+        messages = _messages(self._issues(files))
+        self.assertEqual(len(messages), 1)
+        self.assertIn("Vendor/capture.hpp", messages[0])
+
+    def test_reports_the_file_and_line_of_the_include(self) -> None:
+        files = {"modules/foundation/other/source/other.cpp": "// first\n#include <Vendor/capture.hpp>"}
+        self.assertEqual([(issue.path.name, issue.line) for issue in self._issues(files)], [("other.cpp", 2)])
+
+    def test_reads_applications_and_tests_as_well_as_modules(self) -> None:
+        files = {"applications/tool/main.cpp": '#include "Vendor/capture.hpp"',
+                 "tests/foundation/other/test_other.cpp": "#include <Vendor/capture.hpp>"}
+        self.assertEqual(len(self._issues(files)), 2)
+
+    def test_allows_the_listed_paths_and_a_file_name_prefix(self) -> None:
+        files = {"modules/foundation/front/source/front.cpp": "#include <Vendor/capture.hpp>",
+                 "tests/foundation/front/test_front.cpp": "#include <Vendor/capture.hpp>",
+                 "applications/tool/vendor_session.cpp": "#include <Vendor/capture.hpp>"}
+        self.assertEqual(self._issues(files), [])
+
+    def test_ignores_another_include_and_a_layout_with_no_door(self) -> None:
+        files = {"modules/foundation/other/source/other.cpp": "#include <Other/capture.hpp>\n#include <vector>"}
+        self.assertEqual(self._issues(files), [])
+        files = {"modules/foundation/third/source/third.cpp": "#include <Vendor/capture.hpp>"}
+        self.assertEqual(self._issues(files, K_LAYOUT), [])
+
+
+class ForeignRootTest(unittest.TestCase):
+    """Covers an include under a foreign root: it names the door module unless the includer links a provider."""
+    K_TEST_SIZE = "small"
+
+    def _messages(self, call: str, include: str = "#include <Runtime/api.hpp>", door: bool = True) -> list[str]:
+        """Returns the declared-dependency findings of a user module whose build call is `call`."""
+        files = {"modules/foundation/user/source/user.cpp": include,
+                 "modules/foundation/user/CMakeLists.txt": call}
+        if door:
+            files["modules/foundation/execution/CMakeLists.txt"] = "project_add_module(NAME execution)"
+        return _messages(rule_declared_dependencies(_tree(files, K_FOREIGN)))
+
+    def test_names_the_door_module_when_the_includer_does_not_list_it(self) -> None:
+        self.assertEqual(len(self._messages("project_add_module(NAME user)")), 1)
+
+    def test_accepts_the_door_module_when_listed(self) -> None:
+        self.assertEqual(self._messages("project_add_module(NAME user PRIVATE_DEPENDS execution)"), [])
+
+    def test_accepts_a_linked_provider_in_any_case(self) -> None:
+        self.assertEqual(self._messages("project_add_module(NAME user EXTERNAL RUNTIME_SDK)"), [])
+
+    def test_ignores_a_provider_of_another_root(self) -> None:
+        self.assertEqual(len(self._messages("project_add_module(NAME user EXTERNAL other_sdk)")), 1)
+
+    def test_names_nothing_when_the_door_module_is_absent(self) -> None:
+        self.assertEqual(self._messages("project_add_module(NAME user)", door=False), [])
+
+    def test_leaves_an_include_of_another_root_alone(self) -> None:
+        self.assertEqual(self._messages("project_add_module(NAME user)", "#include <Elsewhere/api.hpp>"), [])
+
+    def test_leaves_a_bare_root_name_alone(self) -> None:
+        self.assertEqual(self._messages("project_add_module(NAME user)", "#include <Runtime>"), [])
 
 
 class ShellTest(unittest.TestCase):

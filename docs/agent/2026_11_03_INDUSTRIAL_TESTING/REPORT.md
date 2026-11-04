@@ -61,11 +61,14 @@ budget. Replaces the direction of the deleted `2026_10_30_TEST_BUDGET`.
 
 ## Owner's decisions waiting
 
-- sushiruntime: work entries for the GLOBAL_HANDLE phases H0 to H9 and KI-23's Source path.
-- sushiengine: whether the 7.4 MB `assets/astro/de440_1950_2050.sushiephemeris` is added.
-- project-mobilerts: whether the editor re-save is kept; `ProjectSettings.asset` empties `preloadedAssets`.
-- `claude/DISPATCH.md` rule 3 forbids `se`, while rule 9 needs `<cli> backlog`; a read-only exception is proposed.
 - C++ mutation tool for RW-45.
+- sushicore phase F: the CMake helper of F2 and the parallel runner of F6 (own runner recommended).
+- project-mobilerts: the scene and terrain churn, and the dangling GUID in `EditorBuildSettings.asset`.
+
+Decided on 2026-11-04 and 2026-11-05: GLOBAL_HANDLE as one entry with the Source path fixed
+(sushiruntime `81f1148a`); the ephemeris is cooked, not committed (sushiengine `9ee1c6896`); the
+editor settings kept (project-mobilerts `e97928cef`); DISPATCH rule 3's read-only exception
+(`e51fd46`); no share of sizes as a target; one skill per subject of the Sushi layer (`9c76bde`).
 
 ## Dispatches
 
@@ -94,6 +97,8 @@ dispatch: J3e2 design tools — haiku high, 1 round, passed, rung 1
 dispatch: J4c2 check_all shell — haiku medium, 1 round, passed, rung 1
 dispatch: J3f install and changelog checkers — haiku high, 1 round, passed, rung 1
 dispatch: J4d hooks and history — sonnet medium, 1 round, passed, committed against the hold, rung 1
+dispatch: J2b2 class-level size marks — haiku high, 1 round, passed, rung 1
+dispatch: J10a layering rules upstream — sonnet low, 1 round, passed, rung 1
 
 ## Lessons of 2026-11-04
 

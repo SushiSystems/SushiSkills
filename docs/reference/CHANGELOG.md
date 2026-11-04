@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-05 — layering: Moved the plain `add_library`, restricted-include and foreign-root rules up from SushiEngine's copy, silent where a repository sets no `K_INCLUDE_DOORS` or `K_FOREIGN_*` (J10a, `tools/layering/check_layering.py`).
 - 2026-11-05 — tools: Marked the size of every checker test with `K_TEST_SIZE` instead of a pytest mark, so `tools/tests` runs under `unittest` alone (RW-42, `tools/tests/`).
 - 2026-11-05 — claude: Had every session and subagent load the company-layer skills the repository's `CLAUDE.md` or `AGENTS.md` names, beside the doctrine skill each pairs with (`claude/CLAUDE.md`, `claude/DISPATCH.md`).
 - 2026-11-05 — sushisystems: Made each subject of the Sushi layer its own skill, named by `sushisystems-specific` beside the doctrine skill it pairs with, so its pages load and resolve (`sushisystems/`, `CLAUDE_TEMPLATE.md`).

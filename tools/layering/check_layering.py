@@ -20,6 +20,7 @@ from pathlib import Path, PurePosixPath
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+import settings  # noqa: E402
 from checking.checker import Checker, Issue, run  # noqa: E402
 from checking.source_file import SourceFile, read_files  # noqa: E402
 from settings import (  # noqa: E402
@@ -36,6 +37,8 @@ from settings import (  # noqa: E402
 K_SETTINGS = Path(__file__).resolve().parents[1] / "settings.py"
 K_MODULES = "modules"
 K_TESTS = "tests"
+# The folders below the root whose files the restricted-include rule reads.
+K_INCLUDE_ROOTS = (K_MODULES, "applications", K_TESTS)
 K_PUBLIC_FOLDER = "include"
 K_BUILD_FILE = "CMakeLists.txt"
 K_UMBRELLA = "umbrella"
@@ -44,6 +47,9 @@ K_INCLUDE = re.compile(r'^\s*#\s*include\s*(?:<([^>]+)>|"([^"]+)")')
 K_CMAKE_SOURCE_REACH = re.compile(r"(?:^|[/\s\"'])([A-Za-z0-9_]+)/source\b")
 K_CMAKE_COMMENT = re.compile(r"#.*")
 K_CMAKE_KEYWORD = re.compile(r"[A-Z][A-Z_]*")
+# A plain add_library that compiles sources; an IMPORTED or INTERFACE target compiles nothing.
+K_PLAIN_ADD_LIBRARY = re.compile(r"(?<![\w])add_library\s*\(\s*[\w${}]+(?![^)]*\b(?:IMPORTED|INTERFACE)\b)",
+                                 re.IGNORECASE)
 
 
 @dataclass(frozen=True, slots=True)
@@ -61,6 +67,9 @@ class Layout:
     private_depends: str = "PRIVATE_DEPENDS"
     internal_mark: str = "INTERNAL"
     private_depends_also: tuple[str, ...] = ()
+    include_doors: tuple[tuple[str, tuple[str, ...]], ...] = ()
+    foreign_roots: tuple[tuple[str, str], ...] = ()
+    foreign_providers: tuple[tuple[str, str], ...] = ()
     settings_path: Path = Path("settings.py")
 
     def rank(self, tier: str) -> int | None:
@@ -74,7 +83,10 @@ class Layout:
 
 K_LAYOUT = Layout(
     K_TIER_ORDER, K_DOMAIN_TIERS, K_SAME_TIER_EDGES, K_MODULE_FUNCTION,
-    K_PUBLIC_DEPENDS, K_PRIVATE_DEPENDS, K_INTERNAL_MARK, K_PRIVATE_DEPENDS_ALSO, K_SETTINGS,
+    K_PUBLIC_DEPENDS, K_PRIVATE_DEPENDS, K_INTERNAL_MARK, K_PRIVATE_DEPENDS_ALSO,
+    getattr(settings, "K_INCLUDE_DOORS", ()),
+    tuple(getattr(settings, "K_FOREIGN_INCLUDE_ROOTS", {}).items()),
+    tuple(getattr(settings, "K_FOREIGN_INCLUDE_PROVIDERS", {}).items()), K_SETTINGS,
 )
 
 
@@ -112,6 +124,7 @@ class ModuleFiles:
     sources: tuple[SourceFile, ...]
     tests: tuple[SourceFile, ...]
     build_text: str | None
+    build_files: tuple[SourceFile, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -135,10 +148,13 @@ def _includes(sources: Iterable[SourceFile]) -> Iterator[Include]:
 class ModuleTree:
     """Holds the modules of one repository, the files the shell read for each, and its layout."""
 
-    def __init__(self, root: Path, layout: Layout, entries: Iterable[ModuleFiles]) -> None:
-        """Remembers the root, the layout and each module's files, by the module's key."""
+    def __init__(
+        self, root: Path, layout: Layout, entries: Iterable[ModuleFiles], restricted_sources: Iterable[SourceFile] = ()
+    ) -> None:
+        """Remembers the root, the layout, each module's files by the module's key, and the sources the restricted-include rule reads."""
         self.root = root
         self.layout = layout
+        self.restricted_sources = tuple(restricted_sources)
         self._entries = {entry.module.key: entry for entry in entries}
 
     @cached_property
@@ -160,8 +176,14 @@ class ModuleTree:
         return found
 
     def resolve(self, target: str) -> Module | None:
-        """Returns the module whose public tree holds an include target, or None."""
+        """Returns the module whose public tree holds an include target, or None.
+
+        An include under a foreign root, such as Runtime/, names the module that links it.
+        """
         path = PurePosixPath(posixpath.normpath(target))
+        for root, door in self.layout.foreign_roots:
+            if len(path.parts) > 1 and path.parts[0] == root:
+                return next((module for module in self.modules.values() if module.name == door), None)
         for candidate in (path, *path.parents):
             if owner := self.owners.get(candidate.as_posix()):
                 return owner
@@ -186,8 +208,17 @@ class ModuleTree:
         """Yields each include of the given sources that names another module, with that module."""
         for include in _includes(sources):
             target = self.resolve(include.target)
-            if target is not None and target is not module:
+            if target is not None and target is not module and not self.is_provided(module, include):
                 yield include, target
+
+    def is_provided(self, module: Module, include: Include) -> bool:
+        """Returns whether a foreign-root include reaches the module through an external target it links.
+
+        Such a module names the root's provider in its build call, so it needs no edge to the door.
+        """
+        root = include.target.split("/", 1)[0]
+        provided = {provider for provider, owned in self.layout.foreign_providers if owned == root}
+        return any(token.lower() in provided for token in self.call_tokens(module))
 
     def own_includes(self, module: Module) -> Iterator[tuple[Include, Module]]:
         """Yields each include of a module's own sources that names another module, with that module."""
@@ -366,6 +397,22 @@ def rule_unused_dependencies(tree: ModuleTree) -> Iterator[Issue]:
                                        "and no file includes it")
 
 
+def rule_declared_libraries(tree: ModuleTree) -> Iterator[Issue]:
+    """Yields an issue for each plain add_library call in a build file below modules/.
+
+    Every library under modules/ is declared through the module function, so the tier it belongs to is read
+    from one declaration. Skipped when the layout names no module function.
+    """
+    if not tree.layout.module_function:
+        return
+    for module in tree.modules.values():
+        for build_file in tree.files_of(module).build_files:
+            for number, line in enumerate(build_file.text.splitlines(), start=1):
+                if K_PLAIN_ADD_LIBRARY.search(K_CMAKE_COMMENT.sub("", line)):
+                    yield Issue(build_file.path, number, f"{module.key} declares a library with add_library; "
+                                                         f"declare it through {tree.layout.module_function}")
+
+
 def rule_public_headers(tree: ModuleTree) -> Iterator[Issue]:
     """Yields an issue for each include of an internal module in a header a public module installs."""
     internal = {module.key for module in tree.modules.values() if tree.is_internal(module)}
@@ -376,6 +423,21 @@ def rule_public_headers(tree: ModuleTree) -> Iterator[Issue]:
             if tree.is_public(module, include) and target.key in internal:
                 yield Issue(include.path, include.line, f"{module.name} is installed and includes "
                                                         f"{target.name}, an internal module whose headers are not")
+
+
+def rule_restricted_includes(tree: ModuleTree) -> Iterator[Issue]:
+    """Yields an issue for each include of a restricted prefix outside the paths that may hold it.
+
+    `include_doors` pairs an include prefix with the path prefixes, below the root, whose files may
+    include it. Source, applications and tests are all read. Skipped when the layout names no door.
+    """
+    for prefix, doors in tree.layout.include_doors:
+        for include in _includes(tree.restricted_sources):
+            relative = include.path.relative_to(tree.root).as_posix()
+            if include.target.startswith(prefix) and not relative.startswith(doors):
+                yield Issue(include.path, include.line,
+                            f"includes {include.target}; only the listed paths may include {prefix}, "
+                            "so go through the front module")
 
 
 def _read_module_folders(root: Path) -> list[Module]:
@@ -423,12 +485,14 @@ def _read_module(root: Path, module: Module) -> ModuleFiles:
         sources=_read_sources(module.folder),
         tests=_read_sources(root / K_TESTS / module.tier / module.name),
         build_text=_read_build_text(module),
+        build_files=read_files(sorted(module.folder.rglob(K_BUILD_FILE)), Path.is_file),
     )
 
 
 def _read_repository(root: Path, layout: Layout) -> ModuleTree:
     """Reads one repository's modules into a tree; the only reader of the disk in this checker."""
-    return ModuleTree(root, layout, [_read_module(root, module) for module in _read_module_folders(root)])
+    restricted = tuple(source for folder in K_INCLUDE_ROOTS for source in _read_sources(root / folder))
+    return ModuleTree(root, layout, [_read_module(root, module) for module in _read_module_folders(root)], restricted)
 
 
 def collect(paths: list[Path]) -> Iterable[ModuleTree]:
@@ -447,7 +511,9 @@ K_CHECKER = Checker(
         "rule_private_reach": rule_private_reach,
         "rule_declared_dependencies": rule_declared_dependencies,
         "rule_unused_dependencies": rule_unused_dependencies,
+        "rule_declared_libraries": rule_declared_libraries,
         "rule_public_headers": rule_public_headers,
+        "rule_restricted_includes": rule_restricted_includes,
     },
 )
 
