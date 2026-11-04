@@ -154,6 +154,12 @@ class RuleDeclaredTiersTest(unittest.TestCase):
         self.assertEqual(_messages(rule_declared_tiers(_tree(files))),
                          ["tier 'extra' is not in K_TIER_ORDER"])
 
+    def test_reports_a_domain_tier_missing_from_the_order_without_crashing_on_a_declared_one(self) -> None:
+        layout = Layout(("core", "vision"), domain_tiers=("vision", "language"))
+        files = {"modules/vision/camera/include/Project/camera/camera.hpp": ""}
+        self.assertEqual(_messages(rule_declared_tiers(_tree(files, layout))),
+                         ["domain tier 'language' is not in K_TIER_ORDER"])
+
 
 @pytest.mark.small
 class RuleCrossDomainIncludesTest(unittest.TestCase):

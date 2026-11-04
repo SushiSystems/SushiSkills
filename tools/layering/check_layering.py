@@ -68,7 +68,7 @@ class Layout:
         if tier not in self.tier_order:
             return None
         if tier in self.domain_tiers:
-            return min(self.tier_order.index(domain) for domain in self.domain_tiers)
+            return min(self.tier_order.index(domain) for domain in self.domain_tiers if domain in self.tier_order)
         return self.tier_order.index(tier)
 
 
