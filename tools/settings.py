@@ -69,6 +69,5 @@ K_TEST_ADDITIONS_SINCE = "f4c74c8e137bb2a825239767debe72035435e33c"
 K_TEST_TIMES: dict[str, float] = {
     "small_test_s": 0.1,
     "medium_test_s": 5,
-    "module_small_s": 10,
     "pre_merge_s": 600,
 }

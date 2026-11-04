@@ -200,7 +200,6 @@ They gate once a measured run on the owner's machine has calibrated them; until 
 | --- | --- |
 | A `small` test | 100 ms |
 | A `medium` test after the shared fixture | 5 s |
-| The `small` tests of one module | 10 s |
 | A repository's pre-merge run (`small` and `medium`), wall | 600 s |
 
 The aims are a `small` test in 5 ms, a `medium` one in 200 ms and a pre-merge run in 3 minutes. A

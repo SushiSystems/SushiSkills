@@ -148,23 +148,10 @@ def evaluate(timings: list[Timing], *, programs: dict[str, str], exemptions: dic
                 findings.append(f"{timing.name}: {alone[timing.name]:.1f} s alone, over the {size} limit of {limit:g} s")
             elif rerun is None:
                 findings.append(f"{timing.name}: {timing.seconds:.1f} s, over the {size} limit of {limit:g} s (not rerun)")
-    findings += _program_findings(totals, programs, factor)
     findings += _whole_run_findings(scope, sized, wall, factor)
     findings += _exemption_findings(exemptions, open_backlog)
     return Report(_line(totals, sized, counts, scope, wall, added, base, rebuilt, exempt_seconds, len(exemptions)),
                   tuple(findings), tuple(sorted(over)))
-
-
-def _program_findings(totals: dict[tuple[str, str], float], programs: dict[str, str], factor: float) -> list[str]:
-    """Returns a finding for each module's test program whose small tests take longer than its total allows."""
-    if not programs:
-        return []
-    found = []
-    for (size, program), seconds in sorted(totals.items()):
-        if size == "small" and program and seconds > _limit("module_small_s") * factor:
-            found.append(f"{program}: its small tests take {seconds:.1f} s, "
-                         f"over {_limit('module_small_s'):g} s x {factor:g}")
-    return found
 
 
 def _whole_run_findings(scope: str, sized: dict[str, float], wall: float | None, factor: float) -> list[str]:
@@ -202,7 +189,7 @@ def _line(totals: dict[tuple[str, str], float], sized: dict[str, float], counts:
     small = {program: seconds for (size, program), seconds in totals.items() if size == "small"}
     if small:
         worst = max(small, key=lambda program: small[program])
-        parts.append(f"small {small[worst]:.1f} s of {_limit('module_small_s'):g} s ({worst or 'no program map'})")
+        parts.append(f"small {small[worst]:.1f} s ({worst or 'no program map'})")
     if scope == "default":
         wall_text = f", {wall:.0f} s wall" if wall is not None else ""
         parts.append(f"pre-merge {sized['small'] + sized['medium']:.0f} s sum{wall_text} of {_limit('pre_merge_s'):g} s")

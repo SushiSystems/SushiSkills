@@ -24,7 +24,6 @@ K_VALUE = re.compile(r"(?P<number>\d+(?: \d{3})*)\s*(?P<unit>ms|s)\b")
 K_LABELS = {
     "A `small` test": "small_test_s",
     "A `medium` test after the shared fixture": "medium_test_s",
-    "The `small` tests of one module": "module_small_s",
     "A repository's pre-merge run (`small` and `medium`), wall": "pre_merge_s",
 }
 

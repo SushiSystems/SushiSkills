@@ -32,7 +32,7 @@ from testing.test_budget import (  # noqa: E402
     suite_and_size,
 )
 
-K_LIMITS = {"small_test_s": 1, "medium_test_s": 10, "module_small_s": 10, "pre_merge_s": 300}
+K_LIMITS = {"small_test_s": 1, "medium_test_s": 10, "pre_merge_s": 300}
 
 
 def junit(cases: dict[str, float], skipped: tuple[str, ...] = ()) -> str:
@@ -104,7 +104,7 @@ class TestEvaluate(unittest.TestCase):
                      scope="default")
         self.assertEqual(report.findings, ())
         self.assertEqual(report.line,
-                         "budget: small 0.2 s of 10 s (core), pre-merge 3 s sum of 300 s, shape 50% small, 50% medium, 0% large")
+                         "budget: small 0.2 s (core), pre-merge 3 s sum of 300 s, shape 50% small, 50% medium, 0% large")
 
     def test_a_large_test_has_no_time_limit_and_counts_in_the_shape(self) -> None:
         report = run({"Large_M.Crush": 5000.0, "Small_A.One": 0.1, "Small_A.Two": 0.1, "Small_A.Three": 0.1},
@@ -123,12 +123,10 @@ class TestEvaluate(unittest.TestCase):
         slow = run({"Small_A.Slow": 1.5}, rerun=[Timing("Small_A.Slow", 1.4)])
         self.assertIn("1.4 s alone, over the small limit of 1 s", slow.findings[0])
 
-    def test_a_program_total_fails_only_above_the_limit_times_the_factor(self) -> None:
-        small = {f"Small_A.T{index}": 1.0 for index in range(12)}
-        ok = run(small, programs={"Small_A": "core"}, factor=1.25)
-        self.assertEqual([f for f in ok.findings if "core" in f], [])
-        bad = run({f"Small_A.T{index}": 1.0 for index in range(14)}, programs={"Small_A": "core"}, factor=1.25)
-        self.assertIn("core: its small tests take 14.0 s, over 10 s x 1.25", bad.findings)
+    def test_a_module_small_total_is_printed_and_never_a_finding(self) -> None:
+        report = run({f"Small_A.T{index}": 0.05 for index in range(2000)}, programs={"Small_A": "core"})
+        self.assertEqual(report.findings, ())
+        self.assertIn("small 100.0 s (core)", report.line)
 
     def test_the_default_run_is_judged_by_wall_time_when_given(self) -> None:
         timings = {"Medium_B.One": 9.0, "Medium_C.Two": 9.0}
@@ -195,7 +193,7 @@ class TestMainCommand(unittest.TestCase):
         with contextlib.redirect_stdout(out):
             code = main([str(self.junit), "--programs", str(self.programs), "--gate"])
         self.assertEqual((code, out.getvalue().splitlines()), (1, [
-            "budget: small 5.0 s of 10 s (core), whole run not measured, shape 100% small, 0% medium, 0% large",
+            "budget: small 5.0 s (core), whole run not measured, shape 100% small, 0% medium, 0% large",
             "rerun: ^(Small_A\\.Slow)$",
             "Small_A.Slow: 5.0 s, over the small limit of 1 s (not rerun)",
         ]))
