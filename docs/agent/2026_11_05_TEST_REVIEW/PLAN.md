@@ -11,7 +11,7 @@ writes each add. Nothing in a module job changes production code except a seam a
 
 | Job | Files | Waits on | Status |
 | --- | --- | --- | --- |
-| T1 | `skills/testing/REVIEWING.md`, `skills/testing/SKILL.md`: the page fixes the owner approves | owner decision 2 | todo |
+| T1 | `skills/testing/REVIEWING.md`, `skills/testing/SKILL.md`: the page fixes above and the rulings of decision 2 |  | todo |
 | T2 | `tools/checking/copy_shared_tools.py` and its test: report the files a repository holds that upstream no longer does |  | todo |
 | T3 | Tests for the rules with none, listed above |  | todo |
 | M1 | the tests of `sushisystems` (1 file): 1 rewrite, 1 resize, 3 split, 2 merge | T1, T2, T3 | todo |

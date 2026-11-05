@@ -45,10 +45,12 @@ shell (J1 to J4) left most rules testable on strings. The non-keep verdicts come
   brief ruled that a value is not; the closure is open (sushiweb).
 - A Unity GameObject, scene or frame and the size it gives. The brief ruled medium until the owner rules.
 
-## The owner's decisions waiting
+## Decisions
 
-1. Whether the four design rules belong here or in sushicore.
-2. The page fixes above, once the owner rules on each.
+The owner delegated these decisions on 2026-11-05. Each ruling below is final for the plan; its reason follows it.
+
+1. The four design rules live in sushicore, which owns the design format through its design commands. The checkers here call them, and `ValidDocumentTest` fails, not passes, when sushicore is absent.
+2. Every ruling of this review that the testing skill does not state is written into `SKILL.md` and `REVIEWING.md` in T1: death tests and the allocation trap are medium; named epsilon constants are not typed tolerances; compile checks are not tests; a loop that only steps time is straight-line; a Unity GameObject in EditMode is small, while a scene or a frame is medium; a fixture closure over a port is a stand-in, a plain value is not; the rules for two copies of one promise; the scoped SushiLog sink in small tests.
 
 ## Dispatches
 
