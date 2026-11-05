@@ -86,9 +86,15 @@ Every view is valid only during the sink call.
 | `LogLevel log_level(LogCategory)` | Returns one category's level |
 | `using LogSink = Delegate<void(const LogRecord&), 48>` | The callable that receives each record |
 | `void set_log_sink(LogSink)` | Replaces the sink; an empty sink restores stderr |
+| `bool exchange_log_sink(LogSink&)` | Swaps the sink in and hands the old one back; false, changing nothing, from inside a sink |
 | `void set_log_synchronous(bool)` | `true` waits for the queue, then delivers each record on the calling thread |
+| `bool log_synchronous()` | Returns whether each record reaches the sink before its log call returns |
 | `LogSink log_forward_sink()` | Returns a sink that enters another logger's record into this logger's queue |
 | `void log_at(LogLevel, LogCategory, const char* file, int line, std::string_view message)` | Writes one record at the given call site past both level gates, for a handler that reports a failure elsewhere, such as an assertion |
+
+A test reads records through `LogCapture` (`SushiLog/log/log_capture.hpp`): while it lives, every
+record reaches its in-memory `LogRecorder` before the log call returns, and on exit it puts back the
+sink and the mode it found. It is the scoped sink a `small` test may install, as `testing` allows.
 
 A project's level variable is read the first time one of its categories is used.
 
