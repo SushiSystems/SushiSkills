@@ -55,6 +55,7 @@ budget. Replaces the direction of the deleted `2026_10_30_TEST_BUDGET`.
 | 2026-11-04: J1 and J1b, the core and shell pattern on the size checker | done, `a70043a` |
 | 2026-11-05: J10, the shared tools with a known-findings baseline in eleven repositories, committed and pushed on `feature/test_pipeline`; project-mobilerts commits once its workers finish | done but project-mobilerts |
 | 2026-11-05: branches other than `main` and `feature/test_pipeline` deleted in every repository, on the owner's instruction | done |
+| 2026-11-05: J16, the definition of a test and `skills/testing/REVIEWING.md`, measured over four rounds of blind review; the device rule's checker is RW-52 | done |
 
 ## SOLID breaches and unneeded dependencies met
 
@@ -110,6 +111,9 @@ dispatch: J10a layering rules upstream — sonnet low, 1 round, passed, rung 1
 dispatch: J10 copy into ten repositories — haiku high, 1 round, stopped (copied a half-edited check_all from the working tree), rung 1
 dispatch: J10b known findings — sonnet medium, 1 round, passed, rung 1
 dispatch: J10c and J10d copier — sonnet low, 2 rounds, passed (returned once for rules 1, 2 and 9), rung 1
+dispatch: J16 literature, three topics — sonnet medium, 1 round each, passed, rung 1
+dispatch: J16 calibration sample — haiku medium, 1 round, passed, rung 1
+dispatch: J16 blind reviewers, four rounds — haiku high and sonnet medium, 1 round each, passed (round 3 sonnet read too little), rung 1
 
 ## Lessons of 2026-11-04
 

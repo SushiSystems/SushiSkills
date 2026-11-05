@@ -20,15 +20,30 @@ and no other.
 A test checks one promise of a public interface, against a named oracle, at the smallest size that
 can see the promise, and fails when the promise is broken.
 
-- **Promise.** The name states it as a sentence: `GemmWithBetaZeroIgnoresNanInC`, not `SimpleGemm`.
-  A name that cannot say which defect the test catches means there is no test. The name starts with
-  the unit it tests, so a failing name leads to its file.
+- **Promise.** A behaviour, not a function: what the unit guarantees to do with given inputs in a
+  given state. One function holds several promises, and one promise can span several functions. The
+  promises of a unit are found by the procedure in `REVIEWING.md`, not recalled.
+- **One when.** The test sets up a state, does one thing, and checks what that one thing promised:
+  given, when, then. A second action is a second test. The name states the promise as a sentence,
+  `GemmWithBetaZeroIgnoresNanInC`, not `SimpleGemm`. An "and" joining two results that can break
+  apart is two tests; one that states a single outcome, such as `RefusesAndLeavesNothingBehind` for an
+  all-or-nothing refusal, is one. A name
+  that cannot say which defect it catches means there is no test. It starts with the unit it tests,
+  so a failing name leads to its file.
 - **Oracle.** Where the expected value comes from. It never comes from running the code under test.
   "Oracles and tolerances" lists the kinds.
-- **Can fail.** A new test kills at least one mutant of the code it tests, or reproduces the defect
-  its commit fixes. A test that passes whatever the code does is not a test.
+- **Can fail, for the right reason.** It fails when the promise breaks: a new test kills at least one
+  mutant of the code it tests, or reproduces the defect its commit fixes. It does not fail when only
+  the inside of the unit changes; a test that breaks on a refactor checks how, not what.
 - **Public interface.** Private details are not tested directly. A private function that seems to
   need its own test is a brick that wants its own module.
+- **Straight line.** No `if`, loop or `try` in the body outside a row table, including a loop that only
+  builds the input or the expected value; a row table or a builder named for what it builds holds it. Setup may repeat
+  between tests when that lets a reader see cause and effect without opening a helper.
+
+Every test answers five questions, and an empty answer is a verdict: which promise, which oracle,
+which defect it catches, why this size, and why it is not a row of a sibling. `REVIEWING.md` turns the
+answers into the verdicts a review gives.
 
 A helper that asserts is named `expect_*` or `assert_*` (`expect*` or `assert*` in TypeScript), so a
 checker can tell an assertion from a call. A project macro counts when its name opens with `EXPECT`
@@ -44,11 +59,11 @@ Never written. The rework of an old suite deletes or rewrites each one it meets.
 | An assertion on a literal, or a value compared with itself | `EXPECT_TRUE(true)` |
 | Printing or logging in place of asserting | `print(result)` |
 | A sleep or a wall-clock wait, to synchronise or to prove that something did not happen | `std::this_thread::sleep_for(50ms)` |
-| A bare tolerance literal in a floating-point comparison | `EXPECT_NEAR(a, b, 1e-5)` |
+| A bare tolerance literal in any comparison with a tolerance, whatever the types compared | `EXPECT_NEAR(a, b, 1e-5)` |
 | A `small` test that reaches what its size forbids | a device queue in `Small_` |
 | A private header, a `Detail::` symbol or a `_private` name | `#include ".../source/x.hpp"` |
 | Control flow in a test body, outside a row table | `if (device) { EXPECT_... }` |
-| A mock of a type the repository owns | mocking the module's own class |
+| A mock, stub or replacement of a type or function the repository owns, made by the test or by a fixture it uses | mocking the module's own class, patching its own `run_tests` |
 | A test of trivial code: a getter, a default value, a constant, a log category, a version string | `EXPECT_EQ(kCategory, "Blas")` |
 | A change detector: asserting how the code works rather than what it promises | asserting the order of internal calls |
 | An expected value pasted from the code's current output | a golden array nobody derived |
@@ -64,7 +79,7 @@ A size is what a test may touch. Time follows from it; it does not define it.
 | Size | May touch | Never | Timeout | Runs |
 | --- | --- | --- | --- | --- |
 | `small` | the memory of its own process, one thread, an injected clock and seed | a device, a file, a socket, a thread, a sleep, the environment, the real clock, a process-wide instance | 1 s | every build, pre-merge |
-| `medium` | one machine: the shared device fixture, a per-test temporary folder, localhost, threads, a software device | a sleep, the network beyond localhost, a second device context, state left behind | 10 s | pre-merge |
+| `medium` | one machine: the device the test program made once, a per-test temporary folder, localhost, threads, a software device | making a device, queue or runtime, a sleep, the network beyond localhost, state left behind | 10 s | pre-merge |
 | `large` | anything, including whole scenes and real hardware at scale | — | 120 s | nightly or weekly, never pre-merge |
 
 The timeouts detect hangs. Each holds for one test case, never for a run; a C++ shard's timeout is its
@@ -181,9 +196,15 @@ register and run them.
    `GTEST_TOTAL_SHARDS` and `GTEST_SHARD_INDEX` to about 10 s each; per-case results come from gtest's
    XML. `gtest_discover_tests` is kept only for a program that needs a process per case, such as
    death tests, and the program says why.
-3. **One device per process.** A gtest `Environment` creates the runtime and the queue once; buffers,
-   engines and graphs are per test, and teardown fails a test that leaks one. A device shard declares
-   `RESOURCE_GROUPS gpus:1`.
+3. **One device per process, made by no test.** The test program makes the runtime and the queue
+   once, before the first test, in a gtest `Environment` registered from the program's own `main`,
+   and the one fixture base of the module hands them to each test. No test body, fixture `SetUp` or
+   helper makes a device, a queue or a runtime; a test that needs one asks the base for it. Buffers,
+   engines and graphs are per test, and teardown fails a test that leaks one or leaves a device error
+   behind. A fatal device error stops the program rather than run the remaining tests on a broken
+   context. A test of logic gets no device at all: it runs on the host implementation of the port. A
+   device shard declares `RESOURCE_GROUPS gpus:1`, and parallel programs get one device each through
+   the visible-devices variable of their runtime.
 4. **No recompilation.** Device code is compiled ahead of time for the build's targets, or the
    persistent kernel cache is on for every run.
 5. **Shuffled.** Every run shuffles with a printed seed; a failure prints the command that

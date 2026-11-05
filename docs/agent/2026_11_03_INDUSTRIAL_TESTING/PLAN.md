@@ -37,7 +37,7 @@ says (no worktree unless the owner asks, no stash), models from `model-routing`.
 | J13 | `PLAN.md` of phase F in sushicore, written by the orchestrator from J12 | J12 | done |
 | J14 | sushiengine: the 13 red checkers, triaged into fixes and backlog entries | J10 | todo |
 | J10b | `tools/checking/known_findings.py` (new), `tools/check_all.py` and their tests: a known-findings baseline that only shrinks, so the commit that brings the tools into a red repository lands | J10a | done |
-| J16 | `skills/testing/SKILL.md` and a new `skills/testing/REVIEWING.md`: how the promises of an interface are found, one good test whole beside a bad one, the signs of a long test, and the verdict table of a suite review | J10 | todo |
+| J16 | `skills/testing/SKILL.md` and a new `skills/testing/REVIEWING.md`: how the promises of an interface are found, one good test whole beside a bad one, the signs of a long test, and the verdict table of a suite review | J10 | done |
 | J15 | the full review of every repository's tests, wave by wave of `PIPELINE.md`: per repository a read-only survey writes the promise list and a verdict per test into its work folder, then module workers apply it; the orchestrator builds and runs every repository's tests itself | J10, J10b, J11, J13, J16 | todo |
 | J5 | sushicore working tree | | done |
 | J6 | sushiruntime working tree | | done |

@@ -145,6 +145,68 @@ rule's reason.
   check-in, multiplayer and performance tests overnight. [U, secondary]
   [GDC 2019](https://gdcvault.com/play/1026366/)
 
+### What a test is, and how one is reviewed
+
+Read on 2026-11-05 by three agents; [V] marks a source an agent read, [S] one known from a search.
+
+- A behaviour is "any guarantee that a system makes about how it will respond to a series of inputs
+  while in a particular state"; a test covers one, a name that needs "and" is two tests, setup is
+  repeated where that keeps a test readable, and a test holds no logic. [V]
+  [SWE at Google ch. 12](https://abseil.io/resources/swe-book/html/ch12.html)
+- Microsoft allows one act per test, no loop or `if`, the simplest input that shows the behaviour,
+  and private code only through the public one; it does not say how the scenarios are found. [V]
+  [MS Learn](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices)
+- Category-partition splits each parameter and environment condition into categories and choices,
+  with constraints that prune the combinations [S]
+  [Ostrand and Balcer 1988](https://faculty.cc.gatech.edu/~harrold/6340/cs6340_fall2009/Readings/ostrandCategoryPartition88.pdf);
+  a boundary has an on-point and an off-point, a loop takes zero, one and many [S]
+  [Aniche, TU Delft slides](https://se.ewi.tudelft.nl/cse1110-2019/slides/03-specification-and-boundary-tests.pdf).
+- Pre- and postconditions and invariants serve as filters and oracles [S]
+  [ETH AutoTest retrospective](https://arxiv.org/pdf/1712.05078); property shapes are round trip,
+  invariant, oracle, metamorphic and idempotence [S] [Wayne](https://hillelwayne.com/hypothesis-oracles).
+- No study measures whether two engineers derive the same test list; testers given one technique
+  make different mistakes [V via slides]
+  [Juristo et al.](https://www.slideshare.net/slideshow/tester-contribution-to-testing-effectiveness/27778268).
+  Of the test cases more than one practitioner rated, about half got the same class [V]
+  [Tran et al. 2019](https://arxiv.org/abs/2309.16801). Agreement is measured here, not assumed.
+- Google's reviewer asks whether a test fails when the code is broken, whether it gives false
+  positives when the code changes beneath it, and whether its assertions are simple and useful [V]
+  [eng-practices](https://google.github.io/eng-practices/review/reviewer/looking-for.html).
+- Smell rules are counts of constructs: conditional logic, sleep, a file or database made in the test,
+  a fixture field a test does not use [V] [testsmells.org](https://testsmells.org/pages/testsmells.html).
+  Developers judge many flagged instances harmless and want looser thresholds, such as four production
+  calls rather than two for an eager test [S]
+  [Spadini et al. 2020](https://research.tudelft.nl/en/publications/investigating-severity-thresholds-for-test-smells/),
+  [Panichella et al. 2022](https://pure.tudelft.nl/ws/portalfiles/portal/137994226/s10664_022_10207_5.pdf).
+  No source gives a line count for a test.
+- Expensive resources are made once per test process: Kokkos initialises in its test `main` [V]
+  [UnitTestMainInit.cpp](https://github.com/kokkos/kokkos/blob/develop/core/unit_test/UnitTestMainInit.cpp),
+  oneMKL enumerates the devices once in `main` [V]
+  [main_test.cpp](https://github.com/oneapi-src/oneMKL/blob/develop/tests/unit_tests/main_test.cpp),
+  PyTorch hands each test a `device` argument and checks device memory after it [V]
+  [common_device_type.py](https://github.com/pytorch/pytorch/blob/main/torch/testing/_internal/common_device_type.py),
+  and JAX gives each parallel worker one device through the visible-devices variable [V]
+  [conftest.py](https://github.com/jax-ml/jax/blob/main/conftest.py). GoogleTest's global environment
+  is the C++ form; shared state is left unmodified or restored, and shuffled runs expose a dependency
+  [V] [GoogleTest advanced](https://google.github.io/googletest/advanced.html). No project was found
+  that forbids making a device inside a test by a checker.
+
+### How far the review page makes reviewers agree
+
+Measured on 2026-11-05: two blind reviewers, a haiku and a sonnet, given only `testing` and
+`REVIEWING.md`, judged the same 24 tests from eight repositories, and the page was corrected after
+each round.
+
+| Round | Same verdict | Source of the differences |
+| --- | --- | --- |
+| 1 | 21 of 24 | The page: forbidden kind against a sole test, "and", size signs, mocked functions |
+| 2 | 20 of 24 | The page: sibling tests unseen, state left behind, process-wide instances, input loops |
+| 3 | 15 of 24 | One reviewer did not open the files; the record now names the files read |
+| 4 | 19 of 24 | Four were one reviewer missing what the other read; one was the page (a fixture's replacement) |
+
+Literature reports about half the same class between practitioners. The rest is reviewer care, which
+the record's file list makes visible.
+
 ## Decision
 
 The owner decided on 2026-11-03: the brief above. The engineer, on the owner's instruction to
