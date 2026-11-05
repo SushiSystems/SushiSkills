@@ -109,11 +109,12 @@ order, and the first answer that gives a verdict ends the review of that test.
 | # | Question | If the answer is | Verdict |
 | --- | --- | --- | --- |
 | 1 | Is it one of the forbidden kinds of `SKILL.md`? | yes, and its promise is tested elsewhere or it states none | **delete**, naming the kind |
-| | | yes, and it is the only test of a real promise | **rewrite**, naming the kind |
+| | | yes, and it is the only test of a real promise, or the copy in the unit's own test file | **rewrite**, naming the kind |
 | 2 | Would it fail if its promise broke? | no | **delete**, or **rewrite** when its promise has no other test |
 | 3 | Can its promise be said as one sentence from the name and body? | no, there is none | **delete** |
 | | | no, there are several | **split**, one test per promise |
-| 4 | Does another test check the same promise? | yes, at a larger size or in another file | **delete** this one |
+| 4 | Does another test check the same promise? | yes, and this one is the larger copy, or sits outside the unit's own test file while the other is in it | **delete** this one |
+| | | yes, and neither is in the unit's own test file | **rewrite** the fuller one into the unit's own test file, **delete** the other |
 | | | yes, with other inputs | **merge** them into rows |
 | 5 | Would it fail when only the inside of the unit changes? | yes | **rewrite** against the public promise |
 | 6 | Is its oracle the code under test, or a value pasted from its output? | yes | **rewrite** with a named oracle, or **characterize** with a backlog entry |

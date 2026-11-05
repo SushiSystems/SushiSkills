@@ -38,7 +38,8 @@ can see the promise, and fails when the promise is broken.
 - **Public interface.** Private details are not tested directly. A private function that seems to
   need its own test is a brick that wants its own module.
 - **Straight line.** No `if`, loop or `try` in the body outside a row table, including a loop that only
-  builds the input or the expected value; a row table or a builder named for what it builds holds it. Setup may repeat
+  builds the input or the expected value; a row table or a builder named for what it builds holds it. A loop that only advances simulated time, with
+  no check inside it, is a helper named for it, such as `run_for(ticks)`, and the call is straight. Setup may repeat
   between tests when that lets a reader see cause and effect without opening a helper.
 
 Every test answers five questions, and an empty answer is a verdict: which promise, which oracle,
@@ -63,11 +64,15 @@ Never written. The rework of an old suite deletes or rewrites each one it meets.
 | A `small` test that reaches what its size forbids | a device queue in `Small_` |
 | A private header, a `Detail::` symbol or a `_private` name | `#include ".../source/x.hpp"` |
 | Control flow in a test body, outside a row table | `if (device) { EXPECT_... }` |
-| A mock, stub or replacement of a type or function the repository owns, made by the test or by a fixture it uses | mocking the module's own class, patching its own `run_tests` |
+| A mock, stub or replacement of a type or function the repository owns, made by the test or by a fixture it uses, including a fixture closure that implements a port by hand | mocking the module's own class, patching its own `run_tests` |
 | A test of trivial code: a getter, a default value, a constant, a log category, a version string | `EXPECT_EQ(kCategory, "Blas")` |
 | A change detector: asserting how the code works rather than what it promises | asserting the order of internal calls |
 | An expected value pasted from the code's current output | a golden array nobody derived |
 | The same promise again at a larger size or in another file | `SimpleAxpy` beside the reference axpy test |
+
+A value of a plain data type built by hand is not a stand-in; a builder named for it is preferred. A
+`static_assert` check is not a test: it sits in a compile-only translation unit that the build compiles
+and the test runner never lists.
 
 An expected value pasted from current output is allowed only in a test whose suite opens with
 `Characterization_`, written to pin behaviour before a refactor, with a backlog entry that removes it.
@@ -81,6 +86,11 @@ A size is what a test may touch. Time follows from it; it does not define it.
 | `small` | the memory of its own process, one thread, an injected clock and seed | a device, a file, a socket, a thread, a sleep, the environment, the real clock, a process-wide instance | 1 s | every build, pre-merge |
 | `medium` | one machine: the device the test program made once, a per-test temporary folder, localhost, threads, a software device | making a device, queue or runtime, a sleep, the network beyond localhost, state left behind | 10 s | pre-merge |
 | `large` | anything, including whole scenes and real hardware at scale | — | 120 s | nightly or weekly, never pre-merge |
+
+A process-wide instance has one exception in a `small` test: a scoped in-memory sink the test installs on
+the process-wide logger and that puts the old sink back on exit. The tests of one program run one at a
+time, so no other test sees it. A death test is `medium`, since it starts a child process, and so is a
+test that replaces a process-wide hook such as the global allocator, scoped by a guard.
 
 The timeouts detect hangs. Each holds for one test case, never for a run; a C++ shard's timeout is its
 size's timeout times the number of cases in it. "Time" holds the limits a test is held to.
@@ -109,7 +119,7 @@ boundary in one `medium` class, and the mutants on its changed lines are killed.
 | C++ | The suite name opens with `Small_`, `Medium_` or `Large_`: `TEST(Small_TensorShape, RejectsANegativeExtent)` |
 | Python | `pytest.mark.small`, `medium` or `large` on the test's class, or as `pytestmark` on its file; a `unittest` file that must run without pytest, such as a checker test, sets `K_TEST_SIZE = "small"` at file level, or as a class attribute on the test class, which overrides the file's |
 | TypeScript | The `describe` block's name opens with `small:`, `medium:` or `large:` |
-| C# (NUnit, Unity) | `[Category("small")]`, `"medium"` or `"large"` on the fixture class; a `[UnityTest]` or a test that loads a scene is at least `medium` |
+| C# (NUnit, Unity) | `[Category("small")]`, `"medium"` or `"large"` on the fixture class; a GameObject made and destroyed in an EditMode test is `small`, and a `[UnityTest]`, a yielded frame or a test that loads a scene is at least `medium` |
 
 The build reads the size from there and sets the label and the timeout; no build file lists suites by
 size. A suite with no size fails the build, and in Python fails collection. In Python the timeout
@@ -142,7 +152,13 @@ the repository's tolerance helper, which computes `c · f(n) · u · gauge` (for
 `n · u · Σ|aᵢbᵢ|`) and fails when error over bound exceeds the repository's one threshold. The C++
 helper is `tests/support/tolerance.hpp`, copied from SushiSkills's `tools/testing/support/` as `project-tools`
 gives for shared files. A bare `==` is kept only where the value is copied, not computed, or exactly
-representable, and the name says so.
+representable, and the name says so. A name does not derive a tolerance: a named constant that holds a
+hand-typed epsilon keeps its name and is defined through the helper.
+
+An acceptance band that a module promises, such as a physical fidelity bound, is a constant in the
+module's header with its source beside it, and the test compares against it through the helper. A
+statistical bound runs on a fixed seed, and is derived from the sample count and a stated false-failure
+rate written beside it.
 
 **Small shapes.** A routine is tested on the sizes {0, 1, 2, 3, 5, 9}, on tile size ± 1, on every
 transpose and layout, on alpha and beta in {0, 1, another value}, with strides and leading dimensions
@@ -169,7 +185,8 @@ decision; an internal one is yours.
    contract tests. The in-memory one is the fake every other module's tests use; nobody mocks it.
    The contract tests are one typed or parametrised suite, `<Port>Contract`, in the test file of the
    port's own module, instantiated once per implementation: `small` for the in-memory one, the size
-   its boundary needs for the real one.
+   its boundary needs for the real one. Only the adapter ships in the module; case tables, builders
+   and fixtures live under `tests/support/` in a target only the tests link.
 3. **Kernels call host-callable functions.** The arithmetic and index math of a device kernel is a
    function compiled for host and device. Small tests call it on the host; one medium test per kernel
    family checks the launch against the host reference.
