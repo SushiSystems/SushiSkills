@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-07 — testing: Read a C++ test file named `<unit>_test.cpp` as well as `test_<unit>.cpp`, so gtest suites in such files carry a size (`check_test_sizes.py`).
 - 2026-11-07 — project-tools: Said in the skill that the copier names a file dropped upstream and never deletes it (`project-tools/SKILL.md`).
 - 2026-11-07 — sushisystems: Rewrote the `apply_settings` tests to one promise each, with the idempotence check made small over text (`sushisystems-tooling/tests/test_apply_settings.py`).
 - 2026-11-07 — tools: Gave the nine checker rules that had none a test that fails when the rule breaks: four of `check_source_comments`, four of `check_docs_layout` and `check_layering`'s `rule_private_reach`.
