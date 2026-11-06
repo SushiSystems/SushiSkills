@@ -20,6 +20,7 @@ from checking.copy_shared_tools import (  # noqa: E402
     LocalEditsError,
     committed,
     copy,
+    dropped,
     first_year,
     known_bodies,
     local_edits,
@@ -254,6 +255,18 @@ class SmallDecisionTest(unittest.TestCase):
 
     def test_the_notice_names_every_path(self) -> None:
         self.assertEqual(uncommitted_notice(["a", "b"]), "upstream has uncommitted changes, copying HEAD: a, b")
+
+
+class DroppedTest(unittest.TestCase):
+    """Covers the files a repository holds that upstream no longer shares."""
+
+    def test_a_file_upstream_dropped_is_named(self) -> None:
+        held = ["tools/check_all.py", "tools/testing/check_test_additions.py"]
+        once = ["tools/check_all.py", "tools/testing/check_test_additions.py"]
+        self.assertEqual(dropped(held, ["tools/check_all.py"], once), ["tools/testing/check_test_additions.py"])
+
+    def test_a_local_tool_upstream_never_held_is_not_named(self) -> None:
+        self.assertEqual(dropped(["tools/own.py"], [], ["tools/check_all.py"]), [])
 
 
 class NewFileHeaderTest(unittest.TestCase):
