@@ -25,13 +25,17 @@ from documentation.check_docs_layout import (  # noqa: E402
     collect,
     link_probes,
     rule_closed_work,
+    rule_design_ceiling,
     rule_docs_entries,
+    rule_document_names,
     rule_forbidden_kinds,
     rule_link_anchors,
     rule_links,
+    rule_module_readmes,
     rule_reachable_from_index,
     rule_required_entries,
     rule_status_lines,
+    rule_work_folders,
 )
 
 K_ROOT = Path("repo")
@@ -346,6 +350,60 @@ class ForbiddenKindsTest(unittest.TestCase):
         """Reports nothing for a design document and the backlog."""
         files = {"docs/design/RENDERER.md": "# R\n", "docs/design/REMAINING_WORK.md": "# W\n"}
         self.assertEqual(list(rule_forbidden_kinds(_repository(files))), [])
+
+
+class DocumentNamesTest(unittest.TestCase):
+    """Checks the names of live documents."""
+    K_TEST_SIZE = "small"
+
+    def test_a_lower_case_document_is_reported(self) -> None:
+        self.assertEqual(_names(rule_document_names(_repository({"docs/guides/setup.md": "# S\n"}))),
+                         ["guides/setup.md"])
+
+    def test_an_upper_snake_case_document_is_clean(self) -> None:
+        self.assertEqual(list(rule_document_names(_repository({"docs/guides/SET_UP.md": "# S\n"}))), [])
+
+
+class WorkFoldersTest(unittest.TestCase):
+    """Checks the folders under docs/agent/ and the files inside them."""
+    K_TEST_SIZE = "small"
+
+    def test_a_folder_without_a_date_is_reported(self) -> None:
+        self.assertEqual(_names(rule_work_folders(_repository({"docs/agent/REVIEW/PLAN.md": "# P\n"}))),
+                         ["agent/REVIEW"])
+
+    def test_a_foreign_file_in_a_work_folder_is_reported(self) -> None:
+        repository = _repository({"docs/agent/2026_11_05_REVIEW/NOTES.md": "# N\n"})
+        self.assertEqual(_names(rule_work_folders(repository)), ["agent/2026_11_05_REVIEW/NOTES.md"])
+
+    def test_a_dated_folder_with_its_plan_is_clean(self) -> None:
+        self.assertEqual(list(rule_work_folders(_repository({"docs/agent/2026_11_05_REVIEW/PLAN.md": "# P\n"}))), [])
+
+
+class DesignCeilingTest(unittest.TestCase):
+    """Checks the length of a design document."""
+    K_TEST_SIZE = "small"
+
+    def test_a_design_document_over_the_ceiling_is_reported(self) -> None:
+        repository = _repository({"docs/design/TOPIC/PHASE_1.md": "line\n" * 401})
+        self.assertEqual(_names(rule_design_ceiling(repository)), ["design/TOPIC/PHASE_1.md"])
+
+    def test_a_design_document_at_the_ceiling_is_clean(self) -> None:
+        repository = _repository({"docs/design/TOPIC/PHASE_1.md": "line\n" * 400})
+        self.assertEqual(list(rule_design_ceiling(repository)), [])
+
+
+class ModuleReadmesTest(unittest.TestCase):
+    """Checks that each module folder holds a README.md."""
+    K_TEST_SIZE = "small"
+
+    def test_a_module_without_a_readme_is_reported(self) -> None:
+        repository = _repository({"modules/core/maths/vector.hpp": ""})
+        self.assertEqual([issue.message for issue in rule_module_readmes(repository)], ["module lacks README.md"])
+
+    def test_a_module_with_a_readme_is_clean(self) -> None:
+        repository = _repository({"modules/core/maths/README.md": "# Maths\n"})
+        self.assertEqual(list(rule_module_readmes(repository)), [])
 
 
 def _write_tree(folder: str, files: dict[str, str]) -> Path:

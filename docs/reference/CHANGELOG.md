@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-07 — tools: Gave the nine checker rules that had none a test that fails when the rule breaks: four of `check_source_comments`, four of `check_docs_layout` and `check_layering`'s `rule_private_reach`.
 - 2026-11-07 — tools: Named each file a repository tracks that SushiSkills once shared and has since dropped, so a stale copy such as `check_test_additions.py` is seen; nothing is removed (`copy_shared_tools.py`).
 - 2026-11-06 — testing: Read the size of a C++ `Characterization_` suite from the prefix after the word, `Characterization_Medium_<Unit>` (`case_reader.py`, `check_test_sizes.py`, `test_budget.py`).
 - 2026-11-06 — testing: Let a compile-only `compile_<name>.cpp` stand for the test file of a C++ header with no runtime promise (`check_test_mirror.py`, `repository-layout/TESTS.md`).

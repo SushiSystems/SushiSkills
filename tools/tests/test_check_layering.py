@@ -33,6 +33,7 @@ from layering.check_layering import (  # noqa: E402
     rule_declared_dependencies,
     rule_declared_libraries,
     rule_declared_tiers,
+    rule_private_reach,
     rule_public_headers,
     rule_restricted_includes,
     rule_same_tier_includes,
@@ -231,6 +232,26 @@ class RuleSameTierIncludesTest(unittest.TestCase):
             "modules/foundation/umbrella/include/Project/foundation.hpp": "#include <Project/core/core.hpp>",
         }
         self.assertEqual(list(rule_same_tier_includes(_tree(files))), [])
+
+
+class RulePrivateReachTest(unittest.TestCase):
+    """Covers reaching into another module's source/ folder."""
+    K_TEST_SIZE = "small"
+
+    def test_a_quoted_include_into_source_is_reported(self) -> None:
+        files = {"modules/foundation/log/source/log.cpp": '#include "../../core/source/detail.hpp"'}
+        self.assertEqual(_messages(rule_private_reach(_tree(files))),
+                         ["quoted include leaves the module or names a source/ folder"])
+
+    def test_a_build_line_into_another_modules_source_is_reported(self) -> None:
+        files = {
+            "modules/foundation/core/source/core.cpp": "",
+            "modules/foundation/log/CMakeLists.txt": "target_sources(log PRIVATE ../core/source/core.cpp)",
+        }
+        self.assertEqual(_messages(rule_private_reach(_tree(files))), ["reaches into core/source"])
+
+    def test_an_angle_include_of_a_public_header_is_clean(self) -> None:
+        self.assertEqual(list(rule_private_reach(_tree(K_CORE))), [])
 
 
 class BuildDeclarationTest(unittest.TestCase):
