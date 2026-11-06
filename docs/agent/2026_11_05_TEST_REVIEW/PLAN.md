@@ -1,6 +1,6 @@
 # Test review: plan
 
-**Status:** Open — every job done
+**Status:** Open — paused by the owner on 2026-11-07; see Pause
 
 Applies the verdicts of `REPORT.md`, in hierarchy order: the shared helpers, adapters and seams the
 rewrites need come first, then the defects the review found, then each module's tests. A module job
@@ -30,17 +30,37 @@ The owner chooses inline or parallel mode.
 
 ## Pause
 
-The owner paused the review on 2026-11-06 for other work. Every report, plan and finished job is
-committed and pushed: on `main` here, on `feature/test_pipeline` in the other twelve repositories.
-Each repository's `PLAN.md` in its own `docs/agent/2026_11_05_TEST_REVIEW/` holds its job table.
+The owner paused the work on 2026-11-07 to shut the machine down. Every repository's lead stopped
+at a clean, pushed point on `feature/test_pipeline` (`main` here); each repository's `PLAN.md` in
+its own `docs/agent/2026_11_05_TEST_REVIEW/` holds its job table and Status column, and its
+`REPORT.md` holds the rulings, the dispatch lines and the risks its final build must check.
 
-Done so far: T1 here, T1 and T3 in SushiCore (the in-memory adapters and the size timeouts), T1 in
-SushiLog (`LogCapture`). Work resumes with the jobs those unblock, in this order:
+### The owner's rules for the rest of this work
 
-1. The CLI tests on SushiCore's in-memory runner and console: SushiLog T2, SushiProfiler T4,
-   SushiTrack T5, SushiDSP T5, SushiRuntime T6, SushiBLAS T6, SushiAI T7 and SushiEngine T8.
-2. The log captures on `LogCapture`: SushiAI T5 and SushiTrack T3.
-3. SushiRuntime T1, the tolerance header and the fixture base. SushiBLAS T2 and SushiAI T2 wait on it.
-4. The other T jobs of each plan, then its M jobs.
+- A repository is refactored completely first. Then it gets one build and one test run, at the
+  very end, and nothing else: no test run per job, no C++ build per job, no Python test run per
+  job. Only the checkers the commit hook runs stay on every commit.
+- Decisions the plans leave open are delegated to the lead of each repository, public interface
+  changes inside that repository included. Each ruling is written into that repository's
+  `REPORT.md`.
+- One repository lead at a time per repository, at most two workers each. Machine memory is short.
 
-The owner picks inline or parallel mode again when the work resumes.
+### Where each repository stands
+
+| Repository | State |
+| --- | --- |
+| SushiLog | Finished; released as v0.3.1; work folder closed |
+| SushiStack | Finished; gui build 96 of 96; work folder closed |
+| SushiSkills | Every job done; this folder stays open as the plan of the whole review |
+| SushiCore | Every job but M6 (provision, 40 files) done; v0.10.15 released, a release is due for the rest |
+| SushiProfiler, SushiTrack, SushiDSP | Python jobs done; the C++ T and M jobs not started |
+| SushiRuntime | Every T job and most M jobs done unbuilt; M7 and the decision entries in progress |
+| SushiBLAS | Every T job and 30 of 49 M jobs done unbuilt; RW-140 to RW-147 and 19 M jobs left |
+| SushiAI | Every T job and about 20 M jobs done unbuilt; RW-155 and the other M jobs left |
+| SushiWeb | T1, T5, T6, T7 and security fixes done; T2 to T4 and M1 to M30 left |
+| SushiEngine | T8 and T10 done; T1 to T7, T9 and M1 to M136 left; 7 uncommitted test files in its tree belong to another session |
+| Project mobileRTS | Not started |
+
+Work resumes with a fresh lead per repository from its Status column. The lead briefs used on
+2026-11-07 were in the session scratchpad; a resumed lead is briefed from this section and the
+repository's `REPORT.md`.
