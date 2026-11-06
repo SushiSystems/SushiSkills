@@ -54,6 +54,7 @@ directly under the owner's folder: `tests/<tier>/umbrella/test_Acme.cpp` for `Ac
 | `tests/<owner>/goldens/<name>/` | Reference outputs those tests compare against; see `testing` |
 | `tests/<owner>/benchmark_<name>.cpp` | The benchmark of a unit, built into the module's benchmark program; see `performance` |
 | `tests/package/` | An out-of-tree consumer that builds against the installed package |
+| `tests/support/` | The helpers every test program shares, such as `tolerance.hpp` and the fixture base, in a target only the tests link; see `testing` |
 | `tests/<owner>/<name>.hpp` | A helper that only the tests of this owner share; see below |
 | `tests/<owner>/README.md` | Notes the tests of one owner share, with a row per helper |
 
