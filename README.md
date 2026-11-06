@@ -26,9 +26,8 @@ Sushi Systems skill wins.
 
 ## Licence
 
-Source-available, free for non-commercial use, under the PolyForm Noncommercial License 1.0.0;
-see `LICENSE`. Commercial use needs a licence from Sushi Systems; see `COMMERCIAL.md`.
-Third-party material keeps its own licence; see `NOTICE.md`.
+Open source under the Apache License 2.0; see `LICENSE`. Third-party material keeps its own
+licence; see `NOTICE.md`.
 
-v0.2.0 is the first version under this licence. v0.1.1 and earlier, the commits up to `f5dbf69`,
-were published under Apache-2.0 and stay under it.
+v0.2.0 up to the commit before this licence change was published under the PolyForm Noncommercial
+License 1.0.0. Those versions stay available under it, and their code is under Apache 2.0 here.

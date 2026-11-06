@@ -18,7 +18,7 @@ pin, the workspace tool, the logger. This page says who fills each role at Sushi
 | Sibling checkout | `../<name>` |
 | The copy setup fetched | `<cli> setup`, through sushicore, clones the pinned tag into its home under `sources/<name>/<version>/` and refuses it when the commit differs from the pin |
 | Workspace tool | SushiHub |
-| Licence of its own libraries | PolyForm Noncommercial 1.0.0, accepted as a dependency |
+| Licence of its own libraries | Apache License 2.0 |
 
 ## Moving a pin
 

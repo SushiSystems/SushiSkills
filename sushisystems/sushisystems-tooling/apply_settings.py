@@ -1,8 +1,7 @@
 # apply_settings.py
 # SushiSkills - https://github.com/SushiSystems/SushiSkills
 # Copyright (c) 2026-present Mustafa Garip & Sushi Systems
-# Licensed under PolyForm Noncommercial 1.0.0. See LICENSE.
-# Commercial use requires a licence from Sushi Systems.
+# Licensed under the Apache License 2.0. See LICENSE.
 """Adds the Sushi settings the shared tools read to a repository, and the backlog block to its CLAUDE.md.
 
 Usage: python sushisystems/sushisystems-tooling/apply_settings.py ROOT [--alias ALIAS]

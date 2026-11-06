@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-06 — licence: Relicensed SushiSkills under the Apache License 2.0 and removed `COMMERCIAL.md`; the Sushi licence block, settings and brand wording follow (`sushisystems-licence`, `tools/settings.py`).
 - 2026-11-05 — sushisystems: Named SushiLog's `LogCapture`, `exchange_log_sink` and `log_synchronous` in the logger's interface (`sushisystems-logging/INTERFACE.md`).
 - 2026-11-05 — testing: Wrote the test review's rulings into the skill: death tests are medium, a scoped logger sink is allowed small, and a named epsilon is still typed (`SKILL.md`, `REVIEWING.md`).
 - 2026-11-05 — testing: Defined a test as one behaviour with one action, added `REVIEWING.md` for finding promises and giving each test a verdict, and kept every device out of the tests.

@@ -1,7 +1,7 @@
 # Notices
 
-SushiSkills is Copyright (c) 2026-present Mustafa Garip & Sushi Systems and licensed under the PolyForm Noncommercial
-License 1.0.0; see `LICENSE`. The material below keeps its own licence.
+SushiSkills is Copyright (c) 2026-present Mustafa Garip & Sushi Systems and licensed under the Apache
+License 2.0; see `LICENSE`. The material below keeps its own licence.
 
 ## Third-party components
 
@@ -21,4 +21,6 @@ The full list of works the humanizer rules cite is in `skills/humanizer/research
 ## Earlier versions
 
 v0.1.1 and earlier, the commits up to and including `f5dbf69`, were published under the Apache
-License 2.0 and stay available under it. v0.2.0 is the first version under the licence above.
+License 2.0. v0.2.0 up to the licence change were published under the PolyForm Noncommercial
+License 1.0.0 and stay available under it; the same code is under the Apache License 2.0 from the
+licence change on.
