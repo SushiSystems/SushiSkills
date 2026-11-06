@@ -84,7 +84,9 @@ left out; with `--report` it lists the ones that differ and exits 1. It is run f
 checkout, never from a repository's copy, so a fix to the copier applies on the run that brings
 it. A repository runs it after a checker changes upstream. A shared file whose text no upstream version
 ever held is a local edit: the copy refuses, writes nothing and names the file, and `--force`
-overwrites it. Move the edit upstream first, or drop it.
+overwrites it. Move the edit upstream first, or drop it. A file the repository holds that SushiSkills
+shared once and no longer holds is named as dropped upstream; the copy never deletes it, and the
+repository removes it in its own commit.
 
 ## Hooks
 

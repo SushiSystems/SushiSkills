@@ -51,6 +51,7 @@ The owner delegated these decisions on 2026-11-05. Each ruling below is final fo
 
 1. The four design rules live in sushicore, which owns the design format through its design commands. The checkers here call them, and `ValidDocumentTest` fails, not passes, when sushicore is absent.
 2. Every ruling of this review that the testing skill does not state is written into `SKILL.md` and `REVIEWING.md` in T1: death tests and the allocation trap are medium; named epsilon constants are not typed tolerances; compile checks are not tests; a loop that only steps time is straight-line; a Unity GameObject in EditMode is small, while a scene or a frame is medium; a fixture closure over a port is a stand-in, a plain value is not; the rules for two copies of one promise; the scoped SushiLog sink in small tests.
+3. The M1 record that asked for a seam passing the upstream values in is met by the existing `missing_settings(text)`, which already takes text: an M job changes no production code when a public function already reaches the promise.
 
 ## Dispatches
 
