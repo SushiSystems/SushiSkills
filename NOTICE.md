@@ -22,5 +22,4 @@ The full list of works the humanizer rules cite is in `skills/humanizer/research
 
 v0.1.1 and earlier, the commits up to and including `f5dbf69`, were published under the Apache
 License 2.0. v0.2.0 up to the licence change were published under the PolyForm Noncommercial
-License 1.0.0 and stay available under it; the same code is under the Apache License 2.0 from the
-licence change on.
+License 1.0.0; from 2026-11-06 on, those versions are also licensed under the Apache License 2.0.

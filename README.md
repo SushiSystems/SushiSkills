@@ -27,7 +27,5 @@ Sushi Systems skill wins.
 ## Licence
 
 Open source under the Apache License 2.0; see `LICENSE`. Third-party material keeps its own
-licence; see `NOTICE.md`.
-
-v0.2.0 up to the commit before this licence change was published under the PolyForm Noncommercial
-License 1.0.0. Those versions stay available under it, and their code is under Apache 2.0 here.
+licence; see `NOTICE.md`. Every earlier version is
+under the Apache License 2.0 as well; see `NOTICE.md`.
