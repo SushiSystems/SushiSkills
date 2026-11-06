@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-11-07 — tools: Applied the test review to the checker tests: one promise per test, rows in place of loops, and small where no disk is touched (`tools/tests/`).
+- 2026-11-07 — tools: Gave the checkers keyword-only parameters, such as `run_plan` and `budget`, that their tests pass in place of patching settings or functions (`tools/`).
 - 2026-11-07 — testing: Read a C++ test file named `<unit>_test.cpp` as well as `test_<unit>.cpp`, so gtest suites in such files carry a size (`check_test_sizes.py`).
 - 2026-11-07 — project-tools: Said in the skill that the copier names a file dropped upstream and never deletes it (`project-tools/SKILL.md`).
 - 2026-11-07 — sushisystems: Rewrote the `apply_settings` tests to one promise each, with the idempotence check made small over text (`sushisystems-tooling/tests/test_apply_settings.py`).

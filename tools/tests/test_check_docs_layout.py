@@ -309,14 +309,15 @@ class ClosedWorkTest(unittest.TestCase):
         self.assertEqual(sorted(_names(rule_closed_work(_repository(files)))),
                          ["agent/2026_01_01_OLD", "design/OLD.md"])
 
-    def test_keeps_a_shipped_design_and_deletes_a_shipped_work_folder(self) -> None:
-        """Keeps a shipped design, the record of its decisions, and lists a shipped folder."""
-        files = {
-            "docs/design/SHIPPED.md": f"# S\n\n**Status:** Shipped — {_days_ago(400)}\n",
-            "docs/agent/2026_01_01_DONE/SPEC.md": f"# W\n\n**Status:** Shipped — {_days_ago(91)}\n",
-        }
-        self.assertEqual(_names(rule_closed_work(_repository(files))),
-                         ["agent/2026_01_01_DONE"])
+    def test_a_shipped_design_is_kept(self) -> None:
+        """Lists nothing for a shipped design, the record of its decisions, however long ago it shipped."""
+        files = {"docs/design/SHIPPED.md": f"# S\n\n**Status:** Shipped — {_days_ago(400)}\n"}
+        self.assertEqual(_names(rule_closed_work(_repository(files))), [])
+
+    def test_a_shipped_work_folder_is_listed(self) -> None:
+        """Lists a work folder shipped beyond its grace."""
+        files = {"docs/agent/2026_01_01_DONE/SPEC.md": f"# W\n\n**Status:** Shipped — {_days_ago(91)}\n"}
+        self.assertEqual(_names(rule_closed_work(_repository(files))), ["agent/2026_01_01_DONE"])
 
     def test_a_grace_of_zero_lists_work_closed_today(self) -> None:
         """Lists a work folder closed today when the repository deletes at close."""

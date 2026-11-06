@@ -114,15 +114,11 @@ class LicenseBlockTest(unittest.TestCase):
         """Accepts a Python file that opens with the `#` block."""
         self.assertEqual(_messages("graph.py", _hashed("graph.py")), [])
 
-    def test_accepts_block_after_shebang(self) -> None:
-        """Accepts a Python file whose block follows a shebang line."""
-        text = _hashed("graph.py", first="#!/usr/bin/env python3\n")
-        self.assertEqual(_messages("graph.py", text), [])
-
     def test_accepts_block_after_coding_line(self) -> None:
-        """Accepts a Python file whose block follows a source encoding line."""
-        text = _hashed("graph.py", first="# -*- coding: utf-8 -*-\n")
-        self.assertEqual(_messages("graph.py", text), [])
+        """Accepts a Python file whose block follows a shebang line or a source encoding line."""
+        for first in ("#!/usr/bin/env python3\n", "# -*- coding: utf-8 -*-\n"):
+            with self.subTest(first=first):
+                self.assertEqual(_messages("graph.py", _hashed("graph.py", first=first)), [])
 
     def test_accepts_block_behind_a_byte_order_mark(self) -> None:
         """Accepts a correct block whose file begins with a UTF-8 byte order mark."""

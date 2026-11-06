@@ -1,6 +1,6 @@
 # Test review: plan
 
-**Status:** Open — T1 to T3 and M1 done, M2 next
+**Status:** Open — every job done
 
 Applies the verdicts of `REPORT.md`, in hierarchy order: the shared helpers, adapters and seams the
 rewrites need come first, then the defects the review found, then each module's tests. A module job
@@ -15,7 +15,7 @@ writes each add. Nothing in a module job changes production code except a seam a
 | T2 | `tools/checking/copy_shared_tools.py` and its test: report the files a repository holds that upstream no longer does |  | done |
 | T3 | Tests for the rules with none, listed above |  | done |
 | M1 | the tests of `sushisystems` (1 file): 1 rewrite, 1 resize, 3 split, 2 merge | T1, T2, T3 | done |
-| M2 | the tests of `tools` (47 files): 43 rewrite, 15 resize, 36 split, 5 merge, 8 delete | T1, T2, T3 | todo |
+| M2 | the tests of `tools` (47 files): 43 rewrite, 15 resize, 36 split, 5 merge, 8 delete | T1, T2, T3 | done |
 
 ## Acceptance
 

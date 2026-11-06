@@ -52,10 +52,17 @@ The owner delegated these decisions on 2026-11-05. Each ruling below is final fo
 1. The four design rules live in sushicore, which owns the design format through its design commands. The checkers here call them, and `ValidDocumentTest` fails, not passes, when sushicore is absent.
 2. Every ruling of this review that the testing skill does not state is written into `SKILL.md` and `REVIEWING.md` in T1: death tests and the allocation trap are medium; named epsilon constants are not typed tolerances; compile checks are not tests; a loop that only steps time is straight-line; a Unity GameObject in EditMode is small, while a scene or a frame is medium; a fixture closure over a port is a stand-in, a plain value is not; the rules for two copies of one promise; the scoped SushiLog sink in small tests.
 3. The M1 record that asked for a seam passing the upstream values in is met by the existing `missing_settings(text)`, which already takes text: an M job changes no production code when a public function already reaches the promise.
+4. Where an M2 record asked to stop patching a setting or a function of the repository and no parameter reached the promise, the seam is a keyword-only parameter whose default keeps the command's behaviour: `check_all.main` and `run_plan` take `run`, `check_backlog.rule_backlog` takes `load_module`, `check_source_comments.collect` and `write_license_block.main` take `licence`, `write_license_block.pending` takes `year`, `known_findings.main` takes `run_plan`, and `test_budget.evaluate` and `main` take `budget`.
+5. The add "history: commits_since returns the commits it has when git cannot read the range" contradicts the function's documented contract, which stops with a message. The test keeps the contract: `commits_since` stops with a message.
 
 ## Dispatches
 
 dispatch: J15 review, 4 chunks — haiku high, 1 round each, passed, rung 1
+dispatch: M2 slice A, copy_shared_tools, test_budget, test_times_settings — sonnet medium, 30 tool calls, passed, rung 1
+dispatch: M2 slice B, licence, write_license_block, known_findings, facts — sonnet medium, 22 tool calls, passed with 7 records left for a seam, rung 1
+dispatch: M2 slice C, check_all, docs_follow, design_views, citation_files, layering, design_format, backlog_trailer, backlog, design_topics — sonnet medium, 44 tool calls, passed, rung 1
+dispatch: M2 slice D, nineteen mechanical files — haiku high, 101 tool calls, passed, rung 1
+dispatch: M2 slice E, the seams slice B left — sonnet medium, 72 tool calls over two rounds, passed after its report was sent back for skipping DISPATCH rules 1 and 2, rung 1
 
 ## Totals
 

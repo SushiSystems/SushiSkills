@@ -167,9 +167,12 @@ class RuleDeclaredTiersTest(unittest.TestCase):
     """Covers the declared tier order and domains."""
     K_TEST_SIZE = "small"
 
-    def test_reports_an_empty_order_and_an_undeclared_tier(self) -> None:
+    def test_reports_an_empty_tier_order(self) -> None:
         files = {"modules/extra/tool/include/Project/tool/tool.hpp": ""}
         self.assertEqual(len(list(rule_declared_tiers(_tree(files, Layout(()))))), 1)
+
+    def test_reports_an_undeclared_tier_by_name(self) -> None:
+        files = {"modules/extra/tool/include/Project/tool/tool.hpp": ""}
         self.assertEqual(_messages(rule_declared_tiers(_tree(files))),
                          ["tier 'extra' is not in K_TIER_ORDER"])
 
@@ -184,17 +187,23 @@ class RuleCrossDomainIncludesTest(unittest.TestCase):
     """Covers domain tiers, which share a rank and never include each other."""
     K_TEST_SIZE = "small"
 
-    def test_reports_one_domain_including_another_and_allows_a_lower_tier(self) -> None:
+    def test_reports_one_domain_including_another(self) -> None:
         files = {
-            "modules/core/tensor/include/Project/core/tensor/tensor.hpp": "",
             "modules/vision/blocks/include/Project/vision/blocks/conv.hpp": "",
             "modules/language/blocks/include/Project/language/blocks/attention.hpp":
-                "#include <Project/vision/blocks/conv.hpp>\n#include <Project/core/tensor/tensor.hpp>",
+                "#include <Project/vision/blocks/conv.hpp>",
+        }
+        self.assertEqual(_messages(rule_cross_domain_includes(_tree(files, K_DOMAINS))),
+                         ["language/blocks of one domain includes vision/blocks"])
+
+    def test_allows_a_domain_to_include_a_lower_tier(self) -> None:
+        files = {
+            "modules/core/tensor/include/Project/core/tensor/tensor.hpp": "",
+            "modules/language/blocks/include/Project/language/blocks/attention.hpp":
+                "#include <Project/core/tensor/tensor.hpp>",
         }
         tree = _tree(files, K_DOMAINS)
-        self.assertEqual(_messages(rule_cross_domain_includes(tree)),
-                         ["language/blocks of one domain includes vision/blocks"])
-        self.assertEqual(list(rule_upward_includes(tree)), [])
+        self.assertEqual(list(rule_cross_domain_includes(tree)) + list(rule_upward_includes(tree)), [])
 
 
 class DomainNameResolutionTest(unittest.TestCase):
@@ -390,9 +399,11 @@ class RuleRestrictedIncludesTest(unittest.TestCase):
                  "applications/tool/vendor_session.cpp": "#include <Vendor/capture.hpp>"}
         self.assertEqual(self._issues(files), [])
 
-    def test_ignores_another_include_and_a_layout_with_no_door(self) -> None:
+    def test_ignores_another_include(self) -> None:
         files = {"modules/foundation/other/source/other.cpp": "#include <Other/capture.hpp>\n#include <vector>"}
         self.assertEqual(self._issues(files), [])
+
+    def test_ignores_a_layout_with_no_door(self) -> None:
         files = {"modules/foundation/third/source/third.cpp": "#include <Vendor/capture.hpp>"}
         self.assertEqual(self._issues(files, K_LAYOUT), [])
 
