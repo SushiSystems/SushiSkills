@@ -29,6 +29,7 @@ The owner made these on 2026-11-06.
 6. On sunset, Project mobileRTS releases its code under the Mozilla Public License 2.0 and the art, sound
    and music Sushi Systems owns under Creative Commons BY-NC-SA 4.0. Players and modders may use and
    change the assets; nobody may sell them.
+7. The Trustees are Mustafa Garip and Mahmut Yavuz Garip, until the owner names others.
 
 ## Why the clauses are shaped this way
 
@@ -115,8 +116,10 @@ game has servers.
     creditor of the Licensor. Any transfer of rights in the Product is made subject to it.
 11. **Deposit.** The Licensor deposits the source code, the owned assets and the build instructions of
     each release with the Trustee, at the latest 30 days after the release.
-12. **Trustee.** The Trustee is a person or organisation the Licensor names in writing, with a substitute.
-    On a Sunset Event the Trustee publishes the deposit in a public place with clause 9's licences.
+12. **Trustee.** The Trustees are Mustafa Garip and Mahmut Yavuz Garip, or the persons or organisation
+    the Licensor later names in writing. Either Trustee may act alone, and the other takes over when one
+    can no longer act. On a Sunset Event a Trustee publishes the deposit in a public place with clause
+    9's licences.
 13. **No trademark.** The sunset licence grants no right to the Licensor's names or marks. Released code
     may not be called SushiEngine or Project mobileRTS without permission.
 
@@ -129,6 +132,8 @@ game has servers.
    his death? Should his will name the Trustee?
 3. Which trustee form fits best: a commercial source-code escrow agent, a foundation (vakıf), or named
    people with substitutes? Who confirms the Sunset Event, and how is a false confirmation prevented?
+   Mustafa Garip is both a holder and a Trustee: does that conflict matter, and who takes his place as
+   Trustee if he dies or can no longer act and Mahmut Yavuz Garip cannot either?
 4. Do clauses 1 to 5 agree with FSEK Article 38 and with the EU directive where the Product is sold in
    the EU, and does clause 4 need narrower wording?
 5. Do the App Store and Google Play terms allow a custom licence with these clauses for Project
@@ -143,7 +148,7 @@ game has servers.
 
 1. The reviewed text becomes the `LICENSE` of SushiEngine and of Project mobileRTS, and the licence the
    game's store pages and SushiHub's binary installs show.
-2. The owner names the Trustee and sets up the deposit.
+2. The owner sets up the deposit with the Trustees.
 3. The `sushisystems-licence` skill gains the closed products' licence rows, and the closed licence block
    names `LICENSE` in place of "No licence is granted".
 4. The brand skill says what copy may claim about these two products.
