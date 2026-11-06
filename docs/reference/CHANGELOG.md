@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-06 — testing: Let a compile-only `compile_<name>.cpp` stand for the test file of a C++ header with no runtime promise (`check_test_mirror.py`, `repository-layout/TESTS.md`).
 - 2026-11-06 — testing: Let `tests/support/`, the shared helper folder the testing skill names, stand outside the mirror (`check_test_mirror.py`, `repository-layout/TESTS.md`).
 - 2026-11-06 — licence: Relicensed SushiSkills under the Apache License 2.0 and removed `COMMERCIAL.md`; the Sushi licence block, settings and brand wording follow (`sushisystems-licence`, `tools/settings.py`).
 - 2026-11-05 — sushisystems: Named SushiLog's `LogCapture`, `exchange_log_sink` and `log_synchronous` in the logger's interface (`sushisystems-logging/INTERFACE.md`).

@@ -71,8 +71,9 @@ Never written. The rework of an old suite deletes or rewrites each one it meets.
 | The same promise again at a larger size or in another file | `SimpleAxpy` beside the reference axpy test |
 
 A value of a plain data type built by hand is not a stand-in; a builder named for it is preferred. A
-`static_assert` check is not a test: it sits in a compile-only translation unit that the build compiles
-and the test runner never lists.
+`static_assert` check is not a test: it sits in a compile-only translation unit, `compile_<name>.cpp`
+beside the unit's test file, that the build compiles and the test runner never lists. A header with no
+runtime promise has that file in place of a test file.
 
 An expected value pasted from current output is allowed only in a test whose suite opens with
 `Characterization_`, written to pin behaviour before a refactor, with a backlog entry that removes it.
