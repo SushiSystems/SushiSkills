@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-11-07 — testing: Dropped the rule that a fix's test is seen failing before the fix; the test runs once, in the final test run (`testing/SKILL.md`).
+- 2026-11-07 — build-throughput: Required the whole implementation before one build and one test run, and dropped the build per task (`build-throughput/SKILL.md`, `multi-agent-work/SKILL.md`, `claude/CLAUDE.md`).
 - 2026-11-07 — tools: Applied the test review to the checker tests: one promise per test, rows in place of loops, and small where no disk is touched (`tools/tests/`).
 - 2026-11-07 — tools: Gave the checkers keyword-only parameters, such as `run_plan` and `budget`, that their tests pass in place of patching settings or functions (`tools/`).
 - 2026-11-07 — testing: Read a C++ test file named `<unit>_test.cpp` as well as `test_<unit>.cpp`, so gtest suites in such files carry a size (`check_test_sizes.py`).

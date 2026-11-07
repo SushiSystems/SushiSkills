@@ -81,4 +81,5 @@ items, not as "quality".
 ## Planning
 
 The `multi-agent-work` skill holds the planning rules: hierarchy first, one acceptance criterion
-and one build per task. I choose how a plan runs, inline or in parallel; ask me.
+per task. The build and the test run come once, after the whole implementation
+(`build-throughput`, boundary 8). I choose how a plan runs, inline or in parallel; ask me.

@@ -1,6 +1,6 @@
 ---
 name: build-throughput
-description: Use when choosing a build configuration or a build tree, changing how a repository compiles or links (job counts, pools, caches, precompiled headers, unity batches, optimisation or debug-information levels), when a build runs out of memory or takes too long, or when deciding where heavy code such as a large template set is compiled, in a repository.
+description: Use when deciding when to build or run tests during a piece of work, choosing a build configuration or a build tree, changing how a repository compiles or links (job counts, pools, caches, precompiled headers, unity batches, optimisation or debug-information levels), when a build runs out of memory or takes too long, or when deciding where heavy code such as a large template set is compiled, in a repository.
 ---
 
 # Build throughput
@@ -43,6 +43,16 @@ slower than one that ran fewer jobs.
    A public edge hands its include directories to every module above, transitively. A change to
    the lower module's headers then recompiles all of them, and the first build after the edge
    lands recompiles most of the tree.
+8. **Implement everything, build once, test once.** A piece of work, however large, is implemented
+   in full before any build runs. The build comes once, after the last line, and the tests run
+   once, after the build is green. Never a build per task, per module, per job or per edit, and
+   never a test run before the build at the end. A build error found then is fixed then, a
+   structural one included, and the build is rerun until green; the tests start only after it.
+   Syntax checks without a build (`clang -fsyntax-only`) and the checkers a commit hook runs are
+   not builds and run when they are needed.
+   A design that adds a million lines changes nothing in this rule. An error costs the same to
+   fix whenever it is found, and each build in the middle costs a full compile and link, so a
+   build run early is paid for again by every later one.
 
 ## Defaults
 
@@ -132,6 +142,9 @@ excluded from real-time malware scanning, by the machine's owner.
 
 ## Red flags
 
+- "A quick build now will catch a mistake early." → the build is at the end; fix the error then.
+- "This module is done, so I build it before the next one." → implement all, then build once.
+- "The build is green, so I run the tests of this part now." → tests run once, after the final build.
 - "I will set `-j` to what worked last time." → admission by measured peak.
 - "I will switch this tree to Release for one measurement." → the Release tree.
 - "The test needs the template set, so the test compiles it." → the module compiles it.

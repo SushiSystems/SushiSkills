@@ -268,7 +268,7 @@ with a filter or the flag that means everything.
 
 | Change | Tests |
 | --- | --- |
-| `fix` | The smallest reproduction of the defect, seen failing before the fix |
+| `fix` | The smallest reproduction of the defect |
 | `feat` | One test per promise it adds, at the smallest size that sees it, and the seam that makes that size possible |
 | `perf` | The existing tests unchanged and green, plus the measurement from `performance` |
 | `refactor` | No new test; every existing test green before and after |
@@ -298,11 +298,11 @@ people wrote.
 
 1. Write the regression test in the test file of the unit the defect lives in, its name naming the
    defect.
-2. Run it through the project's test command and see it fail for the reason the defect describes.
-3. Fix the code.
-4. Run it again and see it pass, with the rest of the module's tests.
+2. Fix the code.
+3. The test runs once, in the single test run after the single build at the end of the work
+   (`build-throughput`, boundary 8), with the rest of the module's tests, and passes.
 
-A fix whose test was never seen failing is not verified.
+The test is not run before the fix, so it is not seen failing first.
 
 ## Determinism
 

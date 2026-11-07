@@ -24,8 +24,8 @@ reads its work with `backlog next` and reports what it found; the orchestrator w
 
 Every plan puts hierarchy first: interfaces and the bricks they depend on come before their
 callers, and a module boundary is fixed, with its build edges committed, before anything on
-either side is written. A task needs one acceptance criterion and one build; a task needing two
-builds is two tasks.
+either side is written. A task needs one acceptance criterion. No task runs a build or a test:
+the one build and the one test run come after the last task, as `build-throughput` boundary 8 says.
 
 The owner chooses how the plan runs.
 
@@ -35,7 +35,7 @@ The owner chooses how the plan runs.
 | Parallel | The orchestrator gives the jobs to subagents, several at once, and keeps no job for itself |
 
 Both modes start from the same job list: the jobs in hierarchy order, and per job its files, what
-it waits on, its acceptance criterion and the build that closes it. The list is a table under
+it waits on and its acceptance criterion. The list is a table under
 `## Jobs` in `PLAN.md`, with the columns `Job`, `Files`, `Waits on` and `Status`; the status is
 `todo`, `running`, `done` or `failed`, and the orchestrator edits it. In parallel mode
 `python tools/routing/next_jobs.py PLAN.md --free N` prints the ids of up to `N` jobs that may
