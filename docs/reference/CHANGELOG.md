@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- 2026-11-07 — testing: Required a unit's small tests of its logic before any medium or large test of it (`testing/SKILL.md`).
+- 2026-11-07 — multi-agent-work: Refused "cannot be checked without a build" as a reason, and let a worker edit build files for a split, an edge or a new test (`multi-agent-work/SKILL.md`, `claude/DISPATCH.md`).
+
 - 2026-11-07 — multi-agent-work: Required each plan instruction, record and ruling to be done as written, never reinterpreted; one not done keeps its job open (`multi-agent-work/SKILL.md`, `claude/DISPATCH.md`).
 - 2026-11-07 — testing: Dropped the rule that a fix's test is seen failing before the fix; the test runs once, in the final test run (`testing/SKILL.md`).
 - 2026-11-07 — build-throughput: Required the whole implementation before one build and one test run, and dropped the build per task (`build-throughput/SKILL.md`, `multi-agent-work/SKILL.md`, `claude/CLAUDE.md`).

@@ -9,9 +9,9 @@ You are a subagent. These rules hold for this whole task, on top of the task its
 2. Before writing any prose (a comment that explains, a commit message, a report, a reply),
    invoke the `humanizer` skill and apply its rules in the language of the prose.
 3. Do not start any process that runs `se`, `cmake`, `ninja` or `ctest`, in the foreground or
-   the background, and do not write or edit any build configuration file. One exception: the
-   reading commands of the repository's CLI, `<cli> backlog next`, `list` and `show` and
-   `<cli> design show`, may run, because rule 9 needs them.
+   the background. The reading commands of the repository's CLI, `<cli> backlog next`, `list` and
+   `show` and `<cli> design show`, may run, because rule 9 needs them. Edit a build configuration
+   file only to split a module, fix a dependency edge or register a test file your task adds.
 4. Write only what the Worker row of `multi-agent-work`, section "Roles", allows.
 5. Report what was done and what was not. Paste the output of every verification you claim.
 6. Before reporting, syntax-check what you wrote without building: C++ through

@@ -106,6 +106,11 @@ test in the wrong place.
 can see a promise that is logic, the code lacks a seam: add it first ("Architecture for small
 tests"), then write the `small` test.
 
+**Small before larger, per unit.** The logic a `medium` or `large` test passes through has its
+`small` tests first. A unit with a `medium` or `large` test and no `small` test of its logic lacks a
+seam; the larger test then checks only its boundary or its scale, never a promise the `small` tests
+already keep.
+
 **Suite shape.** The test command prints the share of each size per module. The share is a reading,
 never a target: no task, plan or acceptance criterion names a percentage. A module whose tests are
 mostly `medium` holds logic that only a device, a file or a thread can reach, so every promise there

@@ -1,6 +1,6 @@
 # Test review: plan
 
-**Status:** Open — paused by the owner on 2026-11-07; see Pause
+**Status:** Open — resumed on 2026-11-07 under the owner's rules; see Pause
 
 Applies the verdicts of `REPORT.md`, in hierarchy order: the shared helpers, adapters and seams the
 rewrites need come first, then the defects the review found, then each module's tests. A module job
@@ -40,27 +40,34 @@ its own `docs/agent/2026_11_05_TEST_REVIEW/` holds its job table and Status colu
 - A repository is refactored completely first. Then it gets one build and one test run, at the
   very end, and nothing else: no test run per job, no C++ build per job, no Python test run per
   job. Only the checkers the commit hook runs stay on every commit.
-- Decisions the plans leave open are delegated to the lead of each repository, public interface
-  changes inside that repository included. Each ruling is written into that repository's
-  `REPORT.md`.
-- One repository lead at a time per repository, at most two workers each. Machine memory is short.
+- Decisions the plans leave open are delegated to the orchestrator, public interface changes inside
+  a repository included. Each ruling is written into that repository's `REPORT.md`.
+- No lead layer: it cost most of the quota in idle turns. The orchestrator dispatches one worker
+  per repository directly; the worker commits each job, pushes, and reports in 20 lines.
+- SOLID without exception, and the pyramid per unit: the logic a medium or large test passes
+  through has its small tests first. A medium or large test of a unit with no small tests of its
+  logic is a missing seam.
+- Two answers are refused: "it cannot be checked without a build", and an in-memory adapter placed
+  in `tests/support`.
+- A worker may edit build files to split a module, fix a dependency edge or register a test file;
+  it runs no build.
 
 ### Where each repository stands
 
 | Repository | State |
 | --- | --- |
-| SushiLog | Finished; released as v0.3.1; work folder closed |
-| SushiStack | Finished; gui build 96 of 96; work folder closed |
+| SushiLog | Finished; released as v0.3.1; work folder closed. To reopen: real collection counts, C++ at 76% small |
+| SushiStack | Finished; gui build 96 of 96; work folder closed. To reopen: subprocess, git and network ports |
 | SushiSkills | Every job done; this folder stays open as the plan of the whole review |
-| SushiCore | Every job but M6 (provision, 40 files) done; v0.10.15 released, a release is due for the rest |
-| SushiProfiler, SushiTrack, SushiDSP | Python jobs done; the C++ T and M jobs not started |
-| SushiRuntime | Every T job and most M jobs done unbuilt; M7 and the decision entries in progress |
-| SushiBLAS | Every T job and 30 of 49 M jobs done unbuilt; RW-140 to RW-147 and 19 M jobs left |
-| SushiAI | Every T job and about 20 M jobs done unbuilt; RW-155 and the other M jobs left |
-| SushiWeb | T1, T5, T6, T7 and security fixes done; T2 to T4 and M1 to M30 left |
+| SushiCore | Every job but M6 (provision, 40 files) done; v0.10.15 released, a release is due. SushiAI RW-159 waits on its project-root walk bound |
+| SushiProfiler | Python jobs done; the C++ jobs and the Collector-passed-in seam (SushiRuntime RW-128 waits on it) not started |
+| SushiTrack, SushiDSP | Python jobs done; the C++ T and M jobs not started |
+| SushiRuntime | 76% small, unbuilt. Platform ports, Clock, executor rounds and RW-126, RW-127, RW-130 done; RW-129 rest, the TaskScheduler split and the audit's last LOGIC cases left |
+| SushiBLAS | 45% small, unbuilt; 18 of 57 modules at 80%. H, S, M10, M39, M40, M43, M44 done; M2 to M4, M24, M25, M33 to M35, M37, M47, M49 left |
+| SushiAI | 74% small, unbuilt. RW-158, RW-160 to RW-162 and M2, M3 (one record waits on SushiCore), M5, M7, M9, M11, M21 done; M30 to M52 left |
+| SushiWeb | Unbuilt, untyped; M1 to M12, M25 (part), M30 and the RW items done; M21, M25 rest and M28 left, then the SOLID review and one typecheck and test |
 | SushiEngine | T8 and T10 done; T1 to T7, T9 and M1 to M136 left; 7 uncommitted test files in its tree belong to another session |
 | Project mobileRTS | Not started |
 
-Work resumes with a fresh lead per repository from its Status column. The lead briefs used on
-2026-11-07 were in the session scratchpad; a resumed lead is briefed from this section and the
-repository's `REPORT.md`.
+Work resumes per repository from its Status column and its `REPORT.md` Decisions. The worker brief
+is kept in the session scratchpad as `J16/worker_direct.md`; its rules are the ones above.

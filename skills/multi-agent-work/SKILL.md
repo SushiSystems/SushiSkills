@@ -93,6 +93,9 @@ orchestrator.
 - An instruction that cannot be done as written is never swapped for a reading of it that can,
   such as "stays medium for a missing seam". It is reported as not done, with the reason, and
   its job stays `todo` or `failed`, never `done`.
+- "It cannot be checked without a build" is not a reason an instruction cannot be done. The build
+  comes once, at the end (`build-throughput`, boundary 8); the change it needs, a production seam
+  included, is part of the job.
 - The orchestrator checks each report against every instruction it was given, one by one, before
   accepting it. A report that did something else in place of an instruction is sent back,
   whatever reason it gives.
