@@ -74,7 +74,7 @@ dispatch. My limits on it, for Claude 5.5 models only: `fable` is not used; `son
 exception, about five dispatches in a hundred, and only after I have approved it. The `model`
 field and the effort are set on every dispatch, never left to inherit.
 
-A report that comes back without evidence of rules 1, 2, 6, 7, 9 and 10 of `DISPATCH.md` is sent back,
+A report that comes back without evidence of rules 1, 2, 6, 7, 9, 10 and 11 of `DISPATCH.md` is sent back,
 not accepted. Reviewer dispatches check SOLID shape and humanizer register explicitly, as named
 items, not as "quality".
 

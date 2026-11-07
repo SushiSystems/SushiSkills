@@ -82,6 +82,24 @@ The evidence a report must carry, and what a reviewer dispatch checks by name, a
 
 A page a worker reports as false is handled as `AGENT_WORK.md` in `documentation` says.
 
+## Instructions are read literally
+
+A plan, a job, a review record, a ruling and an instruction from the owner are read one at a
+time, in order, and done as written. Nobody interprets them: not a worker, not a lead, not the
+orchestrator.
+
+- Each instruction is done word for word. A record that says "resize to small" ends with a small
+  test. A ruling that says "build the seam" ends with the seam built.
+- An instruction that cannot be done as written is never swapped for a reading of it that can,
+  such as "stays medium for a missing seam". It is reported as not done, with the reason, and
+  its job stays `todo` or `failed`, never `done`.
+- The orchestrator checks each report against every instruction it was given, one by one, before
+  accepting it. A report that did something else in place of an instruction is sent back,
+  whatever reason it gives.
+- An instruction the orchestrator wrote binds it too. Before each dispatch, each acceptance and
+  each report to the owner, it reads its earlier instructions of the session again and checks
+  each against what was done.
+
 ## Shared working tree
 
 - Staging, stash and worktrees follow `git-workflow`, section "Shared working tree".

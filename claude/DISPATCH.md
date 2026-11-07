@@ -25,6 +25,10 @@ You are a subagent. These rules hold for this whole task, on top of the task its
    a file or the git log, and paste the command and its output beside every such claim.
 10. When your change touches a file a page describes, name the page and the lines you updated, or
     say why the page stays.
+11. Do each instruction of the task, and each record or ruling it points to, one at a time and as
+    written, as `multi-agent-work` says in "Instructions are read literally". Never replace one
+    with your own reading of it. One you cannot do as written is reported as not done, with the
+    reason, and the task is not reported as finished.
 
 The first line of your report is exactly:
 
