@@ -62,10 +62,10 @@ its own `docs/agent/2026_11_05_TEST_REVIEW/` holds its job table and Status colu
 | SushiCore | Every job but M6 (provision, 40 files) done; v0.10.15 released, a release is due. SushiAI RW-159 waits on its project-root walk bound |
 | SushiProfiler | Python jobs done; the C++ jobs and the Collector-passed-in seam (SushiRuntime RW-128 waits on it) not started |
 | SushiTrack, SushiDSP | Python jobs done; the C++ T and M jobs not started |
-| SushiRuntime | 76% small, unbuilt. Platform ports, Clock, executor rounds and RW-126, RW-127, RW-130 done; RW-129 rest, the TaskScheduler split and the audit's last LOGIC cases left |
-| SushiBLAS | 45% small, unbuilt; 18 of 57 modules at 80%. H, S, M10, M39, M40, M43, M44 done; M2 to M4, M24, M25, M33 to M35, M37, M47, M49 left |
-| SushiAI | 74% small, unbuilt. RW-158, RW-160 to RW-162 and M2, M3 (one record waits on SushiCore), M5, M7, M9, M11, M21 done; M30 to M52 left |
-| SushiWeb | Unbuilt, untyped; M1 to M12, M25 (part), M30 and the RW items done; M21, M25 rest and M28 left, then the SOLID review and one typecheck and test |
+| SushiRuntime | Unbuilt, at 8b5218ca. Device descriptors, EventReadiness, RunMarker, coordinator on an executor and the TaskScheduler file split done (decisions 54 to 56). Left: RW-131 (DeviceQueueSet builds queues on construction), RW-129 rest (`test_runtime_context.cpp`, `test_distributed.cpp` raw bodies), the rounds and shells as their own classes, WorkloadCoordinator's two drive modes, jobs 4 and 5 of worker 8 |
+| SushiBLAS | Unbuilt, at e7ff2d14. M2 started (PackageSource port; resume note in its PLAN.md); M2 rest, M3, M4, M24, M25, M33 to M35, M37, M47, M49 left. The malformed-config case waits on a SushiCore appearance-reader seam |
+| SushiAI | Unbuilt, at 1e127b8b. M30 4 of 46 files done (decision 28); M30 rest, M31 to M52 and the size recount left. Rulings for the next worker: build a host graph evaluator so `test_expert_projection.cpp`'s numeric mix goes small; give `Medium_SetLearningRate` its own medium fixture |
+| SushiWeb | Untyped, untested, at c6aa738a. M21, M25 done (decisions 46, 47). Left: M28 (24 files; records at the session scratchpad `m28.txt`), then the SOLID review and one typecheck and test. Rulings for the next worker: delete the unused `PostgresCompanyRolePermissions`; make the recovery-code two-owner race a seeded repeated check |
 | SushiEngine | T8 and T10 done; T1 to T7, T9 and M1 to M136 left; 7 uncommitted test files in its tree belong to another session |
 | Project mobileRTS | Not started |
 
