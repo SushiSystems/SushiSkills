@@ -1,6 +1,6 @@
 # Test review: plan
 
-**Status:** Open — resumed on 2026-11-07 under the owner's rules; see Pause
+**Status:** Open — paused by the owner on 2026-11-10 in the evening; resume from "Where each repository stands" below and each repository's PLAN.md resume note
 
 Applies the verdicts of `REPORT.md`, in hierarchy order: the shared helpers, adapters and seams the
 rewrites need come first, then the defects the review found, then each module's tests. A module job
@@ -16,7 +16,7 @@ writes each add. Nothing in a module job changes production code except a seam a
 | T3 | Tests for the rules with none, listed above |  | done |
 | M1 | the tests of `sushisystems` (1 file): 1 rewrite, 1 resize, 3 split, 2 merge | T1, T2, T3 | done |
 | M2 | the tests of `tools` (47 files): 43 rewrite, 15 resize, 36 split, 5 merge, 8 delete | T1, T2, T3 | done |
-| R1 | SushiCore `testing/session.py`, `cmake_driver.py` and their tests: the test command runs in parallel by default, the core count bounded by its memory limit, device tests sharing the device through resource groups | | todo |
+| R1 | SushiCore `testing/session.py`, `cmake_driver.py` and their tests: the test command runs in parallel by default, the core count bounded by its memory limit, device tests sharing the device through resource groups | | done |
 | R2 | each C++ repository's test-program CMake: register the cases of a program in shards, one process per shard, where start-up is most of a `small` case's time; SushiAI first | R1 | todo |
 | R3 | each repository's one final test run is taken in parallel, and its pre-merge wall time is held to 600 s (SushiAI RW-166 tracks its own) | R1, R2 | todo |
 
@@ -64,12 +64,12 @@ its own `docs/agent/2026_11_05_TEST_REVIEW/` holds its job table and Status colu
 | SushiLog | Finished; released as v0.3.1; work folder closed. To reopen: real collection counts, C++ at 76% small |
 | SushiStack | Finished; gui build 96 of 96; work folder closed. To reopen: subprocess, git and network ports |
 | SushiSkills | Every job done; this folder stays open as the plan of the whole review |
-| SushiCore | Every job done (M6 on 2026-11-10); 11 provision tests that fail on Windows (KI-27) are being fixed, then R1 and a release |
-| SushiProfiler | Python jobs done; the C++ jobs and the Collector-passed-in seam (SushiRuntime RW-128 waits on it) not started |
-| SushiTrack, SushiDSP | Python jobs done; the C++ T and M jobs not started |
-| SushiRuntime | Built and tested at eed9a512: 1 433 of 1 433 pass; R3 left. Earlier state: unbuilt at 8b5218ca. Device descriptors, EventReadiness, RunMarker, coordinator on an executor and the TaskScheduler file split done (decisions 54 to 56). Left: RW-131 (DeviceQueueSet builds queues on construction), RW-129 rest (`test_runtime_context.cpp`, `test_distributed.cpp` raw bodies), the rounds and shells as their own classes, WorkloadCoordinator's two drive modes, jobs 4 and 5 of worker 8 |
-| SushiBLAS | Unbuilt, at e7ff2d14. M2 started (PackageSource port; resume note in its PLAN.md); M2 rest, M3, M4, M24, M25, M33 to M35, M37, M47, M49 left. The malformed-config case waits on a SushiCore appearance-reader seam |
-| SushiAI | Finished on 2026-11-10 at 4d0cb5e2: one build, 8 145 of 8 145 `small` and `medium` tests pass. The run is serial and takes 1 028 s; R1 to R3 and RW-166 bring it under 600 s |
+| SushiCore | Finished; v0.12.1 released and installed in every CLI (2 232 tests pass). R1 done: `<cli> test` runs in parallel by default. Shard support done (gtest XML, per-case rerun, 256 MB small share). Open: RW-74 (`-f` over shards), RW-75 (CLIs supply `run_program`). The stray v0.12.0 tag on 2b1d1a9 is the owner's to delete or keep |
+| SushiProfiler | Python jobs done. C++: M1 done (f46b8e1); M2 in progress, next step in its PLAN.md resume note. Rulings in its REPORT.md decision 7 and after |
+| SushiTrack, SushiDSP | Python jobs done. SushiTrack C++ M jobs started 2026-11-10 (resume note in its PLAN.md); SushiDSP C++ T and M jobs not started |
+| SushiRuntime | Finished: built and tested at eed9a512, 1 433 of 1 433 pass. Left: R2 (shard registration) and R3 (parallel final run) |
+| SushiBLAS | Unbuilt. Done: M2 to M4, M24, M25, M33, M34, M37. In progress: M35 (operations/blas, about 11 files) and M47, M49, S5; resume notes in its PLAN.md. Then R2 shard registration, one build and one test run |
+| SushiAI | Finished on 2026-11-10: 8 145 of 8 145 pass. R2 done (62 shards): the run takes 234 s at 2 jobs, against 1 028 s serial. Open: RW-163 to RW-166 |
 | SushiWeb | Untyped, untested, at c6aa738a. M21, M25 done (decisions 46, 47). Left: M28 (24 files; records at the session scratchpad `m28.txt`), then the SOLID review and one typecheck and test. Rulings for the next worker: delete the unused `PostgresCompanyRolePermissions`; make the recovery-code two-owner race a seeded repeated check |
 | SushiEngine | T8 and T10 done; T1 to T7, T9 and M1 to M136 left; 7 uncommitted test files in its tree belong to another session |
 | Project mobileRTS | Not started |
