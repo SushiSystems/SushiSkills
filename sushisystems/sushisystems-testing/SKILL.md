@@ -14,7 +14,7 @@ the machines that run the tests.
 | Role | At Sushi Systems |
 | --- | --- |
 | The project's test command | `<cli> test`; the shared version is written in `sushicore` and each project CLI moves onto it in turn, SushiTrack first |
-| The CTest call | `CMakeDriver.ctest_run` of `sushicore`, which writes a JUnit file when it is given a path |
+| The CTest call | `CMakeDriver.ctest_run` of `sushicore`, which writes a JUnit file when it is given a path and passes `--parallel` with the job count the test command chose; the command chooses the core count, bounded by its memory limit, when none is given |
 | The time reader | `tools/testing/test_budget.py`, called by the project's test command |
 | The exemption file | `tests/budget_exemptions.toml` of the project |
 | The C++ tolerance helper | `tools/testing/support/tolerance.hpp`, copied from SushiSkills with the shared tools |
@@ -35,7 +35,9 @@ Surveyed on 2026-11-03 by grep over each tree; the full table is in
 | SushiProfiler, SushiLog, SushiTrack | 956 C++ | 88% |
 
 Every C++ repository registers each case as its own CTest test today, so each case pays process
-start-up and, for `medium`, device start-up. No repository records test times yet.
+start-up and, for `medium`, device start-up. Measured on 2026-11-10: SushiAI's 8 145 `small` and
+`medium` cases summed to 1 004 s and ran serially in 1 028 s of wall time, a `small` case averaging
+55 ms of which start-up was most; the shared test command passed no job count unless asked.
 
 ## SushiEngine
 

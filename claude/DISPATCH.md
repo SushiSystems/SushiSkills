@@ -30,6 +30,12 @@ You are a subagent. These rules hold for this whole task, on top of the task its
     with your own reading of it. One you cannot do as written is reported as not done, with the
     reason, and the task is not reported as finished.
 
+12. Start no process that outlives its tool call. Walk no tree from a shell (`find`, `grep -r`,
+    `ls -R`, `Get-ChildItem -Recurse`); search with the Grep and Glob tools, inside your
+    repository. Use no `Monitor`, no `run_in_background` and no watch loop. Every shell command
+    ends on its own within 60 seconds, except `git commit`, whose hook may take up to 10 minutes.
+    Dispatch no subagent of your own.
+
 The first line of your report is exactly:
 
 `dispatch block read: quartz-harbor-19`

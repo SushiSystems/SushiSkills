@@ -255,6 +255,13 @@ only shrinks.
 The project's test command runs `small` and `medium` unless a size is named, and runs `large` only
 with a filter or the flag that means everything.
 
+The test command runs in parallel by default: as many tests at once as the machine has cores,
+lowered only to keep the run inside the memory limit it prints, and device tests share each device
+through the resource groups of rule 3. A serial default is a defect, because the wall time of the
+pre-merge run then becomes the sum of every test. A case registered as its own process pays process
+and runtime start-up on every case; when that start-up is most of a `small` test's time, the build
+registers the cases of a program in shards, each shard one process running its share of the cases.
+
 ## Proof of value
 
 - **Mutation testing of the diff** on host-compiled code: changed lines only, one mutant per line,
