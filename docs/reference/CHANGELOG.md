@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-10 — testing: Narrowed the name-generator rule of `check_test_odr.py`, which reads the parameter type from the generator, the fixture an instantiation names or an unsigned array it indexes (`check_test_odr.py`).
 - 2026-11-10 — testing: Added `check_test_odr.py`, which fails a type defined twice across test files, a suite used by `TEST` and a fixture macro, and a test name that can hold a character outside `[A-Za-z0-9_]`.
 - 2026-11-10 — testing: Taught the time reader the per-case XML of sharded programs: `--cases FOLDER` adds their `Suite.Case` times, and `--rerun` takes a folder of them (`test_budget.py`, from SushiAI `0b8bbf73`).
 - 2026-11-07 — testing: Required a unit's small tests of its logic before any medium or large test of it (`testing/SKILL.md`).
