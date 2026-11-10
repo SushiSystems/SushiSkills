@@ -227,8 +227,9 @@ register and run them.
    engines and graphs are per test, and teardown fails a test that leaks one or leaves a device error
    behind. A fatal device error stops the program rather than run the remaining tests on a broken
    context. A test of logic gets no device at all: it runs on the host implementation of the port. A
-   device shard declares `RESOURCE_GROUPS gpus:1`, and parallel programs get one device each through
-   the visible-devices variable of their runtime.
+   shard that runs on a real accelerator declares `RESOURCE_GROUPS gpus:1`, and the test command hands
+   CTest a resource file with one slot per accelerator, so two such shards never share one. A shard on
+   a software device needs no slot.
 4. **No recompilation.** Device code is compiled ahead of time for the build's targets, or the
    persistent kernel cache is on for every run.
 5. **Shuffled.** Every run shuffles with a printed seed; a failure prints the command that
@@ -238,13 +239,16 @@ register and run them.
 
 ## Time
 
-The test command measures and prints these every run. An agent reads them and times nothing itself.
-They gate once a measured run on the owner's machine has calibrated them; until then they report.
+The test command measures and prints these every run, and a run over one fails. An agent reads them
+and times nothing itself. A test over its limit is run again alone, and only its time alone is judged,
+so the load of a parallel run does not fail it. A run of a tree older than its sources is reported and
+never fails, since its times are not the code's.
 
 | Limit | Value |
 | --- | --- |
 | A `small` test | 100 ms |
 | A `medium` test after the shared fixture | 5 s |
+| A `large` test | 30 s |
 | A repository's pre-merge run (`small` and `medium`), wall | 600 s |
 
 The aims are a `small` test in 5 ms, a `medium` one in 200 ms and a pre-merge run in 3 minutes. A

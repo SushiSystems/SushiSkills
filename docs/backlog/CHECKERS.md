@@ -32,6 +32,7 @@
 | RW-50 | P1 | open | Stop mutate_diff from leaving test process chains behind | a stopped or finished run leaves no python process of its temporary tree, and each mutant runs only the tests that import the file |  | `tools/testing/mutate_diff.py` | 2026-11-05 |
 | RW-51 | P2 | open | Make apply_settings.py write K_TEST_TIMES into a repository's settings | a repository set up with apply_settings.py passes test_test_times_settings without a hand edit |  | `sushisystems/sushisystems-tooling/apply_settings.py` | 2026-11-05 |
 | RW-52 | P2 | open | Find a test that makes a device, queue or runtime outside its module's one fixture base | check_test_value.py reports a test source that constructs a device, queue or runtime outside the fixture base, as testing's Running fast rule 3 says |  | `skills/testing/SKILL.md` | 2026-11-05 |
+| RW-54 | P1 | open | Gate test runs on the time budget, large tier included | A rebuilt run over a limit exits non-zero; large tests have a per-case limit |  |  | 2026-11-11 |
 
 ## Known issues
 

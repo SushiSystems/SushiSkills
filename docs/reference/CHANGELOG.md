@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- 2026-11-11 — testing: Gave a `large` test a limit of 30 s and made the time limits fail a run of a current tree, judged on the time a test takes alone (RW-54, `testing/SKILL.md`).
+- 2026-11-11 — testing: Taught the time reader `large_test_s`, a repeatable `--rerun` and `--list-over FILE`, which writes the tests to rerun for the test command, and refused settings that lack a limit (RW-54, `test_budget.py`).
+
 - 2026-11-10 — testing: Narrowed the name-generator rule of `check_test_odr.py`, which reads the parameter type from the generator, the fixture an instantiation names or an unsigned array it indexes (`check_test_odr.py`).
 - 2026-11-10 — testing: Added `check_test_odr.py`, which fails a type defined twice across test files, a suite used by `TEST` and a fixture macro, and a test name that can hold a character outside `[A-Za-z0-9_]`.
 - 2026-11-10 — testing: Taught the time reader the per-case XML of sharded programs: `--cases FOLDER` adds their `Suite.Case` times, and `--rerun` takes a folder of them (`test_budget.py`, from SushiAI `0b8bbf73`).
