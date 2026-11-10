@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-10 — testing: Added `check_test_odr.py`, which fails a type defined twice across test files, a suite used by `TEST` and a fixture macro, and a test name that can hold a character outside `[A-Za-z0-9_]`.
 - 2026-11-10 — testing: Taught the time reader the per-case XML of sharded programs: `--cases FOLDER` adds their `Suite.Case` times, and `--rerun` takes a folder of them (`test_budget.py`, from SushiAI `0b8bbf73`).
 - 2026-11-07 — testing: Required a unit's small tests of its logic before any medium or large test of it (`testing/SKILL.md`).
 - 2026-11-07 — multi-agent-work: Refused "cannot be checked without a build" as a reason, and let a worker edit build files for a split, an edge or a new test (`multi-agent-work/SKILL.md`, `claude/DISPATCH.md`).
