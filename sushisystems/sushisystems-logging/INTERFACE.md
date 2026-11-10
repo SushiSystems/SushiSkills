@@ -91,6 +91,13 @@ Every view is valid only during the sink call.
 | `bool log_synchronous()` | Returns whether each record reaches the sink before its log call returns |
 | `LogSink log_forward_sink()` | Returns a sink that enters another logger's record into this logger's queue |
 | `void log_at(LogLevel, LogCategory, const char* file, int line, std::string_view message)` | Writes one record at the given call site past both level gates, for a handler that reports a failure elsewhere, such as an assertion |
+| `using LogExecutor = Delegate<void(LogTask), 32>` | Runs the delivery of records in place of the logger's own thread |
+| `void set_log_executor(LogExecutor)` | Hands delivery to the executor; an empty one restores the logger's thread. FATAL, synchronous mode and exit still deliver on the calling thread |
+
+From v0.4.0 a test drives delivery and time without a thread or a clock of its own:
+`ManualLogExecutor` (`SushiLog/log/log_manual.hpp`) holds each delivery task until `run_pending()`,
+`ScopedLogExecutor` (`SushiLog/log/log_executor.hpp`) installs one for a scope, and `ManualLogClock`
+gives records the time a test advances.
 
 A test reads records through `LogCapture` (`SushiLog/log/log_capture.hpp`): while it lives, every
 record reaches its in-memory `LogRecorder` before the log call returns, and on exit it puts back the
