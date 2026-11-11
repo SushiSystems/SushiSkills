@@ -13,9 +13,9 @@ resource groups, and brings each repository's shared tools back to upstream.
 | --- | --- | --- | --- |
 | S1 | SushiSkills `tools/testing/test_budget.py`, `tools/settings.py`, `skills/testing/SKILL.md` and their tests: `large_test_s` of 30 s, a repeatable `--rerun`, `--list-over` |  | done |
 | C1 | SushiCore `testing/budget.py`, `slow_rerun.py`, `accelerator_slots.py`, `session.py`, `filtered_run.py`, `shard_registrations.py`, `cmake_driver.py` and their tests | S1 | done |
-| C2 | SushiCore release v0.13.0 | C1 | todo |
-| R1 | Each repository: the shared tools copied from upstream, `large_test_s` in its settings, the stale copies and the dead `K_TEST_BUDGET` removed, `RESOURCE_GROUPS gpus:1` on its `large` shards, `rebuilt` wired to `tree_is_current`, the SushiCore pin raised | C2 | todo |
-| R2 | KI-28 of SushiRuntime run again with the accelerator shared out | R1 | todo |
+| C2 | SushiCore release v0.13.0 | C1 | done |
+| R1 | Each repository: the shared tools copied from upstream, `large_test_s` in its settings, the stale copies and the dead `K_TEST_BUDGET` removed, `RESOURCE_GROUPS gpus:1` on its `large` shards, `rebuilt` wired to `tree_is_current`, the SushiCore pin raised | C2 | done |
+| R2 | KI-28 of SushiRuntime run again with the accelerator shared out | R1 | done |
 
 ## Acceptance
 

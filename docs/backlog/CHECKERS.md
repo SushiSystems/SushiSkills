@@ -34,6 +34,7 @@
 | RW-52 | P2 | open | Find a test that makes a device, queue or runtime outside its module's one fixture base | check_test_value.py reports a test source that constructs a device, queue or runtime outside the fixture base, as testing's Running fast rule 3 says |  | `skills/testing/SKILL.md` | 2026-11-05 |
 | RW-54 | P1 | open | Gate test runs on the time budget, large tier included | A rebuilt run over a limit exits non-zero; large tests have a per-case limit |  |  | 2026-11-11 |
 | RW-55 | P2 | open | Judge a row name by the table the name generator reads, not by the file | check_test_odr passes a SCOPED_TRACE-only table in a file whose generator reads another table's name |  |  | 2026-11-11 |
+| RW-56 | P2 | open | Give the exemption check of the time reader a margin below the limit | An exempt test flags as back within its limit only well under it, so a test near the limit cannot flip a gated run |  | `tools/testing/test_budget.py` | 2026-11-11 |
 
 ## Known issues
 

@@ -253,8 +253,8 @@ never fails, since its times are not the code's.
 
 The aims are a `small` test in 5 ms, a `medium` one in 200 ms and a pre-merge run in 3 minutes. A
 test already over its limit is listed in the project's `tests/budget_exemptions.toml`, one test name
-and one open backlog ID; the reader fails an entry whose test is back within its limit, so the list
-only shrinks.
+and one open backlog ID; the reader fails an entry whose test falls to half its limit, so the list
+only shrinks and a test that hovers at its limit cannot flip a run.
 
 The project's test command runs `small` and `medium` unless a size is named, and runs `large` only
 with a filter or the flag that means everything.

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-12 — testing: Made the time reader drop an exemption only when its test falls to half its limit, so a test at its limit cannot flip a gated run (RW-56, `test_budget.py`).
 - 2026-11-11 — testing: Gave a `large` test a limit of 30 s and made the time limits fail a run of a current tree, judged on the time a test takes alone (RW-54, `testing/SKILL.md`).
 - 2026-11-11 — testing: Taught the time reader `large_test_s`, a repeatable `--rerun` and `--list-over FILE`, which writes the tests to rerun for the test command, and refused settings that lack a limit (RW-54, `test_budget.py`).
 
