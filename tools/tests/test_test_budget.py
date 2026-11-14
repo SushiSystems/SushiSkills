@@ -111,6 +111,14 @@ class TestReadingAndNames(unittest.TestCase):
                 '<properties><property name="Category" value="medium" /></properties></test-case></test-suite></test-run>')
         self.assertEqual(parse_results(text.encode(), "edit.xml"), [Timing("A.T", 2.0, "medium", "A")])
 
+    def test_two_nunit_cases_that_share_a_set_name_are_told_apart_by_their_method(self) -> None:
+        case = ('<test-case name="Suburb" fullname="A.Suburb" methodname="{0}" classname="A" result="Passed" '
+                'duration="1" />')
+        text = ('<test-run><test-suite type="TestFixture" name="A">' + case.format("Fits") + case.format("Keeps")
+                + '</test-suite></test-run>')
+        self.assertEqual([timing.name for timing in parse_results(text.encode(), "edit.xml")],
+                         ["A.Fits.Suburb", "A.Keeps.Suburb"])
+
     def test_a_junit_file_is_still_read_as_junit_by_the_results_reader(self) -> None:
         self.assertEqual(parse_results(junit({"Small_A.One": 0.25}).encode(), "a.xml"), [Timing("Small_A.One", 0.25)])
 
