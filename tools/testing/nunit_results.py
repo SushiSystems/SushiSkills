@@ -30,13 +30,22 @@ def _size_of(element: ElementTree.Element, inherited: str | None) -> str | None:
     return next((size for size in K_SIZES if size in names), inherited)
 
 
+def _name_of(case: ElementTree.Element) -> str:
+    """Returns the name a test case is judged and exempted by: its fullname, with its method put in when a set name hid it."""
+    fullname = case.get("fullname", case.get("name", ""))
+    method = case.get("methodname", "")
+    if not method or f".{method}" in fullname:
+        return fullname
+    return f"{case.get('classname', '')}.{method}.{case.get('name', '')}"
+
+
 def _cases(element: ElementTree.Element, inherited: str | None) -> Iterator[Timing]:
     """Yields the timing of each test case below an element, sized by the nearest category above it."""
     for child in element:
         if child.tag == "test-suite":
             yield from _cases(child, _size_of(child, inherited))
         elif child.tag == "test-case" and child.get("result") != K_SKIPPED:
-            yield Timing(child.get("fullname", child.get("name", "")), float(child.get("duration", "0") or 0),
+            yield Timing(_name_of(child), float(child.get("duration", "0") or 0),
                          _size_of(child, inherited), child.get("classname", ""))
 
 
