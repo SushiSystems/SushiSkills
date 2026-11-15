@@ -11,7 +11,7 @@ A rule changes here first, in its own skill, and every repository follows it fro
 3. Add one changelog line under `## Unreleased`, with the skill's folder name as its scope.
 4. Run `python tools/check_all.py .`; see [`tools/README.md`](../tools/README.md).
 
-Sibling repositories copy the shared tools after a checker changes, as "Shared and own tools" in
+Sibling repositories take the shared tools from SushiCore, not from here, after a checker changes there, as "Shared and own tools" in
 `skills/project-tools/SKILL.md` says.
 
 A rule is stated in one file. Every other file that needs it names that file and stops there:

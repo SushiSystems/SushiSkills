@@ -61,7 +61,7 @@ that enforces a company rule moves to `sushisystems/` with the rule.
 
 ### Rollout
 
-A change to a shared tool or skill reaches the other repositories through `copy_shared_tools.py`.
+A change to a shared tool is made in SushiCore and reaches the other repositories through `python -m sushicore.shared_tools sync` at a release tag; a skill reaches them through the install.
 It must not erase a checker a repository changed for itself (backlog entry RW-29), so P8 follows it.
 
 ## Phases

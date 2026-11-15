@@ -2,9 +2,11 @@
 
 **Describes:** `tools/check_all.py`, `tools/settings.py`
 
-Reference implementations of the checkers every repository carries. A rule is
-fixed here first and copied out with `checking/copy_shared_tools.py`; which files that copies and
-which it keeps is in the `project-tools` skill.
+The checkers every repository carries. SushiCore holds them; this repository takes them at a
+release tag with `python -m sushicore.shared_tools sync`, which writes `tools/shared_tools.lock`,
+and `checking/check_shared_tools.py` fails a file that differs from its lock. A rule is fixed in
+SushiCore first. This repository keeps `settings.py`, this README and `skills/`; which files are
+shared and which are kept is in the `project-tools` skill.
 
 | Path | Checks | Takes |
 | --- | --- | --- |
@@ -13,7 +15,7 @@ which it keeps is in the `project-tools` skill.
 | `checking/source_file.py` | Nothing itself; holds a file's path and text for a checker's pure rules, the line of an offset, and the shell helper that reads the files a checker wants | |
 | `checking/tests_tree.py` | Nothing itself; finds a repository's test files, under every folder named `tests` or `__tests__` at any depth, and under `Assets/<Project>/Tests` of a Unity project, for the checkers that read them | |
 | `checking/known_findings.py` | Nothing itself; the core judges a checker's output against `known_findings.toml` in the repository's tools folder (a group found more often or not listed keeps its lines, a group found less often or never and a bad or closed backlog ID each fail, a traceback is never covered); `--write --backlog ID` writes that file from the findings the checkers print now, `--replace` overwrites an existing one | Repository root |
-| `checking/copy_shared_tools.py` | Nothing; copies these files as upstream committed them at HEAD, never its working tree, with `.github/CODE_OF_CONDUCT.md` and `.github/SECURITY.md`, into a repository, writing the repository's own license block into every source file and keeping its `settings.py`, this README and its own tools, or lists the files that differ with `--report` | Repository root, `--from` |
+| `checking/check_shared_tools.py` | The shared tools against `shared_tools.lock`: the tag and a SHA-256 per file; SushiCore, the source, holds no lock | Repository root |
 | `settings.py` | Nothing; holds the settings that differ between repositories | |
 | `checking/ignored_paths.py` | Nothing itself; names the files and folders git ignores, which no checker reads | |
 | `documentation/check_source_comments.py` | C++, GLSL, TypeScript and Python: license block, file header, block ceiling, `//` and `#` runs, separators, history words, `@date` | Files or folders |

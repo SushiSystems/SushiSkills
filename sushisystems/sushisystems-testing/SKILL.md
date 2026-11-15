@@ -17,7 +17,7 @@ the machines that run the tests.
 | The CTest call | `CMakeDriver.ctest_run` of `sushicore`, which writes a JUnit file when it is given a path and passes `--parallel` with the job count the test command chose; the command chooses the core count, bounded by its memory limit, when none is given |
 | The time reader | `tools/testing/test_budget.py`, called by the project's test command |
 | The exemption file | `tests/budget_exemptions.toml` of the project |
-| The C++ tolerance helper | `tools/testing/support/tolerance.hpp`, copied from SushiSkills with the shared tools |
+| The C++ tolerance helper | `tools/testing/support/tolerance.hpp`, synced from SushiCore with the shared tools |
 | The machine that runs the `large` tier and calibrates the time limits | the owner's machine, a Ryzen 7600X with an RTX 3080 Ti; no agent runs the whole tier |
 
 ## Where each repository starts

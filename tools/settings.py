@@ -4,7 +4,7 @@
 # Licensed under the Apache License 2.0. See LICENSE.
 """Holds the settings of one repository that the shared checkers read.
 
-copy_shared_tools.py writes this file only when a repository has none, and never overwrites it.
+The shared tools sync writes this file only when a repository has none, and never overwrites it.
 """
 
 from __future__ import annotations
@@ -25,9 +25,9 @@ K_DESIGN_TOPICS = True
 K_FOLDER_CEILING = 60
 K_CLOSED_GRACE_DAYS = 0
 K_TOOLING_PACKAGE = "sushicore"
-K_TOOLING_MINIMUM_VERSION = "0.10.2"
+K_TOOLING_MINIMUM_VERSION = "0.14.0"
 K_TOOLING_SIBLING_SOURCE = "sushicore/source"
-K_AGNOSTIC_PATHS: tuple[str, ...] = ("skills", "claude", "tools")
+K_AGNOSTIC_PATHS: tuple[str, ...] = ("skills", "claude", "tools/skills")
 K_AGNOSTIC_TERMS = "sushisystems/sushisystems-specific/terms.txt"
 K_TECHNOLOGY_EXEMPT: tuple[str, ...] = ("skills/gpu-development", "skills/unity-project-layout", "skills/humanizer")
 K_MODULE_MANIFEST = ""
