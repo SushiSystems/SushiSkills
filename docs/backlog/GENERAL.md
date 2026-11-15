@@ -14,6 +14,7 @@
 | RW-42 | P1 | open | Split the checkers into a pure core and a file-walking shell so their tests are small | every checker's rules pass the purity run, each test file keeps the shell in at most one medium class, and no mutant survives on the changed lines |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
 | RW-45 | P2 | open | Pilot mutation testing of the diff on host-compiled code in one repository | one repository prints surviving mutants on changed lines from its test command, and its time is recorded |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
 | RW-53 | P1 | blocked | Make the closed-product licence drafts the LICENSE of SushiEngine and Project mobileRTS | both repositories carry the lawyer-reviewed licence with the repair right and the sunset clause, and a Trustee holds the deposit | external: a lawyer's review of the drafts | `docs/agent/2026_11_06_LICENCE_CHANGE/SPEC.md` | 2026-11-06 |
+| RW-57 | P1 | open | Prune every skill to the word budget of check_skill_budget.py | known_findings.toml lists no rule_word_budget entry |  |  | 2026-11-16 |
 
 ## Known issues
 
