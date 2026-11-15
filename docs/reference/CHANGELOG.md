@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-16 — tools: Took the shared tools from SushiCore v0.14.1, which leaves out its two own checkers and writes this repository's licence header, through `hub bump` (`tools/shared_tools.lock`).
 - 2026-11-16 — tools: Took the shared tools from SushiCore v0.14.0 into a lock file and retired the copier this repository held (RW-58, `tools/shared_tools.lock`).
 - 2026-11-16 — dependencies: Made SushiCore's release tag the source of the shared tools, held to a lock file, and required one version per dependency, kept by `hub pins` and `hub bump` (RW-58, `api-stability/SKILL.md`).
 - 2026-11-16 — unlinked-cleanup: Added the skill that removes what nothing reaches and fixes each SOLID breach seen, after asking, and made every dispatch report carry both lists (`claude/DISPATCH.md`).
