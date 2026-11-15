@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-16 — skills: Held every SKILL.md to 800 words, moving detail to references/, and made the commit-msg hook refuse a fix or feat commit without a test or a `Tests: none` reason (RW-57, `2cae458`).
 - 2026-11-14 — checkers: Read NUnit fixtures and cases under a Unity project's Assets/*/Tests, so the size and value rules reach C# tests, and read NUnit 3 results in the time reader (RW-44, `d885426`).
 - 2026-11-12 — testing: Made the time reader drop an exemption only when its test falls to half its limit, so a test at its limit cannot flip a gated run (RW-56, `test_budget.py`).
 - 2026-11-11 — testing: Gave a `large` test a limit of 30 s and made the time limits fail a run of a current tree, judged on the time a test takes alone (RW-54, `testing/SKILL.md`).
