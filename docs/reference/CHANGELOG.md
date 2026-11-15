@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-16 — unlinked-cleanup: Added the skill that removes what nothing reaches and fixes each SOLID breach seen, after asking, and made every dispatch report carry both lists (`claude/DISPATCH.md`).
 - 2026-11-16 — superpowers: Removed the twelve vendored superpowers skills nothing installs, keeping `verification-before-completion` and `receiving-code-review`, and the section that mapped their paths.
 - 2026-11-16 — skills: Held every SKILL.md to 800 words, moving detail to references/, and made the commit-msg hook refuse a fix or feat commit without a test or a `Tests: none` reason (RW-57, `2cae458`).
 - 2026-11-14 — checkers: Read NUnit fixtures and cases under a Unity project's Assets/*/Tests, so the size and value rules reach C# tests, and read NUnit 3 results in the time reader (RW-44, `d885426`).

@@ -35,6 +35,9 @@ You are a subagent. These rules hold for this whole task, on top of the task its
     repository. Use no `Monitor`, no `run_in_background` and no watch loop. Every shell command
     ends on its own within 60 seconds, except `git commit`, whose hook may take up to 10 minutes.
     Dispatch no subagent of your own.
+13. Fix and delete nothing outside your task. Your report always carries the headings "Unlinked
+    found" and "SOLID breaches", filled as `unlinked-cleanup` says; a report without them, or
+    with "none" and no list of files read, is returned.
 
 The first line of your report is exactly:
 

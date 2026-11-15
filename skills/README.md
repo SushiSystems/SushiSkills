@@ -22,7 +22,7 @@ agent reads the descriptions first and loads a skill only when its task matches.
 | `backlog` | State from the backlog commands, the order of a session, work or issue, priority |
 | `design` | State from the design commands, owner before change, decisions into the topic |
 | `versioning-and-release` | Semantic versions, `vX.Y.Z` tags, when a release is due, how it is cut |
-| `project-tools` | The twelve checkers every repository carries and their shared contract |
+| `project-tools` | The checkers every repository carries and their shared contract |
 | `testing` | What each change must test, bug fix order, determinism, golden files |
 | `dependencies` | Licences, where libraries come from, keeping them private |
 | `api-stability` | Public surfaces, deprecation, exports, cross-repository upgrades |
@@ -37,6 +37,7 @@ agent reads the descriptions first and loads a skill only when its task matches.
 | `platform-portability` | Platform adapters, export macros, paths and text |
 | `build-throughput` | One tree per configuration, Debug by default, edges admitted by measured peak memory, heavy code compiled and linked once, caches, batches |
 | `storage-discipline` | Scratchpad budget, no binaries or copies in scratch, bounded output capture, cleanup before reporting |
+| `unlinked-cleanup` | What nothing reaches: proving it, asking before deleting, deleting it whole, its own commit |
 
 `humanizer` and `marketing-copy` carry one file per language and register beside `SKILL.md`,
 and a `research/` folder with the sources those files cite.
