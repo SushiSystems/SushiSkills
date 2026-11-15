@@ -70,12 +70,6 @@ decision.
 Each rule set is its own skill, and its description says when it loads. Load the one your task
 touches; when the descriptions leave that unclear, `references/skill-map.md` maps tasks to skills.
 
-## Third-party skills
-
-The vendored superpowers skills name their own paths. In a repository that follows this doctrine a superpowers spec
-is `SPEC.md` and a superpowers plan is `PLAN.md` in the work folder
-`docs/agent/<YYYY_MM_DD>_<WORK_NAME>/`. Nothing is written under `docs/superpowers/`.
-
 ## Language
 
 Code, comments, documentation, commits and pull requests are in English unless the owner says

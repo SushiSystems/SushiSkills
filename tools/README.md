@@ -2,13 +2,13 @@
 
 **Describes:** `tools/check_all.py`, `tools/settings.py`
 
-Reference implementations of the twelve checkers every repository carries. A rule is
+Reference implementations of the checkers every repository carries. A rule is
 fixed here first and copied out with `checking/copy_shared_tools.py`; which files that copies and
 which it keeps is in the `project-tools` skill.
 
 | Path | Checks | Takes |
 | --- | --- | --- |
-| `check_all.py` | Nothing itself; runs the twelve checkers, then the repository's own `<area>/check_<what>.py` files and the tests, the tests without git's repository variables (`GIT_DIR` and its kin), and prints only what failed; findings that `known_findings.toml` in the repository's tools folder allows are left out, and the clean line counts them | Repository root |
+| `check_all.py` | Nothing itself; runs the shared checkers, then the repository's own `<area>/check_<what>.py` files and the tests, the tests without git's repository variables (`GIT_DIR` and its kin), and prints only what failed; findings that `known_findings.toml` in the repository's tools folder allows are left out, and the clean line counts them | Repository root |
 | `checking/checker.py` | Nothing itself; runs a checker's rule table and prints findings | |
 | `checking/source_file.py` | Nothing itself; holds a file's path and text for a checker's pure rules, the line of an offset, and the shell helper that reads the files a checker wants | |
 | `checking/tests_tree.py` | Nothing itself; finds a repository's test files, under every folder named `tests` or `__tests__` at any depth, and under `Assets/<Project>/Tests` of a Unity project, for the checkers that read them | |

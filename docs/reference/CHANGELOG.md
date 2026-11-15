@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-16 — superpowers: Removed the twelve vendored superpowers skills nothing installs, keeping `verification-before-completion` and `receiving-code-review`, and the section that mapped their paths.
 - 2026-11-16 — skills: Held every SKILL.md to 800 words, moving detail to references/, and made the commit-msg hook refuse a fix or feat commit without a test or a `Tests: none` reason (RW-57, `2cae458`).
 - 2026-11-14 — checkers: Read NUnit fixtures and cases under a Unity project's Assets/*/Tests, so the size and value rules reach C# tests, and read NUnit 3 results in the time reader (RW-44, `d885426`).
 - 2026-11-12 — testing: Made the time reader drop an exemption only when its test falls to half its limit, so a test at its limit cannot flip a gated run (RW-56, `test_budget.py`).
