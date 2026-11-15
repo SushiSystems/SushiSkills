@@ -5,9 +5,9 @@ description: Use when creating or reorganising a Unity project repository, addin
 
 # Unity repositories
 
-Unity fixes part of the tree and its community reads PascalCase, so a Unity repository keeps the
-rules of `repository-layout` and swaps the tree and the names. Everything not named here is unchanged:
-one responsibility per module, a README per module, dependencies that point one way.
+A Unity repository keeps the rules of `repository-layout` and swaps only the tree and the names:
+one responsibility per module, a README per module, dependencies that point one way. Why each rule
+reads as it does is in `references/rationale.md`; read it when a case is not foreseen here.
 
 ## The root
 
@@ -18,9 +18,9 @@ Packages/  ProjectSettings/
 Assets/
 ```
 
-`docs/` and `tools/` keep their lower-case names, because the checkers look for them.
-`Packages/`, `ProjectSettings/` and `Assets/` are Unity's. Solution and project files, `Library/`,
-`Logs/`, `obj/`, `UserSettings/` and build output are generated and ignored.
+`docs/` and `tools/` keep their lower-case names. `Packages/`, `ProjectSettings/` and `Assets/` are
+Unity's. Solution and project files, `Library/`, `Logs/`, `obj/`, `UserSettings/` and build output
+are generated and ignored.
 
 ## Under `Assets/`
 
@@ -62,54 +62,39 @@ Only the folders with content exist. Each code folder carries one assembly defin
 | `<Feature>.Simulation` | `Core` |
 | `<Feature>.View` | `Core`, its own `Simulation` |
 | `<Feature>.Editor` | `Core`, its own `Simulation` and `View` |
-| `App` | Everything; it is the only assembly that sees two features |
+| `App` | Everything; the only assembly that sees two features |
 
-A feature never references another feature. Two features meet through an interface, an event or
-a command declared in `Core`. A feature is added by creating its folder and one registration
-line in `App`, and removed by deleting both. If adding one requires editing another feature, the
-boundary is wrong.
+A feature never references another feature; two features meet through an interface, an event or
+a command declared in `Core`. A feature is added by creating its folder and one registration line
+in `App`, and removed by deleting both.
 
 `Simulation` references no UI, camera, input or audio type and no `ThirdParty` assembly.
 
 ## Tests
 
-`Assets/<Product>/Tests/` mirrors `Assets/<Product>/`, because Unity compiles only what sits
-under `Assets/` or `Packages/`. `tools/testing/check_test_mirror.py` enforces the mirror.
+`Assets/<Product>/Tests/` mirrors `Assets/<Product>/`; `tools/testing/check_test_mirror.py`
+enforces the mirror: `<path>/<Name>.cs` is tested by `Tests/<path>/<Name>Tests.cs`.
 
-| Unit | Test |
-| --- | --- |
-| `Assets/<Product>/<path>/<Name>.cs` | `Assets/<Product>/Tests/<path>/<Name>Tests.cs` |
-
-- The test class is `<Name>Tests`, one per file, as C# names a test fixture. `Legacy/` and
-  `Content/` have no tests.
+- The test class is `<Name>Tests`, one per file. `Legacy/` and `Content/` have no tests.
 - Each mirrored code folder is one test assembly, `<Company>.<Product>.Tests.<Feature>.<Folder>`.
-  `Simulation` and `Editor` tests run in EditMode; `View` tests run in PlayMode. Unity requires
-  the two modes in separate assemblies, and the split falls where the code already splits.
+  `Simulation` and `Editor` tests run in EditMode; `View` tests run in PlayMode.
 - A test assembly references what its mirrored folder references, and that folder. A test of two
-  features together belongs to `App`, the only assembly that sees both.
+  features together belongs to `App`.
 - The kind of a test is an NUnit `[Category]`, never a folder. The labels are in `testing`.
 - Test data sits in `Fixtures/<Name>/` and reference outputs in `Goldens/<Name>/` beside the
   test file that reads them.
 
 ## Content
 
-Content is addressed by what it is, not by its file type. One unit, weapon or map is one folder
-holding its data asset, prefab, model, textures, materials and sounds. Adding the tenth unit adds
-a folder; deleting a unit deletes one. A `Models/`, `Textures/` or `ScriptableObjects/` folder
-that collects one file type across many things is a defect.
-
-An asset that only one feature's code uses lives in that feature's `Prefabs/`.
+One unit, weapon or map is one folder holding its data asset, prefab, model, textures, materials
+and sounds. A `Models/`, `Textures/` or `ScriptableObjects/` folder that collects one file type
+across many things is a defect. An asset that only one feature's code uses lives in that
+feature's `Prefabs/`.
 
 ## Large files
 
-| Rule | Detail |
-| --- | --- |
-| What goes in | Any file above 10 MB, and any source file the build does not need |
-| Where | `Assets/LargeFiles/`, mirroring the path the file would have had |
-| Not imported | Files Unity must not import sit under `Assets/LargeFiles/Source~/`; Unity skips a folder ending in `~` |
-| Git | The folder's content is ignored; its `README.md` is tracked |
-| Backup | The owner copies the folder by hand, `.meta` files included, since they hold the GUIDs |
-| Inventory | `docs/reference/LARGE_FILES.md` lists every file with its size and hash, so a clone can tell what it lacks |
+A file above 10 MB, or a source file the build does not need, goes to `Assets/LargeFiles/`. Read
+`references/large-files.md` before adding one; it holds the path, git, backup and inventory rules.
 
 ## Names
 
@@ -127,16 +112,10 @@ An asset that only one feature's code uses lives in that feature's `Prefabs/`.
 
 ## Moving files
 
-A file moves with its `.meta`, and a folder with its folder `.meta`, in one `git mv` each. The
-GUID lives in the `.meta`; a file that arrives without it loses every reference to it. Scenes and
-prefabs are saved as text (`Force Text`) before a move, so the result can be diffed.
+A file moves with its `.meta`, and a folder with its folder `.meta`, in one `git mv` each. Scenes
+and prefabs are saved as text (`Force Text`) before a move.
 
 ## Common mistakes
 
-| Mistake | Fix |
-| --- | --- |
-| `Scripts/`, `Managers/`, `Utils/` | Name the responsibility; each part goes to the feature that owns it or to `Core` |
-| `Prefabs/`, `Materials/`, `Textures/` at the top | Put the asset with the thing it belongs to |
-| `(Obsolete)` or `_Old` beside live code | `Legacy/`, with a backlog item for its deletion |
-| A feature that imports another feature's namespace | Declare the contract in `Core` and wire it in `App` |
-| A vendored pack edited in place | Leave `ThirdParty/` untouched; wrap it in a feature |
+`references/common-mistakes.md` lists the usual misplacements and their fixes; read it when
+reviewing a Unity tree.

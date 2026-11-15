@@ -43,27 +43,9 @@ Write the draft, then reread it against the checklist for its language. Ask of e
 would a sharp, busy colleague write this, or does it exist to sound thorough? Cut the second
 kind. Most drafts need a handful of cuts and one or two restructured sentences, not a rewrite.
 
-The cross-language checklist, in the order the tells are usually found:
-
-| Look for | English | Türkçe |
-| --- | --- | --- |
-| Opener | restating the question; "Great question" | "Elbette", "İşte…", "Bu yazıda … ele alacağız" |
-| Filler connective | Moreover / Furthermore / Additionally | Bu bağlamda / Bununla birlikte / Öte yandan / Dahası |
-| Corrective contrast | not just X but Y; it's not X, it's Y | sadece X değil, aynı zamanda Y; "değil" > 3 |
-| Rule of three | closed symmetric triple | "hızlı, güvenli ve ölçeklenebilir" |
-| Copula avoidance | serves as / stands as / represents | işlevi görmektedir / konumundadır / teşkil etmektedir |
-| Evaluative adjective | robust, comprehensive, crucial, pivotal | kapsamlı, kritik, kilit, sorunsuz, güçlü |
-| Unquantified intensifier | significantly, substantially | oldukça, son derece, büyük ölçüde |
-| Hidden verb | perform a validation | ölçüm gerçekleştirmek, senkronizasyon sağlamak |
-| Agentless passive | is validated by the renderer | renderer tarafından doğrulanmaktadır |
-| Uniform verb ending | (n/a) | every sentence in -mektedir / -maktadır |
-| Inverted sentence | (n/a) | predicate not last; an object or adverbial after the verb |
-| Empty preposition frame | in terms of, with regard to | kapsamında / çerçevesinde / noktasında / -e yönelik |
-| Participial opinion tail | …, highlighting the importance of | …na katkıda bulunarak, …ni gözler önüne sererek |
-| Em dash as tic | more than one per ~300 words, or two in a paragraph | any em dash at all outside dialogue; repair recipe in `generic_turkish.md` |
-| Semicolon + connective | rare | "; bununla birlikte" |
-| Closing | In conclusion; Let me know if… | Sonuç olarak; Umarım faydalı olmuştur |
-| Flat rhythm | every sentence 15–25 words | every sentence same length, same ending |
+Run every draft against the cross-language checklist of tells (openers, filler connectives,
+copula avoidance, em dashes, closings and the rest) in `references/checklist.md`; read it with
+the language file on the first draft of a session.
 
 Two structural checks that no word list catches: read only the first sentence of each
 paragraph and confirm the argument survives; and count sentences that assert nothing anyone

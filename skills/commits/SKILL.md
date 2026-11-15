@@ -70,6 +70,9 @@ Backlog: none (typo in a comment)
 A commit that changes what a page describes also carries the pages, or a `Docs: <page> unchanged
 (<reason>)` line after the `Backlog:` line (`documentation`, "Pages follow what they describe").
 
+A `fix` or `feat` commit stages a test, or carries a `Tests: none (<reason>)` line. The
+`commit-msg` hook refuses it otherwise when `K_TESTS_LINE` is set.
+
 ## Staging
 
 Staging follows `git-workflow`, section "Shared working tree".

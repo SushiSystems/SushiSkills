@@ -137,7 +137,7 @@ tests/test_gemm.cpp::Medium_Gemm.SimpleGemm | delete | 1 | sleep; self-compariso
 A verdict at question 2, 4, 5 or 8 names the files that answer it: the sibling tests for 4, the
 public code for 2, 5 and 8. A record without them is sent back.
 
-A worker applies the verdicts. A deletion carries its question and reason, as `SKILL.md` asks.
+A worker applies the verdicts. A deletion carries its question and reason, as `references/determinism.md` asks.
 
 ## Measuring agreement
 

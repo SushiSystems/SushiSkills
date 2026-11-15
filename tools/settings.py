@@ -71,20 +71,6 @@ K_TEST_TIMES: dict[str, float] = {
     "pre_merge_s": 600,
 }
 #: Skills over the 800-word budget of check_skill_budget.py, held to their size on 2026-11-16 (RW-57).
-K_SKILL_WORD_CEILINGS: dict[str, int] = {
-    "skills/build-throughput/SKILL.md": 1632,
-    "skills/continuous-integration/SKILL.md": 819,
-    "skills/cpp-code-style/SKILL.md": 967,
-    "skills/dependencies/SKILL.md": 896,
-    "skills/documentation/SKILL.md": 1926,
-    "skills/humanizer/SKILL.md": 967,
-    "skills/logging/SKILL.md": 1883,
-    "skills/model-routing/SKILL.md": 1163,
-    "skills/module-install/SKILL.md": 1139,
-    "skills/multi-agent-work/SKILL.md": 947,
-    "skills/project-tools/SKILL.md": 1572,
-    "skills/repository-layout/SKILL.md": 1319,
-    "skills/sushiskills/SKILL.md": 1410,
-    "skills/testing/SKILL.md": 4576,
-    "skills/unity-project-layout/SKILL.md": 1002,
-}
+K_SKILL_WORD_CEILINGS: dict[str, int] = {}
+#: A fix or feature commit stages a test or says `Tests: none (<reason>)`; read by the commit-msg hook.
+K_TESTS_LINE = True

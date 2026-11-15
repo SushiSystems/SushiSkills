@@ -6,7 +6,8 @@ description: Use when adding or changing a CI workflow, when CI fails, or before
 # Continuous Integration
 
 CI runs the same checks the agent runs locally, on every platform the repository supports, so
-that "it works here" is not the only evidence.
+that "it works here" is not the only evidence. Read `references/rationale.md` when a rule here
+looks wrong for a case it did not foresee.
 
 ## Stages
 
@@ -23,7 +24,7 @@ Each stage runs the tests whose size, from `testing`, fits its budget. No test c
 - A change selects its modules by reverse dependency in the module graph the build declares;
   post-merge runs every module, so a module the selection missed is seen within one merge.
 - A sanitizer job gates like any other; it is never marked allowed to fail. MemorySanitizer is not
-  run, because it needs every library in the process instrumented.
+  run.
 - The diff's line and branch coverage is printed in the pre-merge summary and never gates.
 - A Unity project runs its EditMode and PlayMode tests as two jobs.
 - Mutation testing runs only when the owner asks, over the changed and covered lines of one module.
@@ -53,17 +54,15 @@ Each stage runs the tests whose size, from `testing`, fits its budget. No test c
 - **Rule:** a commit pushed straight to `main` that changes only prose (a page under `docs/`, a
   README, the changelog) carries `[skip ci]` at the end of its subject line, after
   `python tools/check_all.py .` has passed locally.
-- **Why:** such a commit cannot change what the build, the tests or the sanitizers see, and a run
-  for it holds the runners for an hour while it waits behind the run before it.
+- **Why:** such a commit cannot change what CI sees, and its run holds the runners for an hour.
 - **Not when:** the commit touches source, a test, a build file, the CLI, a checker, a workflow
   or a dependency manifest; the commit goes through a pull request, whose `gate` must report; or
   `check_all.py` was not run clean, since CI then runs the checkers the commit skipped.
 
 ## When CI fails
 
-- A red run is read from the log of its first failed job as soon as that job ends. The fix is made, the
-  failing step is run locally, and the superseded run is cancelled; the rest of a red run is not waited
-  for, because its remaining jobs cannot change the fix.
+- A red run is read from the log of its first failed job as soon as that job ends, then fixed as
+  default 3 of `sushiskills` says.
 - A red `main` is reverted first, and the change is fixed and landed again after; nothing else
   lands while it is red.
 - No release is proposed or cut while CI is red.

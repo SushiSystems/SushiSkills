@@ -5,9 +5,11 @@ description: Use when dispatching subagents, running agents in parallel, splitti
 
 # Multi-Agent Work
 
-Parallel agents multiply output and multiply mess by the same factor. One session orchestrates;
-every other agent is a worker with a fixed file set, a fixed place to write, and a report that
-must carry its evidence.
+One session orchestrates; every other agent is a worker with a fixed file set, a fixed place to
+write, and a report that carries its evidence.
+
+Read `references/running-the-plan.md` when writing a plan's job list, when running a plan in
+parallel mode, or for examples of reading an instruction literally.
 
 ## Roles
 
@@ -34,21 +36,9 @@ The owner chooses how the plan runs.
 | Inline | One session implements the jobs in hierarchy order, without workers |
 | Parallel | The orchestrator gives the jobs to subagents, several at once, and keeps no job for itself |
 
-Both modes start from the same job list: the jobs in hierarchy order, and per job its files, what
-it waits on and its acceptance criterion. The list is a table under
-`## Jobs` in `PLAN.md`, with the columns `Job`, `Files`, `Waits on` and `Status`; the status is
-`todo`, `running`, `done` or `failed`, and the orchestrator edits it. In parallel mode
-`python tools/routing/next_jobs.py PLAN.md --free N` prints the ids of up to `N` jobs that may
-start now.
-
-In parallel mode the orchestrator runs the list like this:
-
-- It decides which subagent takes which job, and hands the jobs out without waiting for any to finish.
-- When a subagent finishes a job it is free, and the orchestrator gives it the next job at once.
-  A subagent that is still working gets nothing.
-- The hierarchy is strict. A job starts only when everything it waits on is done. If the next job
-  is blocked, the orchestrator does not wait: it gives the free subagent the next job that is ready.
-- The orchestrator never holds two running jobs on the same file.
+Both modes run from the `## Jobs` table in `PLAN.md`. In parallel mode a job starts only when
+everything it waits on is done, a free subagent gets the next ready job at once, and
+`tools/routing/next_jobs.py` names the jobs that may start.
 
 ## Dispatch
 
@@ -56,23 +46,18 @@ Every dispatch opens with the line `claude/CLAUDE.md` gives in its section "Dele
 sends the subagent to `claude/DISPATCH.md`. The rules live in that file and nowhere else.
 
 Then: the task, its file list, its acceptance criterion, the skills it must load
-(`cpp-code-style`, `source-comments`, ...), and the work folder path.
-
-A worker does not see the orchestrator's memory or conversation. Anything it needs is in the
-dispatch.
-
-In parallel mode, a worker returns its report as its reply and the orchestrator writes `REPORT.md`;
-the work folder holds one report, and two workers never hold one file.
+(`cpp-code-style`, `source-comments`, ...), and the work folder path. A worker does not see the
+orchestrator's memory or conversation; anything it needs is in the dispatch.
 
 ## Choosing a model
 
-The `model-routing` skill chooses the model and the effort for each dispatch, by phase and by
-task, within the limits the same "Delegation" section sets.
+The `model-routing` skill chooses the model and the effort for each dispatch, within the limits
+the same "Delegation" section sets.
 
 ## Accepting a report
 
 The evidence a report must carry, and what a reviewer dispatch checks by name, are in the same
-"Delegation" section. The orchestrator checks two things more.
+"Delegation" section. The orchestrator checks more:
 
 1. The list of files changed matches the assigned set.
 2. A report on work that changed a public name, a signature, a header path, a CLI command or a
@@ -85,20 +70,13 @@ A page a worker reports as false is handled as `AGENT_WORK.md` in `documentation
 ## Instructions are read literally
 
 A plan, a job, a review record, a ruling and an instruction from the owner are read one at a
-time, in order, and done as written. Nobody interprets them: not a worker, not a lead, not the
-orchestrator.
+time, in order, and done as written, by every agent, the orchestrator included.
 
-- Each instruction is done word for word. A record that says "resize to small" ends with a small
-  test. A ruling that says "build the seam" ends with the seam built.
-- An instruction that cannot be done as written is never swapped for a reading of it that can,
-  such as "stays medium for a missing seam". It is reported as not done, with the reason, and
-  its job stays `todo` or `failed`, never `done`.
-- "It cannot be checked without a build" is not a reason an instruction cannot be done. The build
-  comes once, at the end (`build-throughput`, boundary 8); the change it needs, a production seam
-  included, is part of the job.
+- An instruction that cannot be done as written is never swapped for a reading of it that can.
+  It is reported as not done, with the reason, and its job stays `todo` or `failed`, never `done`.
+- A missing build is not a reason: the change the instruction needs is part of the job.
 - The orchestrator checks each report against every instruction it was given, one by one, before
-  accepting it. A report that did something else in place of an instruction is sent back,
-  whatever reason it gives.
+  accepting it. A report that did something else in its place is sent back, whatever reason it gives.
 - An instruction the orchestrator wrote binds it too. Before each dispatch, each acceptance and
   each report to the owner, it reads its earlier instructions of the session again and checks
   each against what was done.
@@ -106,4 +84,4 @@ orchestrator.
 ## Shared working tree
 
 - Staging, stash and worktrees follow `git-workflow`, section "Shared working tree".
-- Two running jobs never hold the same file.
+- Two running jobs never hold the same file, and two workers never hold one file.

@@ -31,6 +31,7 @@ which it keeps is in the `project-tools` skill.
 | `documentation/docs_follow.py` | Nothing itself; finds the pages a change leaves behind, for the checker and the commit-msg hook | |
 | `commits/history.py` | Nothing itself; reads the commits after a base for the checkers that judge each commit | |
 | `commits/check_backlog_trailer.py` | Each commit after `K_TRAILER_SINCE` ends with `Backlog: <ID>` for an entry open in its parent or in itself, or `Backlog: none (<reason>)` | Repository root |
+| `commits/tests_trailer.py` | Nothing itself; tells the `commit-msg` hook whether a `fix` or `feat` commit stages a test or carries `Tests: none (<reason>)`, when `K_TESTS_LINE` is set | |
 | `hooks/install_hooks.py` | Nothing; sets `core.hooksPath` to `tools/hooks` so every clone runs the same hooks | Repository root |
 | `hooks/commit_msg.py` | Nothing; the check the `hooks/commit-msg` hook runs on a message before the commit exists | Message file |
 | `hooks/pre-commit` | Nothing itself; runs `check_all.py` before a commit is made | |

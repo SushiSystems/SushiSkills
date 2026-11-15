@@ -5,15 +5,14 @@ description: Use when starting any work in a repository (existing or new), or wh
 
 # SushiSkills
 
-One discipline for every repository, so that a person or an agent who knows one
-repository already knows them all. Maintenance cost is the thing being minimised; every rule
-below exists because its absence made a repository more expensive to change.
+One discipline for every repository, so that a person or an agent who knows one repository
+knows them all. It minimises maintenance cost.
 
 ## The doctrine
 
-The doctrine has two kinds of rule. A boundary holds without exception; breaking one is a defect
-however good the reason looks. A default holds unless its own "not when" line applies; it says
-why it exists so that a case it did not foresee is judged by its purpose.
+A boundary holds without exception; breaking one is a defect however good the reason looks. A
+default holds unless its own "not when" line applies; a case it did not foresee is judged by its
+purpose, which `references/rationale.md` gives for each rule.
 
 ### Boundaries
 
@@ -30,8 +29,7 @@ why it exists so that a case it did not foresee is judged by its purpose.
 3. **An obsessive quality bar.** "Good enough for now" is not accepted. Work that passes by
    accident is not finished.
 4. **Maintainability before performance.** Engineer it once carefully, run it a thousand times
-   cheaply. A wasted cycle is a real cost, in money and in energy; a hack that saves one is a
-   larger one.
+   cheaply.
 5. **The owner decides the boundaries.** Module boundaries, public interface shape, data
    ownership, external dependencies, and deleting what you did not create are the owner's
    decisions. Naming, internal structure, test shape and work order are yours. Never pick
@@ -42,27 +40,20 @@ why it exists so that a case it did not foresee is judged by its purpose.
 1. **Grow without reshaping.**
    **Rule:** a set of kinds that grows gets one type per kind behind one interface, so adding
    the tenth module, level or backend adds a file, not an edit to nine others.
-   **Why:** a switch over kinds that every new kind must extend is the edit that spreads.
    **Not when:** the set is closed by its meaning and small, such as the states of one machine
-   or a `std::variant` visited in one place. A switch there is clearer and faster, and an
-   interface with a factory around it is a cost with no return.
+   or a `std::variant` visited in one place.
 2. **The CLI is the only door.**
    **Rule:** build, test and run through the repository's own CLI. Never call the build, test or
    package tools behind it directly, and never run a program or a test from the build system (a
    test driver, a custom target, a post-build step). The language skills name those tools.
-   **Why:** only the CLI sets up the runtime search path, so a binary launched any other way
-   fails to find its DLLs or shared objects.
    **Not when:** a debugger launches one test or program with the environment the CLI prints
    for it; the result of that run is not a test result, the CLI run is. Or the repository has
-   no CLI (see "Not every project has a CLI"): it uses its own scripts, such as `npm run`, and
-   nothing else behind them.
+   no CLI: it uses its own scripts, such as `npm run`, and nothing else behind them.
 3. **Act on the known step.**
    **Rule:** when the next step is inside the task, local and reversible, take it now and check it
    afterwards. Do not wait for a run that cannot change the step, ask leave for what the task already
    covers, or answer a fault with a plan. A red check is read, fixed and rerun at once, with the
    narrowest check that shows the fix run first and the run it supersedes cancelled.
-   **Why:** precision comes from the check that follows an action, which a test, a hook or CI
-   supplies. Waiting before the action adds hours and no information.
    **Not when:** the step is one the owner reserves (a module boundary, a public interface, an
    external dependency, deleting what you did not create) or one that publishes or cannot be
    undone (a push, a release, a deletion). Those wait for the owner, and the agent says in one line
@@ -70,56 +61,14 @@ why it exists so that a case it did not foresee is judged by its purpose.
 
 ## Not every project has a CLI
 
-A CLI is for a complex project: several modules, its own toolchain, a runtime search path to set up.
-A web application driven by its package manager, or a Unity project driven by the editor, does not
-need one, and none is built for it. The rules that name `<cli>` then read as follows:
-
-- Build, test and run go through the project's own scripts (`npm run`, the editor), and nothing is
-  called behind them.
-- The backlog and the design are read with the module form of the same commands, which the tooling
-  role of the company layer names.
-- The checkers under `tools/` run directly.
-- A Unity project follows `unity-project-layout` for its tree and does not carry the C++ and Python
-  module rules that assume a CLI.
-
-Adding a CLI to a project that has none is the owner's decision.
+A web application on its package manager or a Unity project on its editor builds no CLI. When a
+rule names `<cli>` in such a project, read `references/no-cli.md`. Adding a CLI is the owner's
+decision.
 
 ## The bricks
 
-Each rule set is its own skill. Load the one your task touches.
-
-| Task touches | Skill |
-| --- | --- |
-| Prose of any kind, in English or Turkish | `humanizer` |
-| Website, pitch, product or social copy for outsiders | `marketing-copy` |
-| Where a file or folder goes | `repository-layout` |
-| C++ formatting, naming, class shape, errors | `cpp-code-style` |
-| Python layout, formatting, naming, class shape | `python-code-style` |
-| TypeScript layout, brace symmetry, naming, class shape | `typescript-code-style` |
-| Doxygen headers and comments in source | `source-comments` |
-| Log calls, categories, levels | `logging` |
-| Any file under `docs/` or a module README, or a name, path or command a page describes | `documentation` |
-| What is left or next, a defect found, work finished, a commit's backlog line | `backlog` |
-| What a module is meant to be, who owns it, a decision made, a phase moving | `design` |
-| More than one agent on one piece of work | `multi-agent-work` |
-| Which model and effort a session or a dispatch runs on | `model-routing` |
-| A commit message or pull request | `commits` |
-| A version number, a tag, a release | `versioning-and-release` |
-| The checkers under `tools/` | `project-tools` |
-| Tests a change must carry, bug fix order, determinism, goldens | `testing` |
-| Adding, vendoring or upgrading a third-party library | `dependencies` |
-| Changing or removing a public surface, cross-repository upgrades | `api-stability` |
-| How a module is obtained, set up and recognised, with or without its workspace tool | `module-install` |
-| Optimising, benchmarks, perf claims | `performance` |
-| A bug, a crash, a wrong value | `debugging` |
-| A persistent file format | `file-formats` |
-| Branches, pushing, conflicts | `git-workflow` |
-| CI workflows and CI failures | `continuous-integration` |
-| Windows and Linux differences, exports, paths | `platform-portability` |
-| Build configurations and trees, compile and link speed, build memory | `build-throughput` |
-| Code that runs on an accelerator: device builds, kernels, software test devices | `gpu-development` |
-| A Unity project's tree, assemblies, scenes and C# names | `unity-project-layout` |
-| Scratch files, temp output, copies, downloads, anything that writes to disk | `storage-discipline` |
+Each rule set is its own skill, and its description says when it loads. Load the one your task
+touches; when the descriptions leave that unclear, `references/skill-map.md` maps tasks to skills.
 
 ## Third-party skills
 

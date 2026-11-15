@@ -23,37 +23,9 @@ The repository's `.clang-format` is authoritative; it encodes these rules.
 | Empty bodies | `{` and `}` on their own lines with one blank line between them, never `{}` |
 | Access specifiers | Indented one level inside the class, members one level further |
 | Pointers and references | Bind to the type: `const Buffer& buffer`, `Node* parent` |
-| Include order | Not auto-sorted; grouped by hand (see Includes) |
 
-```cpp
-namespace Project::Physics
-{
-    class PhysicsWorld
-    {
-        public:
-            explicit PhysicsWorld(Execution::Context& context) noexcept;
-
-            void step(double seconds);
-
-        private:
-            Execution::Context& context_;
-    };
-} // namespace Project::Physics
-```
-
-```cpp
-void PhysicsWorld::step(double seconds)
-{
-    if (bodies_.empty())
-        return;
-
-    for (RigidBody& body : bodies_)
-    {
-        integrate(body, seconds);
-        clamp_velocity(body);
-    }
-}
-```
+Read `references/examples.md` for worked examples and common mistakes, when reviewing C++ or
+unsure how a rule looks in code.
 
 ## Naming
 
@@ -74,8 +46,8 @@ void PhysicsWorld::step(double seconds)
 | Macro | `<PREFIX>_UPPER_SNAKE` | `PR_ASSERT`, `PR_LOG_WARN` |
 
 - A query that returns a bool reads as a question: `is_empty`, `has_backward_rule`.
-- An acronym keeps its capitals inside a `PascalCase` name: `BodyID`, `USMKind`, `TCPTransport`,
-  `BLAS::fold`, never `BodyId`, `UsmKind` or `Blas`. A plural adds a small `s`: `TaskIDs`. In
+- An acronym keeps its capitals inside a `PascalCase` name: `BodyID`, `BLAS::fold`, never
+  `BodyId` or `Blas`. A plural adds a small `s`: `TaskIDs`. In
   `snake_case` it is lower case like any other word: `body_id`, `usm_kind.hpp`.
 - No `I` prefix on interfaces, no `m_`, no Hungarian notation, no abbreviations a newcomer
   cannot expand.
@@ -85,11 +57,11 @@ void PhysicsWorld::step(double seconds)
 - `#pragma once` in every header.
 - One primary type per header; the file is named after it. Its definitions go in
   `source/<same_name>.cpp`.
-- Every file opens with the license block, then the `@file` block (see `source-comments`).
+- File headers follow `source-comments`.
 
 ## Includes
 
-Groups in this order, one blank line between groups:
+Grouped by hand, not auto-sorted, in this order, one blank line between groups:
 
 1. The header this source file implements.
 2. Standard library.
@@ -121,7 +93,7 @@ dependency private (`build-throughput`, boundary 7).
 
 | Situation | Mechanism |
 | --- | --- |
-| The caller broke a precondition (a programmer error) | `<PREFIX>_ASSERT` / `<PREFIX>_VERIFY` / `<PREFIX>_FATAL` |
+| A broken precondition (a programmer error) | `<PREFIX>_ASSERT` / `<PREFIX>_VERIFY` / `<PREFIX>_FATAL` |
 | An operation can fail for a reason outside the program (file, parse, device, network) | Return an `enum class ...Status` or an expected type carrying one; `[[nodiscard]]` |
 | A third-party library throws | Catch at the module boundary and convert to a status; exceptions never cross a module's public surface |
 
@@ -130,22 +102,11 @@ dependency private (`build-throughput`, boundary 7).
 - No sentinel values (`-1`, `nullptr`) standing in for an error when a status can say what
   happened.
 
-## Performance defaults
+## Passing values
 
-- Pass cheap types by value, everything else by `const&`; sinks by value then move.
-- The rules of a hot path are in `performance`.
-
-## Common mistakes
-
-| Mistake | Fix |
-| --- | --- |
-| `struct Utils` with static helpers | Free functions in a namespace named for what they do |
-| A header per module that includes everything | Include the exact headers used |
-| `bool` return for "failed for some reason" | A status enum naming the reason |
-| Boolean parameters (`load(path, true, false)`) | An enum or an options struct |
-| A switch over a growing set of kinds that every new kind edits | A table or an interface each kind implements; a small closed set keeps its switch (`sushiskills`, default 1) |
+Cheap types by value, everything else by `const&`, sinks by value then moved. Hot-path rules
+are in `performance`.
 
 ## Tools behind the CLI
 
-`cmake`, `ninja` and `ctest` are called by the repository's CLI and by nothing else (`sushiskills`,
-default 2).
+`cmake`, `ninja` and `ctest` run only through the repository's CLI (`sushiskills`, default 2).
