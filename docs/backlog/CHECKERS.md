@@ -13,16 +13,13 @@
 | RW-11 | P2 | open | Check the licence block of shell and CMake files | `rule_license_block` reads `.sh` and `.cmake` files |  |  | 2026-10-19 |
 | RW-12 | P2 | open | Tell a second personal copyright line from an upstream notice | `rule_license_block` reports a second copyright line that is not an upstream notice |  |  | 2026-10-19 |
 | RW-13 | P2 | open | Read reference-style links and links around an image | `rule_links` and `rule_reachable_from_index` follow both kinds |  |  | 2026-10-19 |
-| RW-16 | P2 | open | Copy the shared rows of `tools/README.md` with the shared tools | `copy_shared_tools.py` writes the rows of the shared tools into a repository's `tools/README.md` and keeps the rows of its own tools |  |  | 2026-10-19 |
-| RW-17 | P2 | open | Report a setting the shared tools read that `settings.py` lacks | `copy_shared_tools.py` names each `K_` setting the copied tools import that the repository's `tools/settings.py` does not define, with SushiSkills' default |  |  | 2026-10-19 |
 | RW-18 | P2 | open | Refuse a changelog without its title and `## Unreleased` | `check_changelog.py` reports a `CHANGELOG.md` that lacks `# Changelog` or `## Unreleased` |  |  | 2026-10-19 |
 | RW-20 | P2 | open | Let the test mirror checker skip listed units | `check_test_mirror.py` skips the units a repository lists in `tools/settings.py` and fails on a listed unit that has gained a test |  |  | 2026-10-19 |
 | RW-21 | P2 | open | Read TypeScript imports in the layering check | `check_layering.py` reports a TypeScript import that crosses a boundary the repository's tier order forbids |  |  | 2026-10-19 |
 | RW-22 | P2 | open | Read C# in the comment, licence and layering checks | `check_source_comments.py` and `write_license_block.py` read `.cs` files, and `check_layering.py` reads a Unity tree's assembly definitions |  |  | 2026-10-19 |
 | RW-31 | P2 | open | Adopt the untested list of SushiDSP in the shared test mirror checker | check_test_mirror.py holds the untested list rule with a test, and SushiDSP takes the shared copy without --keep |  | `tools/testing/check_test_mirror.py` | 2026-10-30 |
-| RW-32 | P2 | open | Roll the shared tools out to SushiRuntime and SushiEngine once their trees are clean | both repositories pass check_all with the shared tools, copied with copy_shared_tools |  |  | 2026-10-30 |
+| RW-32 | P2 | open | Bring SushiEngine onto the shared tools of SushiCore v0.14.1 | SushiEngine passes check_all with the shared tools synced from SushiCore v0.14.1, as SushiRuntime does |  |  | 2026-10-30 |
 | RW-33 | P2 | open | Turn on the Backlog commit line in each repository after its CI fetches full history | K_TRAILER_SINCE is set and the hooks are installed in each repository that took the shared tools |  |  | 2026-10-30 |
-| RW-34 | P3 | open | Bring SushiStack and SushiWeb to a clean check_all so they can take the shared tools | both pass the shared checkers they fail today, then take the copy with copy_shared_tools |  |  | 2026-10-30 |
 | RW-43 | P2 | open | Report gtest_discover_tests in a build file that gives no reason for it | a shared checker reports each such call after a base commit, with tests |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
 | RW-46 | P2 | open | Give design_status a pure status parser that check_docs_layout reuses | check_docs_layout keeps no copy of the design listing or status parse, and design_status reads no disk in its parser |  | `tools/documentation/design_status.py` | 2026-11-04 |
 | RW-47 | P3 | open | Move check_all's plan into its own module so known_findings needs no lazy import | known_findings.py and check_all.py both import the plan module and neither imports the other |  | `tools/checking/known_findings.py` | 2026-11-05 |
@@ -32,7 +29,6 @@
 | RW-51 | P2 | open | Make apply_settings.py write K_TEST_TIMES into a repository's settings | a repository set up with apply_settings.py passes test_test_times_settings without a hand edit |  | `sushisystems/sushisystems-tooling/apply_settings.py` | 2026-11-05 |
 | RW-52 | P2 | open | Find a test that makes a device, queue or runtime outside its module's one fixture base | check_test_value.py reports a test source that constructs a device, queue or runtime outside the fixture base, as testing's Running fast rule 3 says |  | `skills/testing/SKILL.md` | 2026-11-05 |
 | RW-55 | P2 | open | Judge a row name by the table the name generator reads, not by the file | check_test_odr passes a SCOPED_TRACE-only table in a file whose generator reads another table's name |  |  | 2026-11-11 |
-| RW-58 | P1 | open | Make SushiCore the source of the shared tools and require one version per dependency | the skills name the sushicore sync, the lock check, hub pins and hub bump, and SushiSkills holds no copier |  |  | 2026-11-16 |
 
 ## Known issues
 

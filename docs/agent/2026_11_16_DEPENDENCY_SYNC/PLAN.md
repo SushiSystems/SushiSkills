@@ -1,6 +1,6 @@
 # Dependency sync: plan
 
-**Status:** Open — run in parallel by the owner's choice on 2026-11-16
+**Status:** Open — run in parallel by the owner's choice on 2026-11-16; R1 and R2 wait on SushiAI and SushiEngine, whose sessions apply them
 
 The shared checkers live in two trees that have drifted: SushiSkills and SushiCore each hold
 files the other lacks and about 25 files whose text differs. `copy_shared_tools.py` reads
@@ -39,15 +39,15 @@ then brought to one version of each dependency.
 
 | Job | Files | Waits on | Status |
 | --- | --- | --- | --- |
-| C1 | SushiCore `tools/`: every SushiSkills-only shared file brought in, every differing file merged to the newer text, its tests |  | todo |
-| C2 | SushiCore `source/sushicore/shared_tools/` (package, `__main__.py`) and `tests/`: sync from a tag, lock file, `--check`; SushiCore `tools/checking/copy_shared_tools.py` and its test removed |  | todo |
-| H1 | SushiStack `cli/sushihub/services/pin_report.py`, `git_ops.py` (latest tag), `cli.py` (`hub pins`), tests |  | todo |
-| S1 | SushiSkills `skills/api-stability`, `sushisystems/sushisystems-dependencies`, `sushisystems/sushisystems-tooling`, `skills/project-tools`: the rule |  | todo |
-| C3 | SushiCore `tools/checking/check_shared_tools.py`, `tools/check_all.py`, test: the lock check in `check_all` | C1, C2 | todo |
-| H2 | SushiStack `cli/sushihub/services/bump.py`, `cli.py` (`hub bump`), tests | H1, C2 | todo |
-| C4 | SushiCore release, local tag | C3 | todo |
-| R1 | Each repository: `hub bump sushicore <C4 tag>`, its red checks fixed; SushiSkills' own copier removed | C4, H2, S1 | todo |
-| R2 | Each split dependency from `hub pins` bumped to one version, red checks fixed | R1 | todo |
+| C1 | SushiCore `tools/`: every SushiSkills-only shared file brought in, every differing file merged to the newer text, its tests |  | done |
+| C2 | SushiCore `source/sushicore/shared_tools/` (package, `__main__.py`) and `tests/`: sync from a tag, lock file, `--check`; SushiCore `tools/checking/copy_shared_tools.py` and its test removed |  | done |
+| H1 | SushiStack `cli/sushihub/services/pin_report.py`, `git_ops.py` (latest tag), `cli.py` (`hub pins`), tests |  | done |
+| S1 | SushiSkills `skills/api-stability`, `sushisystems/sushisystems-dependencies`, `sushisystems/sushisystems-tooling`, `skills/project-tools`: the rule |  | done |
+| C3 | SushiCore `tools/checking/check_shared_tools.py`, `tools/check_all.py`, test: the lock check in `check_all` | C1, C2 | done |
+| H2 | SushiStack `cli/sushihub/services/bump.py`, `cli.py` (`hub bump`), tests | H1, C2 | done |
+| C4 | SushiCore release, local tag | C3 | done |
+| R1 | Each repository: `hub bump sushicore <C4 tag>`, its red checks fixed; SushiSkills' own copier removed | C4, H2, S1 | running |
+| R2 | Each split dependency from `hub pins` bumped to one version, red checks fixed | R1 | running |
 
 ## Acceptance
 
