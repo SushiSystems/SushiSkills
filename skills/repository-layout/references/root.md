@@ -21,7 +21,7 @@ docs/
 | `AGENTS.md`, `CLAUDE.md` | Agent instructions and skill declarations; names the skills the repository follows |
 | the module manifest | The file the workspace tool reads from the root; `module-install` names its contents |
 | `.config/` | Configuration a flag or a key can point a tool at, such as `doxygen/Doxyfile` and `docker/Dockerfile`; its `README.md` has one row per file, naming the tool and the call site that passes the path |
-| `.github/` | What GitHub resolves by name: workflows, templates, `SECURITY.md` and `CODE_OF_CONDUCT.md`; the last two are SushiSkills' own, copied unchanged by `copy_shared_tools.py` and edited only there |
+| `.github/` | What GitHub resolves by name: workflows, templates, `SECURITY.md` and `CODE_OF_CONDUCT.md`; the last two are the shared tooling library's, copied unchanged by its sync command and edited only there |
 | `cmake/` | Every CMake function and the layer table |
 | `cli/` | The project CLI package, with its own `pyproject.toml` |
 | `tools/` | Manual checkers; see `project-tools` |

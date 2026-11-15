@@ -50,6 +50,10 @@ Repositories depend on each other in tiers, lowest first.
    against a mix of old and new.
 4. No repository depends on unreleased work of another. If it needs it, the lower one releases
    first.
+5. A dependency has one version across the workspace. Two repositories pinning it at different
+   versions is a defect; the workspace tool reports the split, and the upgrade of rule 2 runs
+   through its command that walks the dependency graph, never by hand edits repository by
+   repository.
 
 ## Red flags
 

@@ -17,7 +17,7 @@ tool. This page says who fills each role at Sushi Systems.
 | Design tool | `sushicore`'s `design` commands, run the same two ways. Reference: sushicore's `docs/reference/DESIGN.md` |
 | Build machinery | From sushicore: `build_tree`, `build_admission`, `build_gate`, `build_report` |
 | Module manifest | `sushi-module.toml` |
-| The shared checkers' source | the SushiSkills checkout: `python tools/checking/copy_shared_tools.py ROOT --from <the SushiSkills checkout>` |
+| The shared checkers' source | SushiCore's `tools/`, at the release the CLI pins: `python -m sushicore.shared_tools sync ROOT --tag <that release>`, checked by `python -m sushicore.shared_tools check ROOT`; `hub bump sushicore <tag>` runs it in every module |
 | Documentation host | `docs.sushisystems.io`, named by `docs/publish.toml` |
 
 ## The settings of a Sushi repository

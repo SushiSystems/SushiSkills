@@ -47,18 +47,19 @@ its licence changes, and with `--report` to prove the blocks are in place.
 
 ## Shared and own tools
 
-The files SushiSkills' `tools/` holds at its last commit are shared. A repository holds them as
-SushiSkills committed them, every source file under the repository's own license block, and
-never edits them. A shared checker that needs to change is changed in SushiSkills first.
+The files the shared tooling library's `tools/` holds at a release tag are shared. A repository
+holds them as that tag holds them, every source file under the repository's own license block,
+and never edits them. A shared checker that needs to change is changed in the library first.
 
 - `tools/settings.py` and `tools/README.md` are shared by name only: they hold what differs
   between repositories and list its own tools, and the copy never overwrites them.
-- Every other file under a repository's `tools/` is its own tool, at any path SushiSkills does
+- Every other file under a repository's `tools/` is its own tool, at any path the library does
   not use. The copy never touches it.
 
-A repository runs `tools/checking/copy_shared_tools.py` from the SushiSkills checkout after a
-checker changes upstream. It refuses a local edit unless given `--force` and never deletes a
-file dropped upstream; read `references/checkers.md` before running it.
+The library's sync command copies the shared files from the tag the repository pins and writes a
+lock file with a hash per file; `check_all.py` fails when a file differs from its lock. The sync
+refuses a local edit unless given `--force` and never deletes a file dropped upstream; read
+`references/checkers.md` before running it.
 
 ## Hooks
 

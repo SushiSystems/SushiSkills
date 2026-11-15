@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-16 — dependencies: Made SushiCore's release tag the source of the shared tools, held to a lock file, and required one version per dependency, kept by `hub pins` and `hub bump` (RW-58, `api-stability/SKILL.md`).
 - 2026-11-16 — unlinked-cleanup: Added the skill that removes what nothing reaches and fixes each SOLID breach seen, after asking, and made every dispatch report carry both lists (`claude/DISPATCH.md`).
 - 2026-11-16 — superpowers: Removed the twelve vendored superpowers skills nothing installs, keeping `verification-before-completion` and `receiving-code-review`, and the section that mapped their paths.
 - 2026-11-16 — skills: Held every SKILL.md to 800 words, moving detail to references/, and made the commit-msg hook refuse a fix or feat commit without a test or a `Tests: none` reason (RW-57, `2cae458`).

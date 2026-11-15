@@ -22,8 +22,16 @@ pin, the workspace tool, the logger. This page says who fills each role at Sushi
 
 ## Moving a pin
 
-Every repository pinning a library moves together, through `hub pin <name> <version>`, and the
-library's CI builds and tests each repository that pins it before a release.
+Every repository pinning a library moves together, and the library's CI builds and tests each
+repository that pins it before a release.
+
+| Command | Does |
+| --- | --- |
+| `hub pins [--latest]` | Lists each module's pin of each dependency, SushiCore's range included; exits 1 when one dependency is pinned at two versions |
+| `hub bump <name> <tag>` | Moves the pin in every module that depends on `<name>`, lowest tier first; for `sushicore` it also syncs the shared tools; runs each module's `check_all.py` and prints a pass or fail table. It commits nothing |
+| `hub pin <name> <version>` | Moves one pin without the graph walk or the checks |
+
+`hub pins` exits 0 before a release is proposed.
 
 ## A workspace takes over
 

@@ -40,16 +40,18 @@ Adding a rule adds one function and one table row. Nothing else in the checker c
 
 ## The shared copy in detail
 
-`python tools/checking/copy_shared_tools.py ROOT --from <the sushiskills checkout>` copies the
-shared files as the checkout's last commit holds them, never its working tree, and names the
-uncommitted changes it left out. With `--report` it lists the files that differ and exits 1.
+The sync command of the shared tooling library copies the shared files as one release tag holds
+them, never a branch or a working tree, and writes `tools/shared_tools.lock`: the tag, its
+commit and a hash per file. Its check mode lists each file that differs from the lock and exits 1.
+The tag is the library release the repository's CLI pins, so the tools and the library move
+together.
 
-- It is run from the SushiSkills checkout, never from a repository's copy, so a fix to the
-  copier applies on the run that brings it.
+- It runs from the library's package, never from a repository's copy, so a fix to the copier
+  applies on the run that brings it.
 - A shared file whose text no upstream version ever held is a local edit: the copy refuses,
   writes nothing and names the file, and `--force` overwrites it. Move the edit upstream first,
   or drop it.
-- A file the repository holds that SushiSkills shared once and no longer holds is named as
+- A file the repository holds that the library shared once and no longer holds is named as
   dropped upstream. The copy never deletes it; the repository removes it in its own commit.
 
 ## Known findings in detail
