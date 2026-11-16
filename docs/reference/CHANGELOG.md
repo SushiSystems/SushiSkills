@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-17 — checkers: Pinned every ceiling and the conditions a mutation sample left alive in the shared checkers, in SushiCore (RW-61, RW-62, SushiCore `2f7ae0e`).
 - 2026-11-17 — checkers: Made the skill budget rules read the skill's key from their subject, so the tests pass from any working directory (RW-60, `65f9895`).
 - 2026-11-17 — sushiskills: Sent a case no rule foresaw to the owner, moved the red flags to `references/red-flags.md` and added a hook that repeats the boundaries in a session (RW-59, `29331bb`).
 - 2026-11-16 — build-throughput: Added boundary 9, build permission of two kinds: a single one for one build run and a standing one for every build of the session until revoked (`build-throughput/SKILL.md`).
