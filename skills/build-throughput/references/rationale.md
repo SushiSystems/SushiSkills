@@ -23,6 +23,10 @@ for memory, is slower than one that ran fewer jobs.
 - **Build once.** A design that adds a million lines changes nothing in this rule. An error costs
   the same to fix whenever it is found, and each build in the middle costs a full compile and
   link, so a build run early is paid for again by every later one.
+- **Build permission.** A build takes the machine's memory and threads for minutes, and the
+  owner shares that machine. A single permission lets the owner approve one run without opening
+  the door for the rest; a standing one spares them the same question on every rerun of a long
+  session. The two are kept apart so that "build it" is never read wider than it was said.
 
 ## Defaults
 

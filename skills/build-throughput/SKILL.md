@@ -5,10 +5,9 @@ description: Use when deciding when to build or run tests during a piece of work
 
 # Build throughput
 
-A build setup is engineered once and measured, for the development machine as it is: fixed
-memory shared with everything else, fixed hardware threads. Why each rule exists, and the longer
-reasoning behind boundaries 7 and 8, is in [references/rationale.md](references/rationale.md);
-read it when a case is not covered below or a rule seems to cost more than it saves.
+A build setup is engineered once and measured, for the machine as it is: fixed memory shared
+with everything else, fixed hardware threads. Why each rule exists is in
+[references/rationale.md](references/rationale.md); read it when a case is not covered below.
 
 ## Boundaries
 
@@ -16,14 +15,12 @@ read it when a case is not covered below or a rule seems to cost more than it sa
    platform, have their own build directory. A tree's configuration is fixed when it is created;
    the CLI refuses to configure an existing tree with another build type or other compile flags.
 2. **Debug is the default; Release is built for releases.** The plain build command builds the
-   development configuration. Release is built by `versioning-and-release` and for measurement
-   by `performance`. Nothing else defaults to it.
+   development configuration. Release is built by `versioning-and-release` and `performance`.
 3. **Memory decides parallelism.** No build pushes free memory under the repository's reserve,
    1.5 GB unless it names another. What runs at once is decided from measured peaks and the
    memory free when the build starts, never from a constant.
 4. **A build change carries its numbers.** A change made to build faster or lighter follows the
-   measuring rule of `performance`: same tree, same machine, before and after, wall time and
-   peak memory.
+   measuring rule of `performance`: same tree and machine, before and after.
 5. **The CLI is the only door.** Every knob below is a CLI option or a machine-local CLI setting
    (`sushiskills`, default 2).
 6. **One copy of the machinery.** A CLI built on the shared tooling library takes the tree rule,
@@ -33,13 +30,16 @@ read it when a case is not covered below or a rule seems to cost more than it sa
    value or as a member, a base class, or used in an inline body. A type a public header only
    names by reference or pointer is forward-declared there, its include moves into the sources,
    and the dependency is private; a caller that builds such an argument includes and links it
-   itself. Before declaring a dependency public, name the public-header line that needs it.
+   itself. Before declaring one public, name the public-header line that needs it.
 8. **Implement everything, build once, test once.** A piece of work, however large, is
    implemented in full before any build runs. The build comes once, after the last line; the
    tests run once, after the build is green. Never a build per task, module, job or edit, and
    never a test run before the final build. A build error, structural ones included, is fixed
    then and the build rerun until green. Syntax checks without a build (`clang -fsyntax-only`)
    and commit-hook checkers are not builds.
+9. **A build needs the owner's permission, single or standing.** A single permission covers one
+   build run, a rerun after an error included, then lapses. A standing one covers every build
+   of the session until revoked. Never inferred, never widened; with neither, ask in one line.
 
 ## Defaults
 
