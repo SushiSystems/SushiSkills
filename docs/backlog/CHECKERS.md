@@ -29,6 +29,10 @@
 | RW-51 | P2 | open | Make apply_settings.py write K_TEST_TIMES into a repository's settings | a repository set up with apply_settings.py passes test_test_times_settings without a hand edit |  | `sushisystems/sushisystems-tooling/apply_settings.py` | 2026-11-05 |
 | RW-52 | P2 | open | Find a test that makes a device, queue or runtime outside its module's one fixture base | check_test_value.py reports a test source that constructs a device, queue or runtime outside the fixture base, as testing's Running fast rule 3 says |  | `skills/testing/SKILL.md` | 2026-11-05 |
 | RW-55 | P2 | open | Judge a row name by the table the name generator reads, not by the file | check_test_odr passes a SCOPED_TRACE-only table in a file whose generator reads another table's name |  |  | 2026-11-11 |
+| RW-60 | P1 | open | Make the skill budget ceiling key independent of the working directory | tools/tests pass under unittest discover run from the root and from tools/, and _key reads no disk in a small test |  | `tools/skills/check_skill_budget.py` | 2026-11-17 |
+| RW-61 | P2 | open | Test each ceiling and range rule at its exact boundary | a mutant turning > into >= or <= into < survives in none of the checkers' ceiling and range comparisons |  | `tools/testing/mutate_diff.py` | 2026-11-17 |
+| RW-62 | P2 | open | Kill the logic mutants that survive in check_docs_truth, check_agnostic and check_layering | sampled mutation of the conditions at check_docs_truth 349-682, check_agnostic 120 and 154 and check_layering 360 leaves no survivor |  | `tools/documentation/check_docs_truth.py` | 2026-11-17 |
+| RW-63 | P2 | open | Run the shared checkers' mutation sample in each release of SushiCore | the release step of SushiCore runs a mutation sample and records its survivors |  | `tools/testing/mutate_diff.py` | 2026-11-17 |
 
 ## Known issues
 
