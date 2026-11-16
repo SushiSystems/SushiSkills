@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -14,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from checking.source_file import SourceFile  # noqa: E402
 import skills.check_skill_budget as budget  # noqa: E402
-from skills.check_skill_budget import K_WORD_BUDGET, rule_ceiling_follows, rule_word_budget  # noqa: E402
+from skills.check_skill_budget import K_WORD_BUDGET, Skill, rule_ceiling_follows, rule_word_budget  # noqa: E402
 
 K_SKILL = Path("skills/x/SKILL.md")
 K_FRONT_MATTER = "---\nname: x\ndescription: " + "word " * 50 + "\n---\n"
@@ -22,7 +23,7 @@ K_FRONT_MATTER = "---\nname: x\ndescription: " + "word " * 50 + "\n---\n"
 
 def _issues(text: str) -> list[str]:
     """Returns the message of each issue the budget rule yields for a skill text."""
-    return [issue.message for issue in rule_word_budget(SourceFile(K_SKILL, text))]
+    return [issue.message for issue in rule_word_budget(Skill(SourceFile(K_SKILL, text), K_SKILL.as_posix()))]
 
 
 class WordBudgetTest(unittest.TestCase):
@@ -56,7 +57,7 @@ class CeilingTest(unittest.TestCase):
 
     def _follows(self, words: int) -> list[str]:
         """Returns the message of each issue the ceiling rule yields for a body of this many words."""
-        return [issue.message for issue in rule_ceiling_follows(SourceFile(K_SKILL, "word " * words))]
+        return [issue.message for issue in rule_ceiling_follows(Skill(SourceFile(K_SKILL, "word " * words), K_SKILL.as_posix()))]
 
     def test_passes_a_skill_at_its_ceiling(self) -> None:
         self.assertEqual(_issues("word " * (K_WORD_BUDGET + 100)), [])
@@ -70,6 +71,20 @@ class CeilingTest(unittest.TestCase):
 
     def test_asks_to_remove_the_ceiling_of_a_skill_within_budget(self) -> None:
         self.assertIn("remove its K_SKILL_WORD_CEILINGS entry", self._follows(K_WORD_BUDGET)[0])
+
+
+class CollectTest(unittest.TestCase):
+    """Covers the key collect reads from the repository that holds a skill, whatever the working directory."""
+    K_TEST_SIZE = "medium"
+
+    def test_keys_a_skill_by_its_path_from_the_repository_root(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / ".git").mkdir()
+            skill = root / "skills" / "x" / "SKILL.md"
+            skill.parent.mkdir(parents=True)
+            skill.write_text("word", encoding="utf-8")
+            self.assertEqual([found.key for found in budget.collect([root / "skills"])], ["skills/x/SKILL.md"])
 
 
 if __name__ == "__main__":
