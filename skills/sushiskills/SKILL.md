@@ -11,8 +11,9 @@ knows them all. It minimises maintenance cost.
 ## The doctrine
 
 A boundary holds without exception; breaking one is a defect however good the reason looks. A
-default holds unless its own "not when" line applies; a case it did not foresee is judged by its
-purpose, which `references/rationale.md` gives for each rule.
+default holds unless its own "not when" line applies, read as written. A case no rule foresaw
+is the owner's call, asked in one line with a recommendation; a rule's purpose, which
+`references/rationale.md` gives, explains it and never grants an exception.
 
 ### Boundaries
 
@@ -24,8 +25,8 @@ purpose, which `references/rationale.md` gives for each rule.
 2. **Honesty.** Say what was done and what was not. Partial work is reported as partial. Every
    report names each SOLID breach and each unneeded dependency met in the work, the ones it
    made, the ones it kept and the ones it only saw, with the file and what it costs. A breach
-   is never called a trade-off to make it sound chosen, and "none" is written only after
-   looking.
+   is never called a trade-off to make it sound chosen, and "none" is written only beside the
+   list of files read.
 3. **An obsessive quality bar.** "Good enough for now" is not accepted. Work that passes by
    accident is not finished.
 4. **Maintainability before performance.** Engineer it once carefully, run it a thousand times
@@ -56,7 +57,8 @@ purpose, which `references/rationale.md` gives for each rule.
    narrowest check that shows the fix run first and the run it supersedes cancelled.
    **Not when:** the step is one the owner reserves (a module boundary, a public interface, an
    external dependency, deleting what you did not create) or one that publishes or cannot be
-   undone (a push, a release, a deletion). Those wait for the owner, and the agent says in one line
+   undone (a push, a release, a deletion). A new file inside the task's module is the agent's; a
+   new module, a changed public signature or a new package is the owner's. Those wait for the owner, and the agent says in one line
    what it needs and what it recommends.
 
 ## Not every project has a CLI
@@ -77,9 +79,6 @@ otherwise for a specific piece.
 
 ## Red flags
 
-- "This one is small, it does not need its own file."
-- "I will put the note here for now and move it later."
-- "The checker does not cover this case, so it is allowed."
-- "Asking would slow things down; this choice is obvious."
-
-Each of these is how a repository starts to cost more. Stop and apply the brick.
+`references/red-flags.md` lists the sentences that come before a broken rule. Meeting one in
+your own reasoning means stop and apply the brick. A hook repeats the boundaries and the flags
+during long sessions; see `claude/README.md`.

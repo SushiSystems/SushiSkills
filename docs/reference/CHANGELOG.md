@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-17 — sushiskills: Sent a case no rule foresaw to the owner, moved the red flags to `references/red-flags.md` and added a hook that repeats the boundaries in a session (RW-59, `remind_doctrine.py`).
 - 2026-11-16 — build-throughput: Added boundary 9, build permission of two kinds: a single one for one build run and a standing one for every build of the session until revoked (`build-throughput/SKILL.md`).
 - 2026-11-16 — checkers: Moved the two copier features RW-16 and RW-17 to SushiCore as RW-86 and RW-87, since the copier now lives there, and closed RW-34: SushiStack and SushiWeb pass check_all on the synced tools (`6687902`).
 - 2026-11-16 — tools: Took the shared tools from SushiCore v0.14.1, which leaves out its two own checkers and writes this repository's licence header, through `hub bump` (`tools/shared_tools.lock`).

@@ -1,7 +1,7 @@
 # Why the doctrine holds
 
-Read this when a case is one a rule in `../SKILL.md` did not foresee and you must judge it by
-the rule's purpose.
+Read this to know why a rule in `../SKILL.md` holds. A purpose explains a rule and never grants
+an exception to it: a case no rule foresaw goes to the owner.
 
 ## The whole doctrine
 
