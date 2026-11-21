@@ -7,6 +7,7 @@
 | RW-26 | P2 | open | Write bulk edits through a temporary file and the changelog as fragments | a tool that rewrites many files refuses to shrink one past a set share and copies it first, and an entry is added as a file beside the changelog and joined at… |  | `docs/agent/2026_10_21_DOCS_SCALABILITY/SPEC.md` | 2026-10-22 |
 | RW-27 | P2 | open | Check a built phase against a test and make a shipped design shrink | a phase marked built may name an existing test or command that a checker verifies, and a shipped design above a set size is a finding |  | `docs/agent/2026_10_21_DOCS_SCALABILITY/SPEC.md` | 2026-10-22 |
 | RW-28 | P2 | blocked | Land the topic model in the main checkout of sushiengine | commit `0dcf60dc7` of sushiengine is merged into the working tree of its main checkout and `git status` shows only the other session's files | external: another session holds uncommitted edits in eight files the commit changes |  | 2026-10-22 |
+| RW-64 | P2 | open | Carry the backlog review's findings of 2026-11-21 into the skills and the dispatch block | Each skill states the session start, the work folder's entry, the sibling citation and the findings heading once, and the priority table has one home |  | `skills/backlog/SKILL.md` | 2026-11-21 |
 
 ## Known issues
 
