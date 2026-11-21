@@ -43,6 +43,9 @@ hold always:
 
 - Stage by path, and only your own hunks in shared files. Never `git add -A`, `git add .` or
   `git commit -a`.
+- Commit with the paths: `git commit -o <path>...`. A bare `git commit` takes the whole index,
+  and another session's `git add` lands in the same index. A new file is staged with `git add`
+  first, because `-o` names only files git knows.
 - Check `git diff --cached --stat` before every commit and unstage anything that is not yours.
 - No `git stash`. A worktree only when the owner asks for one.
 - Never discard changes you did not make.

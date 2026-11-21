@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-21 — git-workflow: Told sessions on a shared checkout to commit with `git commit -o <path>...`, so another session's staged files stay out of the commit (RW-65, `git-workflow/SKILL.md`).
 - 2026-11-21 — backlog: Put the owner's task before `backlog next`, named the work folder's entry as what a plan's job serves, and made the priority table the one home of the late limits (RW-64, `backlog/SKILL.md`).
 - 2026-11-21 — commits: Let the `Backlog:` line cite an entry of a sibling as `<repository> <ID>` and judged an amend against the parent of the commit it replaces (RW-64, `commits/SKILL.md`).
 - 2026-11-21 — documentation: Made one backlog entry serve each work folder, so a plan's job needs no `none` (RW-64, `AGENT_WORK.md`).
