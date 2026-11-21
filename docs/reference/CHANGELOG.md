@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- 2026-11-21 — backlog: Put the owner's task before `backlog next`, named the work folder's entry as what a plan's job serves, and made the priority table the one home of the late limits (RW-64, `backlog/SKILL.md`).
+- 2026-11-21 — commits: Let the `Backlog:` line cite an entry of a sibling as `<repository> <ID>` and judged an amend against the parent of the commit it replaces (RW-64, `commits/SKILL.md`).
+- 2026-11-21 — documentation: Made one backlog entry serve each work folder, so a plan's job needs no `none` (RW-64, `AGENT_WORK.md`).
+- 2026-11-21 — multi-agent-work: Asked each worker's report for a "Backlog findings" heading and said a plan's tasks are no entries (RW-64, `DISPATCH.md`).
+- 2026-11-21 — project-tools: Said the pre-commit hook checks the files the commit will hold, not the disk (RW-64, `project-tools/SKILL.md`).
+- 2026-11-21 — sushisystems-tooling: Opened the repository block with the owner's task and `backlog next` only without one (RW-64, `CLAUDE_TEMPLATE.md`).
 - 2026-11-17 — checkers: Pinned every ceiling and the conditions a mutation sample left alive in the shared checkers, in SushiCore (RW-61, RW-62, SushiCore `2f7ae0e`).
 - 2026-11-17 — checkers: Made the skill budget rules read the skill's key from their subject, so the tests pass from any working directory (RW-60, `65f9895`).
 - 2026-11-17 — sushiskills: Sent a case no rule foresaw to the owner, moved the red flags to `references/red-flags.md` and added a hook that repeats the boundaries in a session (RW-59, `29331bb`).

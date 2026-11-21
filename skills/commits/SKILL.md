@@ -54,13 +54,20 @@ Every commit ends with one line, last in the message, that says which backlog en
 ```
 Backlog: RW-123
 Backlog: RW-123, KI-4
+Backlog: SushiSkills RW-38
 Backlog: none (typo in a comment)
 ```
 <!-- fact:end backlog-line -->
 
 - An ID must be an entry open in the parent commit or in this commit, so the commit that closes an
-  entry still names it (`backlog`).
-- `none` carries its reason in brackets. A reason of no words is a refusal.
+  entry still names it (`backlog`). An amend is judged against the parent of the commit it
+  replaces.
+- An entry of a sibling repository is written `<repository> <ID>`, the repository being its folder
+  name. The hook asks the sibling when it is checked out beside this repository and takes it on
+  trust when it is not.
+- `none` carries its reason in brackets. A reason of no words is a refusal. A release closes no
+  entry and says so. A plan's job is no reason: it serves the work folder's entry
+  (`documentation`, `AGENT_WORK.md`), and a commit that only closes an entry names that entry.
 - `tools/commits/check_backlog_trailer.py` checks the commits after `K_TRAILER_SINCE` in
   `tools/settings.py`, and the `commit-msg` hook in `tools/hooks/` refuses a message that breaks
   the rule before the commit exists. A repository runs `python tools/hooks/install_hooks.py` once

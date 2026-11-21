@@ -36,8 +36,10 @@ You are a subagent. These rules hold for this whole task, on top of the task its
     ends on its own within 60 seconds, except `git commit`, whose hook may take up to 10 minutes.
     Dispatch no subagent of your own.
 13. Fix and delete nothing outside your task. Your report always carries the headings "Unlinked
-    found" and "SOLID breaches", filled as `unlinked-cleanup` says; a report without them, or
-    with "none" and no list of files read, is returned.
+    found", "SOLID breaches" and "Backlog findings", the first two filled as `unlinked-cleanup`
+    says and the last with one line for each defect or limitation you met that is not yours to
+    close, naming its file; a report without them, or with "none" and no list of files read, is
+    returned. You write no entry: the orchestrator files each finding.
 
 The first line of your report is exactly:
 

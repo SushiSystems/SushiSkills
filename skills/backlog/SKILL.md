@@ -29,15 +29,17 @@ answers from a stale copy; running the command answers from the store.
 
 ## The order of a session
 
-1. **Start.** Run `backlog next`. The owner's pins come first, then the ready entries by priority
-   and age. Take what it gives.
+1. **Start.** The owner's task comes first. With none, run `backlog next`: the owner's pins, then
+   the ready entries by priority and age; take what it gives. With a task, `backlog list` tells
+   whether an entry covers it, and the commit names that entry.
 2. **A defect or limitation turns up.** Run `backlog add issue` for a condition a reader can meet,
    or `backlog add work` for something to do. Do it at the moment it is found. A thing noted for
    the end is a thing lost.
 3. **Finish.** Run `backlog close <ID>` in the same commit as the work, and write the changelog
-   line it prints. The commit ends with `Backlog: <ID>`.
+   line it prints. The command takes no commit hash; the line names the ID. The commit ends with
+   `Backlog: <ID>`.
 4. **A commit that serves no entry** ends with `Backlog: none (<reason>)`. The reason says why no
-   entry exists.
+   entry exists. A plan's job serves its work folder's entry (`AGENT_WORK.md` in `documentation`).
 
 The line, last in the message, takes one of these forms:
 
@@ -45,12 +47,13 @@ The line, last in the message, takes one of these forms:
 ```
 Backlog: RW-123
 Backlog: RW-123, KI-4
+Backlog: SushiSkills RW-38
 Backlog: none (typo in a comment)
 ```
 <!-- quote:end backlog-line -->
 
-A worker reads with `backlog next` and reports what it found; the orchestrator writes the entries
-(`multi-agent-work`, "Roles").
+A worker reads with `backlog next` and reports what it found under "Backlog findings"; the
+orchestrator writes the entries (`multi-agent-work`, "Roles").
 
 ## Work or issue
 
@@ -65,14 +68,14 @@ The columns and the rule for a known issue are in `BACKLOG_FORMAT.md`.
 
 ## Choosing a priority
 
-| Priority | Chosen when |
-| --- | --- |
-| `P0` | Data is lost, a gate is broken, a release regressed, or a security fix follows a disclosure |
-| `P1` | A defect has no workaround, or other work waits on this |
-| `P2` | A defect has a workaround, or a missing check let a defect through |
-| `P3` | An improvement |
+| Priority | Chosen when | Late after |
+| --- | --- | --- |
+| `P0` | Data is lost, a gate is broken, a release regressed, or a security fix follows a disclosure | 2 days |
+| `P1` | A defect has no workaround, or other work waits on this | 14 days |
+| `P2` | A defect has a workaround, or a missing check let a defect through | 90 days |
+| `P3` | An improvement | 180 days, then reviewed |
 
-When two fit, take the higher.
+When two fit, take the higher. This table is the one home of the limits.
 
 ## Red flags
 
@@ -80,5 +83,6 @@ When two fit, take the higher.
 - "I will note it in the commit message, a TODO or memory." → `backlog add`.
 - "I will close it in a later commit." → the same commit.
 - "I will edit the row." → `backlog set`; nobody edits a row by hand.
-- "I will pick the next task myself." → `backlog next`.
+- "I will pick the next task myself." → with no task from the owner, `backlog next`.
+- "This commit carries out a plan job, so it has no entry." → it serves the work folder's entry.
 - "This commit is too small for an ID." → `Backlog: none (<reason>)`, and the reason is written.

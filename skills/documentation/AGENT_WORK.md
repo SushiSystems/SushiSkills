@@ -44,6 +44,10 @@ fails an item whose topic or phase does not exist, so a renamed phase is found w
 1. **Open.** One folder: `docs/agent/<YYYY_MM_DD>_<WORK_NAME>/`. Before opening, check that no
    open folder already covers the work; if one does, continue it. The folder's first file
    (`SPEC.md`, else `PLAN.md`, else `REPORT.md`) carries a status line in the forms above.
+   One backlog entry serves the folder, written with `backlog add work` and citing the folder's
+   first file as its `Source`. The jobs of a plan are rows of the plan and are no entries: every
+   commit that carries one out names the folder's entry in its `Backlog:` line, and the entry
+   closes with the folder.
 2. **Work.** The folder holds at most `SPEC.md`, `PLAN.md` and `REPORT.md`. Each is rewritten
    in place as the work moves. A second review round replaces the first `REPORT.md`; it is not
    a new file. A worker records each step in the folder right after finishing it, naming the

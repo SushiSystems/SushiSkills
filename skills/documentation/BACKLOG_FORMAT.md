@@ -64,10 +64,8 @@ the acceptance is a run or a measurement.
 
 ## Priority and order
 
-`P0` is data loss, a broken gate, a regression in a release or a security fix after disclosure,
-late after 2 days. `P1` is a defect with no workaround or work that blocks other work, late after
-14. `P2` is a defect with a workaround or a missing check that let a defect through, late after
-90. `P3` is an improvement, reviewed after 180.
+The priorities, when each is chosen and when an entry of each is late are in the table of "Choosing
+a priority" in the `backlog` skill.
 
 The order is computed, never kept by hand. `backlog next` gives an agent its work: the owner's
 pins first, then the ready entries by priority and age. The owner pins at most ten entries with

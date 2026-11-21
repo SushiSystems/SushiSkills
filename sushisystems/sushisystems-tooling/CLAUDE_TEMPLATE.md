@@ -8,7 +8,8 @@ gives the order of work as commands, not as a pointer to a file.
 ```
 ## Backlog and design
 
-1. Session start: `<alias> backlog next`. Take what it gives.
+1. Session start, when the owner gave no task: `<alias> backlog next`. Take what it gives. A task
+   from the owner comes first.
 2. A defect or limitation turns up: `<alias> backlog add issue ...` or `<alias> backlog add work ...`
    at once.
 3. Before changing a module: `<alias> design owner <path>`.

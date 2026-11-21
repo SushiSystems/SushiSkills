@@ -20,7 +20,8 @@ parallel mode, or for examples of reading an instruction literally.
 
 A worker never edits a file outside its assigned set, never writes to `docs/design/`, the
 manual, `CHANGELOG.md` or `docs/backlog/`, and never commits unless the dispatch says so. It
-reads its work with `backlog next` and reports what it found; the orchestrator writes the entries.
+reads its work with `backlog next` and reports what it found, under "Backlog findings"; the
+orchestrator writes the entries.
 
 ## Planning
 
@@ -28,6 +29,8 @@ Every plan puts hierarchy first: interfaces and the bricks they depend on come b
 callers, and a module boundary is fixed, with its build edges committed, before anything on
 either side is written. A task needs one acceptance criterion. No task runs a build or a test:
 the one build and the one test run come after the last task, as `build-throughput` boundary 8 says.
+The tasks are rows of the plan, not backlog entries; `AGENT_WORK.md` in `documentation` says which
+entry serves the work folder.
 
 The owner chooses how the plan runs.
 
