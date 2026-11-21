@@ -64,10 +64,11 @@ refuses a local edit unless given `--force` and never deletes a file dropped ups
 ## Hooks
 
 `tools/hooks/` is tracked, and `python tools/hooks/install_hooks.py` points git at it once per
-clone. `pre-commit` runs `tools/check_all.py` on the files the commit will hold, written from the
-index to a throwaway folder, so a session's unfinished file on disk cannot refuse another's
-commit; `commit-msg` runs `tools/hooks/commit_msg.py`, which enforces the `Backlog:` line of
-`commits`. A hook is never skipped.
+clone. `pre-commit` runs `tools/check_all.py --skip-history` on the files the commit will hold,
+written from the index to a throwaway folder, so a session's unfinished file cannot refuse
+another's commit; CI runs the checkers that read every commit. `commit-msg` runs
+`tools/hooks/commit_msg.py`, which enforces the `Backlog:` line of `commits`. A hook is never
+skipped.
 
 ## Known findings
 
