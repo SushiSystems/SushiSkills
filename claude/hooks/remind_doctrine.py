@@ -2,27 +2,27 @@
 # SushiSkills - https://github.com/SushiSystems/SushiSkills
 # Copyright (c) 2026-present Mustafa Garip & Sushi Systems
 # Licensed under the Apache License 2.0. See LICENSE.
-"""Claude Code hook that repeats the sushiskills doctrine as additional context.
+"""Writes the doctrine reminders the Claude Code hooks print with `cat`, and checks them.
 
-In full at session start and every K_TOOL_INTERVAL tool calls, as one line on every prompt.
+Both files come from `skills/sushiskills/SKILL.md` and its red flags; see `claude/README.md`.
 
-Usage: python claude/hooks/remind_doctrine.py   (hook input as JSON on stdin)
+Usage: python claude/hooks/remind_doctrine.py write|check
 """
 
 from __future__ import annotations
 
-import json
 import re
 import sys
-import tempfile
 from pathlib import Path
 
-#: Tool calls between two full reminders.
-K_TOOL_INTERVAL = 25
+K_HOOKS_DIR = Path(__file__).resolve().parent
+K_SESSION_START_FILE = K_HOOKS_DIR / "session_start.txt"
+K_PROMPT_SUBMIT_FILE = K_HOOKS_DIR / "prompt_submit.txt"
+K_EXIT_CLEAN = 0
+K_EXIT_STALE = 1
 K_SKILL_DIR = Path(__file__).resolve().parents[2] / "skills" / "sushiskills"
 K_SKILL_FILE = K_SKILL_DIR / "SKILL.md"
 K_FLAGS_FILE = K_SKILL_DIR / "references" / "red-flags.md"
-K_COUNTER_DIR = Path(tempfile.gettempdir()) / "sushiskills-remind"
 K_ITEM = re.compile(r"^\d+\. \*\*(?P<title>[^*]+)\*\*\s*(?P<rest>.*)$")
 
 
@@ -76,38 +76,39 @@ def short_reminder() -> str:
     return f"SushiSkills boundaries hold without exception: {names}. Unforeseen case: ask the owner."
 
 
-def tool_call_due(session: str) -> bool:
-    """Counts a tool call for the session and tells whether a full reminder is due."""
-    K_COUNTER_DIR.mkdir(exist_ok=True)
-    counter = K_COUNTER_DIR / f"{re.sub(r'[^A-Za-z0-9_-]', '_', session)}.txt"
-    try:
-        count = int(counter.read_text(encoding="utf-8")) + 1
-    except (OSError, ValueError):
-        count = 1
-    counter.write_text(str(count), encoding="utf-8")
-    return count % K_TOOL_INTERVAL == 0
+def expected_files() -> dict[Path, str]:
+    """Returns each reminder file with the text it must hold."""
+    return {K_SESSION_START_FILE: full_reminder() + "\n", K_PROMPT_SUBMIT_FILE: short_reminder() + "\n"}
 
 
-def reminder_for(event: dict) -> str | None:
-    """Returns the reminder a hook event gets, or None when it gets none."""
-    name = event.get("hook_event_name", "")
-    if name == "SessionStart":
-        return full_reminder()
-    if name == "UserPromptSubmit":
-        return short_reminder()
-    if name == "PostToolUse" and tool_call_due(event.get("session_id", "unknown")):
-        return full_reminder()
-    return None
+def stale_files() -> list[Path]:
+    """Returns the reminder files whose text differs from what the skill gives."""
+    stale = []
+    for path, text in expected_files().items():
+        if not path.is_file() or path.read_text(encoding="utf-8") != text:
+            stale.append(path)
+    return stale
 
 
-def main() -> int:
-    """Reads the hook event from stdin and prints the hook output."""
-    event = json.load(sys.stdin)
-    text = reminder_for(event)
-    if text:
-        output = {"hookEventName": event["hook_event_name"], "additionalContext": text}
-        print(json.dumps({"hookSpecificOutput": output}))
-    return 0
+def write_files() -> None:
+    """Writes every reminder file from the skill."""
+    for path, text in expected_files().items():
+        path.write_text(text, encoding="utf-8", newline="\n")
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Writes the reminder files, or checks them and names each stale one."""
+    arguments = sys.argv[1:] if argv is None else argv
+    if arguments == ["write"]:
+        write_files()
+        return K_EXIT_CLEAN
+    if arguments != ["check"]:
+        print("usage: remind_doctrine.py write|check", file=sys.stderr)
+        return K_EXIT_STALE
+    stale = stale_files()
+    for path in stale:
+        print(f"{path.name} is stale; run: python claude/hooks/remind_doctrine.py write", file=sys.stderr)
+    return K_EXIT_STALE if stale else K_EXIT_CLEAN
 
 
 if __name__ == "__main__":

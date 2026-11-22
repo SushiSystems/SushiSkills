@@ -11,8 +11,11 @@ on that machine. Each machine then reads the same file.
 `DISPATCH.md` holds the rules every subagent follows. It is not imported, so it costs nothing
 outside a dispatch; a subagent reads it by path and proves it with the line it asks for.
 
-`hooks/remind_doctrine.py` keeps the doctrine in front of the agent in a long session. It reads
-the boundaries and defaults from `skills/sushiskills/SKILL.md` and the red flags from its
-`references/red-flags.md` each time it runs, so it restates nothing. `~/.claude/settings.json`
-runs it on `SessionStart` (startup, resume, clear and compact, in full), on `UserPromptSubmit`
-(one line of boundary names) and on `PostToolUse` (in full every 25 tool calls).
+`hooks/session_start.txt` and `hooks/prompt_submit.txt` keep the doctrine in front of the agent.
+`~/.claude/settings.json` prints them with `cat`: the first on `SessionStart` (startup, resume,
+clear and compact), the second, one line of boundary names, on `UserPromptSubmit`. No hook runs
+Python, writes a file or fires on a tool call.
+
+`hooks/remind_doctrine.py write` builds both files from the boundaries and defaults in
+`skills/sushiskills/SKILL.md` and the red flags in its `references/red-flags.md`. Its test fails
+when a file no longer matches the skill, so `tools/check_all.py` catches a stale reminder.

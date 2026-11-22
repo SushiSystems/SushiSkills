@@ -1,0 +1,1 @@
+SushiSkills boundaries hold without exception: SOLID, Honesty, An obsessive quality bar, Maintainability before performance, The owner decides the boundaries. Unforeseen case: ask the owner.

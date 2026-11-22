@@ -2,7 +2,7 @@
 # SushiSkills - https://github.com/SushiSystems/SushiSkills
 # Copyright (c) 2026-present Mustafa Garip & Sushi Systems
 # Licensed under the Apache License 2.0. See LICENSE.
-"""Tests the doctrine reminder hook on a sample doctrine and on the real skill."""
+"""Tests the doctrine reminder writer on a sample doctrine and on the real skill."""
 
 from __future__ import annotations
 
@@ -50,30 +50,24 @@ class TestParsing(unittest.TestCase):
         self.assertEqual(found, [("Third", "a default rule.")])
 
 
-class TestEvents(unittest.TestCase):
-    """The reminder each hook event gets, read from the real skill."""
+class TestReminders(unittest.TestCase):
+    """The reminder texts read from the real skill, and the files the hooks print."""
 
     K_TEST_SIZE = "medium"
 
-    def test_session_start_gets_every_boundary_and_flag(self) -> None:
-        text = remind_doctrine.reminder_for({"hook_event_name": "SessionStart"})
+    def test_full_reminder_holds_every_boundary_and_flag(self) -> None:
+        text = remind_doctrine.full_reminder()
         self.assertIn("- SOLID:", text)
         self.assertIn("- Act on the known step:", text)
         self.assertIn("written before reading the files", text)
 
-    def test_prompt_gets_one_line(self) -> None:
-        text = remind_doctrine.reminder_for({"hook_event_name": "UserPromptSubmit"})
+    def test_short_reminder_is_one_line(self) -> None:
+        text = remind_doctrine.short_reminder()
         self.assertEqual(len(text.splitlines()), 1)
         self.assertIn("The owner decides the boundaries", text)
 
-    def test_tool_use_gets_a_reminder_only_on_the_interval(self) -> None:
-        event = {"hook_event_name": "PostToolUse", "session_id": f"test-{id(self)}"}
-        answers = [remind_doctrine.reminder_for(event) for _ in range(remind_doctrine.K_TOOL_INTERVAL)]
-        self.assertEqual(sum(answer is not None for answer in answers), 1)
-        self.assertIsNotNone(answers[-1])
-
-    def test_other_events_get_nothing(self) -> None:
-        self.assertIsNone(remind_doctrine.reminder_for({"hook_event_name": "Stop"}))
+    def test_the_files_the_hooks_print_match_the_skill(self) -> None:
+        self.assertEqual(remind_doctrine.stale_files(), [])
 
 
 if __name__ == "__main__":
