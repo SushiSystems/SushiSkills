@@ -13,7 +13,7 @@ the other way in reads from it.
 | --- | --- |
 | Manifest | The module's name (equal to its folder), alias, distribution and repository, so the workspace tool recognises a checkout it never cloned |
 | Dependency declaration | The modules it depends on, the pin of each as a release tag, and the third-party ports. The CLI provisions from it; the workspace tool aggregates it |
-| Module CLI | Installable with the language's package tool. `setup` provisions the toolchain and libraries the declaration names, `doctor` reports what is missing, and `build`, `test`, `run` and `link` do what they say. It works with the workspace tool absent |
+| Module CLI | Installable with the language's package tool. `setup` provisions the toolchain and libraries the declaration names, `doctor` reports what is missing, and `build`, `test`, `run` and `link` do what they say. |
 | Build files | A configure that takes every outside path from a variable the CLI hands it. It downloads nothing but test frameworks |
 | Catalog entry | The clone URL, directory and alias behind the tool's add command |
 | Install pages | The two ways in, in order, with the prerequisites each needs |

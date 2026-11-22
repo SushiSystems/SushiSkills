@@ -5,11 +5,10 @@ description: Use when a module's way of being obtained, set up, built and recogn
 
 # Module install
 
-Two equal ways in, neither built on the other; a module working on only one is unfinished.
+Two equal ways in, neither built on the other; a module on only one is unfinished.
 **Standalone:** clone the module and its siblings; build, test, run from its own CLI, no
 workspace tool. **With the tool:** it brings module and dependencies into a workspace and adopts
-the same checkout. It reads what the module declares; the module needs nothing from it.
-`tools/documentation/check_module_install.py` checks it.
+the same checkout. `tools/documentation/check_module_install.py` checks it.
 
 ## Boundaries
 
@@ -25,11 +24,10 @@ the same checkout. It reads what the module declares; the module needs nothing f
 
 ## Elements
 
-Each module carries a manifest, dependency declaration, module CLI (`setup`, `doctor`, `build`,
-`test`, `run`, `link`; works without the tool), build files taking outside paths from a CLI
-variable and downloading only test frameworks, catalog entry, install pages, bare-clone CI lane.
-A page names the file holding a version, never copies it. Detail, reasons, audit questions:
-`references/elements-and-checking.md`; red flags: `references/red-flags.md`.
+Each module carries a manifest, dependency declaration, module CLI, build files, catalog entry,
+install pages and a bare-clone CI lane. A page names the file holding a version, never copies it.
+What each provides, the pages, the audit: `references/elements-and-checking.md`; red flags:
+`references/red-flags.md`.
 
 ## Defaults
 

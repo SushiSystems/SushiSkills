@@ -1,15 +1,9 @@
-# Python code style: layouts, tables and detail
+# Python code style: layouts and examples
 
-Full text of the sections that `../SKILL.md` states in brief. `SKILL.md` holds the rules; read
-this for the package layouts, the naming table or the logging example.
-
-Python 3.11 or later. The same brick discipline as the C++: one responsibility per module, one
-primary type per file, dependencies pointing down a declared order, entry points that only
-parse and delegate.
+Elaboration of the rules in `../SKILL.md`: the package layouts, the naming examples and the
+logging example.
 
 ## Layout
-
-The module-count predicate from `repository-layout` holds unchanged.
 
 **One module:**
 
@@ -34,71 +28,31 @@ modules/<tier>/<module>/
 tests/<tier>/<module>/test_<name>.py
 ```
 
-- A module's public surface is what its `__init__.py` re-exports. Anything else is private and
-  starts with an underscore when it is a module-level name.
-- Imports point down the tier order. A module never imports another module's private names.
-- A command line interface is a module like any other: `commands/` parses arguments,
-  `services/` does the work. A service never imports the command framework or writes to the
-  terminal.
-
 ## Formatting
 
-| Rule | Value |
+Built-in generics read `list[str]` and `X | None`.
+
+## Naming examples
+
+| Kind | Example |
 | --- | --- |
-| Indent | 4 spaces |
-| Line length | 100 |
-| Quotes | Double |
-| Trailing commas | On every multi-line collection and call |
-| Blank lines | Two between top-level definitions, one between methods |
-| Annotations | On every signature; built-in generics (`list[str]`, `X \| None`) |
-
-`from __future__ import annotations` opens every module after its docstring.
-
-## Naming
-
-| Kind | Form | Example |
-| --- | --- | --- |
-| Package, module, file | `snake_case` | `physics_world.py` |
-| Class, exception, protocol, enum | `PascalCase` | `PhysicsWorld`, `AssetUnreadableError` |
-| Enum member | `UPPER_SNAKE` | `BuildType.RELWITHDEBINFO` |
-| Function, method | `snake_case`, verb first | `add_body`, `read_wave_file` |
-| Variable, parameter | `snake_case` | `sample_rate` |
-| Private attribute or helper | `_snake_case` | `_pending_bodies` |
-| Module constant | `K_UPPER_SNAKE` | `K_BLOCK_CEILING` |
-
-A bool-returning query reads as a question: `is_empty`, `has_status`.
-
-## Files
-
-- One primary class per file; the file is named after it. Small free functions that serve
-  only that class stay in its file.
-- No `utils.py`, `helpers.py` or `common.py`. Name the responsibility.
-- Every file opens with the license header and a module docstring (see `source-comments`).
+| Package, module, file | `physics_world.py` |
+| Class, exception | `PhysicsWorld`, `AssetUnreadableError` |
+| Enum member | `BuildType.RELWITHDEBINFO` |
+| Function, method | `add_body`, `read_wave_file` |
+| Variable, parameter | `sample_rate` |
+| Private attribute or helper | `_pending_bodies` |
+| Module constant | `K_BLOCK_CEILING` |
+| Bool query | `is_empty`, `has_status` |
 
 ## Class shape
 
-1. Public methods first, in the order a caller uses them; private helpers after.
-2. Dependencies arrive through `__init__`; no module-level singletons, no hidden globals.
-3. Interfaces are `typing.Protocol` classes with no state; implementations are separate classes
-   in separate files.
-4. Plain data is a `@dataclass(frozen=True, slots=True)` unless it must change.
-5. A class not designed for inheritance is marked `@typing.final`.
-
-## Errors
-
-- Each module defines its own exception classes, all derived from one module base error.
-- Raise the most specific class; never bare `Exception`, never `assert` for input validation.
-- Exceptions from third-party libraries are caught at the module boundary and re-raised as the
-  module's own, with `raise ... from error`.
-- `except:` and `except Exception: pass` are forbidden. A failure is raised or logged, never
-  neither.
-- The entry point catches the module base error, prints one line, exits non-zero.
+Small free functions that serve only one class stay in that class's file.
 
 ## Logging
 
-The rules in `logging` apply. Each module gets one logger named after its category,
-`logging.getLogger("<project>.<module>")`, created once at module level as `K_LOGGER`. Use
-`%s` placeholders with arguments, never f-strings, so a disabled level costs nothing.
+A `%s` placeholder with arguments costs nothing when the level is disabled; an f-string does
+not.
 
 ```python
 K_LOGGER = logging.getLogger("project.assets")
@@ -113,14 +67,6 @@ K_LOGGER.warning(
 
 ## Tests
 
-- `pytest`. One test file per source file, `test_<name>.py`, at the path `TESTS.md` in
-  `repository-layout` gives it.
-- Test functions: `test_<behaviour>_<condition>`, e.g. `test_step_rejects_negative_time`.
-- Checkers under `tools/` use the standard library only, so they run without installing
-  anything (see `project-tools`). Their tests in `tools/tests/` use `unittest` for the same
-  reason; pytest runs them too.
-
-## Tools behind the CLI
-
-`uv` and `pytest` are called by the repository's CLI and by nothing else (`sushiskills`, default
-2).
+Example name: `test_step_rejects_negative_time`. Checkers under `tools/` use the standard
+library only so they run without installing anything (see `project-tools`); pytest runs their
+`unittest` tests too.

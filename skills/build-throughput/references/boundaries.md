@@ -1,66 +1,27 @@
-# Build throughput: boundaries in full
+# Build throughput: detail of the boundaries
 
-Full text of the boundaries, defaults list and red flags that `../SKILL.md` states in brief.
-`SKILL.md` holds the rules; read this when the short form leaves a case open.
-
-A build setup is engineered once and measured, for the machine as it is: fixed memory shared
-with everything else, fixed hardware threads. Why each rule exists is in
-[rationale.md](rationale.md); read it when a case is not covered below.
+What the boundaries of [`../SKILL.md`](../SKILL.md) leave open. `SKILL.md` holds the rules; read
+this when the short form leaves a case open. The defaults are in [defaults.md](defaults.md), the
+reasons in [rationale.md](rationale.md).
 
 ## Boundaries
 
-1. **One tree per configuration.** Debug, RelWithDebInfo and Release, and each execution lane or
-   platform, have their own build directory. A tree's configuration is fixed when it is created;
-   the CLI refuses to configure an existing tree with another build type or other compile flags.
-2. **Debug is the default; Release is built for releases.** The plain build command builds the
-   development configuration. Release is built by `versioning-and-release` and `performance`.
-3. **Memory decides parallelism.** No build pushes free memory under the repository's reserve,
-   1.5 GB unless it names another. What runs at once is decided from measured peaks and the
-   memory free when the build starts, never from a constant.
-4. **A build change carries its numbers.** A change made to build faster or lighter follows the
-   measuring rule of `performance`: same tree and machine, before and after.
-5. **The CLI is the only door.** Every knob below is a CLI option or a machine-local CLI setting
-   (`sushiskills`, default 2).
-6. **One copy of the machinery.** A CLI built on the shared tooling library takes the tree rule,
-   the gate, its launcher entries and the report from it (`build_tree`, `build_admission`,
-   `build_gate`, `build_report`) and keeps no copy of its own.
-7. **A module dependency is public only when a public header needs the whole type**: held by
-   value or as a member, a base class, or used in an inline body. A type a public header only
-   names by reference or pointer is forward-declared there, its include moves into the sources,
-   and the dependency is private; a caller that builds such an argument includes and links it
-   itself. Before declaring one public, name the public-header line that needs it.
-8. **Implement everything, build once, test once.** A piece of work, however large, is
-   implemented in full before any build runs. The build comes once, after the last line; the
-   tests run once, after the build is green. Never a build per task, module, job or edit, and
-   never a test run before the final build. A build error, structural ones included, is fixed
-   then and the build rerun until green. Syntax checks without a build (`clang -fsyntax-only`)
-   and commit-hook checkers are not builds.
-9. **A build needs the owner's permission, single or standing.** A single permission covers one
-   build run, a rerun after an error included, then lapses. A standing one covers every build
-   of the session until revoked. Never inferred, never widened; with neither, ask in one line.
-
-## Defaults
-
-Each holds unless its "not when" applies. Read its entry in
-[defaults.md](defaults.md) before setting up or changing that part of a
-build; the entry holds the full rule and its "not when".
-
-- **Measure first.** The CLI reports per-edge-kind count, wall time and peak memory, the lowest
-  free memory and the slowest edges; time-trace the slowest units before trimming anything.
-- **Admission by measured peak.** Jobs equal hardware threads; a launcher admits each edge only
-  when its last measured peak fits in free memory less the reserve. Pools are the fallback.
-- **Heavy code compiled once, where it is owned.** Large template sets are instantiated in their
-  module and exposed through plain functions; consumers include declarations only.
-- **Debug information sized to its use.** Debug is unoptimised, at the measured debug-info level;
-  RelWithDebInfo carries full debug information.
-- **Debug links what Release links.** On Windows: release C runtime, `_ITERATOR_DEBUG_LEVEL` 0,
-  Release builds of imported packages.
-- **A compiler cache for deterministic units.** Capped, in the build tree, keyed on the compiler;
-  bundled objects only after an identical-output trial.
-- **Batches for test targets.** Unity batches of about eight; name clashes are fixed.
-- **Secondary products share the engine's tree** unless they need other flags (boundary 1).
-- **The platform's own costs.** On Windows the owner excludes build, cache and toolchain
-  directories from real-time scanning.
+1. Each execution lane or platform has its own build directory beside each configuration. The CLI
+   refuses to configure an existing tree with another build type or other compile flags.
+2. The plain build command builds the development configuration. `versioning-and-release` and
+   `performance` build Release.
+3. What runs at once is decided from the peaks measured on earlier builds and the memory free when
+   the build starts.
+4. The measuring rule of `performance` applies: same tree and machine, before and after.
+5. Every knob is a CLI option or a machine-local CLI setting.
+6. The shared tooling library supplies `build_tree`, `build_admission`, `build_gate` and
+   `build_report`; a CLI built on it keeps no copy of its own.
+7. A public header needs the whole type when it holds it by value or as a member, derives from it
+   or uses it in an inline body. A type it only names by reference or pointer is forward-declared
+   there; a caller that builds such an argument includes and links it itself.
+8. The size of the piece of work changes nothing. Structural build errors are fixed at the single
+   build like any other.
+9. A single permission lapses after its run. A standing one lasts until revoked.
 
 ## Red flags
 

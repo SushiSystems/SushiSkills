@@ -36,7 +36,7 @@ def rule_block_ceiling(lines: list[str]) -> Iterator[Finding]:
     """Yields a finding for each comment block longer than eight lines."""
 ```
 
-Adding a rule adds one function and one table row. Nothing else in the checker changes.
+Nothing else in the checker changes.
 
 ## The shared copy in detail
 
@@ -63,6 +63,6 @@ together.
 - an entry found no more;
 - an entry whose ID is not open.
 
-So the list only shrinks. `python tools/checking/known_findings.py ROOT --write --backlog <ID>`
+`python tools/checking/known_findings.py ROOT --write --backlog <ID>`
 writes the list from the findings of the moment, once, when the tools arrive, and refuses to
 overwrite one.

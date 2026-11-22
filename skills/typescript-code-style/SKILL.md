@@ -5,21 +5,19 @@ description: Use when writing, reviewing or refactoring TypeScript in a reposito
 
 # TypeScript Code Style
 
-C++ discipline and symmetry: every opening brace on its own line, in the column of its closing
-brace. Layout tree, example class, naming table: [rules](references/rules.md).
+C++ symmetry: every opening brace on its own line, in the column of its closing
+brace. Trees, examples: [rules](references/rules.md).
 
-- Layout: the module-count predicate of `repository-layout` holds. Module
-  `modules/<tier>/<module>/`: `README.md`, `package.json` (`@<organisation>/<module>`),
-  `source/index.ts` (re-exports the public surface only), `source/<name>.ts`; tests in
+- Layout: `repository-layout`'s module-count predicate holds; the tree is in rules.
+  `source/index.ts` re-exports the public surface only; tests at
   `tests/<tier>/<module>/<name>.test.ts`. One module: `source/` and `tests/` at the root.
-  Import modules by package name, never by a relative path into `source/`.
-- Formatting: `dprint` formats, ESLint `@stylistic` checks, never Prettier. 4 spaces, 100
-  columns, double quotes, semicolons. Own-line braces for classes, functions, control flow,
+  Import modules by package name, never by relative path into `source/`.
+- Formatting: `dprint` formats, ESLint `@stylistic` checks, never Prettier. 4 spaces, 100 columns,
+  double quotes, semicolons. Own-line braces for classes, functions, control flow,
   enums, bodied lambdas, multi-line object literals; single-statement bodies optional, on their
   own line; empty body `{` and `}` with a blank line between; a single-expression arrow stays on
-  one line. dprint `"bracePosition": "nextLine"`; ESLint `@stylistic/brace-style:
-  ["error", "allman"]` and `no-unexpected-multiline`.
-- Return rule: never an object literal after `return`; bind it to a `const` first.
+  one line. The dprint and ESLint settings that encode it are in rules.
+- Return: never an object literal after `return`; bind it to a `const` first.
 - Names: `snake_case` files, folders; `@<organisation>/<kebab-case>` packages; `PascalCase`
   classes, interfaces, types, enums, members, components; `camelCase` functions (verb first),
   variables, parameters; `camelCase_` private members with `private`; `K_UPPER_SNAKE`

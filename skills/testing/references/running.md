@@ -32,17 +32,10 @@ register and run them.
 
 ## Time
 
-The test command measures and prints these every run, and a run over one fails. An agent reads them
+The test command measures and prints the limits of `../SKILL.md`, "Time". An agent reads them
 and times nothing itself. A test over its limit is run again alone, and only its time alone is judged,
 so the load of a parallel run does not fail it. A run of a tree older than its sources is reported and
 never fails, since its times are not the code's.
-
-| Limit | Value |
-| --- | --- |
-| A `small` test | 100 ms |
-| A `medium` test after the shared fixture | 5 s |
-| A `large` test | 30 s |
-| A repository's pre-merge run (`small` and `medium`), wall | 600 s |
 
 The aims are a `small` test in 5 ms, a `medium` one in 200 ms and a pre-merge run in 3 minutes. A
 test already over its limit is listed in the project's `tests/budget_exemptions.toml`, one test name

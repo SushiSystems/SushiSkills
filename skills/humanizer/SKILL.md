@@ -20,4 +20,4 @@ Run this pass silently over your draft before it reaches anyone. Three rules:
 
 Red flags, stop and run the pass: a connector "makes it flow"; "a third item would round out the list"; softening with "may" to be safe; saying "crucial" because the reader might not notice; a dash that reads elegant (in Turkish, machine translation); a summary paragraph "for thoroughness".
 
-Why the rules hold, the register table, the full red flags: `references/register.md`; read it when a draft feels off.
+Why the rules hold, the register table: `references/register.md`; read it when a draft feels off.

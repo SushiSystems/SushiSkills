@@ -32,9 +32,8 @@ people wrote.
 
 ## Golden files
 
-- A golden file is updated only with the owner's approval.
-- When a golden test fails, the agent reports the difference (image diff, changed values) and stops.
-  It does not regenerate the file to make the test pass.
+- The difference to report is an image diff or the changed values. The file is never regenerated to
+  make the test pass.
 - An approved update is its own commit: `test(scope): update the <name> golden`.
 
 Where a test file lives is `TESTS.md` in `repository-layout`: the test tree mirrors the source. The

@@ -14,7 +14,8 @@ that every other agent works on a fixed file set and reports with its evidence.
 Both modes start from the same job list: the jobs in hierarchy order, and per job its files, what
 it waits on and its acceptance criterion. The list is a table under `## Jobs` in `PLAN.md`, with
 the columns `Job`, `Files`, `Waits on` and `Status`; the status is `todo`, `running`, `done` or
-`failed`, and the orchestrator edits it.
+`failed`, and the orchestrator edits it. The tasks are rows of the plan; `AGENT_WORK.md` in
+`documentation` says which backlog entry serves the work folder.
 
 ## Parallel mode
 
@@ -36,6 +37,6 @@ holds one report.
   seam" ends with the seam built.
 - "Stays medium for a missing seam" is a reading swapped in for an instruction that could not be
   done as written. It is reported as not done instead.
-- "It cannot be checked without a build" is not a reason an instruction cannot be done. The build
-  comes once, at the end (`build-throughput`, boundary 8); the change it needs, a production seam
-  included, is part of the job.
+- "It cannot be checked without a build": the build comes once, at the end (`build-throughput`,
+  boundary 8), and the change it needs, a production seam included, is part of the job.
+- An instruction not done as written leaves its job `todo` or `failed`, never `done`.

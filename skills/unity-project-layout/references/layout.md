@@ -1,7 +1,7 @@
 # Unity layout: trees, tables and naming in full
 
-Full text of the layout sections that `../SKILL.md` states in brief. `SKILL.md` holds the rules;
-read this when creating a folder, an assembly, a test or a name.
+Trees, tables and examples for the rules in `../SKILL.md`. Read this when creating a folder, an
+assembly, a test or a name.
 
 ## The root
 
@@ -12,9 +12,8 @@ Packages/  ProjectSettings/
 Assets/
 ```
 
-`docs/` and `tools/` keep their lower-case names. `Packages/`, `ProjectSettings/` and `Assets/` are
-Unity's. Solution and project files, `Library/`, `Logs/`, `obj/`, `UserSettings/` and build output
-are generated and ignored.
+`Packages/`, `ProjectSettings/` and `Assets/` are Unity's. The generated files are solution and
+project files, `Library/`, `Logs/`, `obj/`, `UserSettings/` and build output.
 
 ## Under `Assets/`
 
@@ -31,10 +30,9 @@ Assets/
     LargeFiles/                 git-ignored, backed up by hand
 ```
 
-No other folder directly under `Assets/`, with two exceptions: a Unity special folder that a
-package refuses to find anywhere else (`Resources/`, `Plugins/`, `StreamingAssets/`, `Gizmos/`),
-and a vendored pack whose code hard-codes its own `Assets/<Vendor>/` path. The second kind stays
-where it demands and the repository's layout document names it.
+The exceptions under `Assets/`: a Unity special folder that a package refuses to find anywhere
+else (`Resources/`, `Plugins/`, `StreamingAssets/`, `Gizmos/`), and a vendored pack whose code
+hard-codes its own `Assets/<Vendor>/` path.
 
 ## A feature
 
@@ -47,8 +45,7 @@ Features/<Feature>/
     Prefabs/      assets only this feature's code uses
 ```
 
-Only the folders with content exist. Each code folder carries one assembly definition:
-`<Company>.<Product>.<Feature>.Simulation`, `.View`, `.Editor`.
+The assemblies are `<Company>.<Product>.<Feature>.Simulation`, `.View` and `.Editor`.
 
 | Assembly | May reference |
 | --- | --- |
@@ -58,37 +55,22 @@ Only the folders with content exist. Each code folder carries one assembly defin
 | `<Feature>.Editor` | `Core`, its own `Simulation` and `View` |
 | `App` | Everything; the only assembly that sees two features |
 
-A feature never references another feature; two features meet through an interface, an event or
-a command declared in `Core`. A feature is added by creating its folder and one registration line
-in `App`, and removed by deleting both.
-
-`Simulation` references no UI, camera, input or audio type and no `ThirdParty` assembly.
+A feature is removed by deleting its folder and its registration line in `App`.
 
 ## Tests
 
-`Assets/<Product>/Tests/` mirrors `Assets/<Product>/`; `tools/testing/check_test_mirror.py`
-enforces the mirror: `<path>/<Name>.cs` is tested by `Tests/<path>/<Name>Tests.cs`.
-
-- The test class is `<Name>Tests`, one per file. `Legacy/` and `Content/` have no tests.
-- Each mirrored code folder is one test assembly, `<Company>.<Product>.Tests.<Feature>.<Folder>`.
-  `Simulation` and `Editor` tests run in EditMode; `View` tests run in PlayMode.
-- A test assembly references what its mirrored folder references, and that folder. A test of two
-  features together belongs to `App`.
-- The kind of a test is an NUnit `[Category]`, never a folder. The labels are in `testing`.
-- Test data sits in `Fixtures/<Name>/` and reference outputs in `Goldens/<Name>/` beside the
-  test file that reads them.
+`tools/testing/check_test_mirror.py` enforces the mirror of `Assets/<Product>/` in `Tests/`. The
+test class is `<Name>Tests`, one per file. The `[Category]` labels are in `testing`.
 
 ## Content
 
-One unit, weapon or map is one folder holding its data asset, prefab, model, textures, materials
-and sounds. A `Models/`, `Textures/` or `ScriptableObjects/` folder that collects one file type
-across many things is a defect. An asset that only one feature's code uses lives in that
-feature's `Prefabs/`.
+A unit, weapon or map folder holds its data asset, prefab, model, textures, materials and
+sounds. `Models/`, `Textures/` and `ScriptableObjects/` are the folders that collect one file
+type.
 
 ## Large files
 
-A file above 10 MB, or a source file the build does not need, goes to `Assets/LargeFiles/`. Read
-`large-files.md` before adding one; it holds the path, git, backup and inventory rules.
+`large-files.md` holds the path, git, backup and inventory detail.
 
 ## Names
 
@@ -106,10 +88,4 @@ A file above 10 MB, or a source file the build does not need, goes to `Assets/La
 
 ## Moving files
 
-A file moves with its `.meta`, and a folder with its folder `.meta`, in one `git mv` each. Scenes
-and prefabs are saved as text (`Force Text`) before a move.
-
-## Common mistakes
-
-`common-mistakes.md` lists the usual misplacements and their fixes; read it when
-reviewing a Unity tree.
+Scenes and prefabs are saved as text with the `Force Text` setting.

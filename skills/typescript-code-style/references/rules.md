@@ -1,14 +1,10 @@
-# TypeScript code style: tables, example and detail
+# TypeScript code style: tree, settings and examples
 
-Full text of the sections that `../SKILL.md` states in brief. `SKILL.md` holds the rules; read
-this for the layout tree, the example class or a naming case.
-
-The same brick discipline and the same visual symmetry as the C++: every opening brace sits on
-its own line in the column of its closing brace.
+Elaboration of the rules in `../SKILL.md`: the layout tree, the formatter settings, the example
+class and the naming examples. Prettier cannot place braces on their own line, which is why
+`dprint` formats.
 
 ## Layout
-
-The module-count predicate from `repository-layout` holds unchanged.
 
 ```
 modules/<tier>/<module>/
@@ -20,32 +16,17 @@ modules/<tier>/<module>/
 tests/<tier>/<module>/<name>.test.ts
 ```
 
-A single-module project puts `source/` and `tests/` at the root. A module imports another
-module only through its package name, never through a relative path into its `source/`.
+## Formatting settings
 
-## Formatting
-
-`dprint` with the TypeScript plugin formats; ESLint with `@stylistic` checks. Prettier cannot
-place braces on their own line and is not used.
-
-| Rule | Value |
-| --- | --- |
-| Indent | 4 spaces |
-| Line length | 100 |
-| Quotes | Double |
-| Semicolons | Always |
-| Braces | Own line, same column as the closing brace: classes, functions, methods, control flow, enums, lambdas with bodies, multi-line object literals |
-| Single-statement bodies | Braces optional; the statement goes on its own line |
-| Empty bodies | `{` and `}` on their own lines with one blank line between them |
-| Single-expression arrow | Stays on one line: `(record) => record.id` |
-
-Settings that encode this: dprint `"bracePosition": "nextLine"`, ESLint
+The dprint TypeScript plugin sets `"bracePosition": "nextLine"`. ESLint sets
 `@stylistic/brace-style: ["error", "allman"]` and `no-unexpected-multiline`.
+
+A single-expression arrow stays on one line: `(record) => record.id`.
 
 ## The return rule
 
-JavaScript inserts a semicolon after a bare `return`. An object literal therefore never follows
-`return` in the same statement; it is bound to a `const` first.
+JavaScript inserts a semicolon after a bare `return`, so an object literal on the next line
+returns `undefined`.
 
 ```ts
 // Wrong: returns undefined.
@@ -100,56 +81,22 @@ export function findOversized(records: AssetRecord[], limit: number): AssetID[]
 }
 ```
 
-## Naming
+`LookupResult` is the discriminated union that carries a `LookupStatus`.
 
-| Kind | Form | Example |
-| --- | --- | --- |
-| File, folder | `snake_case` | `asset_registry.ts` |
-| Package | `@<organisation>/<kebab-case>` | `@acme/asset-registry` |
-| Class, interface, type, enum | `PascalCase` | `AssetRegistry`, `LookupResult` |
-| Enum member | `PascalCase` | `LookupStatus.Unknown` |
-| Function, method | `camelCase`, verb first | `findOversized`, `evictOldest` |
-| Variable, parameter | `camelCase` | `sampleRate` |
-| Private member | `camelCase_` with `private` | `records_` |
-| Module constant | `K_UPPER_SNAKE` | `K_MAX_ASSETS` |
-| Component (JSX) | `PascalCase` file and symbol | `AssetList` in `asset_list.tsx` |
+## Naming examples
 
-No `I` prefix on interfaces, no `any`, no default exports.
+| Kind | Example |
+| --- | --- |
+| File | `asset_registry.ts` |
+| Package | `@acme/asset-registry` |
+| Class, type | `AssetRegistry`, `LookupResult` |
+| Enum member | `LookupStatus.Unknown` |
+| Function, method | `findOversized`, `evictOldest` |
+| Variable, parameter | `sampleRate` |
+| Private member | `records_` |
+| Module constant | `K_MAX_ASSETS` |
+| Component (JSX) | `AssetList` in `asset_list.tsx` |
 
-## Class shape
+## Test names
 
-1. Public members first, in the order a caller uses them; private after; fields at the top.
-2. Dependencies arrive through the constructor; no module-level mutable state.
-3. Every member states its visibility: `public`, `protected` or `private`.
-4. `readonly` on every field that is not reassigned.
-5. Interfaces hold no implementation; each implementation is its own class in its own file.
-
-## Errors
-
-- An operation that can fail for a reason outside the program returns a discriminated union
-  carrying a status enum, as `LookupResult` does above.
-- `throw` is reserved for programmer errors and for boundaries where a framework requires it.
-- A caught error is converted to a status or logged at its boundary. `catch {}` that swallows is
-  forbidden.
-
-## Logging
-
-The rules in `logging` apply. Each module creates one logger for its category at module level,
-`const K_LOGGER = Logger.forCategory("assets");`, and passes values as arguments, never through
-template strings built at the call site.
-
-## Comments
-
-The file header and symbol blocks follow `source-comments`: `/** @file ... @brief ... */` after
-the license block, `@brief` on every symbol.
-
-## Tests
-
-`vitest`. One test file per source file, `<name>.test.ts`, at the path `TESTS.md` in
-`repository-layout` gives it. Test names read as behaviour:
 `it("evicts the oldest record when full")`.
-
-## Tools behind the CLI
-
-`npm` and `vitest` are called by the repository's CLI and by nothing else (`sushiskills`,
-default 2).

@@ -12,5 +12,4 @@ status is `Open`:
 3. Give one verdict: true, stale (true in part; say which part), closed, or foreign (closed by a
    commit in another repository; name it).
 
-The verdicts go in the `REPORT.md` of the work folder that ran the check. Deleting or moving
-an entry, and a design document's new status, are the owner's decisions.
+The verdicts go in the `REPORT.md` of the work folder that ran the check.

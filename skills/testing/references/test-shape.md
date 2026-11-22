@@ -15,28 +15,20 @@ and no other.
 
 ## What a test is
 
-A test checks one promise of a public interface, against a named oracle, at the smallest size that
-can see the promise, and fails when the promise is broken.
-
 - **Promise.** A behaviour, not a function: what the unit guarantees to do with given inputs in a
   given state. One function holds several promises, and one promise can span several functions. The
   promises of a unit are found by the procedure in `../REVIEWING.md`, not recalled.
 - **One when.** The test sets up a state, does one thing, and checks what that one thing promised:
-  given, when, then. A second action is a second test. The name states the promise as a sentence,
-  `GemmWithBetaZeroIgnoresNanInC`, not `SimpleGemm`. An "and" joining two results that can break
+  given, when, then. A second action is a second test. The name is not `SimpleGemm`. An "and" joining two results that can break
   apart is two tests; one that states a single outcome, such as `RefusesAndLeavesNothingBehind` for an
   all-or-nothing refusal, is one. A name
   that cannot say which defect it catches means there is no test. It starts with the unit it tests,
   so a failing name leads to its file.
-- **Oracle.** Where the expected value comes from. It never comes from running the code under test.
+- **Oracle.** Where the expected value comes from.
   `oracles.md` lists the kinds.
-- **Can fail, for the right reason.** It fails when the promise breaks: a new test kills at least one
-  mutant of the code it tests, or reproduces the defect its commit fixes. It does not fail when only
-  the inside of the unit changes; a test that breaks on a refactor checks how, not what.
-- **Public interface.** Private details are not tested directly. A private function that seems to
-  need its own test is a brick that wants its own module.
-- **Straight line.** No `if`, loop or `try` in the body outside a row table, including a loop that only
-  builds the input or the expected value; a row table or a builder named for what it builds holds it. A loop that only advances simulated time, with
+- **Can fail, for the right reason.** A test that breaks on a refactor checks how, not what.
+- **Public interface.** Private details are not tested directly.
+- **Straight line.** A loop that only builds the input or the expected value goes in a row table or a builder named for what it builds. A loop that only advances simulated time, with
   no check inside it, is a helper named for it, such as `run_for(ticks)`, and the call is straight. Setup may repeat
   between tests when that lets a reader see cause and effect without opening a helper.
 

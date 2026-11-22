@@ -24,7 +24,5 @@ start-up and, for `medium`, device start-up. Measured on 2026-11-10: SushiAI's 8
 
 ## SushiEngine
 
-- Its suites are named `Small_`, `Medium_` and `Large_`; its `Benchmark_` cases belong to
-  `se bench` and are not tests.
 - The owner measured one run of the `large` tests at 700 s and reports that the whole `large` tier
   takes hours. One recorded test takes 117 s and another about 351 s.

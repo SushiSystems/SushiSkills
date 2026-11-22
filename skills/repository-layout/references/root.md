@@ -2,8 +2,6 @@
 
 Read this when adding, moving or questioning an entry in a repository's root.
 
-The root holds only what a tool refuses to find anywhere else.
-
 ```
 README.md  LICENSE  NOTICE.md  COMMERCIAL.md  CMakeLists.txt  CMakePresets.json  AGENTS.md
 CLAUDE.md  <manifest>  .clang-format  .editorconfig  .gitignore  .gitattributes

@@ -34,7 +34,7 @@ over the environment.
 
 ## Record
 
-A record is one line, with no line break inside it:
+Example of a record:
 
 ```
 [12:04:31.207] [WARN] [acme.memory] [t3] [usm_allocator.cpp:88] share refused for 64 MiB on device 1; falling back to a host copy
@@ -50,11 +50,10 @@ file and a host can file each field where its own logging system keeps it.
 
 | Rule | Detail |
 | --- | --- |
-| Default | stderr, one write per record, flushed. Stdout belongs to the program |
+| Default | One write per record, flushed |
 | Replacing | `set_log_sink(sink)`; an empty sink restores stderr |
 | Thread | Applications deliver from one logger thread. Tests switch to synchronous delivery, which first waits for the queue, so records arrive in order |
 | Queue | Bounded. A record that finds it full is dropped and counted, and the next record delivered is preceded by a `WARN` naming how many were dropped |
-| Re-entry | A sink never logs and never sets the sink, the level or the mode |
 | Failure | A sink that throws loses nothing: the logger writes the exception and the record to stderr |
 | `FATAL` | Delivered on the calling thread after the queue is drained, then flushed, before the process ends |
 | Exit | The logger is never destroyed, so a call is valid during static initialisation and process exit. At static destruction it stops its thread and delivers what is queued. A process ended without static destruction loses its queue |
@@ -81,4 +80,4 @@ the order they were made.
 | --- | --- |
 | Levels | `TRACE` is registered as level 5 and `FATAL` is `CRITICAL` |
 | Configuration | `<PREFIX>_LOG_LEVEL` is read the same way as above |
-| Record | The same line, on stderr |
+| Record | The same line |

@@ -1,13 +1,7 @@
 # Dependencies: licence table and red flags
 
-Read this when a licence question comes up in table form, or when a red flag applies. The rules
-themselves are in `../SKILL.md`.
-
-## Why a dependency is a decision
-
-Every dependency is a permanent cost: its licence, its build, its bugs, its upgrades. Adding one
-is the owner's decision; the skill says what the agent brings to that decision and how an
-accepted dependency is wired.
+Read this when a licence question comes up, or when a red flag applies. The other rules are in
+`../SKILL.md`.
 
 ## Licences
 
@@ -19,8 +13,6 @@ accepted dependency is wired.
 | GPL, AGPL, SSPL | Rejected |
 | Third-party non-commercial, source-available, field-of-use limits | Rejected |
 | Vendor SDK licences that require marks, notices to the vendor, or restrict redistribution | Rejected |
-
-A dependency's own dependencies are held to the same table.
 
 ## Red flags
 

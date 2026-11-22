@@ -13,7 +13,7 @@ README links.
 
 ## What the truth checker sees
 
-`tools/documentation/check_docs_truth.py` enforces what a tool can: every name and path a page
+`tools/documentation/check_docs_truth.py` sees what a tool can: every name and path a page
 writes in code exists in the source, and every example comes from a file. A sentence that
 describes behaviour the code has lost is caught only by a reader. A design document states
 intent, so its names are not looked up.
@@ -39,8 +39,8 @@ bites is a known issue in the backlog.
 
 ## Duplicated passages, examples, dashes
 
-- A paragraph of 300 characters or more that a second page repeats becomes one sentence and a
-  link there.
+- A repeated paragraph of 300 characters or more is the one that must become a sentence and a
+  link.
 - A source example in a manual page is taken from a file the build compiles, and a line within
   three lines after it cites that file: ``Source: `applications/examples/quickstart.cpp` ``.
   Every line of the example is a line of that file; `// ...` marks an omission.
@@ -90,33 +90,18 @@ bites is a known issue in the backlog.
 - "The page still reads true, so I leave it." → add `Docs: <page> unchanged (<reason>)`; the
   reason is the proof.
 
-## Moved from the skill page
+## Detail beyond the skill page
 
-The skill page keeps the rule of each section; this is the fuller wording.
-
-- Documentation is split by what it records, and each kind has exactly one home. A fact in two
-  places is a fact that will disagree with itself.
-- Placement, item 5: a page about finished work is nowhere; it is deleted when its decisions are in
-  the topic, and version history keeps it.
-- Read before: opening or extending a design document or opening or closing a work folder under
-  `docs/agent/` is `AGENT_WORK.md`; writing or reshaping a design document (sections, status line,
-  phase table) is `DESIGN_FORMAT.md`; a changelog entry or moving a release section is
-  `CHANGELOG_FORMAT.md`; reading, writing or closing a backlog entry in `docs/backlog/` is
-  `BACKLOG_FORMAT.md`. What is left or next, what a module is meant to be or who owns it, a defect
-  found, work finished, a decision made: the `backlog` and `design` skills, answered by the
-  repository's commands.
-- Keeping the manual true: architecture and guide pages are never a stage at the end of a plan.
-  `tools/documentation/check_docs_truth.py` checks names, paths, examples and
-  `docs/.docs_truth_allow`; a sentence about behaviour the code has lost is caught only by a reader.
-- Editing is replacing: the old paragraph is deleted, never kept beside the new one, and git keeps
-  it. A page says what is, never what it used to be; `check_docs_truth.py` lists the refused words.
-- Size and one home: a repeated paragraph becomes one sentence and a link. A page is written for
-  the reader who arrives cold: what the thing is, how to use it, then the detail.
-  `check_docs_truth.py` enforces the ceilings, repeated passages, compiled and cited source
-  examples and the em-dash ban.
-- Pages follow what they describe: a commit that changes a described file needs the page in the
-  same commit, or a line in its message, last, that says why the page stays. The `commit-msg` hook
-  enforces it beside `tools/documentation/check_docs_follow.py`.
-- Facts with one home: a fact earns a home when two pages must say the same thing. A commit that
-  changes the fact needs each page that follows it, or a `Docs:` line for it.
-  `tools/documentation/check_docs_facts.py` enforces the markers.
+- Documentation is split by what it records, and each kind has one home: a fact in two places is
+  a fact that will disagree with itself.
+- Placement, item 5: version history keeps a page about finished work.
+- Which format to read: opening or extending a design document, or opening or closing a work
+  folder under `docs/agent/`, is `AGENT_WORK.md`; writing or reshaping a design document
+  (sections, status line, phase table) is `DESIGN_FORMAT.md`; a changelog entry or moving a release
+  section is `CHANGELOG_FORMAT.md`; reading, writing or closing a backlog entry in `docs/backlog/`
+  is `BACKLOG_FORMAT.md`. What is left or next, what a module is meant to be or who owns it, a
+  defect found, work finished, a decision made: the `backlog` and `design` skills.
+- Architecture and guide pages are never a stage at the end of a plan.
+- A page is written for the reader who arrives cold: what the thing is, how to use it, then the
+  detail.
+- A fact earns a home when two pages must say the same thing.

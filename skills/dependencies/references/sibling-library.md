@@ -16,7 +16,7 @@ what it depends on through the repository's own `setup`, without the workspace t
       from the pin.
 3. The build never downloads; it only reads the path the CLI hands it.
 4. `doctor` reports a sibling whose commit differs from the pin, and which of the three it used.
-5. Moving a pin is an upgrade, as the skill's "Upgrading and removing" says. Every repository
+5. Moving a pin is an upgrade (`../SKILL.md`, "Upgrading and removing"). Every repository
    pinning a library moves together, and the library's CI builds and tests each repository that
    pins it before a release.
 6. A workspace tool takes over what a repository set up on its own. The toolchains `setup`

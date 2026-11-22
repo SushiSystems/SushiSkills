@@ -5,7 +5,6 @@ repository.
 
 | Rule | Detail |
 | --- | --- |
-| What goes in | Any file above 10 MB, and any source file the build does not need |
 | Where | `Assets/LargeFiles/`, mirroring the path the file would have had |
 | Not imported | Files Unity must not import sit under `Assets/LargeFiles/Source~/`; Unity skips a folder ending in `~` |
 | Git | The folder's content is ignored; its `README.md` is tracked |

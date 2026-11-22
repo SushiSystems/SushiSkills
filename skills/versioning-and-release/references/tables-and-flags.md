@@ -1,9 +1,9 @@
-# Versioning and release: tables and red flags
+# Versioning and release: version source, commands and red flags
 
-Read this when the original table form of the version sources or the bump rules is needed, or
-when a red flag applies. The rules themselves are in `../SKILL.md`.
+Read this to find the file that holds the version, to cut or report a release, or when a red flag
+applies. The rules themselves are in `../SKILL.md`.
 
-## One source of truth
+## Where the version lives
 
 | Stack | Source |
 | --- | --- |
@@ -12,18 +12,21 @@ when a red flag applies. The rules themselves are in `../SKILL.md`.
 | TypeScript | `version` in the root `package.json` |
 | No build manifest (a skills or documentation repository) | The latest `## vX.Y.Z` heading in `docs/reference/CHANGELOG.md` |
 
-## Choosing the next version
+## Cutting a release: commands
 
-| Change since the last tag | From `v1.0.0` on | Before `v1.0.0` |
-| --- | --- | --- |
-| A breaking change to a public interface, file format or CLI | MAJOR | MINOR |
-| New behaviour, backwards compatible (`feat`) | MINOR | PATCH |
-| Wrong behaviour made right (`fix`), or `perf` | PATCH | PATCH |
-| Only `refactor`, `test`, `docs`, `build`, `chore` | no release | no release |
+The tag is annotated:
+
+```
+git tag -a vX.Y.Z -m "vX.Y.Z"
+```
+
+## Report form
+
+`Next release: v0.3.3 (patch), 4 entries since v0.3.2.`
 
 ## Red flags
 
-- "It is only a small feature, so a patch bump is fine." → the table decides, not the size.
+- "It is only a small feature, so a patch bump is fine." → the bump rules decide, not the size.
 - "I will retag the release to include this fix." → a new PATCH.
 - "The version in `package.json` and the tag can differ for now." → one source of truth.
 - "The owner will notice it is time to release." → tracking is the agent's job.

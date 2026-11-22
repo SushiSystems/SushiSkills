@@ -10,14 +10,11 @@ Every byte a session writes is a byte it owes back. Why, red flags: `references/
 ## No worktrees, no second build trees
 
 - Never open a git worktree, for yourself or a subagent (`isolation: "worktree"` included).
-- Never configure a build tree beside the owner's; a baseline or bisect runs in the existing
-  tree, or ask.
-- Ask first, every time, with size and purpose, before copying, moving into place or extracting
-  anything over 1 GB, temporary or not.
+- Never configure a build tree beside the owner's; a baseline or bisect runs in the existing tree, or ask.
 
 ## Scratch
 
-- Scratch goes in the harness's scratchpad only: never `/tmp`, `%TEMP%` root, the home directory
+- Scratch goes in the harness's scratchpad only, never `/tmp`, `%TEMP%` root, the home directory
   or the repository root. Files are small text.
 - A scratchpad stays under 100 MB; a file over 10 MB needs a one-sentence reason.
 - Never in scratch: build output (objects, executables, libraries, trees, precompiled headers,
@@ -35,15 +32,14 @@ Every byte a session writes is a byte it owes back. Why, red flags: `references/
 
 ## Before anything large
 
-Ask before any action that writes over 1 GB or leaves over 200 MB (download, model,
-dataset, full copy, global install), stating size and purpose. Install no package for one
-command; use existing environments; add no cache, virtual or conda one unasked.
+Ask first, every time, with size and purpose, before any action that writes over 1 GB or leaves
+over 200 MB (download, model, dataset, full copy, global install) or copies, moves or extracts
+over 1 GB, temporary or not. Install no package for one command; use existing environments; add no cache, virtual or conda one unasked.
 
 ## Cleaning up
 
 - Delete what you created once done with it; never what you did not.
-- Before reporting finished, measure the scratchpad (`du -sh`, or the sum of
-  `Get-ChildItem -Recurse -File` lengths) and state it. Over budget: empty it, say what went.
+- Before reporting finished, measure the scratchpad (`du -sh`, or summed file lengths) and state it. Over budget: empty it, say what went.
 - List old session folders and caches found on disk, with sizes; deleting them waits.
 
 ## Delegation

@@ -16,26 +16,18 @@ to check a thought against the full list of red flags. The rules are in `../SKIL
 
 ## What the agent does
 
-1. List the promises the change makes before writing a test.
-2. Choose the smallest size that sees each. If only `medium` sees a promise that is logic, build the
-   seam first.
-3. Name the oracle. Use the tolerance helper; never type an epsilon.
-4. Use rows for one promise over many inputs.
-5. Run the module's tests through the project's test command and read the time and mutation lines
-   it prints.
-6. Report each test added with the promise it keeps. `tools/testing/added_tests.py` prints the list;
-   check it rather than write it from memory.
-7. Never run the whole `large` tier. Run the `large` suites of the module you changed, with a filter.
+The steps are in `../SKILL.md`, "The agent". Added to them:
+
+- Use the tolerance helper; use rows for one promise over many inputs.
+- Read the time and mutation lines the test command prints.
+- `tools/testing/added_tests.py` prints the added tests; check it rather than write the list from
+  memory.
+- The `large` suites to run are those of the module you changed, with a filter.
 
 ## Bug fix order
 
-1. Write the regression test in the test file of the unit the defect lives in, its name naming the
-   defect.
-2. Fix the code.
-3. The test runs once, in the single test run after the single build at the end of the work
-   (`build-throughput`, boundary 8), with the rest of the module's tests, and passes.
-
-The test is not run before the fix, so it is not seen failing first.
+The regression test goes in the test file of the unit the defect lives in. It runs with the rest of
+the module's tests, not before the fix, so it is not seen failing first.
 
 ## Red flags
 
