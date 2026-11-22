@@ -76,3 +76,5 @@ runtime promise has that file in place of a test file.
 An expected value pasted from current output is allowed only in a test whose suite opens with
 `Characterization_`, written to pin behaviour before a refactor, with a backlog entry that removes it. In
 C++ its size follows the word: `Characterization_Medium_ThreadExit`.
+
+`tools/testing/check_test_value.py` reports each forbidden kind listed in `../SKILL.md`.

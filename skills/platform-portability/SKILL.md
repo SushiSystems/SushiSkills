@@ -6,52 +6,33 @@ description: Use when writing code that differs between Windows and Linux, addin
 # Platform Portability
 
 Windows and Linux are both first-class. Platform differences live behind one interface in one
-place; everything else is written once.
+place; everything else is written once. Read `references/export-macro.md` for the export macro
+and red flags.
 
 ## Where platform code lives
 
-1. `#ifdef _WIN32`, `#ifdef __linux__` and their relatives appear only in the platform module, or
-   in adapter files named for their platform: `<name>_windows.cpp`, `<name>_linux.cpp`.
-2. Every other module calls the platform module's interface and contains no platform checks.
-3. Adding a platform adds adapter files. It never adds branches to shared code.
+1. `#ifdef _WIN32`, `#ifdef __linux__` and relatives appear only in the platform module or in
+   adapter files `<name>_windows.cpp`, `<name>_linux.cpp`.
+2. Every other module calls the platform module's interface and has no platform checks.
+3. A new platform adds adapter files, never branches in shared code.
 
 ## Shared libraries
 
-- Every exported symbol carries `<PREFIX>_API`, defined once per library:
-
-```cpp
-#if defined(_WIN32)
-    #if defined(PR_BUILDING_LIBRARY)
-        #define PR_API __declspec(dllexport)
-    #else
-        #define PR_API __declspec(dllimport)
-    #endif
-#else
-    #define PR_API __attribute__((visibility("default")))
-#endif
-```
-
-- Default symbol visibility is hidden on every platform; only `<PREFIX>_API` symbols export.
-- The runtime search path for DLLs and shared objects is set by the project CLI, never by copying
-  binaries next to each other by hand and never by running from the build system.
+- Every exported symbol carries `<PREFIX>_API`, defined once per library.
+- Default symbol visibility is hidden everywhere; only `<PREFIX>_API` symbols export.
+- The DLL and shared-object search path is set by the project CLI, never by copying binaries
+  together by hand or running from the build system.
 
 ## Paths and text
 
-- Paths are `std::filesystem::path` in C++, `pathlib.Path` in Python, `node:path` in TypeScript.
-  No hand-written separators, no string concatenation of paths.
+- Paths are `std::filesystem::path`, `pathlib.Path` or `node:path`; no hand-written separators
+  or string concatenation.
 - Paths shown to people or written to files use forward slashes.
-- Text files are UTF-8, LF line endings, pinned by `.gitattributes`; only `.bat`, `.cmd` and
-  `.ps1` are CRLF.
-- File names are compared case-sensitively, as Linux does, even on Windows.
+- Text files are UTF-8, LF, pinned by `.gitattributes`; only `.bat`, `.cmd` and `.ps1` are CRLF.
+- File names are compared case-sensitively, even on Windows.
 
 ## Types and behaviour
 
 - Fixed-width integers (`std::uint32_t`) wherever size matters; never `long`.
-- No reliance on the order of directory listings; sort them.
-- No reliance on the platform's default locale or encoding; state them.
-
-## Red flags
-
-- "A small `#ifdef` here is simpler than an adapter." → the adapter.
-- "It works on Windows; Linux can wait." → both, or it is not finished.
-- "I copied the DLL next to the executable to make it run." → the CLI sets the path.
+- Sort directory listings; never rely on their order.
+- State locale and encoding; never rely on the platform default.

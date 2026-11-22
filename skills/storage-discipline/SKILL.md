@@ -5,80 +5,48 @@ description: Use when about to write files outside the repository's source tree,
 
 # Storage discipline
 
-Disk is not free. SSDs and RAM are expensive, and an agent session that leaves tens of
-gigabytes behind costs the owner real money. Every byte a session writes is a byte it owes back,
-and the rule is the same as for cycles: engineer it once carefully, run it a thousand times
-cheaply. Space is always saved, and no session leaves garbage behind.
+Every byte a session writes is a byte it owes back. Why, red flags: `references/detail.md`.
 
 ## No worktrees, no second build trees
 
-- An agent never opens a git worktree, for itself or for a subagent (`isolation: "worktree"`
-  included), whatever the reason. A worktree is a second checkout and soon a second build tree.
-- An agent never configures a new build tree beside the ones the owner keeps. A baseline, a
-  comparison or a bisect runs in the existing tree, or the owner is asked how to get the answer.
-- Copying, moving into place or extracting anything over 1 GB is asked first, every time, with
-  its size and its purpose. A file over 1 GB is asked about even when the copy looks temporary.
+- Never open a git worktree, for yourself or a subagent (`isolation: "worktree"` included).
+- Never configure a build tree beside the owner's; a baseline or bisect runs in the existing
+  tree, or ask.
+- Ask first, every time, with size and purpose, before copying, moving into place or extracting
+  anything over 1 GB, temporary or not.
 
-## Where scratch lives
+## Scratch
 
-- Scratch goes in the scratchpad directory the harness names, and nowhere else. Never `/tmp`,
-  `%TEMP%` root, the home directory or the repository root.
-- A scratch file is small text: a script, a diff, a trimmed log, a number. Nothing else.
-- One session's scratchpad stays under 100 MB. A single file over 10 MB needs a reason you can
-  state in one sentence.
-
-## Never written to scratch
-
-- Object files, executables, libraries, build trees, precompiled headers, coverage data.
-- Copies of the repository, of a module, of a dependency, or of a build directory.
-- Virtual environments, downloaded models, datasets, archives, installers.
-- Backups of files git already holds. `git show <rev>:<path>` is the backup.
-
-A build goes through the project's own CLI into the project's own build directory, which the
-owner manages. A binary that exists only to test one idea is not built; read the code, or ask
-the owner to run the build.
+- Scratch goes in the harness's scratchpad only: never `/tmp`, `%TEMP%` root, the home directory
+  or the repository root. Files are small text.
+- A scratchpad stays under 100 MB; a file over 10 MB needs a one-sentence reason.
+- Never in scratch: build output (objects, executables, libraries, trees, precompiled headers,
+  coverage); copies of the repository, a module, a dependency or a build directory; virtual
+  environments, models, datasets, archives, installers; backups of git-held files.
+- Build through the CLI into the owner's build directory. A binary only to test an idea is not
+  built: read the code, or ask.
 
 ## Capturing output
 
-- Bound every capture at the source: `| tail -n 200`, `| head -n 200`, `| grep <pattern>`.
-- Never redirect a whole build or test log to a file. Keep the failing lines.
-- A background command writes its output to the scratchpad too. Bound it the same way, and do
-  not start one whose output you cannot predict.
-- Overwrite one file per purpose. `notes.txt` is edited; `notes_v2.txt` and `notes_final.txt`
-  are not created.
+- Bound every capture at the source (`| tail -n 200`, `| head -n 200`, `| grep`); never redirect
+  a whole build or test log to a file.
+- Bound a background command the same; start none with unpredictable output.
+- One file per purpose, overwritten: no `notes_v2.txt`.
 
 ## Before anything large
 
-Stop and ask the owner before any other action that will write more than 1 GB or leave more than 200 MB
-behind: a download, a model, a dataset, a full copy, a package install into a global location.
-State the size you expect and what it is for.
-
-Do not install packages to run one command once. Use the environments that already exist, and
-never add a new package cache, virtual environment or conda environment without asking.
+Ask before any action that writes over 1 GB or leaves over 200 MB (download, model,
+dataset, full copy, global install), stating size and purpose. Install no package for one
+command; use existing environments; add no cache, virtual or conda one unasked.
 
 ## Cleaning up
 
-- Delete what you created when its purpose is over, not at the end of the session. Delete only
-  what you created; another session's folder is not yours.
-- Before reporting a task finished, measure the scratchpad and state the result in the report:
-  `du -sh <scratchpad>` (Bash) or the sum of `Get-ChildItem -Recurse -File` lengths
-  (PowerShell).
-- If the scratchpad is over budget, empty it before reporting, then say what was removed.
-- Old session folders and caches you find already on disk are listed to the owner with their
-  sizes. Mass deletion of them waits for the owner's word.
+- Delete what you created once done with it; never what you did not.
+- Before reporting finished, measure the scratchpad (`du -sh`, or the sum of
+  `Get-ChildItem -Recurse -File` lengths) and state it. Over budget: empty it, say what went.
+- List old session folders and caches found on disk, with sizes; deleting them waits.
 
 ## Delegation
 
-A subagent does not inherit this rule. Rule 7 of `claude/DISPATCH.md` sends it here, and the
-evidence rule in `claude/CLAUDE.md`, section "Delegation", sends back a report without the
-scratchpad size.
-
-## Red flags
-
-- "I'll compile it here just to check." → read the code, or hand it to the owner.
-- "I'll keep the full log in case I need it." → keep the failing lines.
-- "A copy is safer than editing in place." → git is the safety.
-- "The temp folder gets cleaned eventually." → it does not; Windows never empties it.
-- "It is only a few hundred megabytes." → five sessions make a hundred gigabytes.
-- "A worktree keeps the main tree clean." → no worktree; work in the tree there is.
-- "I need a baseline build to compare." → ask the owner; never a second tree.
+A subagent inherits nothing: `claude/DISPATCH.md` rule 7 sends it here, and `claude/CLAUDE.md`
+"Delegation" returns a report without the scratchpad size.

@@ -5,89 +5,68 @@ description: Use when adding, upgrading, removing or vendoring a third-party lib
 
 # Dependencies
 
-Every dependency is a permanent cost: its licence, its build, its bugs, its upgrades. Adding one
-is the owner's decision; this skill says what the agent brings to that decision and how an
-accepted dependency is wired.
+Adding a dependency is the owner's decision. Read `references/licences-and-flags.md` for the
+licence table and red flags.
 
 ## Before proposing one
 
-The proposal names:
-
-1. What it does that the repository cannot do in a reasonable brick of its own.
-2. Its licence, read from the source, not from a summary.
-3. Its exact version and where it comes from.
-4. Which module uses it, and that it stays private to that module.
-
-Then the agent asks and waits.
+Name what it does that the repository cannot do in a reasonable brick, its licence (read from
+the source, not a summary), its exact version and source, and the one module that uses it,
+privately. Then ask and wait.
 
 ## Licences
 
-| Licence | Decision |
-| --- | --- |
-| MIT, BSD, Apache-2.0, Zlib, ISC, public domain | Accepted |
-| A repository of the same organisation, under its own licence | Accepted |
-| LGPL | Only linked dynamically, and only after asking |
-| GPL, AGPL, SSPL | Rejected |
-| Third-party non-commercial, source-available, field-of-use limits | Rejected |
-| Vendor SDK licences that require marks, notices to the vendor, or restrict redistribution | Rejected |
-
-A dependency's own dependencies are held to the same table.
+Accepted: MIT, BSD, Apache-2.0, Zlib, ISC, public domain, and a same-organisation repository
+under its own licence. LGPL: only linked dynamically, only after asking. Rejected: GPL, AGPL,
+SSPL; non-commercial, source-available or field-of-use limits; vendor SDK licences that require
+marks or vendor notices, or restrict redistribution. A dependency's own dependencies follow the
+same rules.
 
 ## Ported code
 
-Code translated or adapted from a third-party source is that source's work, whatever language
-it ends up in. The file keeps the upstream copyright line and licence name in its license
-block, and `NOTICE.md` lists it. The owner's licence covers the changes, not the original.
+Code translated or adapted from a third-party source is that source's work, in any language. Its
+license block keeps the upstream copyright line and licence name, and `NOTICE.md` lists it. The
+owner's licence covers the changes only.
 
 ## Notices
 
-`NOTICE.md` at the repository root lists every third-party component, every ported file and
-every redistributed binary: its name, source URL, version, licence and where it sits in the
-tree. A component that is not listed is not shipped.
+`NOTICE.md` at the root lists every third-party component, ported file and redistributed binary
+with name, source URL, version, licence and tree location. An unlisted component is not shipped.
 
 ## Where it comes from
 
-- **Default:** installed through the organisation's dependency tool, declared in
-  its manifest with an exact version. No ranges, no "latest".
-- **Vendored under `third_party/<name>/`** only when the package manager does not carry it, or
-  when it needs a patch. The folder carries a `README.md` with the source URL, the commit or
-  version, the licence, and every local patch listed.
+- Default: the organisation's dependency tool, declared in its manifest with an exact version;
+  no ranges, no "latest".
+- Vendored under `third_party/<name>/` only when the package manager lacks it or it needs a
+  patch; the folder's `README.md` gives source URL, commit or version, licence and every patch.
 - Never installed by hand, never copied into a module's `source/`.
 
 ## A sibling library as a dependency
 
-A repository builds on its own: whoever clones only a library gets what it depends on through
-the repository's own `setup`, without the workspace tool. The dependency declaration pins each
-sibling library with a release tag and its full commit hash. The build never downloads; it reads
-only the path the CLI hands it. Moving a pin is an upgrade.
+A repository builds on its own: whoever clones only a library gets its dependencies through the
+repository's `setup`, without the workspace tool. The dependency declaration pins each sibling
+with a release tag and its full commit hash. The build never downloads; it reads only the path
+the CLI hands it. Moving a pin is an upgrade.
 
 Read [references/sibling-library.md](references/sibling-library.md) when declaring, finding,
-fetching or moving a sibling pin: the search order, what `setup` and `doctor` report, and how a
-workspace tool takes over.
+fetching or moving a sibling pin.
 
 ## Wiring
 
-1. A module links a third-party library `PRIVATE`. Its types never appear in the module's public
-   headers.
-2. When a public header must expose a third-party type (a graphics API handle, for example), the
-   module's `README.md` says so and names the type, and the owner has approved it.
-3. One module wraps each dependency. Other modules use the wrapper, not the library.
-4. A shared library's runtime file is copied beside every executable
-   the build makes that loads it, tests and examples included, through `TARGET_RUNTIME_DLLS`,
-   and the install and every binary package ship it, listed in `NOTICE.md`.
-5. A library of the organisation built as a shared library exports the version of its binary
-   interface, and a consumer checks it on first use: a mismatch stops the process with one line
-   naming the consumer, both versions and the library's path, never a crash later.
-6. Every capability a CLI or the workspace tool has is in that repository's manual: a guide page says what
-   it does for the person and how to run it, and the FAQ links it.
+1. Link a third-party library `PRIVATE`; its types stay out of public headers.
+2. A public header exposes one only when the module's `README.md` names the type and the owner
+   approved.
+3. One module wraps each dependency; others use the wrapper.
+4. A shared library's runtime file is copied beside every executable that loads it, tests and
+   examples included, through `TARGET_RUNTIME_DLLS`; the install and every binary package ship
+   it, listed in `NOTICE.md`.
+5. An organisation library built shared exports its binary-interface version; a consumer checks
+   it on first use, and a mismatch stops the process with one line naming consumer, both
+   versions and library path.
+6. Each CLI or workspace-tool capability is in the repository's manual: a guide page says what it
+   does and how to run it, and the FAQ links it.
 
 ## Upgrading and removing
 
-- An upgrade is its own commit, in the shape `commits` gives, with the full test suite run.
-- A dependency no module uses any more is removed in the same change that stopped using it.
-
-## Red flags
-
-- "It is header-only, so it is not really a dependency." → it is.
-- "The licence is probably MIT." → read it.
-- "It is simpler to expose its type in our header." → wrap it.
+An upgrade is its own commit (`commits`) with the full test suite run. A dependency no module
+uses is removed in the change that stopped using it.

@@ -5,87 +5,55 @@ description: Use when changing a version number, tagging, cutting or proposing a
 
 # Versioning and Release
 
-Every repository follows Semantic Versioning 2.0.0 and names releases `vMAJOR.MINOR.PATCH`,
-for example `v0.3.2`. The agent keeps track of what the next version is at all times and says
-so when a release is due; the owner approves every tag and every push.
+Semantic Versioning 2.0.0, releases named `vMAJOR.MINOR.PATCH`. The agent always knows the next
+version and says so when a release is due; the owner approves every tag and push. Read
+`references/tables-and-flags.md` for the source and bump tables and the red flags.
 
 ## One source of truth
 
-The version lives in one place per repository and every other copy is generated or checked
-against it.
-
-| Stack | Source |
-| --- | --- |
-| C++ | `project(<Name> VERSION x.y.z)` in the root `CMakeLists.txt`; `version.hpp` is generated from it |
-| Python | `version` in `pyproject.toml` |
-| TypeScript | `version` in the root `package.json` |
-| No build manifest (a skills or documentation repository) | The latest `## vX.Y.Z` heading in `docs/reference/CHANGELOG.md` |
-
-The tag is `v` plus that number. The changelog heading is the tag.
+The version lives in one place; every other copy is generated or checked against it. C++:
+`project(<Name> VERSION x.y.z)` in the root `CMakeLists.txt`. Python: `pyproject.toml`.
+TypeScript: root `package.json`. No manifest: the latest `## vX.Y.Z` heading in
+`docs/reference/CHANGELOG.md`. The tag is `v` plus that number, and the changelog heading is the tag.
 
 ## Choosing the next version
 
-Read the entries under `## Unreleased` and the commit subjects since the last tag, then take the
-highest bump any of them demands.
+Read `## Unreleased` and the commit subjects since the last tag; take the highest bump any demands.
 
-| Change since the last tag | From `v1.0.0` on | Before `v1.0.0` |
-| --- | --- | --- |
-| A breaking change to a public interface, file format or CLI | MAJOR | MINOR |
-| New behaviour, backwards compatible (`feat`) | MINOR | PATCH |
-| Wrong behaviour made right (`fix`), or `perf` | PATCH | PATCH |
-| Only `refactor`, `test`, `docs`, `build`, `chore` | no release | no release |
-
-- A breaking commit is marked in its subject, `feat(scope)!: ...`, and its changelog entry says
-  what breaks (see `commits`).
-- `v1.0.0` is the owner's decision alone. It is never reached by counting bumps.
-- Pre-releases carry a suffix: `v0.4.0-rc.1`. Build metadata is not used.
+- Breaking change to a public interface, file format or CLI: MAJOR; before `v1.0.0`, MINOR.
+- `feat`: MINOR; before `v1.0.0`, PATCH.
+- `fix` or `perf`: PATCH.
+- Only `refactor`, `test`, `docs`, `build`, `chore`: no release.
+- A breaking commit is marked `feat(scope)!: ...`; its entry says what breaks (`commits`).
+- `v1.0.0` is the owner's decision alone, never reached by counting bumps.
+- Pre-releases take a suffix, `v0.4.0-rc.1`. No build metadata.
 
 ## Tracking
 
-The agent keeps the release state current without being asked.
-
-1. After every commit that adds a changelog entry, compute the next version from the table
-   above. When the entry is a breaking change, search the manual for every name it changed as
-   the entry is written, and correct the hits in that commit (see `documentation`).
-2. When closing a piece of work, report one line: `Next release: v0.3.3 (patch), 4 entries
-   since v0.3.2.`
-3. Propose a release when any of these holds:
-   - an entry under `Unreleased` is a breaking change;
-   - a design document's phase moved to shipped;
-   - a `fix` corrects behaviour a user of the last release can hit;
-   - `Unreleased` holds 15 or more entries, or 30 days have passed since the last tag with at
-     least one `feat` or `fix`.
-4. A proposal names the version, the bump reason and the entries that drive it, and waits for
-   the owner.
+1. After each commit that adds a changelog entry, compute the next version. For a breaking
+   entry, search the manual for every changed name and fix the hits in that commit
+   (`documentation`).
+2. When closing work, report: `Next release: v0.3.3 (patch), 4 entries since v0.3.2.`
+3. Propose a release when an `Unreleased` entry is breaking; a design phase moved to shipped; a
+   `fix` corrects behaviour a user of the last release can hit; `Unreleased` holds 15 or more
+   entries; or 30 days passed since the last tag with a `feat` or `fix`.
+4. A proposal names the version, the bump reason and the driving entries, then waits.
 
 ## Cutting a release
 
-Once the owner approves, in this order:
+After the owner approves, in order:
 
-1. Run every checker under `tools/` and the full test suite through the project CLI. A finding
-   or a failure stops the release. Then a reviewer who did not write the manual reads it from
-   start to finish against the code: `check_docs_truth.py` catches a stale name or path, and
-   only a reader catches a sentence that describes behaviour the code has lost. A false
-   sentence stops the release too.
+1. Run every checker under `tools/` and the full test suite through the project CLI; a finding or
+   failure stops the release. Then a reviewer who did not write the manual reads it start to
+   finish against the code; a false sentence stops the release.
 2. Set the version in the source of truth.
-3. Close the changelog's `## Unreleased` section as `CHANGELOG_FORMAT.md` in `documentation`
-   says.
-4. Update every design status and manual page that names the version.
+3. Close `## Unreleased` as `CHANGELOG_FORMAT.md` in `documentation` says.
+4. Update every design status and manual page naming the version.
 5. Commit only those files: `chore(release): vX.Y.Z`.
-6. Tag that commit with an annotated tag: `git tag -a vX.Y.Z -m "vX.Y.Z"`.
-7. Report the commit and the tag. Push only when the owner says so.
+6. Tag it: `git tag -a vX.Y.Z -m "vX.Y.Z"`.
+7. Report commit and tag. Push only when the owner says so.
 
 ## After a release
 
-- `Unreleased` is empty and the next version is back to "no release".
-- A defect found in a released version is fixed on the main line and released as the next PATCH.
-  Tags are never moved or deleted.
-
-## Red flags
-
-- "It is only a small feature, so a patch bump is fine." → the table decides, not the size.
-- "I will retag the release to include this fix." → a new PATCH.
-- "The version in `package.json` and the tag can differ for now." → one source of truth.
-- "The owner will notice it is time to release." → tracking is the agent's job.
-- "The checkers pass, so the manual is ready." → a checker reads names and paths; a reviewer
-  reads the sentences.
+`Unreleased` is empty. A defect in a released version is fixed on the main line and released as
+the next PATCH. Tags are never moved or deleted.

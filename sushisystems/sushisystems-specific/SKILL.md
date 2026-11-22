@@ -5,9 +5,8 @@ description: Use in every Sushi Systems repository, loaded with sushiskills befo
 
 # Sushi Systems specific
 
-The `sushiskills` doctrine names no product, company or machine. The Sushi Systems layer holds what
-it leaves out: the things true of Sushi Systems and of no other organisation. It extends the
-doctrine's rules and never replaces one.
+The doctrine names no product, company or machine; this layer holds what is true of Sushi Systems
+alone. It extends the doctrine's rules and never replaces one.
 
 ## Loading
 

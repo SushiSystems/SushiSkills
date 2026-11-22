@@ -5,86 +5,56 @@ description: Use when dispatching subagents, running agents in parallel, splitti
 
 # Multi-Agent Work
 
-One session orchestrates; every other agent is a worker with a fixed file set, a fixed place to
-write, and a report that carries its evidence.
-
-Read `references/running-the-plan.md` when writing a plan's job list, when running a plan in
-parallel mode, or for examples of reading an instruction literally.
+One session orchestrates; every other agent is a worker with a fixed file set. Read
+`references/running-the-plan.md` for job lists, parallel mode and literal-reading examples, and
+`references/roles-and-planning.md` for the role and mode tables.
 
 ## Roles
 
-| Role | Does | Writes |
-| --- | --- | --- |
-| Orchestrator | Plans, dispatches, reviews reports, integrates, commits | Code, design, manual, changelog, backlog |
-| Worker | One task with one acceptance criterion | The files its dispatch lists, a module README only when listed, and the work folder under `docs/agent/` |
-
-A worker never edits a file outside its assigned set, never writes to `docs/design/`, the
-manual, `CHANGELOG.md` or `docs/backlog/`, and never commits unless the dispatch says so. It
-reads its work with `backlog next` and reports what it found, under "Backlog findings"; the
-orchestrator writes the entries.
+- Orchestrator: plans, dispatches, reviews, integrates, commits; writes code, design, manual,
+  changelog, backlog.
+- Worker: one task, one acceptance criterion; writes its dispatch's files, a module README only
+  when listed, and its work folder under `docs/agent/`. Never `docs/design/`, the manual,
+  `CHANGELOG.md` or `docs/backlog/`; never commits unless told; reports findings under "Backlog
+  findings" for the orchestrator to file.
 
 ## Planning
 
-Every plan puts hierarchy first: interfaces and the bricks they depend on come before their
-callers, and a module boundary is fixed, with its build edges committed, before anything on
-either side is written. A task needs one acceptance criterion. No task runs a build or a test:
-the one build and the one test run come after the last task, as `build-throughput` boundary 8 says.
-The tasks are rows of the plan, not backlog entries; `AGENT_WORK.md` in `documentation` says which
-entry serves the work folder.
-
-The owner chooses how the plan runs.
-
-| Mode | Shape |
-| --- | --- |
-| Inline | One session implements the jobs in hierarchy order, without workers |
-| Parallel | The orchestrator gives the jobs to subagents, several at once, and keeps no job for itself |
-
-Both modes run from the `## Jobs` table in `PLAN.md`. In parallel mode a job starts only when
-everything it waits on is done, a free subagent gets the next ready job at once, and
-`tools/routing/next_jobs.py` names the jobs that may start.
+- Hierarchy first: interfaces before callers; a module boundary and its build edges are
+  committed before either side is written.
+- One acceptance criterion per task; tasks are plan rows, not backlog entries. No task builds or
+  tests; one build and one test run follow the last task (`build-throughput`, boundary 8).
+- The owner picks inline or parallel (subagents only, the orchestrator keeps no job). Both run
+  from the `## Jobs` table in `PLAN.md`; `tools/routing/next_jobs.py` names jobs that may start.
 
 ## Dispatch
 
-Every dispatch opens with the line `claude/CLAUDE.md` gives in its section "Delegation", which
-sends the subagent to `claude/DISPATCH.md`. The rules live in that file and nowhere else.
-
-Then: the task, its file list, its acceptance criterion, the skills it must load
-(`cpp-code-style`, `source-comments`, ...), and the work folder path. A worker does not see the
-orchestrator's memory or conversation; anything it needs is in the dispatch.
-
-## Choosing a model
-
-The `model-routing` skill chooses the model and the effort for each dispatch, within the limits
-the same "Delegation" section sets.
+Open with the line `claude/CLAUDE.md` gives in "Delegation"; the rules live in
+`claude/DISPATCH.md` only. Give task, files, acceptance criterion, skills, work folder; a worker
+sees none of the orchestrator's memory. `model-routing` sets model and effort.
 
 ## Accepting a report
 
-The evidence a report must carry, and what a reviewer dispatch checks by name, are in the same
-"Delegation" section. The orchestrator checks more:
+Evidence is in "Delegation". Also:
 
-1. The list of files changed matches the assigned set.
-2. A report on work that changed a public name, a signature, a header path, a CLI command or a
-   documented behaviour carries the output of `tools/documentation/check_docs_truth.py` and the
-   pages and lines the change made false. Without both, the report is sent back.
-3. A report on work that added tests lists them, as "Directions to the agent" in `testing` says.
+1. Files changed match the assigned set.
+2. A change to a public name, signature, header path, CLI command or documented behaviour carries
+   `check_docs_truth.py` output and the pages and lines made false; else send it back.
+3. Added tests are listed (`testing`, "Directions to the agent").
 
-A page a worker reports as false is handled as `AGENT_WORK.md` in `documentation` says.
+A page reported false follows `AGENT_WORK.md` in `documentation`.
 
 ## Instructions are read literally
 
-A plan, a job, a review record, a ruling and an instruction from the owner are read one at a
-time, in order, and done as written, by every agent, the orchestrator included.
+Every agent, orchestrator included, does each plan, job, record, ruling and owner instruction one
+at a time, in order, as written.
 
-- An instruction that cannot be done as written is never swapped for a reading of it that can.
-  It is reported as not done, with the reason, and its job stays `todo` or `failed`, never `done`.
-- A missing build is not a reason: the change the instruction needs is part of the job.
-- The orchestrator checks each report against every instruction it was given, one by one, before
-  accepting it. A report that did something else in its place is sent back, whatever reason it gives.
-- An instruction the orchestrator wrote binds it too. Before each dispatch, each acceptance and
-  each report to the owner, it reads its earlier instructions of the session again and checks
-  each against what was done.
+- One that cannot be done as written is reported not done, with the reason, never swapped for a
+  reading that can; its job stays `todo` or `failed`.
+- A missing build is no reason; the change needed is part of the job.
+- The orchestrator checks each report against every instruction and sends back a different result.
+- Before each dispatch, acceptance and owner report it rereads its own earlier instructions.
 
 ## Shared working tree
 
-- Staging, stash and worktrees follow `git-workflow`, section "Shared working tree".
-- Two running jobs never hold the same file, and two workers never hold one file.
+Staging, stash and worktrees follow `git-workflow`. No file is held by two jobs.

@@ -19,44 +19,12 @@ Sushi Systems.
 
 A closed repository names `https://sushisystems.io` alone.
 
-## The block in C++
+## The blocks
 
-```cpp
-/**************************************************************************/
-/* graph.hpp                                                              */
-/**************************************************************************/
-/*                          This file is part of:                         */
-/*                              SushiRuntime                              */
-/*              https://github.com/SushiSystems/SushiRuntime              */
-/*                         https://sushisystems.io                        */
-/**************************************************************************/
-/* Copyright (c) 2026-present Mustafa Garip & Sushi Systems               */
-/*                                                                        */
-/* Licensed under the Apache License, Version 2.0 (the "License"); you    */
-/* may not use this file except in compliance with the License. You may   */
-/* obtain a copy of the License at                                        */
-/*                                                                        */
-/*     https://www.apache.org/licenses/LICENSE-2.0                        */
-/*                                                                        */
-/* Unless required by applicable law or agreed to in writing, software    */
-/* distributed under the License is distributed on an "AS IS" BASIS,      */
-/* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or        */
-/* implied. See the License for the specific language governing           */
-/* permissions and limitations under the License.                         */
-/**************************************************************************/
-```
-
-## The block in Python, shell and CMake
-
-```python
-# graph.py
-# SushiRuntime - https://github.com/SushiSystems/SushiRuntime
-# Copyright (c) 2026-present Mustafa Garip & Sushi Systems
-# Licensed under the Apache License 2.0. See LICENSE.
-```
+The block in C++, Python, shell and CMake, ready to copy: `references/blocks.md`. Read it before writing one by hand.
 
 ## The writer
 
 `tools/licensing/write_license_block.py` writes the block, and `check_source_comments.py` checks it.
 A repository ported from third-party code keeps the upstream copyright line and licence name inside
-the box, below the lines above; see the `sushisystems-dependencies` skill.
+the box, below the copyright line of the block; see the `sushisystems-dependencies` skill.

@@ -5,58 +5,42 @@ description: Use when changing, renaming or removing a public function, type, he
 
 # API Stability
 
-A public surface is a promise to every caller, inside the repository and in the repositories
-above it. It changes deliberately, visibly and in order.
+A public surface is a promise to every caller, here and in the repositories above. It changes
+deliberately, visibly and in order. Read `references/red-flags.md` when a change feels harmless.
 
 ## What is public
 
-- Everything under a module's `include/` (C++), re-exported from `__init__.py` (Python) or from
-  `index.ts` (TypeScript).
-- CLI commands and their flags.
-- File formats (see `file-formats`).
-
-Everything else is private and may change in any commit.
+Everything under a module's `include/` (C++), re-exported from `__init__.py` (Python) or
+`index.ts` (TypeScript); CLI commands and flags; file formats (`file-formats`). Everything else
+is private and may change in any commit.
 
 ## Deprecation
 
-1. Mark the old surface: `[[deprecated("use <replacement>")]]` in C++, `warnings.warn(...,
-   DeprecationWarning)` in Python, `/** @deprecated use <replacement> */` in TypeScript.
+1. Mark it: `[[deprecated("use <replacement>")]]`, `warnings.warn(..., DeprecationWarning)`, or
+   `/** @deprecated use <replacement> */`.
 2. Add a changelog entry naming the replacement.
-3. Keep it for at least the next MINOR release.
-4. Remove it in a later release, as a breaking change with `!` in the commit subject.
+3. Keep it through at least the next MINOR release.
+4. Remove it later as a breaking change, `!` in the commit subject.
 
-Before `v1.0.0` step 3 may be skipped, but the removal is still a breaking entry in the
-changelog and the commit carries `!`.
-
-A deprecated surface forwards to its replacement; it never keeps a second implementation.
+Before `v1.0.0` step 3 may be skipped, but the removal is still a breaking entry with `!`. A
+deprecated surface forwards to its replacement; it never keeps a second implementation.
 
 ## Export boundary
 
-- Symbols a shared library exports carry the project's `<PREFIX>_API` macro; the default
-  visibility is hidden (see `platform-portability`).
-- A change to the layout of an exported type, or to an exported function's signature, is
-  breaking.
+Exported symbols carry `<PREFIX>_API`; default visibility is hidden (`platform-portability`). A
+change to an exported type's layout or an exported function's signature is breaking.
 
 ## Across repositories
 
 Repositories depend on each other in tiers, lowest first.
 
-1. Each repository pins every dependency on another of the organisation's repositories to an exact tag, `v0.3.2`, never to a
-   branch or a range.
-2. When a lower repository releases, repositories above it upgrade in tier order, one at a time,
-   each in its own upgrade commit (see `commits`) followed by its own release
-   when its changelog calls for one.
-3. A breaking release below is adapted to above in the same upgrade commit; no repository runs
-   against a mix of old and new.
-4. No repository depends on unreleased work of another. If it needs it, the lower one releases
-   first.
-5. A dependency has one version across the workspace. Two repositories pinning it at different
-   versions is a defect; the workspace tool reports the split, and the upgrade of rule 2 runs
-   through its command that walks the dependency graph, never by hand edits repository by
-   repository.
-
-## Red flags
-
-- "Nobody outside this module calls it." → check the repositories above before calling it private.
-- "I will keep the old function as well, just in case." → deprecate and forward, then remove.
-- "Point the dependency at main until the release is out." → release first.
+1. Pin every dependency on another of the organisation's repositories to an exact tag, `v0.3.2`,
+   never a branch or range.
+2. When a lower repository releases, those above upgrade in tier order, one at a time, each in
+   its own upgrade commit (`commits`), followed by its own release if its changelog calls for one.
+3. A breaking release below is adapted to above in the same upgrade commit; none runs against a
+   mix of old and new.
+4. No repository depends on unreleased work of another; the lower one releases first.
+5. A dependency has one version across the workspace. Two pins at different versions is a defect;
+   the workspace tool reports the split, and rule 2's upgrade runs through its graph-walking
+   command, never by hand edits repository by repository.

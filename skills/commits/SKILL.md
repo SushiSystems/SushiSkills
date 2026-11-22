@@ -5,50 +5,32 @@ description: Use when writing a git commit message, a pull request title or desc
 
 # Commits
 
-A commit history is read as a changelog of intent. Every subject line follows one grammar.
+A commit history is read as a changelog of intent. Examples, hook detail: `references/detail.md`.
 
 ## Subject line
 
-```
-type(scope): sentence in lower case, present tense, no trailing period
-type(scope)!: the same, for a change that breaks a public interface, file format or CLI
-```
+`type(scope): sentence` in lower case, present tense, no trailing period, a full clause under 72
+characters. `type(scope)!:` marks a break of a public interface, file format or CLI; without
+the `!` a MAJOR bump hides (`versioning-and-release`).
 
-| Type | For |
-| --- | --- |
-| `feat` | New behaviour |
-| `fix` | Wrong behaviour made right |
-| `refactor` | Same behaviour, different shape |
-| `perf` | Same behaviour, fewer resources |
-| `test` | Tests only |
-| `docs` | Documentation only |
-| `build` | Build files, CLI, checkers, toolchain |
-| `chore` | Releases (`chore(release): v0.3.2`), housekeeping with no behaviour |
+Types: `feat` new behaviour; `fix` wrong behaviour made right; `refactor` same behaviour,
+different shape; `perf` fewer resources; `test` tests only; `docs` documentation only; `build`
+build files, CLI, checkers, toolchain; `chore` releases (`chore(release): v0.3.2`) and
+housekeeping.
 
-- `scope` is the module or subsystem folder name: `matter`, `interop`, `cli`, `layering`. The
-  one scope that is not a folder is `deps`: `build(deps): upgrade <name> to <version>` upgrades
-  a dependency, in its own commit.
-- The sentence says what the change does, as a full clause, under 72 characters:
-  `feat(matter): reserve the neighbour list at tick start`.
+- `scope` is the module or subsystem folder name. The one other scope is `deps`:
+  `build(deps): upgrade <name> to <version>`, in its own commit.
 - A change that needs two scopes is usually two commits.
-- The type decides the next version: see `versioning-and-release`. A breaking change without
-  `!` hides a MAJOR bump.
+- The body is optional: paragraphs at 72 columns, the `humanizer` pass.
 
-## Body
+## One commit holds
 
-Optional. Plain paragraphs wrapped at 72 columns: what changed and what it affects. The reason
-for a design lives in a design document; the body may cite its path. Run the `humanizer` pass.
-
-## What goes in one commit
-
-1. One logical change.
-2. Its tests.
-3. Its documentation: module README, design status, changelog line. A change without them is
-   not finished (see `documentation`).
+One logical change, its tests, and its documentation (module README, design status, changelog
+line). A change without them is not finished (`documentation`).
 
 ## The backlog line
 
-Every commit ends with one line, last in the message, that says which backlog entry it serves.
+Every commit ends with one line, last in the message, naming the entry it serves.
 
 <!-- fact:begin backlog-line -->
 ```
@@ -59,35 +41,17 @@ Backlog: none (typo in a comment)
 ```
 <!-- fact:end backlog-line -->
 
-- An ID must be an entry open in the parent commit or in this commit, so the commit that closes an
-  entry still names it (`backlog`). An amend is judged against the parent of the commit it
-  replaces.
-- An entry of a sibling repository is written `<repository> <ID>`, the repository being its folder
-  name. The hook asks the sibling when it is checked out beside this repository and takes it on
-  trust when it is not.
-- `none` carries its reason in brackets. A reason of no words is a refusal. A release closes no
-  entry and says so. A plan's job is no reason: it serves the work folder's entry
-  (`documentation`, `AGENT_WORK.md`), and a commit that only closes an entry names that entry.
-- `tools/commits/check_backlog_trailer.py` checks the commits after `K_TRAILER_SINCE` in
-  `tools/settings.py`, and the `commit-msg` hook in `tools/hooks/` refuses a message that breaks
-  the rule before the commit exists. A repository runs `python tools/hooks/install_hooks.py` once
-  per clone; its setup command does it for the person.
-- A hook is never skipped with `--no-verify`.
-
-A commit that changes what a page describes also carries the pages, or a `Docs: <page> unchanged
-(<reason>)` line after the `Backlog:` line (`documentation`, "Pages follow what they describe").
-
-A `fix` or `feat` commit stages a test, or carries a `Tests: none (<reason>)` line. The
-`commit-msg` hook refuses it otherwise when `K_TESTS_LINE` is set.
+- The ID is an entry open in the parent commit or in this one, so the commit that closes an
+  entry still names it. An amend is judged against the parent of the commit it replaces.
+- A sibling's entry is `<repository> <ID>`, the repository being its folder name.
+- `none` carries a reason in brackets; no words is a refusal. A release closes no entry and says
+  so. A plan's job is no reason: it serves the work folder's entry.
+- Never skip a hook with `--no-verify`. A repository runs `python tools/hooks/install_hooks.py`
+  once per clone.
+- A commit that changes what a page describes carries the pages, or a `Docs: <page> unchanged
+  (<reason>)` line after the `Backlog:` line.
+- A `fix` or `feat` commit stages a test, or carries `Tests: none (<reason>)`.
 
 ## Staging
 
-Staging follows `git-workflow`, section "Shared working tree".
-
-## Examples
-
-| Bad | Good |
-| --- | --- |
-| `Fixed stuff` | `fix(audio): stop the mixer clipping at unity gain` |
-| `feat: Added new feature for water.` | `feat(water): sample the sea surface on the device` |
-| `update README` | `docs(ecs): list the world's public entry points` |
+Follows `git-workflow`, section "Shared working tree".

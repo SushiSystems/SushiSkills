@@ -5,73 +5,49 @@ description: Use when optimising code, claiming a change is faster or lighter, w
 
 # Performance
 
-Performance comes second to maintainability and is never guessed. The structure of a hot path is
-designed in from the start; every change beyond that is measured.
+Performance comes second to maintainability and is never guessed. A hot path's structure is
+designed in; every change beyond that is measured.
 
 ## Designed in, without measuring
 
-These are defaults for any per-frame, per-element or per-sample path:
+For any per-frame, per-element or per-sample path:
 
-- Contiguous storage and handles instead of pointer graphs.
-- No allocation, no locking, no logging and no virtual dispatch per element.
+- Contiguous storage and handles, not pointer graphs.
+- No allocation, locking, logging or virtual dispatch per element.
 - Work batched by kind; data laid out for the loop that reads it.
-- Data stays on the device that computes it; no read-back to the host to hand it to another
-  device.
+- Data stays on the device that computes it; no read-back to hand it to another device.
 - Containers reserved when their size is known.
 
 ## Measured, always
 
-An optimisation is a claim, and a claim carries evidence.
+An optimisation is a claim and carries evidence.
 
-1. Measure before changing anything: the same machine, the same build type, the same input, at
-   least five runs.
+1. Measure first: same machine, build type and input, at least five runs.
 2. Change one thing.
 3. Measure again the same way.
-4. The commit is `perf(scope): ...`, and its body gives both numbers with their spread:
+4. The commit is `perf(scope): ...`, its body giving both numbers with spread:
    `step: 4.12 ms ± 0.05 → 2.87 ms ± 0.04 (6 runs, release build, 10 000 bodies)`.
 
-An optimisation that does not move the number is reverted, not kept "because it cannot hurt".
-An optimisation that costs readability must buy a measured gain worth that cost.
+An optimisation that does not move the number is reverted, not kept "because it cannot hurt". One
+that costs readability must buy a gain worth the cost.
 
 ## Benchmarks
 
-A benchmark has one of two shapes, told apart by what it measures. Test sizes are for tests; a
-benchmark carries none.
+Two shapes; test sizes are for tests, a benchmark carries none. Every benchmark runs through the
+project CLI, never the build system; prints numbers and never passes or fails a test run; states
+its input size and build type.
 
-| Shape | Measures | Lives in | Runs through |
-| --- | --- | --- | --- |
-| Micro | One unit's time or memory, one code path | Beside the unit's tests, `benchmark_<name>.cpp` (see `TESTS.md` in `repository-layout`), in the module's benchmark program, labelled `benchmark` | `<cli> bench` |
-| Scenario | A whole run of a subsystem, with its own `main()`, options and output | `applications/benchmarks/<name>/`, listed in `applications/benchmarks/README.md` | `<cli> bench <name> -- <options>` |
+- **Micro:** one unit's time or memory; beside the unit's tests as `benchmark_<name>.cpp`, labelled
+  `benchmark`; run by `<cli> bench`. It gates a change only on a dedicated machine, against that
+  machine's baseline and noise, never on a shared runner.
+- **Scenario:** a whole subsystem run with its own `main()`, in `applications/benchmarks/<name>/`,
+  listed in its `README.md`; run by `<cli> bench <name> -- <options>`. One per subsystem (a variant
+  is an option); a meaningful default with no option; every number-changing input is an option;
+  reports the median of at least three runs, machine and build, as `<name> <value> <unit>` lines or
+  one CSV (`file-formats`); never gates a pull request or release, its numbers go in the release
+  report.
 
-A micro benchmark sits beside what it measures so it is found there. A scenario benchmark is an
-application, so it lives with the applications.
+A program measuring what a subsystem does, not how fast, is a probe (`testing`); a probe and a
+scenario benchmark may share a name.
 
-Every benchmark:
-
-- runs through the project CLI, never from the build system;
-- prints numbers and never passes or fails a test run;
-- states its input size and build type in its output.
-
-A micro benchmark may gate a change only on a dedicated machine, against a baseline measured on
-that machine, with a threshold set from that machine's own noise. It never gates on a shared
-runner.
-
-A scenario benchmark:
-
-- measures one subsystem, and a subsystem has one scenario benchmark; a variant is an option;
-- runs a meaningful default scenario when it is given no option;
-- takes every input that changes its numbers from its options;
-- reports the median of at least three runs and the machine and build it ran on, as lines
-  `<name> <value> <unit>` or one CSV, whose shape follows `file-formats`;
-- never gates a pull request or a release; its numbers go into the release report.
-
-A program that measures what a subsystem does rather than how fast it does it is a probe, from
-`testing`. A probe and a scenario benchmark of one subsystem may share its name, since they live
-in different folders and run through different commands.
-
-## Red flags
-
-- "This is obviously faster." → measure it.
-- "One run was enough." → five.
-- "I measured in debug." → the build type used for shipping.
-- "While I was there I also optimised the neighbour function." → one change per measurement.
+Red flags, folder placement reasons: `references/benchmarks.md`.

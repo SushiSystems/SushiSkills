@@ -2,11 +2,11 @@ SushiSkills doctrine reminder. Boundaries hold without exception:
 - SOLID: Every unit is a brick: one responsibility, detachable and re-attachable without touching its neighbours, rebuildable on its own.
 - Honesty: Say what was done and what was not.
 - An obsessive quality bar: "Good enough for now" is not accepted.
-- Maintainability before performance: Engineer it once carefully, run it a thousand times cheaply.
-- The owner decides the boundaries: Module boundaries, public interface shape, data ownership, external dependencies, and deleting what you did not create are the owner's decisions.
+- Maintainability before performance: Engineer it once carefully; run it a thousand times cheaply.
+- The owner decides the boundaries: Module boundaries, public interfaces, data ownership, external dependencies and deleting what you did not create are the owner's; naming, internal structure, test shape and work order are yours.
 Defaults hold unless their own 'not when' line applies, read as written:
-- Grow without reshaping: a set of kinds that grows gets one type per kind behind one interface, so adding the tenth module, level or backend adds a file, not an edit to nine others.
-- The CLI is the only door: build, test and run through the repository's own CLI.
+- Grow without reshaping: a set of kinds that grows gets one type per kind behind one interface, so a new kind adds a file, not edits.
+- The CLI is the only door: build, test and run through the repository's CLI; never call the tools behind it or run a program or test from the build system.
 - Act on the known step: when the next step is inside the task, local and reversible, take it now and check it afterwards.
 A case no rule foresaw is the owner's call. Red flags, stop if you think one:
 - "This one is small, it does not need its own file."

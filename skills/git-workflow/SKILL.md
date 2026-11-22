@@ -6,17 +6,14 @@ description: Use when creating a branch, merging, pushing, rebasing, resolving a
 # Git Workflow
 
 One line of history per repository. Work reaches `main` in small commits; nothing leaves the
-machine without the owner.
+machine without the owner. Commit messages follow `commits`. Why: `references/rationale.md`.
 
 ## Branches
 
-| Work | Where |
-| --- | --- |
-| Everyday work | Directly on `main` |
-| Risky or multi-day work | `feature/<snake_case_name>`, merged back within days |
-| Release fix for an old version | Not a branch; the next PATCH on `main` (see `versioning-and-release`) |
-
-A feature branch is rebased onto `main` before it merges, and deleted after.
+Everyday work goes directly on `main`. Risky or multi-day work goes on
+`feature/<snake_case_name>`, merged back within days, rebased onto `main` first and deleted
+after. A release fix for an old version is no branch; it is the next PATCH on `main`
+(`versioning-and-release`).
 
 ## Forbidden
 
@@ -32,22 +29,16 @@ Approval for one push does not carry to the next.
 
 ## Conflicts
 
-A conflict is resolved by reading both sides and keeping both intents. When the intents
-contradict, the agent stops and asks. Never resolve by taking one side wholesale to make the
-conflict go away.
+Read both sides and keep both intents. When they contradict, stop and ask. Never take one side
+wholesale to make a conflict go away.
 
 ## Shared working tree
 
-Another session may be editing the same checkout, and nothing tells an agent when one is. These
-hold always:
+Another session may be editing the same checkout. These hold always:
 
 - Stage by path, and only your own hunks in shared files. Never `git add -A`, `git add .` or
   `git commit -a`.
-- Commit with the paths: `git commit -o <path>...`. A bare `git commit` takes the whole index,
-  and another session's `git add` lands in the same index. A new file is staged with `git add`
-  first, because `-o` names only files git knows.
-- Check `git diff --cached --stat` before every commit and unstage anything that is not yours.
-- No `git stash`. No worktree: `storage-discipline` forbids it.
+- Commit with the paths: `git commit -o <path>...`. Stage a new file with `git add` first.
+- Check `git diff --cached --stat` before every commit and unstage what is not yours.
+- No `git stash`. No worktree (`storage-discipline`).
 - Never discard changes you did not make.
-
-Commit messages follow `commits`.

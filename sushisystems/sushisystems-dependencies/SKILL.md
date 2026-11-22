@@ -5,49 +5,39 @@ description: Use in a Sushi Systems repository together with the dependencies or
 
 # Dependencies at Sushi Systems
 
-The `dependencies` skill names the roles: the dependency tool, the dependency declaration, the
-pin, the workspace tool, the logger. This page says who fills each role at Sushi Systems.
+Who fills the roles the `dependencies` skill names. Read `references/roles-and-commands.md` for
+the role table, the `hub` command table and the workspace takeover.
 
 ## The roles
 
-| Role | At Sushi Systems |
-| --- | --- |
-| Dependency tool | `hub install`, declared in the manifest with an exact version |
-| Dependency declaration | `cli/sushistack.deps.toml`: each Sushi library it links in `[module] depends_on`, pinned in `[sushisystems.<name>]` with `version` (a release tag) and `commit` (its full hash) |
-| Path variable | `<NAME>_DIR`, set by the person or the CLI |
-| Sibling checkout | `../<name>` |
-| The copy setup fetched | `<cli> setup`, through sushicore, clones the pinned tag into its home under `sources/<name>/<version>/` and refuses it when the commit differs from the pin |
-| Workspace tool | SushiHub |
-| Licence of its own libraries | Apache License 2.0 |
+- Dependency tool: `hub install`, manifest with an exact version.
+- Declaration: `cli/sushistack.deps.toml`. Each linked Sushi library is in `[module] depends_on`
+  and pinned in `[sushisystems.<name>]` with `version` (release tag) and `commit` (full hash).
+- Path variable `<NAME>_DIR`, set by the person or the CLI; sibling checkout `../<name>`.
+- `<cli> setup` clones the pinned tag under `sources/<name>/<version>/` and refuses a commit that
+  differs from the pin.
+- Workspace tool SushiHub; own libraries are Apache License 2.0.
 
 ## Moving a pin
 
-Every repository pinning a library moves together, and the library's CI builds and tests each
-repository that pins it before a release.
-
-| Command | Does |
-| --- | --- |
-| `hub pins [--latest]` | Lists each module's pin of each dependency, SushiCore's range included; exits 1 when one dependency is pinned at two versions |
-| `hub bump <name> <tag>` | Moves the pin in every module that depends on `<name>`, lowest tier first; for `sushicore` it also syncs the shared tools; runs each module's `check_all.py` and prints a pass or fail table. It commits nothing |
-| `hub pin <name> <version>` | Moves one pin without the graph walk or the checks |
-
-`hub pins` exits 0 before a release is proposed.
+Every repository pinning a library moves together; the library's CI builds and tests each
+repository that pins it before a release. `hub pins [--latest]` lists pins and exits 1 when one
+dependency sits at two versions; it exits 0 before a release is proposed. `hub bump <name> <tag>`
+walks the graph lowest tier first, runs each `check_all.py` and commits nothing. `hub pin <name>
+<version>` moves one pin unchecked.
 
 ## A workspace takes over
 
-The toolchains `<cli> setup` installed sit in the machine root that `hub` reads too, so nothing is
-fetched twice. `hub link` adopts a checkout the person made. `hub add` clones a library from the
-copy setup fetched, when one at the pinned version exists, then points the clone's remote at the
-repository. The workspace sibling then wins the search. `hub status` lists each fetched copy that
-no module uses any more, and `hub clean` removes it.
+`hub link` adopts a checkout and `hub add` clones one; the workspace sibling wins the
+search. `hub status` lists unused fetched copies; `hub clean` removes them.
 
 ## The logger's runtime file
 
-SushiLog is the shared library whose runtime file, `sushilog.dll`, is copied beside every
-executable that loads it and listed in `NOTICE.md`. Its binary-interface check is "ABI version" in
-`INTERFACE.md` of the `sushisystems-logging` skill.
+SushiLog's `sushilog.dll` is copied beside every executable that loads it and listed in
+`NOTICE.md`. Its binary-interface check is "ABI version" in `INTERFACE.md` of
+`sushisystems-logging`.
 
 ## The manual
 
-Every capability the CLI or `hub` has is in that repository's manual: a guide page says what it
-does for the person and how to run it, and the FAQ links it.
+Every capability the CLI or `hub` has is in the repository's manual: a guide page says what it
+does and how to run it, and the FAQ links it.

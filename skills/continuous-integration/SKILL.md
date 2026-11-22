@@ -5,67 +5,48 @@ description: Use when adding or changing a CI workflow, when CI fails, or before
 
 # Continuous Integration
 
-CI runs the same checks the agent runs locally, on every platform the repository supports, so
-that "it works here" is not the only evidence. Read `references/rationale.md` when a rule here
-looks wrong for a case it did not foresee.
+CI runs the agent's local checks on every supported platform. A case no rule foresaw:
+`references/rationale.md`.
 
 ## Stages
 
-Each stage runs the tests whose size, from `testing`, fits its budget. No test carrying
-`quarantined` runs in a stage that gates.
+A stage runs the tests whose `testing` size fits its budget; no `quarantined` test gates.
+Read `references/stages.md` before changing a job.
 
-| Stage | Trigger | Runs | Budget |
-| --- | --- | --- | --- |
-| Pre-merge | Every pull request | `python tools/check_all.py .` from `project-tools`; the build on Windows and on a hosted Linux runner; the `small` and `medium` tests of the changed modules and of every module above them, shuffled with a printed seed; the same tests again under AddressSanitizer and UndefinedBehaviorSanitizer on Linux; each fuzz target over its corpus, as a regression test | 20 minutes median, 45 at most |
-| Post-merge | Every push to `main` | Everything pre-merge runs, over every module; ThreadSanitizer over the tests that start threads; the repositories downstream built against this commit | 60 minutes |
-| Nightly | Once a day | Everything post-merge runs; each fuzz target for a fixed time; line and branch coverage; benchmarks against the last nightly; `quarantined` tests, reported and never gating | 3 hours |
-| Release | A `vX.Y.Z` tag | Everything nightly runs, then the packaging build | None |
-
-- A change selects its modules by reverse dependency in the module graph the build declares;
-  post-merge runs every module, so a module the selection missed is seen within one merge.
-- A sanitizer job gates like any other; it is never marked allowed to fail. MemorySanitizer is not
-  run.
-- The diff's line and branch coverage is printed in the pre-merge summary and never gates.
-- A Unity project runs its EditMode and PlayMode tests as two jobs.
-- Mutation testing runs only when the owner asks, over the changed and covered lines of one module.
-- `large` tests run on no runner. Before a release is proposed they are run through the CLI on a
-  machine that has the hardware, and the proposal carries the command and its output.
-- A repository that pins an upstream at a tag builds against the tag before merge and against the
-  upstream's `main` after merge, so an upstream change that breaks it is seen before the pin
-  moves.
+- Pre-merge (pull request): `python tools/check_all.py .`, builds, `small` and `medium` tests of
+  changed modules and those above, shuffled with a printed seed, also under ASan and UBSan; fuzz
+  corpora. 20 minutes median, 45 at most.
+- Post-merge (push to `main`): every module plus TSan, 60 min. Nightly adds fuzzing, coverage,
+  benchmarks, 3 hours. A release tag adds packaging.
+- A sanitizer job gates, never allowed to fail; no MemorySanitizer. Coverage never gates.
+  Unity: EditMode and PlayMode as two jobs. Mutation testing only when the owner asks.
+- `large` tests run on no runner; before a release is proposed they run through the CLI on
+  hardware, and the proposal shows the output.
+- A repository pinning an upstream builds on the tag before merge, upstream `main` after.
 
 ## Shape
 
-1. The checkout fetches the full history, so the commit trailer check of `commits` can read it.
-2. CI calls the project CLI and nothing else: no build, test or package tool invoked directly in
-   the workflow file, except where the doctrine's default 2 in `sushiskills` allows a direct call.
-3. One workflow file per trigger under the forge's workflow folder: `ci.yml` for pull requests
-   and pushes, `nightly.yml` for the schedule, `release.yml` for tags.
-4. One job, `gate`, depends on every pre-merge job, and is the one check `main` requires. `main`
-   takes changes through pull requests only.
-5. Every job sets a timeout. A newer push to a pull request cancels the run before it.
-6. Compiler output is cached by compiler, flags and build-file hash; dependency caches are keyed
-   on the dependency manifest's hash.
-7. A job prints the CLI command it ran as its first line.
-8. Third-party actions are pinned to a commit hash.
+1. Full-history checkout (`commits` trailer check).
+2. CI calls the project CLI only, save where `sushiskills` default 2 allows.
+3. One workflow per trigger: `ci.yml` (pull request, push), `nightly.yml`, `release.yml`.
+4. One job, `gate`, depends on every pre-merge job; it is the one check `main` requires. `main`
+   takes pull requests only.
+5. Every job has a timeout; a newer push cancels the older run.
+6. Caches key on compiler, flags and build files; dependency caches on the manifest.
+7. A job prints its CLI command first.
+8. Third-party actions are pinned by commit hash.
 
 ## Commits that need no run
 
-- **Rule:** a commit pushed straight to `main` that changes only prose (a page under `docs/`, a
-  README, the changelog) carries `[skip ci]` at the end of its subject line, after
-  `python tools/check_all.py .` has passed locally.
-- **Why:** such a commit cannot change what CI sees, and its run holds the runners for an hour.
-- **Not when:** the commit touches source, a test, a build file, the CLI, a checker, a workflow
-  or a dependency manifest; the commit goes through a pull request, whose `gate` must report; or
-  `check_all.py` was not run clean, since CI then runs the checkers the commit skipped.
+A commit pushed straight to `main` that changes only prose (`docs/`, README, changelog) ends its
+subject with `[skip ci]`, after `python tools/check_all.py .` passed locally.
+**Not when:** it touches source, a test, a build file, the CLI, a checker, a workflow or a
+manifest; goes through a pull request; or `check_all.py` ran unclean.
 
 ## When CI fails
 
-- A red run is read from the log of its first failed job as soon as that job ends, then fixed as
-  default 3 of `sushiskills` says.
-- A red `main` is reverted first, and the change is fixed and landed again after; nothing else
-  lands while it is red.
-- No release is proposed or cut while CI is red.
-- A failure that only CI shows is reproduced locally before it is fixed; if it is an environment
-  fault, it becomes a known issue through `backlog add issue`.
-- A job is never disabled or marked allowed-to-fail to get green.
+- Read the first failed log when its job ends; fix per default 3 of `sushiskills`.
+- A red `main` is reverted first, then fixed and landed; nothing else lands on it. No release is
+  proposed or cut while CI is red.
+- Reproduce a CI-only failure locally; an environment fault goes to `backlog add issue`.
+- Never disable a job or allow it to fail to get green.

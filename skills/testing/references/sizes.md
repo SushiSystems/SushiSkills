@@ -63,3 +63,5 @@ The rule reaches every test in the repository: `tests/`, `cli/tests/`, `tools/te
 
 `quarantined` is the one label a build file lists by name, because it is a state with a backlog
 entry, not a property of the test. A `Benchmark_` suite is a benchmark and carries no size.
+
+`tools/testing/check_test_sizes.py` checks that every test writes its size.

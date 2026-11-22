@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-22 — skills: Cut the SKILL.md files from 156 653 to 93 623 bytes by moving rationale, examples, tables and red flags into each skill's `references/`, with no rule dropped (RW-67).
 - 2026-11-22 — claude: Made the doctrine hooks print two static files with `cat` and dropped the hook on every tool call; `remind_doctrine.py write` builds the files and a test fails when they are stale (RW-66, `claude/hooks/`).
 - 2026-11-22 — storage-discipline: Forbade agent worktrees and second build trees, and made every copy of more than 1 GB wait for the owner (`storage-discipline/SKILL.md`).
 - 2026-11-21 — project-tools: Said the pre-commit hook runs `check_all.py --skip-history` and that CI runs the checkers that read every commit (`project-tools/SKILL.md`).

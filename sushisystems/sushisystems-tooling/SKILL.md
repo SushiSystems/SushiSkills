@@ -5,42 +5,22 @@ description: Use in a Sushi Systems repository together with the backlog, design
 
 # Tooling at Sushi Systems
 
-The doctrine's tooling skills name roles: the shared tooling library, the backlog tool, the design
-tool. This page says who fills each role at Sushi Systems.
+The doctrine's tooling skills name roles; this page says who fills each at Sushi Systems.
 
-## The roles
+- Shared tooling library: `sushicore`.
+- Backlog and design tools: `sushicore`'s commands, `<cli> backlog ...` and `<cli> design ...`
+  in a repository with a module CLI, `python -m sushicore.backlog ...` (design the same way) in
+  one without (a web application run by `npm`). References:
+  sushicore's `docs/reference/BACKLOG.md` and `DESIGN.md`.
+- Build machinery: from sushicore (`build_tree`, `build_admission`, `build_gate`, `build_report`).
+- Module manifest: `sushi-module.toml`.
+- Shared checkers' source: SushiCore's `tools/`, at the release the CLI pins. Sync with
+  `python -m sushicore.shared_tools sync ROOT --tag <that release>`, check with
+  `python -m sushicore.shared_tools check ROOT`; `hub bump sushicore <tag>` runs it in every
+  module.
+- Documentation host: `docs.sushisystems.io`, named by `docs/publish.toml`.
 
-| Role | At Sushi Systems |
-| --- | --- |
-| Shared tooling library | `sushicore` |
-| Backlog tool | `sushicore`'s `backlog` commands: `<cli> backlog ...` in a repository with a module CLI, `python -m sushicore.backlog ...` in one without, such as a web application run by `npm`. Reference: sushicore's `docs/reference/BACKLOG.md` |
-| Design tool | `sushicore`'s `design` commands, run the same two ways. Reference: sushicore's `docs/reference/DESIGN.md` |
-| Build machinery | From sushicore: `build_tree`, `build_admission`, `build_gate`, `build_report` |
-| Module manifest | `sushi-module.toml` |
-| The shared checkers' source | SushiCore's `tools/`, at the release the CLI pins: `python -m sushicore.shared_tools sync ROOT --tag <that release>`, checked by `python -m sushicore.shared_tools check ROOT`; `hub bump sushicore <tag>` runs it in every module |
-| Documentation host | `docs.sushisystems.io`, named by `docs/publish.toml` |
-
-## The settings of a Sushi repository
-
-`tools/settings.py` of a Sushi repository sets these constants. `tools/README.md` says what each does.
-
-| Constant | Value |
-| --- | --- |
-| `K_TOOLING_PACKAGE` | `"sushicore"` |
-| `K_TOOLING_MINIMUM_VERSION` | the sushicore release the repository's CLI pins |
-| `K_TOOLING_SIBLING_SOURCE` | `"sushicore/source"` |
-| `K_LICENSE_HOLDER` | `"Mustafa Garip & Sushi Systems"` |
-| `K_LICENSE_COMPANY` | `"Sushi Systems"` |
-| `K_LICENSE_SITE` | `"https://sushisystems.io"` |
-| `K_LICENSE_OPEN_LINES`, `K_LICENSE_CLOSED_LINES`, `K_LICENSE_OPEN_BOX_LINES`, `K_LICENSE_CLOSED_BOX_LINES` | the rows of the `sushisystems-licence` skill |
-| `K_MODULE_MANIFEST` | `"sushi-module.toml"` in a module, empty elsewhere |
-| `K_MODULE_DEPENDENCY_FILE` | `"cli/sushistack.deps.toml"` |
-| `K_MODULE_HEADINGS` | `("## Standalone", "## With SushiHub")` |
-| `K_MODULE_WORKSPACE_READ` | the pattern of the hub commands, `SUSHISTACK_HOME`, `.sushistack` and `workspace.toml` |
-| `K_LOGGER_NAMESPACE`, `K_LOGGER_C_PREFIX`, `K_LOGGER_MACRO_PREFIX` | `"SushiLog"`, `"sl_"`, `"SL"` in every repository except SushiLog |
-
-SushiSkills' own `tools/settings.py` is the reference copy.
-
-The block a repository's `CLAUDE.md` carries for the order of work is in `CLAUDE_TEMPLATE.md`. A
-repository that has adopted the `Backlog:` commit line sets `K_TRAILER_SINCE` to the commit after
-which it applies, and its setup command runs `tools/hooks/install_hooks.py`.
+`tools/settings.py` sets the constants in `references/settings.md`; SushiSkills' own copy is the
+reference. A repository's `CLAUDE.md` carries the block in `CLAUDE_TEMPLATE.md`. A repository
+that adopted the `Backlog:` commit line sets `K_TRAILER_SINCE` to the commit after which it
+applies, and its setup command runs `tools/hooks/install_hooks.py`.
