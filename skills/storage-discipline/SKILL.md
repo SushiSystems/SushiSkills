@@ -5,9 +5,19 @@ description: Use when about to write files outside the repository's source tree,
 
 # Storage discipline
 
-Disk is not free. An agent session that leaves tens of gigabytes behind costs the owner real
-money on every SSD. Every byte a session writes is a byte it owes back, and the rule is the same
-as for cycles: engineer it once carefully, run it a thousand times cheaply.
+Disk is not free. SSDs and RAM are expensive, and an agent session that leaves tens of
+gigabytes behind costs the owner real money. Every byte a session writes is a byte it owes back,
+and the rule is the same as for cycles: engineer it once carefully, run it a thousand times
+cheaply. Space is always saved, and no session leaves garbage behind.
+
+## No worktrees, no second build trees
+
+- An agent never opens a git worktree, for itself or for a subagent (`isolation: "worktree"`
+  included), whatever the reason. A worktree is a second checkout and soon a second build tree.
+- An agent never configures a new build tree beside the ones the owner keeps. A baseline, a
+  comparison or a bisect runs in the existing tree, or the owner is asked how to get the answer.
+- Copying, moving into place or extracting anything over 1 GB is asked first, every time, with
+  its size and its purpose. A file over 1 GB is asked about even when the copy looks temporary.
 
 ## Where scratch lives
 
@@ -39,7 +49,7 @@ the owner to run the build.
 
 ## Before anything large
 
-Stop and ask the owner before an action that will write more than 1 GB or leave more than 200 MB
+Stop and ask the owner before any other action that will write more than 1 GB or leave more than 200 MB
 behind: a download, a model, a dataset, a full copy, a package install into a global location.
 State the size you expect and what it is for.
 
@@ -70,3 +80,5 @@ scratchpad size.
 - "A copy is safer than editing in place." → git is the safety.
 - "The temp folder gets cleaned eventually." → it does not; Windows never empties it.
 - "It is only a few hundred megabytes." → five sessions make a hundred gigabytes.
+- "A worktree keeps the main tree clean." → no worktree; work in the tree there is.
+- "I need a baseline build to compare." → ask the owner; never a second tree.

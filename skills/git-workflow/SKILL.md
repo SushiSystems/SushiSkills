@@ -47,7 +47,7 @@ hold always:
   and another session's `git add` lands in the same index. A new file is staged with `git add`
   first, because `-o` names only files git knows.
 - Check `git diff --cached --stat` before every commit and unstage anything that is not yours.
-- No `git stash`. A worktree only when the owner asks for one.
+- No `git stash`. No worktree: `storage-discipline` forbids it.
 - Never discard changes you did not make.
 
 Commit messages follow `commits`.
