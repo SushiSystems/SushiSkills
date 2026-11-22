@@ -22,7 +22,7 @@ step. A subagent does the same, since its dispatch sends it to the repository's 
 | `module-install` | `sushisystems-module-install` | SushiHub, the manifest, the dependency declaration, the catalog, the install headings |
 | `dependencies`, `api-stability` | `sushisystems-dependencies` | Pinning, finding and upgrading a Sushi library; the logger's runtime file |
 | `source-comments` | `sushisystems-licence` | The holder, the licence and the licence block in each language |
-| `marketing-copy` | `sushisystems-brand` | How copy names a Sushi product's licence |
+| `marketing-copy` | `sushisystems-licence` | How copy names a Sushi product's licence |
 
 ## The direction of the dependency
 

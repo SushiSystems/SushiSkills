@@ -1,6 +1,6 @@
 ---
 name: sushisystems-licence
-description: Use in a Sushi Systems repository together with the source-comments skill, when writing or checking a licence block: the holder, the licence, the addresses and the block in each language.
+description: Use in a Sushi Systems repository together with the source-comments skill, when writing or checking a licence block (the holder, the licence, the addresses and the block in each language), or together with the marketing-copy skill when copy names the licence of a Sushi Systems product.
 ---
 
 # The Sushi Systems licence block
@@ -28,3 +28,9 @@ The block in C++, Python, shell and CMake, ready to copy: `references/blocks.md`
 `tools/licensing/write_license_block.py` writes the block, and `check_source_comments.py` checks it.
 A repository ported from third-party code keeps the upstream copyright line and licence name inside
 the box, below the copyright line of the block; see the `sushisystems-dependencies` skill.
+
+## In copy
+
+`marketing-copy` says copy names a licence exactly. Sushi Systems libraries are open source under
+the Apache License 2.0, and copy may say "open source" or "açık kaynak" about them. SushiEngine,
+Project mobileRTS and the website are closed, and copy that mentions their source says so.
