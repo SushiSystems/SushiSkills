@@ -4,10 +4,16 @@ Read this when adding or reviewing one of a module's install elements, writing i
 or answering whether a repository works with and without its workspace tool. The rules themselves
 are in `../SKILL.md`.
 
+## Siblings and the checker
+
+`tools/documentation/check_module_install.py` checks a module against these rules.
+
+A sibling of a module is the repository of one of its dependencies, cloned beside the module's own.
+
 ## The elements
 
-Each module carries all of these. The right column is what the element gives the person, and what
-the other way in reads from it.
+Each module carries all of these. The right column is what the element provides to the person,
+and what the other install method reads from it.
 
 | Element | What it provides |
 | --- | --- |
@@ -16,8 +22,8 @@ the other way in reads from it.
 | Module CLI | Installable with the language's package tool. `setup` provisions the toolchain and libraries the declaration names, `doctor` reports what is missing, and `build`, `test`, `run` and `link` do what they say. |
 | Build files | A configure that takes every outside path from a variable the CLI hands it. It downloads nothing but test frameworks |
 | Catalog entry | The clone URL, directory and alias behind the tool's add command |
-| Install pages | The two ways in, in order, with the prerequisites each needs |
-| Bare-clone lane | One job in the module's CI that proves the standalone way: checkout, install the CLI, set up, build, test, without the workspace tool or its variable |
+| Install pages | The two install methods, in order, with the prerequisites each needs |
+| Bare-clone job | One job in the module's CI that proves the standalone way: checkout, install the CLI, set up, build, test, without the workspace tool or its variable |
 
 ## The install pages
 
@@ -34,13 +40,13 @@ that exists, then states that the standalone checkout links without any change t
 
 ## Why the defaults hold
 
-1. A remedy names the module's own command because that command works on both ways in; the
-   tool's does not exist on one.
-2. The CLI reads the workspace layout so that one place knows how a workspace is laid out; a
-   layout change then edits one file.
-3. One place per version fact, because the same version written in four pages was wrong in three
-   of them.
-4. The bare-clone lane is a job of its own because a pipeline that installs sibling checkouts by
+1. A remedy names the module's own command because that command works with both install
+   methods; the tool's command does not exist in the standalone method.
+2. The CLI reads the workspace layout so that one file holds the workspace layout; a
+   layout change then edits that file only.
+3. One location per version fact, because the same version written in four pages was wrong in
+   three of them.
+4. The bare-clone job is a job of its own because a pipeline that installs sibling checkouts by
    hand passes while a fresh clone fails.
 
 ## Checking a module
@@ -52,7 +58,7 @@ missing.
    provision and build? What do they still read from the tool, its variable, its marker file, a
    per-user folder or a sibling path?
 2. **With the workspace tool, in code.** Does the manifest read, does the declaration parse, is
-   there a catalog entry, does the tool find the CLI's scripts, does the CLI's link command adopt
+   there a catalog entry, does the tool find the CLI's scripts, does the CLI's link command register
    the checkout?
 3. **In the pages.** Do the install pages carry both headings, with the prerequisites, and does
-   any page, hint string or example assume one way?
+   any page, hint string or example assume one install method?

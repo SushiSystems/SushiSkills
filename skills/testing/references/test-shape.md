@@ -10,8 +10,7 @@ engine a year from now, the tests are what tell them whether they broke it. A go
 exactly when a promise is broken, says which one, and costs milliseconds. A bad test fails for no
 reason, passes when the code is wrong, or costs seconds, and every one of those teaches the people
 who run it to stop reading test results. A suite of ten thousand tests nobody trusts is worth less
-than a suite of five hundred everyone does. Write the test that a reviewer would be sorry to lose,
-and no other.
+than a suite of five hundred everyone does. Write only a test whose deletion a reviewer would refuse.
 
 ## What a test is
 
@@ -61,7 +60,7 @@ Never written. The rework of an old suite deletes or rewrites each one it meets.
 | The same promise again at a larger size or in another file | `SimpleAxpy` beside the reference axpy test |
 
 A value of a plain data type built by hand is not a stand-in; a builder named for it is preferred. A
-`static_assert` check is not a test: it sits in a compile-only translation unit, `compile_<name>.cpp`
+`static_assert` check is not a test: it is in a compile-only translation unit, `compile_<name>.cpp`
 beside the unit's test file, that the build compiles and the test runner never lists. A header with no
 runtime promise has that file in place of a test file.
 

@@ -10,9 +10,9 @@ folder to learn what one piece of work did.
 | | `docs/design/<TOPIC>/README.md` | `docs/agent/<YYYY_MM_DD>_<WORK_NAME>/` |
 | --- | --- | --- |
 | Answers | What are we building, and why this way? | What did this piece of work do and find? |
-| Holds | The ruling, its reason, the shape, the phases, the open questions | Commit hashes, measurements, review findings, the working record |
+| Holds | The ruling, its reason, the structure, the phases, the open questions | Commit hashes, measurements, review findings, the working record |
 | Never holds | A commit hash, a measurement log, a dated narrative of who built what | A decision that outlives the work |
-| Lives | As long as the topic | Until closed, then deleted |
+| Kept | As long as the topic exists | Until closed, then deleted |
 
 When a piece of work makes a decision, its closing commit writes that decision into the design
 document and leaves the evidence in `REPORT.md`. The document links the work folder; it does not
@@ -35,9 +35,9 @@ copy it.
 - Exactly these five `##` sections, in this order. A section with nothing to say says `None.`
 - Headings below `##` are free. A `##` section of any other name is a finding: its content belongs
   under one of the five, or in a work folder.
-- **Problem** is what is wrong or missing, as a cold reader meets it.
-- **Decision** is the ruling and the reason for it, in a few lines. The owner's words go here.
-- **Design** is the shape: interfaces, data, flows, the alternatives set aside and why.
+- **Problem** is what is wrong or missing, as a reader who knows nothing of the project meets it.
+- **Decision** is the ruling and the reason for it, in a few lines. The owner's words are written here.
+- **Design** is the structure: interfaces, data, flows, the alternatives set aside and why.
 - **Open questions** are what is undecided. An answered question moves into Decision or Design.
 
 ## The status line
@@ -54,7 +54,7 @@ phase is named by its id in the table below, not described in the status.
 | `planned` | Not started |
 | `building` | Work is under way |
 | `built` | Merged and working as designed |
-| `withdrawn` | Given up by the owner |
+| `withdrawn` | Cancelled by the owner |
 
 <!-- fact:begin phase-ships-topic -->
 When every phase is `built` or `withdrawn`, the document's status becomes `Shipped`.
@@ -63,8 +63,8 @@ When every phase is `built` or `withdrawn`, the document's status becomes `Shipp
 ## The topic and its metadata
 
 The unit of design is the topic: a name that is a module (`AUDIO`, `ECS`) or a subject that spans
-modules (`WEATHER`). A topic has one home, the folder `docs/design/<TOPIC>/`, whose `README.md` is
-the design document. Nothing but `README.md` sits loose in `docs/design/`.
+modules (`WEATHER`). A topic has one location, the folder `docs/design/<TOPIC>/`, whose `README.md` is
+the design document. Nothing but `README.md` is directly in `docs/design/`.
 
 Topics have two levels: the topic, and the pages and phases under it. A new idea about an
 existing topic is a page and a phase in that topic, never a second topic. Clouds are a page of
@@ -82,10 +82,10 @@ one topic, and a path inside a module belongs to the topic that names the deepes
 it; `design owner <path>` says which. A topic of no module, such as a release, writes `none` and
 carries `**About:**` to say why.
 
-The repository's `design` commands write the frame: the title, the status line, the metadata
+The repository's `design` commands write the document's fixed parts: the title, the status line, the metadata
 lines, the five headings and the phase table. `design new <TOPIC> --modules <paths> --about
 <text>` is the only way to open a topic; it refuses a module another topic owns, or one inside or
-around it, and names that topic. `design page` and `design phase` grow a topic, and `design
+around it, and names that topic. `design page` and `design phase` add a page or a phase to a topic, and `design
 phase-state` moves a phase and ships the topic when the last one is built. Two topics on one
 subject are found with `design overlap` and joined with `design merge <INTO> <FROM>`, which makes
 `FROM` a page of `INTO`, joins the phases and the modules, and rewrites every citation. The prose
@@ -101,7 +101,7 @@ its README, and the open work that names a topic's phases, at the end of its `Ph
 Nobody edits text between markers. `tools/documentation/generate_design_views.py` writes the views,
 `--init` adds the markers, and `check_design_topics.py` fails a block that is out of date.
 
-Work reaches a topic through its phase ids; see `AGENT_WORK.md`.
+Work refers to a topic through its phase ids; see `AGENT_WORK.md`.
 
 When a topic becomes a folder, or a folder a file, `tools/documentation/repair_design_citations.py
 --apply` rewrites every citation of it in the manual and the source and reports the ones it cannot
@@ -110,7 +110,7 @@ place. A repair is never done by hand.
 ## A topic under revision
 
 When an audit grades a topic insufficient and the owner keeps it to be revised, its folder moves
-whole to `docs/design/_REVISION/<TOPIC>/` and its text stays as it was; the audit's report says
+whole to `docs/design/_REVISION/<TOPIC>/` and its text is not changed; the audit's report says
 what is wrong with it. The topic map lists it with the state `Revision`. Nothing new is written
 into it and no work carries out its phases. It leaves in one of two ways: rewritten into
 `docs/design/<TOPIC>/` in the format above, or deleted. After either move, and after the move in,
@@ -118,8 +118,8 @@ into it and no work carries out its phases. It leaves in one of two ways: rewrit
 
 ## Size
 
-A design document, the `README.md` of a topic folder, has at most 400 lines. Above it, the detail
-moves into one page per phase beside it, where the Design section would otherwise hold it. The pages carry
+A design document, the `README.md` of a topic folder, has at most 400 lines. Above that, the detail
+that the Design section would hold moves into one page per phase in the same folder. The pages carry
 no status and no fixed sections. `fold_design_topics.py --apply` gives a loose document its folder.
 
 `tools/documentation/check_design_topics.py` enforces the metadata, the ownership rule and the
@@ -128,4 +128,4 @@ length, the phase table, the hash rule and the dated-work rule; both run the des
 check`. `check_docs_layout.py` enforces the size. The two
 content rules read form only: a hash anywhere in prose, and a line outside the status that sets a
 verb such as built, merged or reviewed beside an ISO date. A narrative with no date and no hash
-passes them; only a reader catches it.
+passes them; only a person reading the document finds it.

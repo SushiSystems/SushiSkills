@@ -1,7 +1,7 @@
-# GPU development: why each rule holds, and red flags
+# GPU development: why each rule holds, and excuses
 
-Read this when a rule looks wrong for a case it did not foresee, or a thought sounds like a red
-flag. The rules are in `../SKILL.md`.
+Read this when a rule looks wrong for a case it did not foresee, or when an excuse from the list
+below comes to mind. The rules are in `../SKILL.md`.
 
 ## Why
 
@@ -16,9 +16,9 @@ flag. The rules are in `../SKILL.md`.
   target, in every unit that launches it.
 - **A bundled object enters the cache after a trial.** A wrong hit is a missing kernel at run time
   that no build step reports.
-- **Heavy device units are not batched.** The memory peak of a device unit grows with the batch.
+- **Device units with large memory peaks are not batched.** The memory peak of a device unit grows with the batch.
 
-## Red flags
+## Excuses
 
 - "The shared library linked in seconds, so the device link is cheap." → count its device images:
   a device driver that never sees the archives (`/WHOLEARCHIVE` passed through `-Xlinker`) links

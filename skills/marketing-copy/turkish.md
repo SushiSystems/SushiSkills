@@ -7,7 +7,7 @@ dosyasında; burada tekrar edilmez.
 
 ## Klişeler
 
-Gördüğün yerde sil ya da sözcüğün sakladığı bilgiyi yaz.
+Her birini sil ya da yerine sözcüğün karşılığı olan bilgiyi yaz.
 
 | Tür | Örnekler |
 | --- | --- |
@@ -28,7 +28,7 @@ Gördüğün yerde sil ya da sözcüğün sakladığı bilgiyi yaz.
   yazıyoruz."
 - **Başlıkta soru.** "Ya her şeyi simüle edebilseydiniz?" Okur bunu sormadı.
 
-## Model: Baykar
+## Örnek: Baykar
 
 Baykar'ın ürün sayfaları sayı, birim ve addan oluşur: "12 Metre Kanat Açıklığı", "27 Saat
 Havada Kalış", "120 Knot Maksimum Hız". Tek bir niteleme sıfatı yok. Okur metreyi ve saati bilir,

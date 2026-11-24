@@ -6,7 +6,7 @@ reasons in [rationale.md](rationale.md).
 
 ## Boundaries
 
-1. Each execution lane or platform has its own build directory beside each configuration. The CLI
+1. Each CI job, local variant (such as sanitizer or coverage) or platform has its own build directory beside each configuration. The CLI
    refuses to configure an existing tree with another build type or other compile flags.
 2. The plain build command builds the development configuration. `versioning-and-release` and
    `performance` build Release.
@@ -23,7 +23,7 @@ reasons in [rationale.md](rationale.md).
    build like any other.
 9. A single permission lapses after its run. A standing one lasts until revoked.
 
-## Red flags
+## Excuses
 
 - "A quick build now will catch a mistake early." / "This module is done, so I build it." /
   "The build is green, so I test this part now." → boundary 8.

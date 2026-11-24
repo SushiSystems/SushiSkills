@@ -10,13 +10,13 @@ repository's `backlog` commands (`<cli> backlog ...`; with no CLI, the module fo
 through a file, the git log or memory. Commands and the line forms: `references/commands.md`.
 Columns: `BACKLOG_FORMAT.md` of `documentation`.
 
-- Never read `docs/backlog/` to learn what is left; it is stale tool output.
+- Never read `docs/backlog/` to learn what is left; it is a copy of tool output that can be out of date.
 - Never edit a row by hand; use `backlog set`.
 
 ## The order of a session
 
-1. **Start.** The owner's task comes first. With none, run `backlog next` and take what it
-   gives. With a task, `backlog list` tells whether an entry covers it; the commit names it.
+1. **Start.** The owner's task comes first. With none, run `backlog next` and take the entry
+   it returns. With a task, `backlog list` tells whether an entry covers it; the commit names it.
 2. **A defect or limitation turns up.** Run `backlog add issue` (a condition a reader can meet,
    or a fault of a dependency, with its origin) or `backlog add work` (something to build, fix
    or check). Do it when found, never at the end. Only the owner can rule: `add work --decision`.
@@ -30,14 +30,16 @@ writes the entries.
 
 ## Priority
 
-When two fit, take the higher. This list is the one home of the limits (late after the days given).
+When two fit, take the higher. This list is the one location of the limits (late after the days given).
 
 - `P0`: data lost, gate broken, release regressed, security fix after disclosure. 2 days.
 - `P1`: a defect with no workaround, or other work waits on it. 14 days.
 - `P2`: a defect with a workaround, or a missing check let one through. 90 days.
 - `P3`: an improvement. 180 days, then reviewed.
 
-## Red flags
+## Excuses
+
+Each quoted sentence is an excuse for skipping a rule above; the answer follows it.
 
 - "I will note it in a commit message, a TODO or memory." Use `backlog add`.
 - "I will close it in a later commit." The same commit.

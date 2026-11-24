@@ -5,8 +5,8 @@ description: Use in a Sushi Systems repository together with the source-comments
 
 # The Sushi Systems licence block
 
-The `source-comments` skill gives the shape of the licence block. This page holds what fills it at
-Sushi Systems.
+The `source-comments` skill gives the layout of the licence block. This page holds the values
+written into it at Sushi Systems.
 
 ## The values
 
@@ -27,7 +27,7 @@ The block in C++, Python, shell and CMake, ready to copy: `references/blocks.md`
 
 `tools/licensing/write_license_block.py` writes the block, and `check_source_comments.py` checks it.
 A repository ported from third-party code keeps the upstream copyright line and licence name inside
-the box, below the copyright line of the block; see the `sushisystems-dependencies` skill.
+the block, below its copyright line; see the `sushisystems-dependencies` skill.
 
 ## In copy
 

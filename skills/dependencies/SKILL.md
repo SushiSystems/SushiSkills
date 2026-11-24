@@ -5,12 +5,12 @@ description: Use when adding, upgrading, removing or vendoring a third-party lib
 
 # Dependencies
 
-Adding a dependency is the owner's decision. Licence table and red flags:
-`references/licences-and-flags.md`; a dependency's own dependencies follow the table.
+Adding a dependency is the owner's decision. Licence table and excuses:
+`references/licences-and-excuses.md`; a dependency's own dependencies follow the table.
 
 ## Before proposing one
 
-Name what it does that a brick of the repository cannot, its licence (read from the source), its
+Name what it does that no unit of the repository (function, class, file or module) does, its licence (read from the source), its
 exact version and source, and the one module that uses it, privately. Then ask and wait.
 
 ## Ported code
@@ -22,7 +22,7 @@ covers the changes only.
 ## Notices
 
 Root `NOTICE.md` lists every third-party component, ported file and redistributed binary with
-name, source URL, version, licence and tree location. An unlisted component is not shipped.
+name, source URL, version, licence and path in the repository. An unlisted component is not shipped.
 
 ## Where it comes from
 

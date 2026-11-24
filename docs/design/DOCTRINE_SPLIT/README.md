@@ -34,7 +34,7 @@ Decided by the owner on 2026-10-30.
    it `Describes`, a module README describes its folder, and a commit that changes a described file
    without the page fails in the hook and in CI unless the message says
    `Docs: <page> unchanged (<reason>)`. The failure is an error, not a warning.
-8. A fact quoted in more than one page has one home and a stable id, never a position in a file. A
+8. A fact quoted in more than one page has one location and a stable id, never a position in a file. A
    verbatim quote is generated from the home between markers and edited only there, like the design
    views. A paraphrase names the fact it follows, so a change to the fact lists every page that
    cites it. The map is computed by a command from the markers and is never stored (P10).
@@ -77,7 +77,7 @@ It must not erase a checker a repository changed for itself (backlog entry RW-29
 | P7 | Memory is written only on the owner's request, stated in claude/CLAUDE.md and DISPATCH.md | built |
 | P8 | The shared tools and skills reach the other repositories without erasing their local rules | built |
 | P9 | Documentation cannot go stale: a change to a documented fact updates every page that links or cites it, enforced by a rule in the hook and in CI | built |
-| P10 | A fact quoted in more than one page has one home with a stable id, a verbatim quote is generated from it, and a command lists who cites it | built |
+| P10 | A fact quoted in more than one page has one location with a stable id, a verbatim quote is generated from it, and a command lists who cites it | built |
 
 ## Open questions
 

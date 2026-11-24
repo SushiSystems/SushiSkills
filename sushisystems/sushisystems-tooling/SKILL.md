@@ -1,18 +1,18 @@
 ---
 name: sushisystems-tooling
-description: Use in a Sushi Systems repository together with the backlog, design, project-tools, build-throughput or versioning-and-release skill, to know that sushicore fills the tooling roles, how its backlog and design commands run with and without a module CLI, what tools/settings.py sets, and the CLAUDE.md block every repository carries.
+description: Use in a Sushi Systems repository together with the backlog, design, project-tools, build-throughput or versioning-and-release skill, to know that sushicore provides the tool for each tooling role, how its backlog and design commands run with and without a module CLI, what tools/settings.py sets, and the CLAUDE.md block every repository carries.
 ---
 
 # Tooling at Sushi Systems
 
-The doctrine's tooling skills name roles; this page says who fills each at Sushi Systems.
+The doctrine's tooling skills name roles; this page says which tool serves each role at Sushi Systems.
 
 - Shared tooling library: `sushicore`.
 - Backlog and design tools: `sushicore`'s commands, `<cli> backlog ...` and `<cli> design ...`
   in a repository with a module CLI, `python -m sushicore.backlog ...` (design the same way) in
   one without (a web application run by `npm`). References:
   sushicore's `docs/reference/BACKLOG.md` and `DESIGN.md`.
-- Build machinery: from sushicore (`build_tree`, `build_admission`, `build_gate`, `build_report`).
+- Build tools: from sushicore (`build_tree`, `build_admission`, `build_gate`, `build_report`).
 - Module manifest: `sushi-module.toml`.
 - Shared checkers' source: SushiCore's `tools/`, at the release the CLI pins. Sync with
   `python -m sushicore.shared_tools sync ROOT --tag <that release>`, check with

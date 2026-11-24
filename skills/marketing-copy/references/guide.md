@@ -6,8 +6,8 @@ Read this when a ban or an instruction in `../SKILL.md` needs its reason or an e
 
 Readers who believe a brand's copy was written by a model trust the brand less and recommend it
 less, whatever the copy's quality (sources in `../research/english_sources.md`). Investors read
-pitches for a living and spot the pattern fastest. The damage is worse for a young company: it
-has no reputation to absorb it.
+pitches for a living and spot the pattern fastest. The loss is larger for a young company: it
+has no earlier reputation to offset the lost trust.
 
 `humanizer` already removes the general tells of generated prose. This skill covers what goes
 wrong only when the text is trying to sell.
@@ -29,13 +29,13 @@ wrong only when the text is trying to sell.
 1. **Find the one true thing a non-specialist can picture.** "In [Product] you can travel from
    Pluto to Mercury in milliseconds" needs no background. It comes from the owner, is true, and
    can be shown in a video.
-2. **Put the evidence next to the claim.** Readers anchor on what they see first, so the first
+2. **Put the evidence next to the claim.** Readers judge by what they see first, so the first
    screen carries both the claim and its fact.
 3. **Give numbers a referent.** "12 metres of wingspan, 27 hours in the air" (Baykar) works
    because the reader knows what a metre and an hour feel like. A unit only an engineer knows
    needs a translation or a different page.
 4. **Name people and dates.** First person, founders by name, what each built, since when. A
-   dated timeline of what shipped says more than any adjective.
+   dated timeline of what shipped gives the reader more than any adjective does.
 5. **Say what is not done.** "Designed, not yet built" beside the thing that is built makes both
    believable. Two-sided messages raise credibility; one-sided hype lowers it.
 6. **Write for the reader who does not know.** The writer cannot unknow what they know, so they

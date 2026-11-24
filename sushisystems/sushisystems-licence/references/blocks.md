@@ -1,6 +1,6 @@
 # Licence blocks
 
-The values that fill them are in `../SKILL.md`.
+The values written into them are in `../SKILL.md`.
 
 ## The block in C++
 

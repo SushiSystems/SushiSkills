@@ -1,14 +1,204 @@
-SushiSkills doctrine reminder. Boundaries hold without exception:
-- SOLID: Every unit is a brick: one responsibility, detachable and rebuildable without touching neighbours.
-- Honesty: Say what was done and what was not; partial work is partial.
-- An obsessive quality bar: "Good enough for now" is not accepted.
-- Maintainability before performance: Engineer it once, carefully.
-- The owner decides the boundaries: Module boundaries, public interfaces, data ownership, external dependencies and deleting what you did not create are the owner's; naming, internal structure, test shape and work order are yours; a new file in the task's module is yours, a new module, signature or package the owner's.
-Defaults hold unless their own 'not when' line applies, read as written:
-- Grow without reshaping: a set of kinds that grows gets one type per kind behind one interface.
-- The CLI is the only door: build, test and run through the repository's CLI; never call the tools behind it or run a program or test from the build system.
-- Act on the known step: when the next step is inside the task, local and reversible, take it now and check it afterwards.
-A case no rule foresaw is the owner's call. Red flags, stop if you think one:
+SushiSkills doctrine, printed verbatim from the files named below. Every rule holds as written; the 'Not when' line of a default is part of its rule.
+
+=== skills/sushiskills/SKILL.md ===
+
+# SushiSkills
+
+Boundaries hold without exception, defaults unless their "not when" applies. An unforeseen
+case is the owner's: ask in one line, recommending.
+
+### Boundaries
+
+1. **SOLID.** Each function, class and module has one reason to change, is replaceable without editing other units, depends on abstractions (interfaces, abstract types), not concrete types; units of one kind have the same shape; an unneeded dependency is removed, or reported if removing it is the owner's decision. See `references/solid.md`.
+2. **Honesty.** Say what was and was not done; partial work is partial. Each report names every SOLID breach and unneeded dependency made, kept or seen, with file and cost, never as a "trade-off"; "none" stands only beside the list of files read.
+3. **Good enough for now is refused.** Passing by accident is unfinished.
+4. **Maintainability before performance.** Engineer it once, carefully.
+5. **The owner decides the boundaries.** The owner's: module boundaries, public interfaces, data ownership, external dependencies, a new module, signature or package, deleting what you did not create. Yours: naming, internal structure, test shape, work order, a new file in the task's module. Never guess to avoid asking.
+
+### Defaults
+
+1. **Add a kind without editing existing code.**
+   **Rule:** a growing set of kinds gets one type per kind behind one interface.
+   **Not when:** the set is small and closed by meaning.
+2. **Run everything through the CLI.**
+   **Rule:** build, test and run through the CLI only; never call the tools it wraps or run a program or test from the build system.
+   **Not when:** a debugger runs one test in the CLI's environment, or, with no CLI, the project's scripts take its place.
+3. **Act on the known step.**
+   **Rule:** do the next step inside the task, local and reversible, now; check it after. Never wait on a run that cannot change it, ask leave for covered work, or answer a fault with a plan. Read, fix and rerun a failing check at once, narrowest first; cancel the run it replaces.
+   **Not when:** the step is the owner's or irreversible (push, release, deletion). Those wait: one line, need, recommendation.
+
+English unless the owner says otherwise. See no-cli.md, skill-map.md, excuses.md, rationale.md
+(purposes grant no exception).
+
+=== skills/sushiskills/references/solid.md ===
+
+# SOLID
+
+Read this to apply boundary 1 of `../SKILL.md`. A unit is a function, a class, a file or a
+module. Other files name these rules "SOLID" or "the unit rules of `sushiskills`" and link here.
+
+## Single responsibility
+
+A unit has one reason to change.
+
+Correct: `check_skill_budget.py` counts words in `rule_word_budget`; reading files is
+`read_files` in `checking/source_file.py`.
+
+Violation, and its fix:
+
+```python
+def check_budget(root):                       # violation: finds files, reads them and checks
+    for path in root.rglob("SKILL.md"):
+        text = path.read_text(encoding="utf-8")
+        if len(text.split()) > 800:
+            print(path)
+# fix: collect() finds the files, read_files() reads them, rule_word_budget() checks one skill
+```
+
+## Open/closed
+
+A unit gains a new behaviour through new code, without editing its existing code.
+
+```python
+rules = {
+    "rule_word_budget": rule_word_budget,
+    "rule_ceiling_follows": rule_ceiling_follows,   # a new rule is one new row
+}
+```
+
+Violation: `if name == "word_budget": ... elif name == "maximum": ...` inside the runner, edited
+for every new rule. Fix: move each branch into its own `rule_<what>` function and register it
+in the table above.
+
+## Liskov substitution
+
+A unit that implements an interface can replace any other implementation of it, and callers
+keep working.
+
+```cpp
+class Sink { public: virtual ~Sink() = default; virtual void write(std::string_view line) = 0; };
+class FileSink final : public Sink { public: void write(std::string_view line) override; };
+class MemorySink final : public Sink { public: void write(std::string_view line) override; };
+```
+
+Violation: `MemorySink::write` throws when its buffer is full, while callers of `Sink` expect
+`write` to return. Fix: give `MemorySink` the same contract (drop the oldest line, or grow), or
+do not make it a `Sink`.
+
+## Interface segregation
+
+A caller depends only on the functions it calls.
+
+```cpp
+class Reader { public: virtual ~Reader() = default; virtual std::string read() = 0; };
+class Writer { public: virtual ~Writer() = default; virtual void write(std::string_view) = 0; };
+void load(Reader& source);            // needs read() only
+```
+
+Violation: `void load(Storage& source);` where `Storage` declares `read`, `write`, `remove` and
+`list`, so every test of `load` must implement all four. Fix: split `Storage` into `Reader` and
+`Writer` and pass `load` a `Reader`.
+
+## Dependency inversion
+
+A unit depends on an interface, not on a concrete type.
+
+```python
+from typing import Protocol
+
+class Sink(Protocol):
+    def write(self, line: str) -> None: ...
+
+def report(sink: Sink) -> None:     # correct: any object with write() is accepted
+    sink.write("done")
+```
+
+Violation: `def report(path): FileSink(path).write(...)`, which ties `report` to the file
+system. Fix: `def report(sink: Sink): sink.write(...)`; the caller passes a `FileSink`, a test
+passes a `MemorySink`.
+
+## Units of one kind have the same shape
+
+Units that do the same kind of job are built the same way, so a reader who has read one checker
+can find the rule table of any other. In this repository every checker under `tools/` has one
+`rule_<what>` function per rule, each taking one collected item and yielding `Issue` values, and
+one row per rule in the `rules` table of its `Checker`. `tools/skills/check_skill_budget.py`:
+
+```python
+K_CHECKER = Checker(
+    description="Checks that every SKILL.md stays within the skill word budget.",
+    collect=collect,
+    rules={"rule_word_budget": rule_word_budget, "rule_ceiling_follows": rule_ceiling_follows},
+)
+```
+
+A checker that prints its findings from a `main()` loop instead has a different shape and is a
+breach.
+
+## An unneeded dependency
+
+A dependency is unneeded when it is an import, an include or a link edge that no code path
+uses, or when the function it supplies is already supplied by an existing unit.
+
+```python
+import os                    # unneeded: nothing in the file calls os
+from pathlib import Path
+```
+
+```cmake
+target_link_libraries(core PRIVATE fmt)   # unneeded when no file of core includes <fmt/...>
+```
+
+It is removed. When it is the owner's (an external dependency, a module edge), it is reported
+with its file instead.
+
+=== skills/sushiskills/references/skill-map.md ===
+
+# Which skill a task loads
+
+Read this when a skill's description leaves unclear which one your task touches.
+
+| Task touches | Skill |
+| --- | --- |
+| Prose of any kind, in English or Turkish | `humanizer` |
+| Website, pitch, product or social copy for outsiders | `marketing-copy` |
+| Where a file or folder goes | `repository-layout` |
+| C++ formatting, naming, class shape, errors | `cpp-code-style` |
+| Python layout, formatting, naming, class shape | `python-code-style` |
+| TypeScript layout, brace symmetry, naming, class shape | `typescript-code-style` |
+| Doxygen headers and comments in source | `source-comments` |
+| Log calls, categories, levels | `logging` |
+| Any file under `docs/` or a module README, or a name, path or command a page describes | `documentation` |
+| What is left or next, a defect found, work finished, a commit's backlog line | `backlog` |
+| What a module is meant to be, who owns it, a decision made, a phase moving | `design` |
+| More than one agent on one piece of work | `multi-agent-work` |
+| Which model and effort a session or a dispatch runs on | `model-routing` |
+| A commit message or pull request | `commits` |
+| A version number, a tag, a release | `versioning-and-release` |
+| The checkers under `tools/` | `project-tools` |
+| Tests a change must carry, bug fix order, determinism, goldens | `testing` |
+| Adding, vendoring or upgrading a third-party library | `dependencies` |
+| Changing or removing a public surface, cross-repository upgrades | `api-stability` |
+| How a module is obtained, set up and recognised, with or without its workspace tool | `module-install` |
+| Optimising, benchmarks, perf claims | `performance` |
+| A bug, a crash, a wrong value | `debugging` |
+| A persistent file format | `file-formats` |
+| Branches, pushing, conflicts | `git-workflow` |
+| A file, page, function or setting nothing references, or a stale count or path | `unlinked-cleanup` |
+| CI workflows and CI failures | `continuous-integration` |
+| Windows and Linux differences, exports, paths | `platform-portability` |
+| Build configurations and trees, compile and link speed, build memory | `build-throughput` |
+| Code that runs on an accelerator: device builds, kernels, software test devices | `gpu-development` |
+| A Unity project's tree, assemblies, scenes and C# names | `unity-project-layout` |
+| Scratch files, temp output, copies, downloads, anything that writes to disk | `storage-discipline` |
+
+=== skills/sushiskills/references/excuses.md ===
+
+# Excuses of the doctrine
+
+Each sentence below has come before a broken rule. When you find one in your own reasoning, stop
+and apply the boundaries and defaults of `../SKILL.md` to the step it was about to excuse.
+
 - "This one is small, it does not need its own file."
 - "I will put the note here for now and move it later."
 - "The checker does not cover this case, so it is allowed."
@@ -21,3 +211,52 @@ A case no rule foresaw is the owner's call. Red flags, stop if you think one:
 - "SOLID breaches: none", written before reading the files.
 - "It works; the shape can come later."
 - "The context is long; the report can be shorter this time."
+
+=== skills/storage-discipline/SKILL.md ===
+
+# Storage discipline
+
+A session deletes every scratch file it created before it ends. Why: `references/detail.md`.
+
+## No worktrees, no second build trees
+
+- Never open a git worktree, for yourself or a subagent (`isolation: "worktree"` included).
+- Never configure a build tree beside the owner's; a baseline or bisect runs in the existing tree, or ask.
+
+## Scratch
+
+- Scratch goes in the harness's scratchpad only, never `/tmp`, `%TEMP%` root, the home directory
+  or the repository root.
+- A scratchpad stays under 20 MB; no file is over 1 MB.
+- Never in scratch: build output; copies of the repository, a module, a dependency or a build
+  directory; virtual environments, models, datasets, archives, installers, downloads; backups of
+  git-held files.
+- Build through the CLI into the owner's build directory. A binary only to test an idea is not
+  built: read the code, or ask.
+
+## Capturing output
+
+- Bound every capture at the source (`| tail -n 200`, `| head -n 200`, `| grep`); never redirect
+  a whole build or test log to a file. No capture exceeds 1 MB.
+- Bound a background command the same; start none with unpredictable output.
+
+## Files the task does not name
+
+- Create no note, plan, summary, report, backup or `_v2` copy; one file per purpose, overwritten.
+  Findings go in the report, the backlog or a `docs/agent/` folder.
+- Run Python with `PYTHONDONTWRITEBYTECODE=1` and pytest with `-p no:cacheprovider`; leave no
+  `__pycache__`, `.pytest_cache` or other tool cache in a tree.
+
+## Before anything large
+
+A download of any size waits for the owner. Ask first, with size and purpose, before anything that
+writes over 1 GB, leaves over 200 MB (model, dataset, full copy, global install) or copies, moves
+or extracts over 1 GB, temporary or not. Install no package for one command; use existing
+environments; add no cache, virtual or conda environment unasked.
+
+## Cleaning up
+
+- Delete what you created once done with it; never what you did not.
+- Before reporting finished, delete every file you created in scratch, measure the scratchpad
+  and state its size.
+- List old session folders and caches found on disk, with sizes; deleting them waits.

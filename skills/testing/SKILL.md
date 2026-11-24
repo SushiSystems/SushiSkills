@@ -14,8 +14,8 @@ sees it, and fails when the promise breaks. `REVIEWING.md` gives verdicts.
   `GemmWithBetaZeroIgnoresNanInC`.
 - The expected value never comes from running the code under test.
 - It kills a mutant or reproduces its commit's defect; a refactor never breaks it.
-- Public interface only; a private function that needs a test wants its own module.
-- Straight line: no `if`, loop or `try` outside a row table.
+- Public interface only; a private function that needs a test belongs in its own module.
+- Straight-line body: no `if`, loop or `try` outside a row table.
 
 Forbidden kinds, with examples: `references/test-shape.md`.
 
@@ -23,7 +23,7 @@ Forbidden kinds, with examples: `references/test-shape.md`.
 
 Every test writes its size. `small`: own memory, one thread, injected clock and seed; 1 s; every
 build. `medium`: one machine; 10 s; pre-merge. `large`: anything; 120 s; nightly. Test at the
-smallest size that sees the promise; logic only a medium test sees lacks a seam, built first.
+smallest size that can check the promise; logic only a medium test can check lacks a seam, built first.
 `references/sizes.md`.
 
 ## Time

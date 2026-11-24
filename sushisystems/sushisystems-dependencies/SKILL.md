@@ -5,7 +5,8 @@ description: Use in a Sushi Systems repository together with the dependencies or
 
 # Dependencies at Sushi Systems
 
-Who fills the roles the `dependencies` skill names. Read `references/roles-and-commands.md` for
+The `dependencies` skill names roles; this page names the tool or file for each role at Sushi
+Systems. Read `references/roles-and-commands.md` for
 the role table, the `hub` command table and the workspace takeover.
 
 ## The roles
@@ -18,18 +19,19 @@ the role table, the `hub` command table and the workspace takeover.
   differs from the pin.
 - Workspace tool SushiHub; own libraries are Apache License 2.0.
 
-## Moving a pin
+## Changing a pin
 
-Every repository pinning a library moves together; the library's CI builds and tests each
-repository that pins it before a release. `hub pins [--latest]` lists pins and exits 1 when one
-dependency sits at two versions; it exits 0 before a release is proposed. `hub bump <name> <tag>`
-walks the graph lowest tier first, runs each `check_all.py` and commits nothing. `hub pin <name>
-<version>` moves one pin unchecked.
+Every repository that pins a library changes its pin in the same step; the library's CI builds and
+tests each repository that pins it before a release. `hub pins [--latest]` lists pins and exits 1
+when one dependency is pinned at two versions, and it must exit 0, with no dependency pinned at
+two versions, before a release is proposed. `hub bump
+<name> <tag>` visits each repository in dependency order, lowest tier first, runs each
+`check_all.py` and commits nothing. `hub pin <name> <version>` changes one pin without checks.
 
-## A workspace takes over
+## Workspace checkouts take precedence
 
-`hub link` adopts a checkout and `hub add` clones one; the workspace sibling wins the
-search. `hub status` lists unused fetched copies; `hub clean` removes them.
+`hub link` registers an existing checkout in the workspace and `hub add` clones one; the search
+finds the workspace sibling first. `hub status` lists unused fetched copies; `hub clean` removes them.
 
 ## The logger's runtime file
 

@@ -5,8 +5,9 @@ description: Use when changing, renaming or removing a public function, type, he
 
 # API Stability
 
-A public surface is a promise to every caller, here and in the repositories above. It changes
-deliberately, visibly and in order. Read `references/red-flags.md` when a change feels harmless.
+Every caller, here and in the repositories above, relies on the public surface staying as
+documented. It changes only on purpose, with a changelog entry, and in tier order. Read
+`references/excuses.md` when you think a change is harmless.
 
 ## What is public
 

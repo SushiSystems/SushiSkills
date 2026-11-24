@@ -32,18 +32,18 @@ The plan decides: it states the change, `haiku`; the how inside one module is op
 the how crosses a module, `opus`. A task matching no row is split; one matching two takes the
 more capable.
 
-## The ladder
+## The escalation order
 
-A failed task is re-run by a fresh subagent one rung up, two at most on the orchestrator's say:
-1 `haiku` medium, 2 `haiku` high, 3 `sonnet` medium, 4 `opus` low, 5 `opus` high (owner's limits). A task with no
-failure signal starts on its row.
+A failed task is re-run by a fresh subagent the next step, two at most if the orchestrator
+says so: 1 `haiku` medium, 2 `haiku` high, 3 `sonnet` medium, 4 `opus` low, 5 `opus` high
+(owner's limits). A task not yet failed starts on its row.
 
 ## Inline or subagent
 
 Three to five tool calls, or a change from what is read: inline. Ten files to read and one to
-write, or reading that would bloat the orchestrator: subagent.
+write, or reading that would fill the orchestrator's context: subagent.
 
-## Token hygiene
+## Token use
 
 A reply is short: done, not done, files changed, verification output. A dispatch names only
 needed skills. A `haiku` area fits its context; a large tree goes to several `haiku` or `opus` low.
@@ -56,5 +56,5 @@ Every `REPORT.md` carries one line per dispatch:
 dispatch: <task> — <model> <effort>, <N> turns, <passed|failed, rung R>
 ```
 
-`python tools/routing/summarize_dispatches.py .` sums them. The matrix changes only from those
+`R`: step number. `python tools/routing/summarize_dispatches.py .` sums them. The matrix changes only from those
 lines, with a changelog line naming it.

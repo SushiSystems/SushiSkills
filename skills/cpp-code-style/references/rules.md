@@ -11,7 +11,7 @@ is unclear. `examples.md` shows the rules applied and the common mistakes.
 
 `const Buffer& buffer` and `Node* parent`: a pointer or reference binds to the type. Allman
 braces apply to namespaces, classes, functions, control flow and lambdas with bodies. Access
-specifiers sit one level inside the class, members one level further.
+specifiers are indented one level inside the class, members one level further.
 
 ## Naming examples
 

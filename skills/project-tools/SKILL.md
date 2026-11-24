@@ -24,7 +24,8 @@ before running the sync. Contract, sharing, hooks, known findings, fact check in
   its lock fails `check_all.py`.
 - Run `python tools/hooks/install_hooks.py` once per clone. A hook is never skipped.
 - `known_findings.toml` allows a count of one rule of one checker in one file, naming an open
-  backlog entry. It only shrinks; nobody grows it by hand; a failing test is never listed.
+  backlog entry. Its counts only decrease; nobody raises one by hand; a failing test is never
+  listed.
 - Run `python tools/check_all.py .` before reporting finished and before every commit. Before a
   commit touching `docs/`: `check_docs_layout.py`, `check_changelog.py`, `check_docs_truth.py`.
   After a public name, header path or CLI command changes: `check_docs_truth.py`.

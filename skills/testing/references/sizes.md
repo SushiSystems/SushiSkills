@@ -10,7 +10,7 @@ A size is what a test may touch. Time follows from it; it does not define it.
 | Size | May touch | Never | Timeout | Runs |
 | --- | --- | --- | --- | --- |
 | `small` | the memory of its own process, one thread, an injected clock and seed | a device, a file, a socket, a thread, a sleep, the environment, the real clock, a process-wide instance | 1 s | every build, pre-merge |
-| `medium` | one machine: the device the test program made once, a per-test temporary folder, localhost, threads, a software device | making a device, queue or runtime, a sleep, the network beyond localhost, state left behind | 10 s | pre-merge |
+| `medium` | one machine: the device the test program made once, a per-test temporary folder, localhost, threads, a software device | making a device, queue or runtime, a sleep, the network beyond localhost, state remaining after the test ends | 10 s | pre-merge |
 | `large` | anything, including whole scenes and real hardware at scale | — | 120 s | nightly or weekly, never pre-merge |
 
 A process-wide instance has one exception in a `small` test: a scoped in-memory sink the test installs on
@@ -27,8 +27,8 @@ the bytes its port promises, that two threads hand a value over. Logic behind th
 `small`. A medium test that would pass with the device replaced by its host implementation is a small
 test in the wrong place.
 
-**Small first.** A promise is tested at the smallest size that can see it. When only a `medium` test
-can see a promise that is logic, the code lacks a seam: add it first (`architecture.md`, "Architecture for small
+**Small first.** A promise is tested at the smallest size that can check it. When only a `medium` test
+can check a promise that is logic, the code lacks a seam: add it first (`architecture.md`, "Architecture for small
 tests"), then write the `small` test.
 
 **Small before larger, per unit.** The logic a `medium` or `large` test passes through has its
@@ -39,8 +39,8 @@ already keep.
 **Suite shape.** The test command prints the share of each size per module. The share is a reading,
 never a target: no task, plan or acceptance criterion names a percentage. A module whose tests are
 mostly `medium` holds logic that only a device, a file or a thread can reach, so every promise there
-is checked on the slowest, flakiest path; the reading points at where a seam is missing. It is never
-answered by adding, splitting or relabelling tests. Work is accepted on what it proves: the logic it
+is checked on the slowest, flakiest path; the reading shows where a seam is missing. It is never
+fixed by adding, splitting or relabelling tests. Work is accepted on what it proves: the logic it
 touched runs in tests that reach no file, process, clock or device, each test file keeps the
 boundary in one `medium` class, and the mutants on its changed lines are killed.
 

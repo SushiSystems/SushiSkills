@@ -5,11 +5,12 @@ description: Use in a Sushi Systems repository together with the testing or cont
 
 # Tests at Sushi Systems
 
-The `testing` skill names roles; this page says what fills them.
+The `testing` skill names roles such as the test command and the time reader; this page names the
+file or command that fills each role at Sushi Systems.
 
 | Role | At Sushi Systems |
 | --- | --- |
-| Test command | `<cli> test`; the shared version is in `sushicore`, each project CLI moves onto it in turn, SushiTrack first |
+| Test command | `<cli> test`; the shared version is in `sushicore`, each project CLI switches to it one at a time, SushiTrack first |
 | CTest call | `CMakeDriver.ctest_run` of `sushicore`: writes JUnit when given a path, passes `--parallel` with the command's job count (bounded by its memory limit when none is given) |
 | Time reader | `tools/testing/test_budget.py`, called by the test command |
 | Exemption file | `tests/budget_exemptions.toml` of the project |

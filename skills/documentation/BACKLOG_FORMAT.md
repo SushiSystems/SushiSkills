@@ -23,7 +23,7 @@ Every file here is written by the repository's `backlog` commands, `<cli> backlo
 row by hand; `backlog check` fails a file out of the shape the tool writes. A detail file is
 prose the author writes, and `backlog close` deletes it with its entry.
 
-The columns, their values, the ceilings and the commands are in the
+The columns, their values, the maximums and the commands are in the
 backlog tool's own reference. In short:
 
 | Kind | Columns |
@@ -33,9 +33,9 @@ backlog tool's own reference. In short:
 
 ## Which repository owns an entry
 
-An entry lives in the repository whose commit closes it. A repository that waits on it cites it
+An entry is stored in the repository whose commit closes it. A repository that waits on it cites it
 by ID and does not copy its text, written `<repository> RW-<n>`, the repository being its folder
-name. A programme that spans repositories lives in the backlog of the repository that
+name. A programme that spans repositories is stored in the backlog of the repository that
 coordinates the others, and its entry lists the entries it waits on in `Blocked by`.
 
 ## Areas
@@ -74,8 +74,8 @@ pins first, then the ready entries by priority and age. The owner pins at most t
 ## Remaining work or a known issue
 
 A known issue of origin `own` carries a workaround, or a `Fix` of the form `none, <reason>` for a
-limitation chosen on purpose. A defect with a scheduled fix and no workaround is work: it lives in
-the remaining work table alone, its symptom and cause in its detail. Once a workaround exists it
+limitation chosen on purpose. A defect with a scheduled fix and no workaround is work: it is in
+the remaining work table only, with its symptom and cause in its detail file. Once a workaround exists it
 may become an issue with `Fix: RW-<n>`, and `backlog promote` opens the work of an issue. An
 origin that is not `own` is never the repository's to close, so it is not remaining work whatever
 its workaround.
@@ -85,7 +85,7 @@ there. Every design topic whose status is `Open` is cited by at least one entry.
 
 ## A quarantined test
 
-A test taken out of the gating stages has a known issue whose detail file names the test, its
+A quarantined test is a test taken out of the gating stages. It has a known issue whose detail file names the test, its
 owner and the date it is fixed by. The issue's `Fix` names the work that brings it back.
 
 ## An agent and the backlog

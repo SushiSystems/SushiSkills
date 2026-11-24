@@ -23,7 +23,7 @@ To install the skills, read [`docs/getting_started/INSTALL.md`](docs/getting_sta
 `third_party/superpowers/` holds two skills of the MIT-licensed superpowers library, unchanged:
 `verification-before-completion` and `receiving-code-review`. Its
 `README.md` names the version and the licence. Where it disagrees with a Sushi Systems skill, the
-Sushi Systems skill wins.
+Sushi Systems skill takes precedence.
 
 ## Licence
 

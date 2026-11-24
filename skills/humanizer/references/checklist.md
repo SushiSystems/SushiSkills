@@ -18,7 +18,7 @@ file under `skills/humanizer/` carries the full list for its register.
 | Inverted sentence | (n/a) | predicate not last; an object or adverbial after the verb |
 | Empty preposition frame | in terms of, with regard to | kapsamında / çerçevesinde / noktasında / -e yönelik |
 | Participial opinion tail | …, highlighting the importance of | …na katkıda bulunarak, …ni gözler önüne sererek |
-| Em dash as tic | more than one per ~300 words, or two in a paragraph | any em dash at all outside dialogue; repair recipe in `generic_turkish.md` |
+| Em dash used repeatedly | more than one per ~300 words, or two in a paragraph | any em dash at all outside dialogue; repair recipe in `generic_turkish.md` |
 | Semicolon + connective | rare | "; bununla birlikte" |
 | Closing | In conclusion; Let me know if… | Sonuç olarak; Umarım faydalı olmuştur |
 | Flat rhythm | every sentence 15–25 words | every sentence same length, same ending |

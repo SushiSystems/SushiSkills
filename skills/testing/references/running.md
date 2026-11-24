@@ -40,7 +40,7 @@ never fails, since its times are not the code's.
 The aims are a `small` test in 5 ms, a `medium` one in 200 ms and a pre-merge run in 3 minutes. A
 test already over its limit is listed in the project's `tests/budget_exemptions.toml`, one test name
 and one open backlog ID; the reader fails an entry whose test falls to half its limit, so the list
-only shrinks and a test that hovers at its limit cannot flip a run.
+only shrinks and a test that runs close to its limit cannot change a run's result between passing and failing.
 
 The project's test command runs `small` and `medium` unless a size is named, and runs `large` only
 with a filter or the flag that means everything.
@@ -48,7 +48,7 @@ with a filter or the flag that means everything.
 The test command runs in parallel by default: as many tests at once as the machine has cores,
 lowered only to keep the run inside the memory limit it prints, and device tests share each device
 through the resource groups of rule 3. A serial default is a defect, because the wall time of the
-pre-merge run then becomes the sum of every test. A case registered as its own process pays process
+pre-merge run then becomes the sum of every test. A case registered as its own process spends time on process
 and runtime start-up on every case; when that start-up is most of a `small` test's time, the build
 registers the cases of a program in shards, each shard one process running its share of the cases.
 

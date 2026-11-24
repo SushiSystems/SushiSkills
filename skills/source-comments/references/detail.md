@@ -74,7 +74,7 @@ auto it = std::lower_bound(bodies_.begin(), bodies_.end(), id);
 ## Forbidden in source
 
 Separator lines are `-----`, `=====` and `*****`. History is wording such as "previously", "was
-changed" or "fixed in". Commented-out code stays in git.
+changed" or "fixed in". Commented-out code is deleted; git history keeps it.
 
 ## Python
 

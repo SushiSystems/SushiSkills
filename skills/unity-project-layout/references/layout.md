@@ -24,7 +24,7 @@ Assets/
         Core/                   kernel and contracts; references no feature
         Features/<Feature>/     one responsibility per folder
         Content/<Kind>/<Name>/  data and art, no code
-        Legacy/                 code on its way out; nothing new enters
+        Legacy/                 code scheduled for deletion; add no new code
         Tests/                  the mirror of everything above that holds code
     ThirdParty/<Vendor>/        vendored packs, outside this discipline
     LargeFiles/                 git-ignored, backed up by hand
@@ -53,9 +53,9 @@ The assemblies are `<Company>.<Product>.<Feature>.Simulation`, `.View` and `.Edi
 | `<Feature>.Simulation` | `Core` |
 | `<Feature>.View` | `Core`, its own `Simulation` |
 | `<Feature>.Editor` | `Core`, its own `Simulation` and `View` |
-| `App` | Everything; the only assembly that sees two features |
+| `App` | Everything; the only assembly that references two features |
 
-A feature is removed by deleting its folder and its registration line in `App`.
+Removing a feature means deleting its folder and its registration line in `App`.
 
 ## Tests
 
@@ -64,7 +64,7 @@ test class is `<Name>Tests`, one per file. The `[Category]` labels are in `testi
 
 ## Content
 
-A unit, weapon or map folder holds its data asset, prefab, model, textures, materials and
+A game character, vehicle, weapon or map folder, such as `Content/Vehicles/M1Abrams/`, holds its data asset, prefab, model, textures, materials and
 sounds. `Models/`, `Textures/` and `ScriptableObjects/` are the folders that collect one file
 type.
 
@@ -87,5 +87,8 @@ type.
 | Module README | `README.md` | `Features/Recon/README.md` |
 
 ## Moving files
+
+Move a file with its `.meta`, a folder with its `.meta`, one `git mv` each; scenes
+and prefabs saved as text first.
 
 Scenes and prefabs are saved as text with the `Force Text` setting.

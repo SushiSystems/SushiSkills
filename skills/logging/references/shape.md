@@ -1,7 +1,7 @@
 # Logging: shape, levels, gates and what is logged
 
 Read this when you add a project, a front, a category or a call, pick a level, or check what may
-be logged. A log lets a reader rebuild a failure without a debugger: what happened, with which
+be logged. A log lets a reader reconstruct how a failure happened without a debugger: what happened, with which
 values, in which module and thread, and what the program did next. The rules are in `../SKILL.md`; level examples and settings are in `runtime.md`.
 
 ## Shape
@@ -20,7 +20,7 @@ A record passes at or above its category's level, which is `WARN` unless somethi
 
 | Level | Records |
 | --- | --- |
-| `TRACE` | Step-by-step flow, for chasing one bug |
+| `TRACE` | Step-by-step flow, for finding the cause of one bug |
 | `DEBUG` | Internal state at a decision point |
 | `INFO` | A lifecycle event an operator cares about |
 | `WARN` | The program recovered or fell back; the result may differ |

@@ -5,9 +5,9 @@ description: Use when defining, reading, writing or changing a persistent file f
 
 # File Formats
 
-A file outlives the code that wrote it: every persistent format names its version, and every
-reader knows what to do with each version it meets. Example and red flags:
-`references/detail.md`.
+A persistent file stays on disk after the code that wrote it has changed: every persistent format
+names its version, and every reader defines what it does with each version it meets. Example and
+excuses: `references/detail.md`.
 
 ## Rules
 
@@ -15,9 +15,9 @@ reader knows what to do with each version it meets. Example and red flags:
 2. **Every persistent file carries `format_version`**, an integer, at top level or in a binary
    header.
 3. **One module owns each format**: schema, reader, writer. Other modules go through it.
-4. **Readers upgrade.** A reader accepts every older version it has shipped and upgrades in memory,
+4. **Readers upgrade older versions.** A reader accepts every older version it has shipped and upgrades in memory,
    one version step at a time, each step its own function.
-5. **Readers refuse the unknown.** A newer version is rejected with a status naming both versions,
+5. **Readers reject an unknown version.** A newer version is rejected with a status naming both versions,
    never read as the newest known.
 6. **Writers write only the current version.**
 7. **A format change is breaking** for `versioning-and-release` and bumps `format_version`.

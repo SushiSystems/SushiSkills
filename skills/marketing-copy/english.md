@@ -6,7 +6,7 @@ catalogue, and pages of engineering companies whose copy works. Sources in
 
 ## Clichés
 
-Delete on sight, or replace with the fact the word was hiding.
+Delete each one, or replace it with the fact the word stands in for.
 
 | Kind | Examples |
 | --- | --- |
@@ -27,7 +27,7 @@ Delete on sight, or replace with the fact the word was hiding.
 - **"Not just X, but Y".** Say Y.
 - **"From X to Y".** "From games to digital twins" names two categories and commits to neither.
 - **Question hero.** "What if you could simulate anything?" The reader did not ask.
-- **Colon reveal.** "One engine. One goal: reality." Drop the drum roll and state the fact.
+- **Colon reveal.** "One engine. One goal: reality." Drop the staged reveal and state the fact.
 - **Em dash.** At most one per page of copy, never in a hero.
 
 ## Voice

@@ -1,14 +1,14 @@
-# Testing: what a change carries, the agent's steps and red flags
+# Testing: what a change carries, the agent's steps and excuses
 
 Read this when deciding which tests a change needs, when reporting tests added, when fixing a bug, or
-to check a thought against the full list of red flags. The rules are in `../SKILL.md`.
+to check a thought against the full list of excuses. The rules are in `../SKILL.md`.
 
 ## What a change carries
 
 | Change | Tests |
 | --- | --- |
 | `fix` | The smallest reproduction of the defect |
-| `feat` | One test per promise it adds, at the smallest size that sees it, and the seam that makes that size possible |
+| `feat` | One test per promise it adds, at the smallest size that can check it, and the seam that makes that size possible |
 | `perf` | The existing tests unchanged and green, plus the measurement from `performance` |
 | `refactor` | No new test; every existing test green before and after |
 | A reader of a file format or of untrusted input | A fuzz target, as "Proof of value" in `running.md` gives |
@@ -26,10 +26,10 @@ The steps are in `../SKILL.md`, "The agent". Added to them:
 
 ## Bug fix order
 
-The regression test goes in the test file of the unit the defect lives in. It runs with the rest of
+The regression test goes in the test file of the unit that contains the defect. It runs with the rest of
 the module's tests, not before the fix, so it is not seen failing first.
 
-## Red flags
+## Excuses
 
 - "The fix is obvious, the test can come after." → the test first.
 - "It needs the device, so it is medium." → which promise is logic? Build the seam and test it small.

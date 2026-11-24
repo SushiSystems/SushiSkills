@@ -13,16 +13,18 @@ cost is the thing being minimised.
 Engineer it once carefully; run it a thousand times cheaply. A wasted cycle is a real cost, in
 money and in energy; a hack that saves one is a larger one.
 
-## Default 1: grow without reshaping
+## Default 1: add a kind without editing existing code
 
-A new kind then adds a file, not edits. A switch over kinds that every new kind must extend is
-the edit that spreads.
+A new kind then adds a file and edits none. A switch over kinds is the code every new kind must
+edit: a new checker rule added through such a switch would change the switch, while
+`tools/skills/check_skill_budget.py` adds a `rule_<what>` function and one row in its `rules`
+table.
 
 In the "not when" case, a closed and small set such as the states of one machine or a
 `std::variant` visited in one place, a switch is clearer and faster, and an interface with a
 factory around it is a cost with no return.
 
-## Default 2: the CLI is the only door
+## Default 2: run everything through the CLI
 
 Only the CLI sets up the runtime search path, so a binary launched any other way fails to find
 its DLLs or shared objects. The language skills name the tools behind the CLI.
@@ -34,7 +36,7 @@ Waiting before the action adds hours and no information.
 
 ## Purpose of the doctrine as a whole
 
-One discipline for every repository, so that a person or an agent who knows one repository
-knows them all. It minimises maintenance cost. Each rule set is its own skill, and its
-description says when it loads. A hook repeats the boundaries and the red flags during long
-sessions; see `claude/README.md`.
+One discipline for every repository, so that a person or an agent who has worked in one
+repository finds the same layout and rules in every other. It minimises maintenance cost. Each
+rule set is its own skill, and its description says when it loads. A hook repeats the
+boundaries and the excuses during long sessions; see `claude/README.md`.

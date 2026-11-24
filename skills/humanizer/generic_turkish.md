@@ -13,7 +13,7 @@ kalıplarının çevirisi. Aşağıdaki kurallar bu üçünü hedefler.
 Üç kural gerisini kapsar:
 
 1. **Niteleme yerine ölçü ver.** "Oldukça hızlı" bir görüş; "3,2 kat hızlı" bir bilgi.
-2. **Faili yüzeye çıkar.** "Kamera matrisi sahne yöneticisi tarafından güncellenmektedir"
+2. **Faili cümlede belirt.** "Kamera matrisi sahne yöneticisi tarafından güncellenmektedir"
    değil, "Sahne yöneticisi kamera matrisini her karede günceller."
 3. **Söyleyince bitir.** "Sonuç olarak" ile açılan tekrar paragrafı yok, "umarım faydalı
    olmuştur" yok.
@@ -22,13 +22,13 @@ kalıplarının çevirisi. Aşağıdaki kurallar bu üçünü hedefler.
 
 - **Uzunluk.** Genel Türkçenin ortalaması 9–10 sözcük (Ateşman); akademik Türkçe 21'e çıkıyor ve
   "çok zor" bandına düşüyor. Teknik metinde 20 civarı gerçekçi; 30'u geçen cümle bölünür. Özne
-  ile yüklem arasına 15'ten fazla sözcük sokma; ağır öbeği yükleme yakın diz.
+  ile yüklem arasına 15'ten fazla sözcük koyma; uzun öbeği yükleme yakın yaz.
 - **Ortaç ve ulaç zinciri.** Okuma deneyleri -dık'lı nesne ortaçlarının -an'lı özne ortaçlarından
-  ağır olduğunu, aynı hâl ekini taşıyan iç içe öznelerin en zor okunan yapı olduğunu ölçtü.
+  daha zor okunduğunu, aynı hâl ekini taşıyan iç içe öznelerin en zor okunan yapı olduğunu ölçtü.
   Uygulama kuralı: bir baş addan önce en fazla bir ortaç öbeği; art arda üç ulaç (-arak / -ıp /
-  -ken) yok, çünkü ulaç öznesini ana yüklemden ödünç alır ve zincir uzadıkça özne kaybolur.
+  -ken) yok, çünkü ulaçlı öbeğin öznesi ana yüklemin öznesidir ve zincir uzadıkça özne belirsizleşir.
 - **Yüklem sonda.** Devrik cümle kurma; ayrıntısı aşağıda kendi bölümünde.
-- **"ki" bağlacı.** Farsça kökenli; okumayı yavaşlatmıyor ama biriktikçe çeviri kokuyor.
+- **"ki" bağlacı.** Farsça kökenli; okumayı yavaşlatmıyor ama biriktikçe çeviri izlenimi veriyor.
   Kalıplaşmışlar (demek ki, ne var ki, kaldı ki, iyi ki) ve derece bildiren "öyle … ki" kalır.
   "Belirtmek gerekir ki / açıktır ki / unutulmamalıdır ki" ile açılan cümle ve -dığını ile
   kurulabilecek nesne cümlesinde "ki" gider: "anlamıştı ki doğru değildi" → "doğru olmadığını
@@ -58,10 +58,9 @@ PR'da, tasarım notunda, sohbet yanıtında devrik cümle yok. Yüklem sonda.
   Yazıda eksik yoksa onarım da yok. Teknik Dergi yazım kuralı 4 açıkça yasaklar: "devrik cümleler
   içermemelidir". Ataç'ın savunduğu devriklik deneme ve söyleşi içindir; nesirde bile yaygın
   kabul görmedi, belgede hiç.
-- **Yapay zekâ Türkçesindeki yeri.** Model -mektedir kafiyesini kırmak için devrik cümle serper;
+- **Yapay zekâ Türkçesindeki yeri.** Model -mektedir kafiyesini gidermek için devrik cümle kullanır;
   "insanca" türü kılavuzlar bunu öğütler. Sonuç ölçülebilir bir imza: her paragrafta bir tane,
-  hep aynı biçimde (nesne ya da tümleç yükleme atılmış), gerekçesi yok. Kafiye ek çeşidiyle
-  kırılır, dizilişle değil.
+  hep aynı biçimde (nesne ya da tümleç yükleme atılmış), gerekçesi yok. Kafiye ek çeşidiyle giderilir, dizilişle değil.
 - **Tanıma testi.** Noktadan önceki sözcük yüklem mi? Çekimli fiil (-dı, -ır, -iyor, -miş,
   -ecek, -meli, -sın), ek fiilli ad ya da sıfat (-dır, -dı, -miş, var, yok, değil) ise kurallı.
   Yüklemden sonra aynı cümleye ait bir öge duruyorsa devrik. Sık biçimler:
@@ -77,7 +76,7 @@ PR'da, tasarım notunda, sohbet yanıtında devrik cümle yok. Yüklem sonda.
   gerisi kurallı kalır. "Bu hatayı derleyici yakaladı" (derleyici vurgulu), "Derleyici bu hatayı
   yakaladı" (hata vurgulu). Bilinen ögeyi arkaya atma; Türkçe özne ve nesne düşürür, sil:
   "Derleyici uyarı verdi. Sonra da hata." değil "Derleyici uyarı verdi, sonra hata."
-- **Ritim nasıl kırılır.** Kısa cümle, isim cümlesi, iki nokta, soru (yalnız kılavuzda), üç
+- **Ritim nasıl değiştirilir.** Kısa cümle, isim cümlesi, iki nokta, soru (yalnız kılavuzda), üç
   sözcüklük yargı. "Darboğaz aritmetik değil, bariyerler." kurallıdır: yüklem "bariyerler".
 - **Devrik sayılmayan ya da izinli olan.** Alıntı ve konuşma çizgisiyle verilen söz; kalıp sözler
   (hoş geldin, var mı inecek) yalnız diyalogda; "değil mi" sorusu; başlık ve madde imi (yargı
@@ -88,17 +87,17 @@ PR'da, tasarım notunda, sohbet yanıtında devrik cümle yok. Yüklem sonda.
 
 ## Çatı ve kip
 
-- **Edilgen, faili gizler.** Teknik belgede bu "bunu hangi bileşen yapıyor" sorusunu cevapsız
+- **Edilgen, faili belirtmez.** Teknik belgede bu "bunu hangi bileşen yapıyor" sorusunu cevapsız
   bırakır. Tek meşru yeri: fail gerçekten ilgisiz ya da bağlamdan belli ("Tampon her karede
-  sıfırlanır"). Fail bir modülse etken yaz. "X tarafından Y-ildi" İngilizce "by" izidir; fail
+  sıfırlanır"). Fail bir modülse etken yaz. "X tarafından Y-ildi" İngilizce "by" çevirisidir; fail
   zaten söyleniyorsa edilgenin kazancı yok.
 - **-ir varsayılan, -iyor gözlem, -mektedir neredeyse hiç.** `-mAktA` mastar + bulunma hâlidir;
-  eylemi bir hâle çevirir, hareketi soğutur, faili silikleştirir. "Sürerlik bildirir" gerekçesi
+  eylemi bir duruma çevirir; cümle hareket yerine durum bildirir ve faili belirsizleştirir. "Sürerlik bildirir" gerekçesi
   ölçülemiyor ("üç yıldır çalışıyorum" ile "çalışmaktayım" arasında fark yok); geriye yalnız
   bürokratik ton kalıyor. Kural, sözleşme, değişmez davranış → -ir. Ölçüm ve gözlem → -iyor.
 - **-mektedir tekdüzeliği Türkçeye özgü en güçlü tik.** Her cümle aynı ekle bitince kafiye oluşur.
-  Kırmanın yolu ek çeşitliliği: -ir, -iyor, -di, isim cümlesi (yüklem ad ya da sıfat), eksiltili
-  cümle, iki noktayla açılan liste. Devrik cümleyle kırma; kafiye gider, tik gelir.
+  Giderme yolu ek çeşitliliği: -ir, -iyor, -di, isim cümlesi (yüklem ad ya da sıfat), eksiltili
+  cümle, iki noktayla açılan liste. Devrik cümleyle giderme; kafiye gider, yerine başka bir tik gelir.
 
 > Önce: Şirket 2020 yılında kurulmuştur. Merkezi İstanbul'da bulunmaktadır. Elli kişilik bir
 > ekiple hizmet vermektedir.
@@ -110,14 +109,14 @@ PR'da, tasarım notunda, sohbet yanıtında devrik cümle yok. Yüklem sonda.
   fiil: ölçüm gerçekleştirmek → ölçmek.
 - **"sağlamak"** yalnız olumlu sonuç için. Hata, gecikme, kayıp cümlesinde geçiyorsa kesin
   yanlış. "senkronizasyon sağlamak" → "eşitlemek".
-- **Koşaç kaçışı.** Model düz "X, Y'dir" diyemiyor; yerine "işlevi görmektedir", "konumundadır",
+- **Koşaç yerine uzun kalıp.** Model düz "X, Y'dir" diyemiyor; yerine "işlevi görmektedir", "konumundadır",
   "olarak öne çıkmaktadır", "niteliği taşımaktadır", "olma özelliğine sahiptir", "teşkil
   etmektedir" koyuyor. İngilizce "is → serves as" kaymasının karşılığı. "-dır" ya da "var" yaz.
 - **"yer almaktadır / bulunmaktadır / söz konusu olmaktadır / tespit edilmiştir"** → var, içerir,
   olur, gördük, ölçtük.
-- **İlgeç enflasyonu.** "kapsamında, çerçevesinde, doğrultusunda, bağlamında, noktasında,
-  bazında, nezdinde, itibarıyla, -e yönelik, -e ilişkin, -e dair" bir fiil çağırır, fiil boş
-  çıkar, cümle iki kat uzar. Onarım: fiili at, adlaştır. "gelişine ilişkin yaptığı
+- **İlgeç fazlalığı.** "kapsamında, çerçevesinde, doğrultusunda, bağlamında, noktasında,
+  bazında, nezdinde, itibarıyla, -e yönelik, -e ilişkin, -e dair" bir fiil gerektirir, fiil anlam
+  taşımaz, cümle iki kat uzar. Onarım: fiili at, adlaştır. "gelişine ilişkin yaptığı
   değerlendirmede" → "gelişine ilişkin değerlendirmesinde". "Bellek yönetimi noktasında ciddi
   sıkıntılarımız var" → "Bellek yönetiminde üç kaynak sızıntısı var." "adına" neden ilgeci
   değildir; "açısından".
@@ -132,12 +131,12 @@ PR'da, tasarım notunda, sohbet yanıtında devrik cümle yok. Yüklem sonda.
 
 - Sıfatı sil; cümle bilgi kaybetmiyorsa geri koyma, kaybediyorsa yerine sayı koy. Aynı test
   "oldukça / son derece / büyük ölçüde / önemli ölçüde / ciddi anlamda" için.
-- "Oldukça" aslen "yetecek kadar"; "çok" anlamı "quite" çevirisinden. Galatımeşhur yolunda;
+- "Oldukça" aslen "yetecek kadar"; "çok" anlamı "quite" çevirisinden. Galatımeşhur olma aşamasında;
   yanlış değil ama teknik metinde kullanma, ölçü ver.
-- Şişkin küme: kapsamlı, bütüncül, kritik, kilit, dinamik, yenilikçi, dönüştürücü, benzersiz,
+- Aşırı kullanılan sözcükler: kapsamlı, bütüncül, kritik, kilit, dinamik, yenilikçi, dönüştürücü, benzersiz,
   hayati, vazgeçilmez, sürdürülebilir, kullanıcı dostu, sorunsuz, kusursuz, güçlü, sağlam, etkin,
-  esnek. Tek tük geçmeleri normal, kümelenmeleri imza.
-- Boş fiil kalıpları: kritik/önemli/kilit rol oynar, büyük önem taşır, hayati önem arz eder,
+  esnek. Tek tük geçmeleri normal, bir arada geçmeleri imza.
+- Anlam taşımayan fiil kalıpları: kritik/önemli/kilit rol oynar, büyük önem taşır, hayati önem arz eder,
   vazgeçilmez unsurdur, olanak tanır, imkân verir, mümkün kılar, katkıda bulunur, kolaylaştırır.
 - Pekiştirmeli sözler bitişik (apaçık, bembeyaz, sapasağlam); pekiştirme ile derecelendirme (çok
   temiz) ayrı şeyler.
@@ -150,48 +149,48 @@ PR'da, tasarım notunda, sohbet yanıtında devrik cümle yok. Yüklem sonda.
 - **Konu cümlesi.** Türkçe akademik yazımda zayıf gelenek (%22'ye karşı İngilizce bölümde %60).
   Teknik paragraf konu cümlesiyle açılır; sona saklanan genelleme deneme içindir, belge için
   değil. Kabul testi: paragrafların yalnız ilk cümlelerini okuyan biri argümanı çıkarabilmeli.
-- **Bağlaç yığını.** "Bu bağlamda, bu doğrultuda, bu çerçevede, bununla birlikte, öte yandan,
+- **Bağlaç fazlalığı.** "Bu bağlamda, bu doğrultuda, bu çerçevede, bununla birlikte, öte yandan,
   dahası, ek olarak, üstelik, ne var ki, sonuç olarak, özetle, genel olarak, nihayetinde" —
   paragraf başına en çok bir tane. Ölçülebilir test: Türkçe sıklık derlemlerinde "ama" ilk 25'te,
   "bununla birlikte" ve "öte yandan" ilk 50'de yok. Metinde "bununla birlikte" sayısı "ama"
   sayısını geçiyorsa metin insan Türkçesinin istatistiğine aykırı.
 - **"Sadece X değil, aynı zamanda Y."** "Not only … but also" makine çevirisi. Türkçenin araçları
-  zaten var: üstelik, dahası, hem … hem de, bununla kalmayıp. Ailesi: "yalnızca bir araç
+  zaten var: üstelik, dahası, hem … hem de, bununla kalmayıp. Benzer kalıplar: "yalnızca bir araç
   değildi, bir dönüşümün başlangıcıydı"; "Tek başına yeterli değil. Kültür gerekiyor."; "Ne hız.
-  Ne fiyat. Sadece güven." Test: metindeki "değil" sayısı üçü geçiyorsa kalıp iskelete dönüşmüş.
-- **Simetrik üçlü.** "hızlı, güvenli ve ölçeklenebilir" makine listesi. İnsan listesi ya taşar
+  Ne fiyat. Sadece güven." Test: metindeki "değil" sayısı üçü geçiyorsa kalıp sabit şablona dönüşmüş.
+- **Simetrik üçlü.** "hızlı, güvenli ve ölçeklenebilir" makine listesi. İnsan listesi ya üç öğeyi aşar
   (dört-beş öğe, bakışımsız) ya örnekleyip kesilir. Yaklaşıklık sayı ikilisiyle: "üç beş
   kelime", "sekiz on kişi"; "yaklaşık 8-10 kişi" değil.
-- **-arak/-erek ile sahte derinlik.** "…na katkıda bulunarak", "…ni gözler önüne sererek",
+- **-arak/-erek ile anlamsız ek açıklama.** "…na katkıda bulunarak", "…ni gözler önüne sererek",
   "…ne ışık tutarak": bilgiye bir şey eklemeyen anlam iliştirmesi. Kes.
 - **Metafor tikleri.** Mecazi yolculuk, ekosistem, manzara, dokunuş, DNA'sı, oyun değiştirici,
   ezber bozan, derinlemesine incelemek, dünyasına dalmak, keşfetmek (yazı için), ışık tutmak,
   gözler önüne sermek, altını çizmek, görünür kılmak, alan açmak, bir sonraki seviyeye taşımak,
   günün sonunda, konfor alanı.
-- **Sohbet kalıntısı, hiç:** Elbette, Tabii ki, Harika bir soru, İşte …, Umarım faydalı olmuştur,
+- **Sohbet kalıpları, hiç kullanılmaz:** Elbette, Tabii ki, Harika bir soru, İşte …, Umarım faydalı olmuştur,
   Başka bir sorunuz varsa, Hadi başlayalım, İşte bu kadar, Bu yazıda … ele alacağız.
 - **Resmî yazışma kalıbı teknik belgeye girmez.** "Arz ederim / rica ederim" kodlanmış hiyerarşi
   beyanıdır (yönetmelik: alta rica, üste arz). README'de, tasarım notunda, commit'te ast-üst
   yoktur. "işbu, mezkûr, söz konusu, ilgili (dolgu), yukarıda arz edilen" de gider.
-- **Zamir düşür.** Her cümlede "siz / biz" çeviri kokar: "Siz de kendi yapılandırmanızı siz
+- **Zamir düşür.** Her cümlede "siz / biz" çeviri gibi okunur: "Siz de kendi yapılandırmanızı siz
   oluşturabilirsiniz" → "Kendi yapılandırmanı oluşturabilirsin."
 - **Belirsizlik bir kez, yerinde, ne çözeceğiyle.** "3080 Ti'da ölçülmedi; golden koşusu
-  belirler." Her cümleye serpilen "olabilir / düşünülmektedir / değerlendirilmektedir" kaçamak.
+  belirler." Her cümleye eklenen "olabilir / düşünülmektedir / değerlendirilmektedir" belirsizlik dolgusudur.
 
 ## Noktalama ve yazım
 
 - **Uzun çizgi (—) Türkçede yalnız konuşma çizgisidir.** TDK başka işlev tanımaz; Ataç'ta,
   Eyüboğlu'nda, Günyol'da yoktur. Ara söz virgülle, noktalı virgülle, parantezle ya da TDK'nin
   bitişik kısa çizgisiyle kurulur: "Bu karar, hiç beklenmedik biçimde, geri alındı." Tireyi
-  kaldırıp "önce tez, sonra keskin hüküm" ritmini noktalı virgülle korumak teli taşır; cümleyi
-  yeniden kur. Çizginin yerine ne geleceği, çizginin ne yaptığına bağlıdır:
+  kaldırıp "önce tez, sonra keskin hüküm" ritmini noktalı virgülle korumak aynı tiki başka bir işaretle sürdürür;
+  cümleyi yeniden kur. Çizginin yerine ne geleceği, çizginin ne yaptığına bağlıdır:
   - **Ara söz** ("Bu karar — beklenmedik biçimde — geri alındı") → iki virgül.
   - **Sona iliştirilen açıklama** ("…bilmek zorunda değil — bildirmesi yeter") → nokta ile iki
     cümle: "…bilmek zorunda değil. Kendi girdi ve çıktısını bildirmesi yeter."
   - **Örnek ya da liste tanıtımı** ("üç şey gerekir — bellek, zaman, sabır") → iki nokta.
   - **Vurgulu tek sözcük** ("tek bir şey istedi — sessizlik") → iki nokta ya da vurguyu yüklem
     önüne alan kurallı cümle: "Tek bir şey istedi: sessizlik." ya da "Tek istediği sessizlikti."
-  Virgül cümleyi ağırlaştırıyorsa sorun çizgide değil, cümlenin iki yargı taşımasındadır; böl.
+  Virgül cümleyi okumayı zorlaştırıyorsa sorun çizgide değil, cümlenin iki yargı taşımasındadır; böl.
 - **Noktalı virgülden sonra bağlaç yok.** "; bununla birlikte", "; dolayısıyla", "; aynı
   zamanda" hem TDK'ye aykırı hem belirgin tik. Nokta koy.
 - **Virgül konmaz:** ve / veya / yahut önünde ve ardında (Oxford virgülü yok); hem…hem, ne…ne'de;
@@ -221,7 +220,7 @@ PR'da, tasarım notunda, sohbet yanıtında devrik cümle yok. Yüklem sonda.
   zamanı, sürüm, hata ayıklama, yığın, sunucu, ağ, veri tabanı, arayüz, önbellek, iş parçacığı,
   gömülü, yazılım, donanım, bilgisayar, bilişim.
 - Yerleşmemişse İngilizcesini bırak: commit, branch, pull request, merge, rebase, render, shader,
-  pipeline, deploy, mock, refactor. TBD'nin kendi kabulü: "mavidiş" tutmadı, terim zorlamayla
+  pipeline, deploy, mock, refactor. TBD'nin kendi kabulü: "mavidiş" yaygınlaşmadı, terim zorlamayla
   yerleşmez.
 - Terimi ilk geçtiği yerde parantezle tanıt, sonra tek biçimde kullan. Aynı metinde kuram/teori
   karışmaz.
@@ -239,12 +238,12 @@ yalnız eğitim ve topluluk içeriğinde. "-ebilirsiniz" dizisi yok, belge okuru
 o, ama tutarlı.
 
 **PR açıklaması.** Ne değişti; neden değişmek zorundaydı; gözden geçiren en çok neye baksın;
-nasıl doğrulandı (komut ve çıktı); bilerek yapılmayan ne. Sonuncusu dürüstlüğün en ucuz olduğu yer.
+nasıl doğrulandı (komut ve çıktı); bilerek yapılmayan ne. Sonuncusu, eksiği açıkça yazmanın en az maliyetli olduğu maddedir.
 
 **Tasarım notu / mimari bölüm.** Bildirme kipi, geniş zaman, ağacın şu anki hâli. Tür adı,
 dosya, sayı. Tarih changelog'a.
 
-**Sohbet yanıtı.** Önce cevap. Kayıt gevşer, kurallar aynı. Uzunluk soruyla orantılı.
+**Sohbet yanıtı.** Önce cevap. Kayıt daha az resmî olur, kurallar aynı. Uzunluk soruyla orantılı.
 
 ## Önce ve sonra
 
@@ -264,6 +263,6 @@ dosya, sayı. Tarih changelog'a.
 ## Uyarı
 
 Bu dosya üretim içindir, tespit için değil. Türk akademik yazı geleneği LLM'in varsayılan
-sesine yapısal olarak benzer ("yapıl-" ile başlayan cümle "-maktadır" ile biter) ve İngilizceye
+üslubuna yapısal olarak benzer ("yapıl-" ile başlayan cümle "-maktadır" ile biter) ve İngilizceye
 ayarlı dedektörler ana dili İngilizce olmayan yazarları %61'e varan oranda hatalı işaretler.
 Buradaki kuralları başkasının metnini yargılamak için kullanma.

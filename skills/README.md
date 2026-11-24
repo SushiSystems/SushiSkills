@@ -17,7 +17,7 @@ agent reads the descriptions first and loads a skill only when its task matches.
 | `logging` | Categories, levels, what is and is not logged, silent failures |
 | `documentation` | The `docs/` tree, placement, design documents, agent work lifecycle, archive |
 | `multi-agent-work` | Orchestrator and workers, job planning, dispatch, accepting reports |
-| `model-routing` | Model and effort per session seat and per dispatch, the escalation ladder, inline or subagent, what a report records |
+| `model-routing` | Model and effort per session and per dispatch, the escalation order, inline or subagent, what a report records |
 | `commits` | Commit subject grammar, body, staging |
 | `backlog` | State from the backlog commands, the order of a session, work or issue, priority |
 | `design` | State from the design commands, owner before change, decisions into the topic |
@@ -35,9 +35,9 @@ agent reads the descriptions first and loads a skill only when its task matches.
 | `git-workflow` | `main` and short branches, pushing, conflicts, shared trees |
 | `continuous-integration` | What CI runs on Windows and Linux, red builds |
 | `platform-portability` | Platform adapters, export macros, paths and text |
-| `build-throughput` | One tree per configuration, Debug by default, edges admitted by measured peak memory, heavy code compiled and linked once, caches, batches |
+| `build-throughput` | One tree per configuration, Debug by default, edges admitted by measured peak memory, code with a large compile cost compiled and linked once, caches, batches |
 | `storage-discipline` | Scratchpad budget, no binaries or copies in scratch, bounded output capture, cleanup before reporting |
-| `unlinked-cleanup` | What nothing reaches: proving it, asking before deleting, deleting it whole, its own commit |
+| `unlinked-cleanup` | What nothing references: proving it, asking before deleting, deleting it whole, its own commit |
 
 `humanizer` and `marketing-copy` carry one file per language and register beside `SKILL.md`,
 and a `research/` folder with the sources those files cite.

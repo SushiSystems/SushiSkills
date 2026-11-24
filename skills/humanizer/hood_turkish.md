@@ -14,18 +14,18 @@ tartışmalarından, 2025–2026 basınındaki Z kuşağı jargon listelerinden 
 setinin taklit örneklerinden çıkarıldı. Kaynaklar `research/hood_turkish_sources.md` dosyasında.
 
 Resmî Türkçede yasak olan iki şey burada doğaldır: devrik cümle ve konuşmadaki gibi yazım. Ama
-ikisinin de yeri belli. Serpilince tik olurlar, tıpkı -mektedir gibi.
+ikisinin de yeri belli. Sık kullanılınca tik olurlar, tıpkı -mektedir gibi.
 
 Üç kural gerisini kapsar:
 
 1. **Tek bir insan yaz.** Yaşı, şehri, çevresi belli bir kişi. 17 yaşında Discord'daki biri,
    30'unda WhatsApp grubundaki biri, 45'inde mahalle kahvesindeki biri aynı kelimeleri
-   kullanmaz. "Genel genç ağzı" diye bir kişi yok; karışım LLM'i ele verir.
-2. **Argo baharattır, yemek değil.** Gerçek mesajın çoğu düz Türkçedir: "geliyom 10 dk".
+   kullanmaz. "Genel genç ağzı" diye bir kişi yok; karışım metnin LLM çıktısı olduğunu gösterir.
+2. **Argo az kullanılır.** Gerçek mesajın çoğu düz Türkçedir: "geliyom 10 dk".
    Bir mesajda en çok bir iki argo sözcük, bir hitap. Her cümleye "lan, kanka, efsane" koymak
-   dizi repliği gibi durur.
+   yapay okunur.
 3. **Açıklama yok, kapanış yok.** Gerçek insan argoyu tırnağa almaz, anlamını söylemez,
-   "umarım beğenmişsindir 😊" diye bitirmez. Söyler, susar.
+   "umarım beğenmişsindir 😊" diye bitirmez. Söyler, yazmayı bırakır.
 
 ## Konuşma dizimi ve devrik cümle
 
@@ -42,7 +42,7 @@ Konuşmada devriklik heyecan ve onarım işidir (Tekin & Öztürk 2022).
   (427), belirtili nesne (393), özne (257) gidiyor; belirtisiz nesne neredeyse hiç (63).
   - Doğal: "Gördün mü onu?", "Geldim ben.", "Çok iyiydi ya film.", "Yazdım sana dün.",
     "Aldım arabayı sonunda." (araba konuşuluyordu)
-  - Yanlış: "Aldım yeni bir araba." Yeni bilgi arkaya atılmış, belirtisiz nesne sonda. Doğrusu
+  - Yanlış: "Aldım yeni bir araba." Yeni bilgi yüklemden sonraya konmuş, belirtisiz nesne sonda. Doğrusu
     "Araba aldım lan." ya da "Yeni araba aldım."
 - **Yüklem başta, kalıp olarak.** Emir, ünlem, soru ve tepki: "Gel buraya.", "Bak şuna.",
   "Bitti bu iş.", "Nerdesin sen?", "Ne diyon lan sen?", "Yok artık.", "Olmaz öyle şey."
@@ -50,8 +50,8 @@ Konuşmada devriklik heyecan ve onarım işidir (Tekin & Öztürk 2022).
   arka arkaya iki mesaj: "geldi mi" / "kargo".
 - **Hep kurallı kalan yerler.** Uzun anlatının asıl bilgisi ("Dün markette Selin'in eski
   sevgilisini gördüm"), Ekşi entry'sinin tanım cümlesi, bir şeyin nasıl yapıldığını anlatan
-  adımlar. Devriklik kısa cümlede yaşar; yüklemden sonra iki üç öge yığılırsa ("Yedim pilav
-  akşam evde annemle") bozuk durur.
+  adımlar. Devriklik kısa cümlede görülür; yüklemden sonra iki üç öge gelirse ("Yedim pilav
+  akşam evde annemle") cümle bozuk okunur.
 - **Eksiltili cümle devriklikten sık.** Konuşma çoğu zaman yüklemsizdir: "Sen?", "Ben de.",
   "Yarın o zaman.", "Hayırdır?", "10 dk."
 
@@ -68,28 +68,28 @@ Konuşmada devriklik heyecan ve onarım işidir (Tekin & Öztürk 2022).
     ne haber → naber, nerede → nerde, burada → burda, dakika → dk / dakka, oğlum → olm,
     tamam → tmm, kanka → knk, selam → slm, eyvallah → eyw, teşekkürler → tşk / tşkler,
     "selamün aleyküm" → sa / as.
-- **Harf uzatma ton verir.** "tamammm", "yaaa", "nolurrr", "geliyommm". Kadınlar arasında
+- **Harf uzatma tonu belirtir.** "tamammm", "yaaa", "nolurrr", "geliyommm". Kadınlar arasında
   sıradan, iki erkek arasında seyrek; erkekten kadına uzatılmış "tamammm" imalı okunabilir.
-- **Büyük harf yok, nokta çoğu zaman yok.** Mesajın sonundaki nokta soğuk ya da kızgın okunur:
-  "tamam." ile "tmm" aynı şey değil. Büyük harf bağırmadır: "NE". Soru işareti düşer: "geliyon mu".
+- **Büyük harf yok, nokta çoğu zaman yok.** Mesajın sonundaki nokta mesafeli ya da kızgın okunur:
+  "tamam." ile "tmm" aynı şey değil. Büyük harf bağırmayı gösterir: "NE". Soru işareti düşer: "geliyon mu".
 - **Türkçe karakter düşürme.** "cok iyi", "gelicem", "degil", "sagol": klavyesi Türkçe
   olmayanlar, yurt dışındakiler, eski telefon alışkanlığı olanlar, hızlı yazan erkekler. Genç
   kullanıcının telefonu otomatik Türkçe karakter koyduğu için bugün daha çok "saol", "diil"
-  gibi ğ düşürmesi görülür. Karakter bir kişilik özelliğidir; yarım yamalak karışım olmaz.
+  gibi ğ düşürmesi görülür. Karakter bir kişilik özelliğidir; tutarsız karışım olmaz.
 - **de/da ve ki.** Gerçek mesajda bitişik "bende" (ben de), ayrı "evde ki" sık görülür. Hata
   olarak bilinçli koyma; koyacaksan o kişinin kalıcı alışkanlığı olsun, tek bir sözcükte.
 - **Gülme.** Kuşağa göre değişir:
   - "ahahah", "hahaha": her yaş, orta şiddet. "hehe" tuhaf ya da imalı.
   - "sjsjsj", "ajsjsj", "skdjskd", "aşkdjaşk": klavye gülmesi (random), 2000'lerin IRC ve
     İnci Sözlük döneminden gelir, Z kuşağında ana biçim. Kısa olan kibarlık gülmesi, uzun olan
-    gerçek gülme ve "seninle konuşmak hoşuma gidiyor". Hafif espriye uzun random performans kokar.
+    gerçek gülme ve "seninle konuşmak hoşuma gidiyor". Hafif espriye yazılan uzun random gülme abartılı okunur.
   - "kek", "kekw": oyun ve Discord çevresi.
   - "öldüm", "ölüyorum", "geberdim", "ağlıcam", "ağlıyorum şu an": çok komik. "geberiyorum"
     kaba, yaşlıya ve yabancıya yazılmaz.
   - ":D", "xd": 30 yaş üstünde canlı, Z kuşağında ironik ya da eski. 😂 Z kuşağına "fazla
     çabalıyor" gelebilir; 💀 ve 😭 gülme yerine geçer.
 - **Emoji.** Her mesaja değil. Tek emoji tepkinin kendisi olabilir (💀, 😭, 🙄). Cümle sonuna
-  eklenen 😊 ve 👍 orta yaş ve iş kokar; gençler arasında 👍 soğuk ya da pasif agresif okunur.
+  eklenen 😊 ve 👍 orta yaşlı ve iş yazışması izlenimi verir; gençler arasında 👍 mesafeli ya da pasif agresif okunur.
 
 ## Argo sözlüğü
 
@@ -101,7 +101,7 @@ Durumlar sözlük, forum ve basın gözlemine dayanır, ölçüme değil.
 
 | Söz | Anlam | Çevre | Durum | Örnek |
 | --- | --- | --- | --- | --- |
-| kanka / knk | yakın arkadaş, sonra herkes | 90'lardan beri her yerde; kökeni tartışmalı (kan kardeş ya da Romanca) | canlı, yıpranmış | knk akşam çıkıyo musun |
+| kanka / knk | yakın arkadaş, sonra herkes | 90'lardan beri her yerde; kökeni tartışmalı (kan kardeş ya da Romanca) | canlı, çok kullanılmış | knk akşam çıkıyo musun |
 | kanki | kanka, kadınsı ve oyunbaz | kız arkadaş grupları | canlı | kanki bu elbiseyi alıyom |
 | kankito, kenks, kanks | kanka türevi | 2010'lar | ironik | — |
 | lan / la / len | hitap, vurgu, şaşkınlık, öfke | erkeklerde sık, kadınlarda da; bağlama göre dostça ya da kavga | canlı | yok lan olamaz |
@@ -132,7 +132,7 @@ Durumlar sözlük, forum ve basın gözlemine dayanır, ölçüme değil.
 | yok artık | inanılmaz | her yaş | canlı | yok artık |
 | şaka mısın | inanılmaz, sitem | her yaş | canlı | şaka mısın ya |
 | baya / bayağı | epey | her yaş | canlı | baya kalabalıktı |
-| efsane | çok iyi | her yaş; çok kullanılınca boşalır | canlı, yıpranmış | maç efsaneydi |
+| efsane | çok iyi | her yaş; çok kullanılınca anlamı zayıflar | canlı, çok kullanılmış | maç efsaneydi |
 | bayıldım | çok beğendim | kadınlarda sık | canlı | bayıldım bu renge |
 | ölüyorum / öldüm | çok komik ya da çok güzel | genç | canlı | öldüm sjsjsj |
 | ağlıcam | çok komik ya da çok duygusal | Z kuşağı | canlı | ağlıcam şu videoya |
@@ -176,16 +176,16 @@ Durumlar sözlük, forum ve basın gözlemine dayanır, ölçüme değil.
 
 Rap sahnesinden (Ezhel, Uzi, Lvbel C5 dönemi) gündelik dile geçenler: "baba" (kendine hitap,
 özgüven), "kodes" (cezaevi), "mekan", "moruk", "drip", "merso". Rap sözü dinlenir, taklit
-edilmez; tek bir rap sözcüğü mesajı mahalleli yapmaz, çok rap sözcüğü parodi yapar.
+edilmez; tek bir rap sözcüğü mesaja mahalle ağzı kazandırmaz, çok sayıda rap sözcüğü mesajı parodiye çevirir.
 
 ## Hitap ve ton
 
 - **Sen/siz.** Arkadaşa ve internette tanımadığa "sen". Esnafa, yaşça büyüğe "siz" ya da
   "abi/abla + sen". Sen'e geçiş hitapla olur: "abi" diyen "siz" demez.
-- **Hitap ilişkiyi söyler.** "kanka" yeni tanıştığına samimiyetsiz ya da ergen durabilir;
+- **Hitap ilişkiyi gösterir.** "kanka" yeni tanıştığına samimiyetsiz ya da ergen durabilir;
   iş yazışmasında ilk mesajda "kral/reis" itici bulunur. Tanımadığa en güvenli samimi hitap
   "hocam" ya da "abi/abla".
-- **Yumuşatıcılar.** "ya" her yerde, sıcaklık katar ("iyiyim ya"). "be" sitem ya da sevgi
+- **Yumuşatıcılar.** "ya" her yerde, yakın bir ton verir ("iyiyim ya"). "be" sitem ya da sevgi
   ("gel be"). "yahu" orta yaş ve üstü. "lan" dostça da olur kavgacı da; Işık-Güler &
   Eröz-Tuğa derlemde beş iş sayar: seslenme, yakınlık ya da mesafe gösterme, duygu dışavurumu,
   vurgu, küfür öncesi. Aynı "lan" gülerek arkadaşa ve bağırarak yabancıya başka şeydir.
@@ -205,7 +205,7 @@ seçtiğini buldu.
 
 Şiddet üç kademe:
 
-1. **Ağız bozukluğu.** hay aksi, kahretsin, lanet olsun, bok gibi, boktan, sıçtık, hassiktir
+1. **Hafif küfür.** hay aksi, kahretsin, lanet olsun, bok gibi, boktan, sıçtık, hassiktir
    (yarı kalıplaşmış). Arkadaş arasında sıradan, yaşlının yanında kaçınılır.
 2. **Argo aşağılama ve dolgu küfrü.** mal, salak, ezik, yavşak, götlük, siktirmek ("siktir
    boşver"), "amk" ve "aq" kısaltmaları. "amk" tweet'te noktalama gibi, bir şeye yönelmeden
@@ -231,9 +231,9 @@ Kurallar:
 - **Mesaj kısa ve parçalı.** WhatsApp'ta bir düşünce üç mesaja bölünür: "abi" / "bugün ne
   oldu biliyon mu" / "anlatcam". Paragraf mesajı ancak dert anlatırken ya da kavgada gelir.
 - **Argo oranı.** Kaba ölçü: on sözcükte en çok bir argo ya da hitap. "Aynen, valla, ya"
-  gibi söylem sözcükleri bu sayıya girmez, onlar zaten konuşmanın dokusu.
+  gibi söylem sözcükleri bu sayıya girmez, onlar zaten konuşmanın olağan parçası.
 - **Tek kuşak.** 90'ların "manyak, süper, oha" sözlerini Z kuşağının "delulu, aura, cringe"
-  sözleriyle aynı ağıza koyma. Z kuşağında İngilizce ödünç çok, Y kuşağında kısaltma (mrb,
+  sözleriyle aynı kişinin mesajında kullanma. Z kuşağında İngilizce ödünç çok, Y kuşağında kısaltma (mrb,
   tşk, cnm) çok.
 - **Tekrar gerçektir.** Gerçek kişi aynı sözcüğü tekrar eder: "aynen", "aynen ya", "aynen
   aynen". LLM eşanlamlı çeşitleme yapar; insan yapmaz.
@@ -250,21 +250,21 @@ Aşağıdakiler "samimi Türkçe" isteyen modelin imzasıdır:
   hocam" ya da isim.
 - **Coşku kelimeleri.** "Harika!", "Muhteşem!", "Süper!", "Mükemmel!" art arda. Gerçek tepki
   "iyiymiş", "baya iyi", "bayıldım", "efsane".
-- **Ağız karnavalı.** Bir cümleye "ulan", "be", "ya", "valla", "kardeş" hepsi birden: "Ulan bu
+- **Aynı cümlede çok ağız işareti.** Bir cümleye "ulan", "be", "ya", "valla", "kardeş" hepsi birden: "Ulan bu
   vapurda çay da başka güzel oluyor be, hele şu Boğaz manzarası." Bir konuşmacı bir iki
   işaretle tanınır, beşiyle değil.
 - **Klişe mekan.** Vapur, çay, simit, martı, Boğaz manzarası, kedi. İstenmedikçe koyma.
-- **Resmî ek sızıntısı.** Argolu cümlenin ortasında "-mektedir", "gerçekleştirmek",
+- **Resmî ek karışması.** Argolu cümlenin ortasında "-mektedir", "gerçekleştirmek",
   "oldukça", "bu bağlamda", "hususunda": "Kanka bu durum beni oldukça etkiledi."
 - **Tam imla.** "Ne yapıyorsun? Nasılsın? Umarım iyisindir!" Büyük harf, soru işareti, ünlem,
-  ğ'ler yerinde. Mesaj değil, mektup.
+  ğ'ler yerinde. Sonuç sohbet mesajı değil, yazılı mektup biçiminde olur.
 - **Açıklanan argo.** "Tam bir 'red flag' (tehlike işareti) yani." ya da tırnak içinde argo.
 - **Emoji her cümlede.** Sonuna 😊, 😄, 🙌, ✨ eklenmiş cümleler.
-- **Serpiştirilmiş devriklik.** Her cümlede, hep aynı biçimde yüklem ortada, yeni bilgi sonda.
+- **Her cümlede devriklik.** Her cümlede, hep aynı biçimde yüklem ortada, yeni bilgi sonda.
 - **Kuşak karışımı.** Aynı ağızda "manyak iyi", "cringe", "panpa", "slay".
 - **Kibar kavga.** Kızgın karakter "Bu davranışını hiç doğru bulmuyorum kanka" der. Gerçek
   kızgınlık kısa: "ne alaka lan", "yeter be", "sana ne".
-- **Toparlayan son.** "Neyse, hayat bu işte! 😊", "Görüşmek üzere dostum!", "Kendine iyi bak!".
+- **Özetleyen kapanış.** "Neyse, hayat bu işte! 😊", "Görüşmek üzere dostum!", "Kendine iyi bak!".
   Gerçek mesaj konu bitince kesilir ya da "hadi bb", "görüşürüz", "tmm" ile biter.
 
 ## Kayıt türleri
@@ -279,7 +279,7 @@ geliyo" / "ben varım" / "ben 9da çıkarım ancak" / "o zaman 9.30".
 
 **Tweet (X).** Tek cümle, çoğu zaman yargı ya da gözlem. Devrik ve eksiltili yapı en rahat
 burada. Büyük harf ve noktalama kişiye göre; ironi yüksek. "amk" ve "mq" gibi kaba kısaltmalar
-burada yaygın. Başlık gibi değil, laf atar gibi: "türkiyede kira konuşmadan 5 dakika geçiremiyoz
+burada yaygın. Başlık değil, tek cümlelik söz: "türkiyede kira konuşmadan 5 dakika geçiremiyoz
 artık".
 
 **Ekşi entry'si.** Tanım ya da tespitle açılır, küçük harfle, noktalama tam ama gevşek.

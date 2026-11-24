@@ -8,14 +8,15 @@ Commission's *How to write clearly*, GOV.UK, Kohl's *Global English Style Guide*
 Crossley and McNamara studies of simplified texts. Sources are in
 `research/plain_english_sources.md`.
 
-Plain English sits on top of `generic_english.md`. Every rule there still holds; this file adds
-the rules for a reader who stops at words and structures a native reader passes without noticing.
+Plain English builds on `generic_english.md`. Every rule there still holds; this file adds
+the rules for a reader who has trouble with words and structures a native reader reads without
+noticing.
 
 The hard part is that the result must not read like a graded reader. The CEFR describes a B2
 reader as someone who reads "with a large degree of independence". That reader is an adult
 engineer, not a child. Research on simplified texts shows that cutting every sentence short and
 removing every connective makes text *harder*: the reader loses the links that say why one fact
-follows another. Keep the logic; remove the obstacles.
+follows another. Keep the logic; remove the words and structures the reader cannot read.
 
 Three rules subsume most of the rest:
 
@@ -60,7 +61,7 @@ form.
 it and about 98% to read it with ease. For a B1–B2 reader that means almost every word should
 come from the most frequent 2,000–3,000 word families (the Oxford 3000, the New General Service
 List). Technical terms are the exception: the reader knows `buffer`, `thread`, `commit` better
-than `nonetheless`. Spend your uncommon words on the domain, not on style.
+than `nonetheless`. Use uncommon words for domain terms, not for style.
 
 **Latinate formal words → common words.** Most of these are C1 in the English Vocabulary
 Profile, and they carry no extra meaning here.
@@ -142,10 +143,10 @@ server up" (Kohl).
 
 - **Target an average of 15–20 words**, with most sentences between 8 and 25. STE caps procedural
   sentences at 20 words and descriptive sentences at 25; treat those as limits, not targets.
-- **Vary the length.** A text where every sentence is 9 words is choppy: the reader must build
-  every link alone, and it sounds like a machine or a children's book. Mix an 18-word sentence
+- **Vary the length.** A text where every sentence is 9 words is a series of short statements with no links: the
+  reader must build every link alone, and it sounds like a machine or a children's book. Mix an 18-word sentence
   that explains with a 7-word sentence that states the result.
-- **The not-choppy test.** Read two neighbouring short sentences. If a native writer would join
+- **The joining test.** Read two neighbouring short sentences. If a native writer would join
   them with `because`, `so`, `but` or `which`, join them. "The cache is cold. The first frame is
   slow." → "The first frame is slow because the cache is cold."
 - **One instruction per sentence** in steps. Put the condition first: "If the build fails, run
@@ -153,12 +154,12 @@ server up" (Kohl).
 - **Paragraphs of two to five sentences.** STE caps a descriptive paragraph at six.
 - Readability formulas (Flesch–Kincaid and similar) count only word and sentence length. A text
   can score well and still be hard: idioms, pronouns and missing connectives are invisible to
-  them. Use them as a warning light, never as proof.
+  them. Use them as a signal that a text may be hard, never as proof that it is easy.
 
 ## Idioms, metaphors and cultural references
 
 Say what happens, in the literal words. Humour, sports and war metaphors, pop culture and local
-references do not survive translation and exclude readers who did not grow up with them.
+references are lost in translation and exclude readers who did not grow up with them.
 
 | Instead of | Write |
 | --- | --- |
@@ -212,7 +213,7 @@ well as simplified ones, and they keep the natural language the reader will meet
 - **Cut connectives that only decorate** (`moreover`, `furthermore`, `additionally`), exactly as in
   `generic_english.md`.
 - **Repeat the noun when a pronoun could point to two things.** "The pass writes the image to the
-  buffer, then it is cleared" → "…then the buffer is cleared". Repetition is a feature here, not a
+  buffer, then it is cleared" → "…then the buffer is cleared". Repetition is correct here, not a
   style fault.
 - **Avoid `this` alone as a subject.** "This causes a stall" after a paragraph with three
   candidates → "This extra copy causes a stall".
@@ -221,7 +222,7 @@ well as simplified ones, and they keep the natural language the reader will meet
 - **Put the known thing first**, the new thing last (old before new, from `generic_english.md`).
   It matters more for a reader who processes each sentence slowly.
 
-## Tone: organic, not graded
+## Tone: natural, not graded
 
 A plain text still sounds like a person. The failures below are how "simple mode" goes wrong,
 especially in generated text:
@@ -234,12 +235,12 @@ especially in generated text:
   first sentence needed a rewrite, rewrite it.
 - **Bullet spam.** Turning every paragraph into bullets to look simple. Bullets remove the
   connectives, which is the part the reader needed. Use bullets for real lists and steps.
-- **Word-limit robot.** Every sentence the same short length, no `because`, no `but`, articles
+- **Mechanical word limit.** Every sentence the same short length, no `because`, no `but`, articles
   dropped ("Click button. Open file."). That is telegram style, not plain English.
 - **Exclamation and emoji** to sound friendly. Friendliness in plain English comes from `you`,
   `we`, a direct answer and a thank you where one is due.
 - **Globish flattening.** A 1,500-word ceiling forces paraphrases like "the machine that makes
-  cold" for `refrigerator`. A common specific word beats a circle of basic words.
+  cold" for `refrigerator`. A common specific word is better than a phrase made of basic words.
 
 Use `you` and `we`. Use present tense. Write the way a fluent colleague explains something to a
 smart new team member from another country.
@@ -268,8 +269,8 @@ common verbs in the subject (`Fix`, `Add`, `Remove`, `Move`, not `Rectify`, `Int
 
 ## How it layers with the generic rules
 
-Run `generic_english.md` first: it removes the generated posture. Then run this file: it
-removes the obstacles for a non-native reader. Where they meet:
+Run `generic_english.md` first: it removes the marks of generated text. Then run this file: it
+removes the words and structures a non-native reader cannot read. Where they meet:
 
 - Both cut `moreover`, `robust`, `leverage`, and hidden verbs.
 - Generic English allows a four-word sentence after a thirty-word one; plain English keeps that
@@ -277,12 +278,12 @@ removes the obstacles for a non-native reader. Where they meet:
 - Generic English lets you pick the precise uncommon word; plain English asks whether a common
   word is as precise, and uses it if so.
 - Generic English warns against repeated words as flat rhythm; plain English repeats the noun
-  on purpose when a pronoun would be unclear. Repetition of a term wins; repetition of a
-  sentence shape still loses.
+  on purpose when a pronoun would be unclear. Repeat a term; do not repeat a
+  sentence shape.
 
 ## Before and after
 
-C1 native to organic B1–B2:
+C1 native to natural B1–B2:
 
 > Before: Should the nightly job fall over again, we'll need to circle back and figure out
 > whether it's the cache that's the culprit, since the numbers we got last week were pretty
@@ -298,7 +299,7 @@ C1 native to organic B1–B2:
 > Before: It's the lock, not the allocator, that's been holding things up.
 > After: The lock causes the delay. The allocator does not.
 
-Robotic simple to organic:
+Mechanical simple to natural:
 
 > Before: The tool is fast. The tool uses a cache. The cache is on disk. This means that the
 > tool is fast. Don't worry, it's easy!

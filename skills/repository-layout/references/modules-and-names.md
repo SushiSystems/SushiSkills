@@ -4,7 +4,7 @@ Read this when adding or moving a module, a header or a file, or when a rule in 
 
 ## One module or many
 
-**One module:** source sits directly under the root.
+**One module:** source is directly under the root.
 
 ```
 include/<Project>/<area>/<name>.hpp
@@ -24,7 +24,7 @@ modules/<tier>/<module>/
 tests/<tier>/<module>/test_<name>.cpp
 ```
 
-Growing from one module to two moves `include/` and `source/` under `modules/<tier>/<module>/`,
+Changing a repository from one module to two moves `include/` and `source/` under `modules/<tier>/<module>/`,
 moves `tests/<area>/` to `tests/<tier>/<module>/`, and changes nothing else.
 
 ## Module rules, detail
@@ -34,7 +34,7 @@ moves `tests/<area>/` to `tests/<tier>/<module>/`, and changes nothing else.
    `platform`, `status`, `allocation`.
 2. A module whose build generates its headers, such as compiled shaders, writes them below
    `generated/<Project>/<module>/`; its users include `<Project/module/name.h>` like any other
-   module, and no source header stands in for them.
+   module, and no source header replaces them.
 3. A same-tier edge is listed in the same table, and the build refuses one that is not. Tiers
    declared as domains share one rank. A module named `umbrella` includes its scope.
 6. A module is compiled with the include roots of its declared modules only, so an undeclared
@@ -42,6 +42,8 @@ moves `tests/<area>/` to `tests/<tier>/<module>/`, and changes nothing else.
 
 ## Names
 
+- An umbrella header is at the include root, in module `umbrella`; only another umbrella
+  includes it.
 - `physics_world.hpp` holds `PhysicsWorld`. A header of free functions is named
   `substep_demand.hpp`, never after one of its functions.
 - With the tier in the include path, a module's name is unique within its tier, so two tiers may

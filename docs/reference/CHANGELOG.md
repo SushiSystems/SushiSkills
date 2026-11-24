@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- 2026-11-24 — skills: Replaced every figure of speech in the skills, `claude/` and `sushisystems/` with the literal rule and an example, and defined SOLID with an example per principle (RW-70, `skills/sushiskills/references/solid.md`).
+- 2026-11-24 — claude: Made the session hook print the doctrine, SOLID, skill map, excuses and storage skills verbatim, added the storage rules to the prompt hook and stopped Python and pytest caches in the harness (RW-73, `claude/hooks/`).
+- 2026-11-24 — storage-discipline: Lowered the scratchpad to 20 MB and 1 MB a file, made a download of any size wait for the owner and forbade notes, plans and tool caches in a tree (RW-73, `storage-discipline/SKILL.md`).
 - 2026-11-22 — sushisystems: Merged `sushisystems-brand` into `sushisystems-licence`, which now also loads with `marketing-copy` (`sushisystems-licence/SKILL.md`).
 - 2026-11-22 — skills: Cut the SKILL.md files from 156 653 to 93 623 bytes by moving rationale, examples, tables and red flags into each skill's `references/`, with no rule dropped (RW-67).
 - 2026-11-22 — claude: Made the doctrine hooks print two static files with `cat` and dropped the hook on every tool call; `remind_doctrine.py write` builds the files and a test fails when they are stale (RW-66, `claude/hooks/`).

@@ -6,9 +6,9 @@ description: Use when optimising code, claiming a change is faster or lighter, w
 # Performance
 
 Performance comes second to maintainability and is never guessed. A hot path's structure is
-designed in; every change beyond that is measured.
+set at design time; every change beyond that is measured.
 
-## Designed in, without measuring
+## At design time, without measuring
 
 For any per-frame, per-element or per-sample path:
 
@@ -20,7 +20,7 @@ For any per-frame, per-element or per-sample path:
 
 ## Measured, always
 
-An optimisation is a claim and carries evidence.
+An optimisation is a claim and needs evidence.
 
 1. Measure first: same machine, build type and input, at least five runs.
 2. Change one thing.
@@ -50,4 +50,4 @@ its input size and build type.
 A program measuring what a subsystem does, not how fast, is a probe (`testing`); a probe and a
 scenario benchmark may share a name.
 
-Red flags, folder placement reasons: `references/benchmarks.md`.
+Excuses and folder placement: `references/benchmarks.md`.

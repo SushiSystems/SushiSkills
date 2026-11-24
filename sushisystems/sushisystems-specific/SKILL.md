@@ -5,8 +5,8 @@ description: Use in every Sushi Systems repository, loaded with sushiskills befo
 
 # Sushi Systems specific
 
-The doctrine names no product, company or machine; this layer holds what is true of Sushi Systems
-alone. It extends the doctrine's rules and never replaces one.
+The doctrine names no product, company or machine; this layer holds the facts that are true of
+Sushi Systems only. It extends the doctrine's rules and never replaces one.
 
 ## Loading
 
@@ -14,7 +14,7 @@ In a Sushi Systems repository this skill is loaded with `sushiskills`, before an
 doctrine skill the task loads then brings the Sushi skill its row below names, loaded in the same
 step. A subagent does the same, since its dispatch sends it to the repository's `CLAUDE.md`.
 
-| Doctrine skill | Sushi skill | What it fills |
+| Doctrine skill | Sushi skill | What it covers |
 | --- | --- | --- |
 | `backlog`, `design`, `project-tools`, `build-throughput`, `versioning-and-release` | `sushisystems-tooling` | `sushicore` as the tooling library, the backlog and design commands with and without a module CLI, `tools/settings.py`, the `CLAUDE.md` block |
 | `testing`, `continuous-integration` | `sushisystems-testing` | The test command, the CTest call, the time reader, the tolerance helper, the machine of the `large` tier |

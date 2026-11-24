@@ -19,13 +19,14 @@ The job count is the hardware threads, and every compile and link runs through a
 admits it only when its expected peak, added to the peaks reserved by the edges already running,
 fits in the memory free at the start of the build less the reserve. The expected peak is the one
 measured for that unit on its last build, or the largest of its kind for a unit not seen before.
-Edges are admitted in arrival order, with a short window in which a lighter edge may pass a
-waiting heavy one; after it the queue drains, so no unit is starved. Per-kind pools are the
+Edges are admitted in arrival order, with a short window in which an edge with a lower expected
+peak may start before a waiting edge with a higher one; after the window the queue is served in
+arrival order again, so no unit waits forever. Per-kind pools are the
 fallback where no launcher can be set.
 
 **Not when:** every unit peaks within a factor of two of the others and the build always fits.
 
-## Heavy code compiled once, where it is owned
+## Code with a large compile cost is compiled once, where it is owned
 
 A large template instantiation set or any unit that needs a second compilation pass is
 instantiated in the module that owns it, for the types it supports, and exposed through plain
@@ -62,7 +63,7 @@ a trial shows two cached builds produce identical outputs.
 Test targets compile in unity batches of about eight files; a name clash in an anonymous
 namespace is fixed, not excluded.
 
-**Not when:** the units are heavy, so that their memory peak grows with the batch.
+**Not when:** the units have large memory peaks, so that the peak of a batch grows with its size.
 
 ## Secondary products share the engine's tree
 

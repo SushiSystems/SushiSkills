@@ -10,9 +10,9 @@ MemorySanitizer is not run because it needs every library in the process instrum
 ## Commits that need no run
 
 A commit that changes only prose cannot change what the build, the tests or the sanitizers see.
-A run for it holds the runners for an hour while it waits behind the run before it.
+A run for it occupies the runners for an hour while it waits for the run queued before it.
 
-## A red run
+## A failing run
 
-The rest of a red run is not waited for because its remaining jobs cannot change the fix made
+The rest of a failing run is not waited for because its remaining jobs cannot change the fix made
 from the first failed job.

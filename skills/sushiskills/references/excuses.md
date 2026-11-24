@@ -1,7 +1,7 @@
-# Red flags
+# Excuses of the doctrine
 
-Each sentence below has come before a broken rule. Meeting one in your own reasoning means stop
-and apply the brick of `../SKILL.md`.
+Each sentence below has come before a broken rule. When you find one in your own reasoning, stop
+and apply the boundaries and defaults of `../SKILL.md` to the step it was about to excuse.
 
 - "This one is small, it does not need its own file."
 - "I will put the note here for now and move it later."

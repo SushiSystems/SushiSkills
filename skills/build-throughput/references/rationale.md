@@ -1,7 +1,7 @@
 # Build throughput: rationale
 
 Why each rule in [`../SKILL.md`](../SKILL.md) exists. Read this when a case is not covered there,
-or when a rule seems to cost more than it saves. The rules themselves live only in `SKILL.md`.
+or when a rule seems to cost more than it saves. The rules themselves are written only in `SKILL.md`.
 
 ## Why the setup is engineered
 
@@ -15,28 +15,27 @@ for memory, is slower than one that ran fewer jobs.
   leaves one half-built under the other's flags.
 - **Memory decides parallelism.** A constant tuned on a quiet machine runs out of memory on a
   busy one.
-- **A build change carries its numbers.** A change made to build faster or lighter is a
+- **A build change carries its numbers.** A change made to build faster or with less memory is a
   performance claim.
 - **A public dependency.** A public edge hands its include directories to every module above,
   transitively. A change to the lower module's headers then recompiles all of them, and the
-  first build after the edge lands recompiles most of the tree.
+  first build after the dependency is added recompiles most of the tree.
 - **Build once.** A design that adds a million lines changes nothing in this rule. An error costs
   the same to fix whenever it is found, and each build in the middle costs a full compile and
-  link, so a build run early is paid for again by every later one.
+  link, so a build run early adds its full cost to the cost of the final build.
 - **Build permission.** A build takes the machine's memory and threads for minutes, and the
-  owner shares that machine. A single permission lets the owner approve one run without opening
-  the door for the rest; a standing one spares them the same question on every rerun of a long
-  session. The two are kept apart so that "build it" is never read wider than it was said.
+  owner shares that machine. A single permission lets the owner approve one run without approving
+  later runs; a standing one avoids the same question on every rerun of a long session. The two are kept apart so that "build it" is never read wider than it was said.
 
 ## Defaults
 
-- **Measure first.** The edge that costs the most is rarely the one that looks heavy, and every
+- **Measure first.** The edge that costs the most is rarely the one that looks expensive to compile, and every
   other decision is sized from these numbers. `-ftime-trace` or the compiler's equivalent gives
   the time traces.
 - **Admission by measured peak.** Units of one kind differ by a factor of three or more in
-  memory, so any fixed job count or pool depth is set for the worst unit and idles the machine
-  the rest of the time. After the passing window the queue drains, so no unit is starved.
-- **Heavy code compiled once.** A header-only body is compiled, for every target, in every unit
+  memory, so any fixed job count or pool depth is set for the worst unit and leaves cores unused
+  the rest of the time. After the passing window the queue is served in arrival order, so no unit waits forever.
+- **Code with a large compile cost is compiled once.** A header-only body is compiled, for every target, in every unit
   that uses it; a test file then costs minutes and gigabytes.
 - **Debug information sized to its use.** Full debug information multiplies object size,
   compile memory and link time on template-heavy code.
@@ -51,7 +50,7 @@ for memory, is slower than one that ran fewer jobs.
   doubles the disk the trees take.
 - **The platform's own costs.** The scanner opens every object and executable the build writes.
 
-## More red flags
+## More excuses
 
 - "Full debug information costs nothing." → measure its memory and link time first.
 - "Release is the default because that is what ships." → Debug is the default; Release ships.

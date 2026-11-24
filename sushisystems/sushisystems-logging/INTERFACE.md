@@ -44,7 +44,7 @@ Source: not compiled
 `K_ABI_VERSION` is the version a front was compiled against; `abi_version()` is the one the
 loaded library holds. A front compares the two on its first call and, when they differ, writes
 one line on stderr naming its project, both versions and the library's path, then terminates,
-so a process never runs on a SushiLog whose layout it does not know. The number grows on every
+so a process never runs on a SushiLog whose layout it does not know. The number increases on every
 change to a type or a call of this page, and never otherwise.
 
 ## Record
@@ -94,13 +94,13 @@ Every view is valid only during the sink call.
 | `using LogExecutor = Delegate<void(LogTask), 32>` | Runs the delivery of records in place of the logger's own thread |
 | `void set_log_executor(LogExecutor)` | Hands delivery to the executor; an empty one restores the logger's thread. FATAL, synchronous mode and exit still deliver on the calling thread |
 
-From v0.4.0 a test drives delivery and time without a thread or a clock of its own:
+From v0.4.0 a test controls delivery and time without a thread or a clock of its own:
 `ManualLogExecutor` (`SushiLog/log/log_manual.hpp`) holds each delivery task until `run_pending()`,
 `ScopedLogExecutor` (`SushiLog/log/log_executor.hpp`) installs one for a scope, and `ManualLogClock`
 gives records the time a test advances.
 
 A test reads records through `LogCapture` (`SushiLog/log/log_capture.hpp`): while it lives, every
-record reaches its in-memory `LogRecorder` before the log call returns, and on exit it puts back the
+record reaches its in-memory `LogRecorder` before the log call returns, and on exit it restores the
 sink and the mode it found. It is the scoped sink a `small` test may install, as `testing` allows.
 
 A project's level variable is read the first time one of its categories is used.
@@ -116,7 +116,7 @@ sender has already applied its own. The receiver keeps `time_ns`, ignores the se
 and `text`, numbers the calling thread and writes the line itself, and queues the record as if
 the call had been made to it.
 
-A plug-in that links SushiLog's static target joins the host's SushiLog through the C
+A plug-in that links SushiLog's static target sends its records to the host's SushiLog through the C
 interface, because a `LogSink` does not cross a library boundary: the host hands the plug-in
 `sl_forward_record`, and the plug-in makes it its sink at start-up.
 
@@ -146,7 +146,8 @@ import thunks.
 
 ## C interface
 
-A host outside C++, or a plug-in with a private SushiLog, joins through these C calls.
+A host outside C++, or a plug-in with a private SushiLog, connects to the host's SushiLog
+through these C calls.
 
 ```c
 typedef struct SushiLogRecord

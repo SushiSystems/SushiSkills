@@ -4,7 +4,8 @@
 # Licensed under the Apache License 2.0. See LICENSE.
 """Writes the doctrine reminders the Claude Code hooks print with `cat`, and checks them.
 
-Both files come from `skills/sushiskills/SKILL.md` and its red flags; see `claude/README.md`.
+The session reminder prints the doctrine files verbatim; the prompt reminder is one line built from
+their headings. Both files come from the skills; see `claude/README.md`.
 
 Usage: python claude/hooks/remind_doctrine.py write|check
 """
@@ -16,14 +17,31 @@ import sys
 from pathlib import Path
 
 K_HOOKS_DIR = Path(__file__).resolve().parent
+K_ROOT = K_HOOKS_DIR.parents[1]
 K_SESSION_START_FILE = K_HOOKS_DIR / "session_start.txt"
 K_PROMPT_SUBMIT_FILE = K_HOOKS_DIR / "prompt_submit.txt"
 K_EXIT_CLEAN = 0
 K_EXIT_STALE = 1
-K_SKILL_DIR = Path(__file__).resolve().parents[2] / "skills" / "sushiskills"
-K_SKILL_FILE = K_SKILL_DIR / "SKILL.md"
-K_FLAGS_FILE = K_SKILL_DIR / "references" / "red-flags.md"
-K_ITEM = re.compile(r"^\d+\. \*\*(?P<title>[^*]+)\*\*\s*(?P<rest>.*)$")
+K_SKILLS_DIR = K_ROOT / "skills"
+K_DOCTRINE_DIR = K_SKILLS_DIR / "sushiskills"
+K_SKILL_FILE = K_DOCTRINE_DIR / "SKILL.md"
+K_STORAGE_FILE = K_SKILLS_DIR / "storage-discipline" / "SKILL.md"
+#: The files the session reminder prints in full, in the order the agent reads them.
+K_SOURCES: tuple[Path, ...] = (
+    K_SKILL_FILE,
+    K_DOCTRINE_DIR / "references" / "solid.md",
+    K_DOCTRINE_DIR / "references" / "skill-map.md",
+    K_DOCTRINE_DIR / "references" / "excuses.md",
+    K_STORAGE_FILE,
+)
+K_SESSION_HEADER = (
+    "SushiSkills doctrine, printed verbatim from the files named below. Every rule holds as "
+    "written; the 'Not when' line of a default is part of its rule."
+)
+K_PROMPT_TASK_RULE = "Load the skill the skill map names for this task before you work."
+K_PROMPT_ESCALATION = "Unforeseen case: ask the owner in one line, recommending."
+K_FRONT_MATTER_MARK = "---"
+K_ITEM = re.compile(r"^\d+\. \*\*(?P<title>[^*]+)\*\*")
 
 
 def section(text: str, heading: str) -> list[str]:
@@ -40,40 +58,49 @@ def section(text: str, heading: str) -> list[str]:
     return lines[start:end]
 
 
-def items(lines: list[str]) -> list[tuple[str, str]]:
-    """Returns each numbered item as its bold title and its first sentence."""
-    found: list[tuple[str, list[str]]] = []
-    for line in lines:
-        match = K_ITEM.match(line.strip())
-        if match:
-            found.append((match["title"].rstrip("."), [match["rest"]]))
-        elif found and line.startswith("   ") and line.strip():
-            found[-1][1].append(line.strip())
-    result = []
-    for title, parts in found:
-        body = " ".join(parts).replace("**Rule:**", "").strip()
-        result.append((title, body.split(". ")[0].rstrip(".") + "."))
-    return result
+def titles(lines: list[str]) -> list[str]:
+    """Returns the bold title of each numbered item, without its closing full stop."""
+    found = (K_ITEM.match(line.strip()) for line in lines)
+    return [match["title"].rstrip(".") for match in found if match]
+
+
+def headings(text: str) -> list[str]:
+    """Returns the text of each second-level heading."""
+    return [line[3:].strip() for line in text.splitlines() if line.startswith("## ")]
+
+
+def body(text: str) -> str:
+    """Returns a file's text without its front matter and without trailing blank lines."""
+    lines = text.splitlines()
+    if lines and lines[0].strip() == K_FRONT_MATTER_MARK:
+        for number, line in enumerate(lines[1:], start=1):
+            if line.strip() == K_FRONT_MATTER_MARK:
+                lines = lines[number + 1:]
+                break
+    return "\n".join(lines).strip()
 
 
 def full_reminder() -> str:
-    """Returns the boundaries, the defaults and the red flags, read from the skill."""
-    text = K_SKILL_FILE.read_text(encoding="utf-8")
-    out = ["SushiSkills doctrine reminder. Boundaries hold without exception:"]
-    out += [f"- {title}: {first}" for title, first in items(section(text, "### Boundaries"))]
-    out.append("Defaults hold unless their own 'not when' line applies, read as written:")
-    out += [f"- {title}: {first}" for title, first in items(section(text, "### Defaults"))]
-    out.append("A case no rule foresaw is the owner's call. Red flags, stop if you think one:")
-    flags = K_FLAGS_FILE.read_text(encoding="utf-8").splitlines()
-    out += [line for line in flags if line.startswith("- ")]
-    return "\n".join(out)
+    """Returns the header and each source file in full, each under a line naming its path."""
+    parts = [K_SESSION_HEADER]
+    for path in K_SOURCES:
+        parts.append(f"=== {path.relative_to(K_ROOT).as_posix()} ===")
+        parts.append(body(path.read_text(encoding="utf-8")))
+    return "\n\n".join(parts)
 
 
 def short_reminder() -> str:
-    """Returns one line naming the boundaries."""
-    text = K_SKILL_FILE.read_text(encoding="utf-8")
-    names = ", ".join(title for title, _ in items(section(text, "### Boundaries")))
-    return f"SushiSkills boundaries hold without exception: {names}. Unforeseen case: ask the owner."
+    """Returns one line naming the boundaries, the defaults and the storage topics, and the task rule."""
+    skill = K_SKILL_FILE.read_text(encoding="utf-8")
+    boundaries = ", ".join(titles(section(skill, "### Boundaries")))
+    defaults = ", ".join(titles(section(skill, "### Defaults")))
+    storage = "; ".join(headings(K_STORAGE_FILE.read_text(encoding="utf-8")))
+    return (
+        f"SushiSkills boundaries hold without exception: {boundaries}. "
+        f"Defaults hold unless their 'Not when' line applies: {defaults}. "
+        f"Storage rules, in full at session start: {storage}. "
+        f"{K_PROMPT_TASK_RULE} {K_PROMPT_ESCALATION}"
+    )
 
 
 def expected_files() -> dict[Path, str]:
@@ -82,7 +109,7 @@ def expected_files() -> dict[Path, str]:
 
 
 def stale_files() -> list[Path]:
-    """Returns the reminder files whose text differs from what the skill gives."""
+    """Returns the reminder files whose text differs from what the skills give."""
     stale = []
     for path, text in expected_files().items():
         if not path.is_file() or path.read_text(encoding="utf-8") != text:
@@ -91,7 +118,7 @@ def stale_files() -> list[Path]:
 
 
 def write_files() -> None:
-    """Writes every reminder file from the skill."""
+    """Writes every reminder file from the skills."""
     for path, text in expected_files().items():
         path.write_text(text, encoding="utf-8", newline="\n")
 

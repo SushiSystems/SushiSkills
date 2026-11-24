@@ -1,12 +1,12 @@
 ---
 name: git-workflow
-description: Use when creating a branch, merging, pushing, rebasing, resolving a conflict, or deciding where a piece of work should live in git, in a repository.
+description: Use when creating a branch, merging, pushing, rebasing, resolving a conflict, or deciding where a piece of work should be recorded in git, in a repository.
 ---
 
 # Git Workflow
 
-One line of history per repository. Work reaches `main` in small commits; nothing leaves the
-machine without the owner. Commit messages follow `commits`. Why: `references/rationale.md`.
+One linear history per repository. Work is merged into `main` in small commits; nothing is pushed
+without the owner. Commit messages follow `commits`. Why: `references/rationale.md`.
 
 ## Branches
 
@@ -29,8 +29,8 @@ Approval for one push does not carry to the next.
 
 ## Conflicts
 
-Read both sides and keep both intents. When they contradict, stop and ask. Never take one side
-wholesale to make a conflict go away.
+Read both sides and keep both intents. When they contradict, stop and ask. Never resolve a
+conflict by taking one side unchanged.
 
 ## Shared working tree
 

@@ -54,7 +54,7 @@ TEST(Small_Gemm, BetaZeroIgnoresNanInC)
 
 One promise, named as a sentence. The oracle is the contract: with A the identity, the result is
 B, which anyone can check by hand. It runs on the host in microseconds. It kills the mutant that
-reads C when beta is zero, and it survives any rewrite of how `gemm` is computed.
+reads C when beta is zero, and it still passes after any rewrite of how `gemm` is computed.
 
 ```cpp
 TEST(Medium_Gemm, SimpleGemm)
@@ -82,10 +82,11 @@ device promise has no other test, the host-reference test in the rows above repl
 
 ## Signs of a long test
 
-Each sign is countable. A sign sends the test to the questions below; it is not a verdict by itself.
+Each sign is countable. A sign is not a verdict by itself: on a sign, the reviewer checks the
+test against the questions below.
 A sign about size is answered at question 8, every other sign at question 7.
 
-| Sign | Points at |
+| Sign | Indicates |
 | --- | --- |
 | More than one action under test, or a check between two actions | Two tests |
 | The name needs "and", or names a feature rather than a promise (`Simple`, `Basic`, `Works`, `Full`, `Smoke`) | No stated promise |
@@ -93,7 +94,7 @@ A sign about size is answered at question 8, every other sign at question 7.
 | Assertions about different results of different calls | Several promises in one test |
 | A loop over sizes or inputs in the body | Rows |
 | A device, file, thread or clock in a test of logic: logic is anything decided on values, including what a thread computes; handing a value between threads, a kernel matching its host reference and bytes reaching a file are boundaries | Question 8 |
-| A fixture field this test does not use | A general fixture that hides the cause |
+| A fixture field this test does not use | A general fixture that makes the cause of a failure hard to find |
 | A test slower than its size's limit | Question 8 |
 
 No published study gives a line count for a test, and this page gives none.
@@ -113,13 +114,13 @@ order, and the first answer that gives a verdict ends the review of that test.
 | 2 | Would it fail if its promise broke? | no | **delete**, or **rewrite** when its promise has no other test |
 | 3 | Can its promise be said as one sentence from the name and body? | no, there is none | **delete** |
 | | | no, there are several | **split**, one test per promise |
-| 4 | Does another test check the same promise? | yes, and this one is the larger copy, or sits outside the unit's own test file while the other is in it | **delete** this one |
+| 4 | Does another test check the same promise? | yes, and this one is the larger copy, or is outside the unit's own test file while the other is in it | **delete** this one |
 | | | yes, and neither is in the unit's own test file | **rewrite** the fuller one into the unit's own test file, **delete** the other |
 | | | yes, with other inputs | **merge** them into rows |
 | 5 | Would it fail when only the inside of the unit changes? | yes | **rewrite** against the public promise |
 | 6 | Is its oracle the code under test, or a value pasted from its output? | yes | **rewrite** with a named oracle, or **characterize** with a backlog entry |
 | 7 | Does a sign other than a size sign remain? | yes | **rewrite** |
-| 8 | Is its size the smallest that sees the promise? A decision made on values is seen small. A test that reaches it through a process-wide instance, a device, a file, a thread or a clock is not the smallest, also when the public code offers no other door: that door is the missing seam | no | **resize**, building the seam first when only a larger size can see logic |
+| 8 | Is its size the smallest that can check the promise? A decision made on values can be checked small. A test that reaches it through a process-wide instance, a device, a file, a thread or a clock is not the smallest, even when the public code offers no other way to reach it: the seam is missing | no | **resize**, building the seam first when only a larger size can check logic |
 | | Does it touch only what its size allows, and leave nothing behind? | no, and the size is right | **rewrite** |
 | 9 | None of the above | | **keep** |
 
@@ -137,7 +138,7 @@ tests/test_gemm.cpp::Medium_Gemm.SimpleGemm | delete | 1 | sleep; self-compariso
 A verdict at question 2, 4, 5 or 8 names the files that answer it: the sibling tests for 4, the
 public code for 2, 5 and 8. A record without them is sent back.
 
-A worker applies the verdicts. A deletion carries its question and reason, as `references/determinism.md` asks.
+A worker applies the verdicts. A deletion records its question and reason, as `references/determinism.md` asks.
 
 ## Measuring agreement
 

@@ -1,6 +1,7 @@
-# Dependencies: licence table and red flags
+# Dependencies: licence table and excuses
 
-Read this when a licence question comes up, or when a red flag applies. The other rules are in
+Read this when a licence question comes up, or when you catch yourself using one of the excuses
+below. The other rules are in
 `../SKILL.md`.
 
 ## Licences
@@ -14,8 +15,10 @@ Read this when a licence question comes up, or when a red flag applies. The othe
 | Third-party non-commercial, source-available, field-of-use limits | Rejected |
 | Vendor SDK licences that require marks, notices to the vendor, or restrict redistribution | Rejected |
 
-## Red flags
+## Excuses
+
+Each quoted sentence is an excuse for breaking a rule of `../SKILL.md`; the answer follows it.
 
 - "It is header-only, so it is not really a dependency." → it is.
-- "The licence is probably MIT." → read it.
-- "It is simpler to expose its type in our header." → wrap it.
+- "The licence is probably MIT." → read it in the source.
+- "It is simpler to expose its type in our header." → wrap it in one module.

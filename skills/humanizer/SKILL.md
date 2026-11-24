@@ -7,7 +7,7 @@ description: Use whenever producing prose a human will read, in English or Turki
 
 Run this pass silently over your draft before it reaches anyone. Three rules:
 
-1. **Put a specific fact where an evaluative word wants to go.** A number, a name, a file, a measurement.
+1. **Write a specific fact instead of an evaluative word.** A number, a name, a file, a measurement.
 2. **Make the subject the thing that acts and the verb what it does.** No hidden verbs, no agentless passives, no "serves as" or "işlevi görmektedir" where "is" or "-dır" is true.
 3. **End when you have said it.** No summary, closing offer, "overall" or "sonuç olarak".
 
@@ -18,6 +18,6 @@ Run this pass silently over your draft before it reaches anyone. Three rules:
 - Polish scales with formality; do not over-craft a one-line status. Generic registers get no forced personality, slang or casual texture.
 - Assert what you verified. Name what you did not, once, with what would resolve it. No qualifiers on every sentence.
 
-Red flags, stop and run the pass: a connector "makes it flow"; "a third item would round out the list"; softening with "may" to be safe; saying "crucial" because the reader might not notice; a dash that reads elegant (in Turkish, machine translation); a summary paragraph "for thoroughness".
+Excuses, stop and run the pass: a connector "makes it flow"; "a third item would round out the list"; softening with "may" to be safe; saying "crucial" because the reader might not notice; a dash that reads elegant (in Turkish, machine translation); a summary paragraph "for thoroughness".
 
 Why the rules hold, the register table: `references/register.md`; read it when a draft feels off.

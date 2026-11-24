@@ -1,7 +1,7 @@
 # Logging: levels, records, sinks and hosts
 
 Read this when you set a level from the environment or in code, write or replace a sink, read a
-record's fields, or join the logger to a host's own logging system. The rules are in
+record's fields, or connect the logger to a host's own logging system. The rules are in
 `../SKILL.md`.
 
 ## Levels, with examples
@@ -26,7 +26,8 @@ AC_LOG_LEVEL=off
 BX_LOG_LEVEL=warn,autograd=trace
 ```
 
-These two lines silence one project and follow one module of another, in the same process. A
+These two lines turn off all records of one project and, in the same process, show every record of
+the `autograd` module of another project. A
 value the logger cannot read is reported once on stderr, and that project's levels stay at
 `WARN`. In code, `set_log_level(project, level)` sets one project and
 `set_log_level(category, level)` sets one category. A call made before the first log call wins
@@ -58,13 +59,14 @@ file and a host can file each field where its own logging system keeps it.
 | `FATAL` | Delivered on the calling thread after the queue is drained, then flushed, before the process ends |
 | Exit | The logger is never destroyed, so a call is valid during static initialisation and process exit. At static destruction it stops its thread and delivers what is queued. A process ended without static destruction loses its queue |
 
-## Meeting another logger
+## Using another logging system in the same process
 
 A process can hold a logging system besides the logger: the host's own, as in a game engine, a
 Python program or a game with a logging library, or a plug-in's private copy of the logger. The
-program joins them at start-up, before its first log call, so one of them writes everything.
+program connects them at start-up, before the first log call, through the sink in the table
+below, so that one of them writes every record.
 
-| Host | Join |
+| Host | Connection |
 | --- | --- |
 | Its own logging system, in C++ | It sets the logger's sink to one that hands each record to its system |
 | Its own logging system, outside C++ | The same, through the logger's C interface |

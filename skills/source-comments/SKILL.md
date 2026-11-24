@@ -5,7 +5,7 @@ description: Use when writing or reviewing a comment, a Doxygen block, a file he
 
 # Source Comments
 
-A comment says what a thing does, in Doxygen form, and nothing else. A design's reason lives in
+A comment says what a thing does, in Doxygen form, and nothing else. A design's reason is written in
 a design document; a comment may cite its path. Every symbol carries its sentence. Examples, the
 license box and the Python header: [detail](references/detail.md); read it before
 writing a file opening.

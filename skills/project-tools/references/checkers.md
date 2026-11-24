@@ -13,18 +13,18 @@ in `../SKILL.md`.
 | `tools/documentation/check_changelog.py` | One line, 240 characters, one sentence, no nesting |
 | `tools/documentation/check_backlog.py` | `BACKLOG_FORMAT.md` in `documentation`, through the backlog tool's `backlog check`: the store's shape, values, IDs, paths, references, pins, the index, and a backlog entry for every open design topic |
 | `tools/documentation/check_design_format.py` | `DESIGN_FORMAT.md` in `documentation`, through the design tool's `design check`: the five sections in order, the status length, the phase table and its states, no commit hash, no dated record of work |
-| `tools/documentation/check_design_topics.py` | `DESIGN_FORMAT.md` and `AGENT_WORK.md` in `documentation`: through the design tool's `design check`, the `Modules` line on every topic, the modules exist, each module owned by one topic, no loose document, and the topics and phases a work folder names exist; then the generated views and the opt-in rules for a glossary entry per topic and the folder ceiling |
+| `tools/documentation/check_design_topics.py` | `DESIGN_FORMAT.md` and `AGENT_WORK.md` in `documentation`: through the design tool's `design check`, the `Modules` line on every topic, the modules exist, each module owned by one topic, no loose document, and the topics and phases a work folder names exist; then the generated views and the opt-in rules for a glossary entry per topic and the folder maximum |
 | `tools/documentation/check_module_install.py` | `module-install`: the elements of a module, both install headings, no machine path, no workspace tool in code |
-| `tools/documentation/check_docs_truth.py` | The manual against the source, from `documentation`: every name and path a page writes in code exists, every example cites the file it is taken from, no history words, the page ceilings, no paragraph in two pages, no em dash in prose, a reason on every allow-list entry |
-| `tools/layering/check_layering.py` | Module dependencies follow the declared tier order; nothing reaches into another module's private `source/` |
+| `tools/documentation/check_docs_truth.py` | The manual against the source, from `documentation`: every name and path a page writes in code exists, every example cites the file it is taken from, no history words, the page maximums, no paragraph in two pages, no em dash in prose, a reason on every allow-list entry |
+| `tools/layering/check_layering.py` | Module dependencies follow the declared tier order; no module includes or links against another module's private `source/` |
 | `tools/testing/check_test_mirror.py` | `tests/` mirrors the public headers, from `repository-layout` |
 | `tools/testing/check_test_sizes.py` | Every test writes its size in its source, from `testing` |
 | `tools/testing/check_test_value.py` | Every test case written after `K_TEST_VALUE_SINCE` is none of the forbidden kinds, from `testing` |
 | `tools/testing/check_test_odr.py` | C++ test sources define no type twice at namespace scope, use no suite name with and without a fixture, and name no test with a character outside `[A-Za-z0-9_]`, from `testing` |
-| `tools/testing/check_probes.py` | Probes and scenario benchmarks live in `applications/probes/` and `applications/benchmarks/`, use no test framework, stay out of the test runner, carry a name of their own and are listed, from `testing` and `performance` |
+| `tools/testing/check_probes.py` | Probes and scenario benchmarks are in `applications/probes/` and `applications/benchmarks/`, use no test framework, stay out of the test runner, carry a name of their own and are listed, from `testing` and `performance` |
 | `tools/logs/check_logging.py` | Log calls carry their module's category, library code writes no console output and hides no failure, from `logging` |
 | `tools/commits/check_backlog_trailer.py` | The `Backlog:` line of `commits`: each commit after `K_TRAILER_SINCE` names an entry open in its parent or in itself, or says `none (<reason>)` |
-| `tools/documentation/check_docs_facts.py` | "Facts with one home" in `documentation`: the markers pair, each id has one home, every quote and follow names a fact, and every quote holds its fact's text exactly |
+| `tools/documentation/check_docs_facts.py` | "Facts with one location" in `documentation`: the markers pair, each id has one location, every quote and follow names a fact, and every quote holds its fact's text exactly |
 | `tools/documentation/check_docs_follow.py` | "Pages follow what they describe" in `documentation`: each commit after `K_DOCS_FOLLOW_SINCE` updates the pages that describe what it changes, or says why not with a `Docs:` line |
 | `tools/layering/check_agnostic.py` | The folders `K_AGNOSTIC_PATHS` names hold no product, company tool, identity, machine path or technology name that the terms file lists; it checks nothing in a repository that names no folder |
 | `tools/ci/check_workflows.py` | The workflow files GitHub would refuse before a job starts, from `continuous-integration` |
@@ -52,7 +52,7 @@ together.
   writes nothing and names the file, and `--force` overwrites it. Move the edit upstream first,
   or drop it.
 - A file the repository holds that the library shared once and no longer holds is named as
-  dropped upstream. The copy never deletes it; the repository removes it in its own commit.
+  removed upstream. The copy never deletes it; the repository removes it in its own commit.
 
 ## Known findings in detail
 

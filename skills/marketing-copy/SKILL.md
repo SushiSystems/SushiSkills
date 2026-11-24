@@ -7,7 +7,7 @@ description: Use when writing, editing or reviewing any text that sells or prese
 
 ## The ban
 
-Copy with any of these does not ship.
+Reject copy with any of these.
 
 1. **Slogan rhythm.** Three short declaratives, closed adjective triples, imperative stacks.
 2. **Jargon as decoration.** A standard or library named for a reader who cannot know what it buys them.
@@ -34,8 +34,8 @@ Name a licence exactly: source-available is described as such, with what it allo
 
 ## The pass
 
-Read `english.md` or `turkish.md` before drafting. After `humanizer`'s pass, ask of every sentence: can a non-engineer repeat it; does it survive the swap test; would deleting it lose a fact or only a mood; did the owner or a source supply every fact; does a fact sit beside each large claim; would a rival's engineer nod or wince.
+Read `english.md` or `turkish.md` before drafting. After `humanizer`'s pass, ask of every sentence: can a non-engineer repeat it; does it survive the swap test; would deleting it lose a fact or only a mood; did the owner or a source supply every fact; does a fact accompany each large claim; would a rival's engineer call it true.
 
-Red flags: "needs a punchier closing line"; "a technical term sounds credible"; "a plausible number, they can fix it"; "three short sentences give rhythm"; "the vision is inspiring alone".
+Excuses: "needs a punchier closing line"; "a technical term sounds credible"; "a plausible number, they can fix it"; "three short sentences give rhythm"; "the vision is inspiring alone".
 
 Why it holds, examples and sources: `references/guide.md`.

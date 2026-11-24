@@ -6,19 +6,19 @@ work on internet typography (McCulloch; Gunraj et al. 2016), dictionary slang de
 (Merriam-Webster, Dictionary.com, Oxford, Cambridge) and the published complaints about chatbot
 slang. Sources are in `research/hood_english_sources.md`.
 
-This register is for text that should read like a real person typing to people they know. It is
-not a costume. If the brief does not ask for it, use `generic_english.md`.
+This register is for text that should read like a real person typing to people they know. Do not
+use it to imitate a speaker the brief does not describe. If the brief does not ask for it, use `generic_english.md`.
 
 Three rules subsume most of the rest. If you keep nothing else, keep these:
 
 1. **One scene, one speaker, one year.** Pick US or UK, pick who is talking, and write as of
    now. A London teenager does not say `finna`; an Atlanta 30-year-old does not say `peng`;
    nobody in 2026 says `on fleek` straight.
-2. **Slang is seasoning, not the meal.** Most words in a real message are plain words. One
-   marked item per message is normal, two is a lot, three is a caricature.
+2. **Slang is a small part of a message, not most of it.** Most words in a real message are
+   plain words. One marked item per message is normal, two is a lot, three reads as mockery.
 3. **Grammar follows rules or stays standard.** AAE and MLE are rule-governed grammars. If you
    do not know whether a construction is grammatical, write the standard form. A dropped `is`
-   in the wrong slot is the loudest fake there is.
+   in a position where the grammar keeps it is the most obvious sign of faked dialect.
 
 ## Scene and speaker
 
@@ -34,14 +34,14 @@ Decide before writing:
   message. People do not write "no cap (for real)".
 - **Whose voice it is.** AAE is a community's grammar, and its borrowing as "Gen Z" or "TikTok
   language" is a documented appropriation pattern. Write a Black speaker as a person, not as a
-  bundle of features. For a non-Black speaker, the internet layer plus a few words that are now
+  list of dialect features. For a non-Black speaker, the internet layer plus a few words that are now
   general (`lowkey`, `bet`, `fr`) is realistic; habitual `be`, copula deletion and `BIN` are not.
 
 ## US grammar: African American English
 
 Every feature below is optional for the speaker and variable in use. Real speakers use them
 some of the time, alongside standard forms in the same message. Frequency matters as much as
-correctness: sprinkle, never saturate.
+correctness: use a few, never many.
 
 ### Copula (`is`/`are`) absence
 
@@ -106,7 +106,7 @@ grammar; it is not American.
 
 ## Lexicon
 
-Status is as of 2026-09 and decays. `live`: used sincerely now. `general`: so widespread it is
+Status is as of 2026-09 and goes out of date. `live`: used sincerely now. `general`: so widespread it is
 no longer scene-marked; safe for most speakers. `ironic`: understood, used sincerely it reads as
 out of touch. `dated`: a period marker; only in a character stuck in that period.
 
@@ -166,15 +166,15 @@ out of touch. `dated`: a period marker; only in a character stuck in that period
 ## Density and rhythm
 
 - **One marked term per message; two across a short exchange is already strong.** Grammar
-  features count toward the budget too.
-- **Messages are short and plain.** Most real messages are under ten words. The slang sits
-  where emphasis goes, usually the end or the reaction.
-- **Reactions do the work.** `💀`, `😭`, `lmao`, `nah` are the most frequent "slang" in
+  features count toward this limit too.
+- **Messages are short and plain.** Most real messages are under ten words. The slang goes
+  where the emphasis is, usually the end or the reaction.
+- **Reactions state the meaning.** `💀`, `😭`, `lmao`, `nah` are the most frequent "slang" in
   real chats, and they are scene-neutral.
 - **Repeat the ordinary.** Real people reuse the same two or three words (`bro`, `fr`, `lol`)
   instead of showing range. Variety is the tell.
 - **No slang in serious turns.** When the content is bad news, money or a real apology, slang
-  drops and plain sentences take over.
+  stops and plain sentences are used.
 
 ## Orthography and texting
 

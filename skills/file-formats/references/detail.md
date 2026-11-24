@@ -1,4 +1,4 @@
-# File formats: example and red flags
+# File formats: example and excuses
 
 Read this when writing a new format's first file or tempted to skip a version step. `../SKILL.md` holds the rules.
 
@@ -12,8 +12,8 @@ Read this when writing a new format's first file or tempted to skip a version st
 }
 ```
 
-## Red flags
+## Excuses
 
 - "It is only a cache, it does not need a version." → it needs one; a stale cache is a bug.
 - "I renamed the key; old files will just use the default." → a version step that maps the old key.
-- "Unknown version, but it looks close enough to read." → refuse it.
+- "Unknown version, but it looks close enough to read." → reject it with a status naming both versions.

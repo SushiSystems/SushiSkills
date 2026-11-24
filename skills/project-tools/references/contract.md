@@ -16,7 +16,7 @@ when setting up, syncing or running the tools.
 
 Read `checkers.md` for what each checker enforces and which skill holds the rule.
 
-`tools/check_all.py` runs the set and the checker tests side by side, in the order listed above.
+`tools/check_all.py` runs the set and the checker tests, in the order listed above.
 `write_license_block.py` is run when a repository is created, when its licence changes, and with
 `--report` to prove the blocks are in place.
 
@@ -35,7 +35,7 @@ repository's own license block.
 - `tools/settings.py` and `tools/README.md` are shared by name only: they hold what differs
   between repositories and list its own tools, and the copy never overwrites them.
 - Every other file under a repository's `tools/` is its own tool, at any path the library does
-  not use. The copy never touches it.
+  not use. The copy never changes it.
 
 The library's sync command copies the shared files from the tag the repository pins and writes a
 lock file with a hash per file. Read `checkers.md` before running it.
@@ -44,13 +44,13 @@ lock file with a hash per file. Read `checkers.md` before running it.
 
 `python tools/hooks/install_hooks.py` points git at the tracked `tools/hooks/`. `pre-commit` runs
 `tools/check_all.py --skip-history` on the files the commit will hold, written from the index to a
-throwaway folder, so a session's unfinished file cannot refuse another's commit; CI runs the
+temporary folder, so a session's unfinished file cannot refuse another's commit; CI runs the
 checkers that read every commit. `commit-msg` runs `tools/hooks/commit_msg.py`, which enforces the
 `Backlog:` line of `commits`.
 
 ## Known findings
 
-The file `known_findings.toml` sits beside `settings.py`, and the copy never touches it. Read
+The file `known_findings.toml` is beside `settings.py`, and the copy never changes it. Read
 `checkers.md` for what fails and how the list is written.
 
 ## When to run

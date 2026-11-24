@@ -36,5 +36,5 @@ people wrote.
   make the test pass.
 - An approved update is its own commit: `test(scope): update the <name> golden`.
 
-Where a test file lives is `TESTS.md` in `repository-layout`: the test tree mirrors the source. The
+The location of a test file is `TESTS.md` in `repository-layout`: the test tree mirrors the source. The
 mirror says where a test goes; it never requires a test file for each header.

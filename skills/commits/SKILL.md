@@ -5,13 +5,13 @@ description: Use when writing a git commit message, a pull request title or desc
 
 # Commits
 
-A commit history is read as a changelog of intent. Examples, hook detail: `references/detail.md`.
+Readers use the commit history to see what changed and why. Examples, hook detail: `references/detail.md`.
 
 ## Subject line
 
 `type(scope): sentence` in lower case, present tense, no trailing period, a full clause under 72
 characters. `type(scope)!:` marks a break of a public interface, file format or CLI; without
-the `!` a MAJOR bump hides (`versioning-and-release`).
+the `!` the MAJOR version bump is missed (`versioning-and-release`).
 
 Types: `feat` new behaviour; `fix` wrong behaviour made right; `refactor` same behaviour,
 different shape; `perf` fewer resources; `test` tests only; `docs` documentation only; `build`

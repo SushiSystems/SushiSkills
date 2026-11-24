@@ -28,7 +28,7 @@ Read this when a skill's description leaves unclear which one your task touches.
 | A bug, a crash, a wrong value | `debugging` |
 | A persistent file format | `file-formats` |
 | Branches, pushing, conflicts | `git-workflow` |
-| A file, page, function or setting nothing reaches, or a stale count or path | `unlinked-cleanup` |
+| A file, page, function or setting nothing references, or a stale count or path | `unlinked-cleanup` |
 | CI workflows and CI failures | `continuous-integration` |
 | Windows and Linux differences, exports, paths | `platform-portability` |
 | Build configurations and trees, compile and link speed, build memory | `build-throughput` |

@@ -22,10 +22,10 @@ Reviews: [examples](references/examples.md).
   modules, this module; angle brackets, path per `repository-layout`. A header forward-declares what it only names by pointer or
   reference (`build-throughput`, boundary 7).
 - Class: `public`, `protected`, `private`, data last; constructors, special members, methods in
-  caller order. One-argument constructors `explicit`. Special members: rule of zero, else all five. `const`, `noexcept` where they hold;
-  `[[nodiscard]]` on results and statuses. Derived-from: virtual or protected destructor, else `final`. Interfaces abstract, no data. Dependencies via the constructor, no global or singleton.
+  the order a caller uses them. One-argument constructors `explicit`. Special members: rule of zero, else all five. `const`, `noexcept` where they hold;
+  `[[nodiscard]]` on results and statuses. Base class: virtual or protected destructor, else `final`. Interfaces abstract, no data. Dependencies via the constructor, no global or singleton.
 - Errors: broken precondition `<PREFIX>_ASSERT`, `_VERIFY` or `_FATAL`; external failure a `[[nodiscard]]` `enum class ...Status` or expected; convert third-party throws at the
-  module boundary, none crosses a public surface. Handle or forward every status; no swallowing
-  `catch (...) {}` (`logging`); no `-1` or `nullptr` sentinel.
+  module boundary, none leaves a public function. Handle or forward every status; no
+  empty `catch (...) {}` (`logging`); no `-1` or `nullptr` sentinel.
 - Cheap types by value, others `const&`, sinks by value then moved; hot paths: `performance`.
 - `cmake`, `ninja`, `ctest` run only through the repository's CLI (`sushiskills` default 2).

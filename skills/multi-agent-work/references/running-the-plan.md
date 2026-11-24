@@ -6,7 +6,7 @@ report has done something other than its instruction said. The rules themselves 
 
 ## Why one orchestrator
 
-Parallel agents multiply output and multiply mess by the same factor. One session orchestrates so
+Parallel agents multiply output and also multiply conflicting edits and unchecked work by the same factor. One session orchestrates so
 that every other agent works on a fixed file set and reports with its evidence.
 
 ## The job list
@@ -35,7 +35,7 @@ holds one report.
 
 - A record that says "resize to small" ends with a small test. A ruling that says "build the
   seam" ends with the seam built.
-- "Stays medium for a missing seam" is a reading swapped in for an instruction that could not be
+- "Stays medium for a missing seam" (a seam is a place where a test replaces a dependency) is a reading put in place of an instruction that could not be
   done as written. It is reported as not done instead.
 - "It cannot be checked without a build": the build comes once, at the end (`build-throughput`,
   boundary 8), and the change it needs, a production seam included, is part of the job.

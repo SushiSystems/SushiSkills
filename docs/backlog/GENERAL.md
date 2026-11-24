@@ -14,6 +14,10 @@
 | RW-42 | P1 | open | Split the checkers into a pure core and a file-walking shell so their tests are small | every checker's rules pass the purity run, each test file keeps the shell in at most one medium class, and no mutant survives on the changed lines |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
 | RW-45 | P2 | open | Pilot mutation testing of the diff on host-compiled code in one repository | one repository prints surviving mutants on changed lines from its test command, and its time is recorded |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
 | RW-53 | P1 | blocked | Make the closed-product licence drafts the LICENSE of SushiEngine and Project mobileRTS | both repositories carry the lawyer-reviewed licence with the repair right and the sunset clause, and a Trustee holds the deposit | external: a lawyer's review of the drafts | `docs/agent/2026_11_06_LICENCE_CHANGE/SPEC.md` | 2026-11-06 |
+| RW-70 | P2 | open | Replace every figure of speech in the skills with its literal rule and an example | no skill, claude or sushisystems file holds a metaphor; SOLID has a literal definition with examples |  | `docs/agent/2026_11_24_LITERAL_WORDING/PLAN.md` | 2026-11-24 |
+| RW-71 | P3 | open | Measure with a fixed task set whether sessions follow the doctrine and storage rules | a task set with a checklist per task runs before and after a hook change and the results are compared |  |  | 2026-11-24 |
+| RW-72 | P2 | decision | Decide whether a PreToolUse hook blocks writes outside the repository and scratchpad | the owner rules yes or no; a yes lists the paths and the size limit the hook enforces |  |  | 2026-11-24 |
+| RW-73 | P1 | open | Print the doctrine and storage skills verbatim at session start; stop caches in the tree | session_start.txt holds the five source files verbatim; env stops bytecode and pytest caches; tests pass |  | `docs/agent/2026_11_24_LITERAL_WORDING/PLAN.md` | 2026-11-24 |
 
 ## Known issues
 

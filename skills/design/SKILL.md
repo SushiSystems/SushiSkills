@@ -23,12 +23,12 @@ Format: `DESIGN_FORMAT.md` and `AGENT_WORK.md` of `documentation`.
    withdrawn.
    <!-- follows: phase-ships-topic -->
 5. **Work that carries out a phase** says so in its work folder's `Implements` line.
-6. **The status line** says where the document stands and never how it got there.
+6. **The status line** states the document's current state and never its history.
 
-## Red flags
+## Excuses
 
 - "I will read `docs/design/` to see what is designed." `design list` or `design show`.
-- "This topic is slightly different, so it gets its own document." Extend the module's owner.
-- "I will write the topic's frame by hand." `design new`, `design page`, `design phase`.
+- "This topic is slightly different, so it gets its own document." Extend the topic that owns the module.
+- "I will write the topic's sections and tables by hand." `design new`, `design page`, `design phase`.
 - "I will change the phase table to match what I built." `design phase-state`.
 - "The decision is in the commit message." In the topic, in the same commit.

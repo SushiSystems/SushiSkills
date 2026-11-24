@@ -6,14 +6,14 @@ description: Use when writing, building or testing code that runs on an accelera
 # GPU development
 
 Device code is compiled, linked and tested differently from host code. These rules extend
-`build-throughput` and `testing`; where silent, those hold. Reasons and red flags:
+`build-throughput` and `testing`; where silent, those hold. Reasons and excuses:
 `references/rationale.md`.
 
 ## Building device code
 
-- **Link once per process.** Code needing a device link lives in a shared library, so each
+- **Link once per process.** Code needing a device link is in a shared library, so each
   executable links an import library. *Not when:* one executable links the archive.
-- **Development builds target the building machine's device architectures;** package and CI lanes
+- **Development builds target the building machine's device architectures;** package and CI jobs
   compile every shipped architecture. *Not when:* the tests select a device of another kind on that
   machine.
 - **Device code is optimised in every configuration,** Debug included. *Not when:* a debugging

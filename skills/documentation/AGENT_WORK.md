@@ -16,14 +16,14 @@ Read from the `documentation` skill before opening a design document or a work f
   | `**Status:** Open — <where it stands>` | Intent with work left |
   | `**Status:** Shipped — <YYYY-MM-DD>` | Built as designed on that date |
   | `**Status:** Superseded — <YYYY-MM-DD> by <link>` | Replaced by another document |
-  | `**Status:** Withdrawn — <YYYY-MM-DD>, <reason>` | Given up by the owner |
+  | `**Status:** Withdrawn — <YYYY-MM-DD>, <reason>` | Cancelled by the owner |
 
-- A design document is the `README.md` of its topic folder. Above its ceiling (see "Size and one
-  home" in `SKILL.md`) the detail moves into one page per phase beside it, and the generated map
-  follows. The `README.md` carries the status; the pages carry none.
+- A design document is the `README.md` of its topic folder. Above its maximum length (see "Size and
+  one location" in `SKILL.md`) the detail moves into one page per phase beside it, and the
+  generated map follows. The `README.md` carries the status; the pages carry none.
 - `docs/backlog/` is the only backlog and `backlog next` the only order; its format is
-  `BACKLOG_FORMAT.md`. No TODO list, roadmap, journal, handover, milestone or priority file sits
-  under `docs/` outside `agent/` and `archive/`. Phases live in their design document, finished
+  `BACKLOG_FORMAT.md`. No TODO list, roadmap, journal, handover, milestone or priority file is
+  under `docs/` outside `agent/` and `archive/`. Phases are in their design document, finished
   work in the changelog, a journal or a handover in the work folder that wrote it.
 
 ## Linking work to a design
@@ -54,35 +54,35 @@ fails an item whose topic or phase does not exist, so a renamed phase is found w
    commit, and does not ask first or wait for the end.
 3. **Close.** The orchestrator, in one commit: writes the changelog line, dates the work
    folder's status and the design status, writes the decisions the work made into its design
-   document, closes and adds the backlog entries with the `backlog` commands, updates the module READMEs and manual pages the work
-   made false.
+   document, closes and adds the backlog entries with the `backlog` commands, updates the module
+   READMEs and manual pages the work made false.
 4. **Delete.** A closed work folder, and a design document that is `Superseded` or `Withdrawn`, is
    deleted: the version history keeps it, and the decisions it made are already in the topic. The
-   clock reads the date in the status line, never a commit date, which a pass over many files would
-   reset. `check_docs_layout.py` lists each one closed for longer than `K_CLOSED_GRACE_DAYS` in
-   `tools/settings.py`: 90 days by default, 0 in a repository that deletes at close. A `Shipped`
-   design document stays as the record of its decisions and their reasons; what the code now is
-   belongs on the module page.
+   age is computed from the date in the status line, never from a commit date, which a pass over
+   many files would change. `check_docs_layout.py` lists each one closed for longer than
+   `K_CLOSED_GRACE_DAYS` in `tools/settings.py`: 90 days by default, 0 in a repository that
+   deletes at close. A `Shipped` design document stays as the record of its decisions and their
+   reasons; what the code now is belongs on the module page.
 
 ## The archive
 
-`docs/archive/` holds frozen text and nothing new is moved into it. A repository that still tracks
-one runs `tools/documentation/retire_archive.py --apply` once the repository cites nothing in it:
-the tool tags the history `docs-archive-<date>`, unstages the folder and ignores it, and the
-commit follows. A repository that sets `K_ARCHIVE_UNTRACKED` in `tools/settings.py` has
-`check_design_topics.py` fail every line that cites the archive; each such citation is repointed to
-the topic that holds the decision, or dropped. A decision that only an archived folder held is not
-recovered. `tools/documentation/drop_retired_citations.py --prefix docs/archive --apply` replaces
-each such citation with a phrase naming the file, and does the same for the files of a deleted work
-folder.
+`docs/archive/` holds text that is no longer edited, and nothing new is moved into it. A
+repository that still tracks one runs `tools/documentation/retire_archive.py --apply` once the
+repository cites nothing in it: the tool tags the history `docs-archive-<date>`, unstages the
+folder and ignores it, and the commit follows. A repository that sets `K_ARCHIVE_UNTRACKED` in
+`tools/settings.py` has `check_design_topics.py` fail every line that cites the archive; each
+such citation is repointed to the topic that holds the decision, or dropped. A decision that only
+an archived folder held is not recovered.
+`tools/documentation/drop_retired_citations.py --prefix docs/archive --apply` replaces each such
+citation with a phrase naming the file, and does the same for the files of a deleted work folder.
 
-The manual is never deleted; it is kept true.
+The manual is never deleted; each commit that changes the code updates the pages it makes false.
 
 ## Who writes where
 
 Who may write which file is the Roles table of `multi-agent-work`.
 
 A worker whose change makes a page outside its write list false reports the page and the exact
-lines. The orchestrator corrects them in the commit that closes that piece of work. Reported is
-not corrected.
+lines. The orchestrator corrects them in the commit that closes that piece of work. A report of a
+false page does not correct it.
 

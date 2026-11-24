@@ -28,7 +28,7 @@ literal-reading examples: `references/running-the-plan.md`.
 
 ## Dispatch
 
-Open with the line `claude/CLAUDE.md` gives in "Delegation"; the rules live only in
+Open with the line `claude/CLAUDE.md` gives in "Delegation"; the rules are written only in
 `claude/DISPATCH.md`. Give task, files, criterion, skills, work folder; a worker
 sees no orchestrator memory. `model-routing` sets model and effort. Staging, stash and
 worktrees follow `git-workflow`; no file is held by two jobs.
@@ -47,6 +47,6 @@ Beyond the evidence in "Delegation":
 
 Every agent, orchestrator included, does each plan, job, record, ruling and owner instruction one
 at a time, in order, as written. One that cannot be done so is reported not done, with the reason,
-never swapped for a reading that can. A missing build is no reason. The orchestrator checks each report against every
+never replaced by a reading that can. A missing build is no reason. The orchestrator checks each report against every
 instruction, sends back a different result and rereads its earlier instructions before each dispatch,
 acceptance and owner report.

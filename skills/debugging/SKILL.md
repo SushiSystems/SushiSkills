@@ -6,7 +6,7 @@ description: Use when a bug, crash, wrong image, wrong number or unexpected beha
 # Debugging
 
 Data before theory: a cause is found by measuring the running program, not by reading code until
-a story fits.
+an explanation seems to fit.
 
 ## Order
 
@@ -16,20 +16,21 @@ a story fits.
 3. **Instrument** with one temporary readout of the values the next decision depends on, behind
    one flag or in one block. Hand the command to the owner when the program needs their machine
    or eyes.
-4. **Narrow.** Each readout halves the causes; move it, do not multiply it.
-5. **Fix at the root** with a regression test, following `testing`.
-6. **Remove the instrumentation** in the same piece of work; no readout survives the fix.
+4. **Narrow.** Place each readout so that it splits the possible causes in two; move it, do not
+   add more.
+5. **Fix the root cause** with a regression test, following `testing`.
+6. **Remove the instrumentation** in the same piece of work; no readout remains after the fix.
 
 ## Instrumentation
 
 Writes to standard error with the prefix `[DIAG <topic>]`; prints values with units and frame or
-step numbers, one line per sample; is the only uncommitted change while it exists, or lives in a
+step numbers, one line per sample; is the only uncommitted change while it exists, or is in a
 commit that the fix removes.
 
 ## Known issues
 
-A failure that is not this repository's fault, or that it lives with and has a workaround for, is
+A failure that is not this repository's fault, or that it accepts and has a workaround for, is
 a known issue: `backlog add issue`, one entry per cause, as `BACKLOG_FORMAT.md` in `documentation`
 gives. A defect to fix with no workaround yet is `backlog add work`.
 
-Red flags (a theory with no data, repeated questions, stacked workarounds): `references/red-flags.md`.
+Excuses (a theory with no data, repeated questions, stacked workarounds): `references/excuses.md`.

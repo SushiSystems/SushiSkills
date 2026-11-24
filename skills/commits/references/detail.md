@@ -10,12 +10,12 @@ next version: see `versioning-and-release`.
 
 ## Body
 
-The reason for a design lives in a design document; the body may cite its path.
+The reason for a design is stored in a design document; the body may cite its path.
 
 ## The backlog line, enforcement
 
 - The hook asks a sibling repository about its entry when it is checked out beside this one and
-  takes it on trust when it is not.
+  accepts it without checking when it is not.
 - `tools/commits/check_backlog_trailer.py` checks the commits after `K_TRAILER_SINCE` in
   `tools/settings.py`, and the `commit-msg` hook in `tools/hooks/` refuses a message that
   breaks the rule before the commit exists. A repository's setup command installs the hook for

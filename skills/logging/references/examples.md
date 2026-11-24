@@ -51,7 +51,7 @@ Source: not compiled
 | Mistake | Fix |
 | --- | --- |
 | `AC_LOG_ERROR(category, "failed")` | Name the operation, the input and the consequence |
-| `INFO` inside the frame loop | A counter plus one `INFO` per interval, or `TRACE` |
+| `INFO` inside the frame loop (a log call once per frame) | A counter plus one `INFO` per interval, or `TRACE` |
 | A module logging under another module's category | Declare the module's own category |
 | `std::cout`, `printf` or `print` in library code | The logger |
 | `logging.info(...)` on the root logger | The module's `_log` |

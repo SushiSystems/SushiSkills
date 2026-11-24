@@ -1,9 +1,9 @@
-# Versioning and release: version source, commands and red flags
+# Versioning and release: version source, commands and excuses
 
-Read this to find the file that holds the version, to cut or report a release, or when a red flag
-applies. The rules themselves are in `../SKILL.md`.
+Read this to find the file that holds the version, to cut or report a release, or when an excuse
+from the list below comes to mind. The rules themselves are in `../SKILL.md`.
 
-## Where the version lives
+## Where the version is stored
 
 | Stack | Source |
 | --- | --- |
@@ -24,7 +24,7 @@ git tag -a vX.Y.Z -m "vX.Y.Z"
 
 `Next release: v0.3.3 (patch), 4 entries since v0.3.2.`
 
-## Red flags
+## Excuses
 
 - "It is only a small feature, so a patch bump is fine." → the bump rules decide, not the size.
 - "I will retag the release to include this fix." → a new PATCH.

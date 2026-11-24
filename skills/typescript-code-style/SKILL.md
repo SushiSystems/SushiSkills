@@ -5,9 +5,8 @@ description: Use when writing, reviewing or refactoring TypeScript in a reposito
 
 # TypeScript Code Style
 
-C++ symmetry: every opening brace on its own line, in the column of its closing
-brace. Trees, examples: [rules](references/rules.md).
-
+Braces as in C++: every opening brace on its own line, in the column of its closing
+brace. Layout tree, examples: [rules](references/rules.md).
 - Layout: `repository-layout`'s module-count predicate holds; the tree is in rules.
   `source/index.ts` re-exports the public surface only; tests at
   `tests/<tier>/<module>/<name>.test.ts`. One module: `source/` and `tests/` at the root.
@@ -27,7 +26,7 @@ brace. Trees, examples: [rules](references/rules.md).
   interfaces hold no implementation, each implementation its own class and file.
 - Errors: external failure returns a discriminated union with a status enum; `throw` only for
   programmer errors and framework-required boundaries; convert or log a caught error at its
-  boundary; no swallowing `catch {}`.
+  boundary; no empty `catch {}`.
 - Logging (`logging`): one `const K_LOGGER = Logger.forCategory("assets");` per module; values
   as arguments, never template strings. Comments: `source-comments`.
 - Tests: `vitest`, one `<name>.test.ts` per source file at the path `TESTS.md` in

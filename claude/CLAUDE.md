@@ -25,7 +25,7 @@ It holds the tree, the placement questions and the changelog entry shape;
 enforce it.
 
 On first entering a repository that lacks this shape: measure it, report the gaps, and get
-approval before building the skeleton. The build-out is its own task.
+approval before creating the initial layout. Creating it is its own task.
 
 ## Source comments
 
@@ -51,7 +51,7 @@ piece of work. Every commit ends with its `Backlog:` line, and a commit hook is 
 ## Pace
 
 Act on the known step. What is inside the task, local and reversible is done now and checked
-afterwards; a red check is fixed and rerun at once, not waited on. Only what the owner reserves, or
+afterwards; a failing check is fixed and rerun at once, not waited on. Only what the owner reserves, or
 what publishes or cannot be undone, waits, and then in one line that says what is needed and what is
 recommended. The `sushiskills` skill holds the rule and its "not when" line.
 

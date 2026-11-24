@@ -22,7 +22,7 @@ Read `references/stages.md` before changing a job. A stage runs the tests whose 
   hardware and the proposal shows the output.
 - A repository pinning an upstream builds on the tag before merge, upstream `main` after.
 
-## Shape
+## Workflow rules
 
 1. Full-history checkout.
 2. CI calls only the project CLI, save where `sushiskills` default 2 allows.
@@ -44,7 +44,7 @@ manifest; goes through a pull request; or `check_all.py` was not clean.
 ## When CI fails
 
 - Read the first failed log as its job ends; fix per `sushiskills` default 3.
-- A red `main` is reverted, then fixed and landed; nothing else lands on it. No release
-  is proposed or cut while CI is red.
+- A failing `main` is reverted, then fixed and merged again; nothing else is merged into it. No
+  release is proposed or cut while CI fails.
 - Reproduce a CI-only failure locally; file an environment fault with `backlog add issue`.
-- Never disable a job or let it fail to get green.
+- Never disable a job or allow it to fail so that CI reports success.

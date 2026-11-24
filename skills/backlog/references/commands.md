@@ -17,8 +17,8 @@ commands, named by the tooling role.
 | Is the store well-formed? | `<cli> backlog check` |
 | Which entry does my commit serve? | The ID from `backlog next`, or the one `backlog add` printed |
 
-A markdown file under `docs/backlog/` is a stale copy of the tool's output; the command answers
-from the store.
+A markdown file under `docs/backlog/` is a copy of the tool's output that can be out of date; the
+command answers from the store.
 
 `backlog next` gives the owner's pins, then the ready entries by priority and age. The command
 `backlog close` takes no commit hash; the changelog line it prints names the ID. The work folder
@@ -50,5 +50,5 @@ The columns and the rule for a known issue are in `BACKLOG_FORMAT.md`.
 
 ## Choosing a priority
 
-The priorities and their limits are in `SKILL.md`, section "Priority", the one home of the
+The priorities and their limits are in `SKILL.md`, section "Priority", the one location of the
 limits.

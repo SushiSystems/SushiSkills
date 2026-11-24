@@ -5,11 +5,11 @@ description: Use when writing, reviewing or refactoring Python in a repository -
 
 # Python Code Style
 
-Python 3.11+, the C++ brick discipline; entry points parse and delegate. Layouts:
-[rules](references/rules.md).
+Python 3.11+, [unit rules of `sushiskills`](../sushiskills/references/solid.md); entry points
+parse, delegate. Layouts: [rules](references/rules.md).
 
 - Layout: `repository-layout`'s module-count predicate holds; `__init__.py` re-exports the public
-  surface; other module-level names start with `_`. Imports point down the tier order, never to another module's private names. A CLI is a module: `commands/` parses; `services/` works, never imports the command
+  surface; other module-level names start with `_`. Import from lower tiers, not private names of other modules. A CLI is a module: `commands/` parses; `services/` works, never imports the command
   framework or prints.
 - Formatting: 4 spaces, 100 columns, double quotes, trailing commas on multi-line collections
   and calls, two blank lines between top-level definitions, one between methods, built-in-generic
@@ -26,7 +26,5 @@ Python 3.11+, the C++ brick discipline; entry points parse and delegate. Layouts
   with `raise ... from error`; no `except:` or `except Exception: pass`; raise or log every failure. The entry point catches the base error, prints a line, exits non-zero.
 - Logging (`logging`): `K_LOGGER = logging.getLogger("<project>.<module>")` per module; `%s`
   placeholders, never f-strings.
-- Tests: `pytest`, `test_<name>.py` per source file at the path `TESTS.md` in `repository-layout`
-  gives; `test_<behaviour>_<condition>`. `tools/` checkers use the standard library only, their tests
-  in `tools/tests/` use `unittest`.
+- Tests: `pytest`, `test_<name>.py` per source file at the `TESTS.md` path of `repository-layout`; `test_<behaviour>_<condition>`. `tools/` checkers: standard library only, tests in `tools/tests/` with `unittest`.
 - `uv`, `pytest` run only through the repository's CLI (`sushiskills`).

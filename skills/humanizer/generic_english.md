@@ -7,7 +7,7 @@ the Wikipedia "Signs of AI writing" catalogue. Sources are in `research/generic_
 
 Three rules subsume most of the rest. If you keep nothing else, keep these:
 
-1. **Put a specific fact where an evaluative word wants to go.** "significantly faster" is an
+1. **Write a specific fact instead of an evaluative word.** "significantly faster" is an
    opinion; "14 ms to 3 ms at p99" is a fact.
 2. **Make the subject the thing that acts, and the verb what it does.** "Validation of the set
    is performed by the renderer" hides both; "the renderer validates the set" shows both.
@@ -20,18 +20,18 @@ Three rules subsume most of the rest. If you keep nothing else, keep these:
   Not "A 40% cut in frame time results from barrier batching, which landed last week" but
   "Barrier batching landed last week. It cut frame time by 40%."
 - **Verbs, not nominalizations.** `initialization of` → `initializes`; `perform a validation` →
-  `validate`; `make a decision` → `decide`. A hidden verb takes a helper verb with it
-  (`perform`, `conduct`, `carry out`, `achieve`), and both go.
+  `validate`; `make a decision` → `decide`. A hidden verb comes with a helper verb
+  (`perform`, `conduct`, `carry out`, `achieve`); remove both and use the real verb.
 - **`is` and `has` are fine.** Corpus work measured a 10% drop in `is`/`are` in 2023 academic
   prose as LLMs replaced them with `serves as`, `stands as`, `represents`, `functions as`,
   `boasts`, `features`, `offers`. When the true verb is `is`, write `is`.
 - **Passive is a tool, not a fault.** Use it when the agent is unknown or irrelevant, or when
-  the patient is the topic that carries old information forward ("The set is validated at
+  the patient is the topic that repeats old information ("The set is validated at
   submission" in a paragraph about the set). Never use it to hide an accountable actor.
 - **Sentence length varies on purpose.** Stylometry measures burstiness; generated prose is
   flat. If a paragraph runs 15–25 words per sentence throughout, break it. A four-word sentence
-  after a thirty-word one is a human choosing where the weight goes.
-- **Connectives carry logic or they go.** `but`, `so`, `because`, `then` say how one sentence
+  after a thirty-word one is a human choosing where the emphasis goes.
+- **A connective states a logical relation or is deleted.** `but`, `so`, `because`, `then` say how one sentence
   follows another. `Moreover`, `Furthermore`, `Additionally`, `In addition` only claim that it
   does. If you cannot replace one with `and` or delete it, the sentences do not follow, and
   that is the actual problem.
@@ -42,23 +42,23 @@ Three rules subsume most of the rest. If you keep nothing else, keep these:
 
 ## Adjectives and adverbs
 
-- An adjective earns its place by narrowing the set. `robust, comprehensive error handling` narrows
-  nothing; `a retry loop with exponential backoff` is the noun the adjectives were standing in for.
+- Keep an adjective only if it narrows the set. `robust, comprehensive error handling` narrows
+  nothing; `a retry loop with exponential backoff` is the specific noun the adjectives replaced.
   Prefer the specific noun to adjective + generic noun.
 - Cut the adverb the verb already contains: `blare loudly`, `clench tightly`, `carefully
   validate`.
 - Unquantified intensifiers are claims without evidence: `significantly`, `substantially`,
   `dramatically`, `considerably`, `greatly`. Each becomes a number or is deleted.
-- Zinsser's qualifiers whittle trust: `very`, `quite`, `rather`, `a bit`, `sort of`, `somewhat`,
+- Zinsser's qualifiers reduce trust: `very`, `quite`, `rather`, `a bit`, `sort of`, `somewhat`,
   `in a sense`, `pretty much`. Delete.
 - `simple`, `easy`, `just`, `straightforward` about a task: Google bans them. The reader who
   finds it hard now also feels stupid.
 
 ## Vocabulary
 
-Vocabulary tells decay; Wikipedia versions its list every twelve to eighteen months. Treat these
-as symptoms of the underlying fault (filling a shape instead of stating a fact), not as a
-regex.
+Vocabulary tells go out of date; Wikipedia revises its list every twelve to eighteen months. Treat
+these as symptoms of the underlying fault (writing the expected form instead of stating a fact),
+not as a regex.
 
 **Measured excess (corpus ratios in Kobak 2024, Juzek & Ward 2025):** delve, underscore(s),
 showcase/showcasing, crucial, pivotal, intricate, meticulous, tapestry, testament, interplay,
@@ -79,7 +79,7 @@ generally speaking; to some extent; it could be argued that; at the end of the d
 in; in conclusion; overall; to summarize.
 
 **Participial opinion tails.** A fact followed by `, highlighting…`, `, underscoring…`,
-`, ensuring…`, `, reflecting…`, `, contributing to…`, `, demonstrating…`. The tail attaches an
+`, ensuring…`, `, reflecting…`, `, contributing to…`, `, demonstrating…`. The tail adds an
 unattributed judgment to the fact. Cut the tail or make it its own sentence with its own
 subject.
 
@@ -97,13 +97,13 @@ These survive any vocabulary substitution, so they matter more than the word lis
   rhetorical choice; twice is a template.
 - **No false balance.** "While X has advantages, it also has drawbacks" is true of everything.
   Name the specific trade and who pays it.
-- **Lists are lumpy.** Two items, or five, or four of unequal weight. A list of exactly three
+- **Lists are uneven.** Two items, or five, or four of unequal weight. A list of exactly three
   matched items, repeatedly, is the rule of three imposed on material that did not come in
   threes.
 - **Paragraphs vary in length**, and a heading marks a real division. A heading per paragraph
   is decoration. Bold-header bullets (`**Term:** explanation`, down a whole list) are the
   listicle shape; write the paragraph instead.
-- **The closing paragraph earns its place** with a decision, a next step or a caveat not yet
+- **A closing paragraph is kept only if it holds** a decision, a next step or a caveat not yet
   stated. Otherwise stop at the last substantive sentence. Never "Let me know if you'd like me
   to expand on this" in a document.
 - **Uncertainty is asymmetric.** Assert what you verified. Name what you did not, once, where it
@@ -142,8 +142,8 @@ performance claim carries its number and its trade-off. The kernel's phrasing ru
 if giving orders to the codebase", so `make xyzzy do frotz`, never `this patch makes`.
 
 **PR description.** What changed; why it had to; what the reviewer should look at hardest; how
-it was verified (the actual command, the actual output); what is knowingly left undone. The last
-item is where honesty is cheapest and most valuable.
+it was verified (the actual command, the actual output); what is knowingly left undone. State the
+last item honestly: a reviewer reads it to decide what to check.
 
 **API doc comment** (Go, Rust). A complete sentence beginning with the symbol's own name:
 `Quote returns a double-quoted literal representing s.` "Reports whether", not "returns true

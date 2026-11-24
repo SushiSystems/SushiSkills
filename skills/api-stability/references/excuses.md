@@ -1,7 +1,9 @@
-# API stability: red flags
+# API stability: excuses
 
-Read this when a change to a public surface feels harmless. The rules themselves are in
+Read this when you think a change to a public surface is harmless. The rules themselves are in
 `../SKILL.md`.
+
+## Excuses
 
 - "Nobody outside this module calls it." → check the repositories above before calling it private.
 - "I will keep the old function as well, just in case." → deprecate and forward, then remove.
