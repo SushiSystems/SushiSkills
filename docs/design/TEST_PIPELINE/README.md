@@ -2,7 +2,7 @@
 
 **Status:** Open — rules, checkers and the tolerance header built; the rework of every repository is next
 **About:** How every repository tests: what a test is worth, the sizes, the architecture that makes tests small, how they run fast, the CI stages
-**Modules:** `tools/testing`
+**Modules:** `skills/testing`
 
 ## Problem
 
