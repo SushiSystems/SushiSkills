@@ -1,6 +1,6 @@
 # Literal wording: plan
 
-**Status:** Open — every job ran and R1 reviewed the diff; the owner commits and closes RW-70 and RW-73
+**Status:** Open — every job is done and committed; the folder stays while RW-74 cites it as its source
 
 The skills, `claude/` and `sushisystems/` are read by AI models, which need the rule stated
 exactly. Several rules are taught through an image instead: SOLID as "a brick", the CLI rule as

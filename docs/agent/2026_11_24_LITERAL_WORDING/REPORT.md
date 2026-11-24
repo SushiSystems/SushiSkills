@@ -1,6 +1,6 @@
 # Literal wording: report
 
-**Status:** Every job A0 to A9 and the reviews R1 and R2 ran; three rounds of fixes followed. `check_all.py` is clean and every SKILL.md is at or under 2500 bytes. Open items are listed below.
+**Status:** Every job A0 to A9 and the reviews R1 and R2 ran and the work is committed; round 3 of the fixes was not reviewed. `check_all.py` is clean. Open items are listed below.
 
 ## What was built
 
