@@ -16,11 +16,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from checking.checker import Checker, Issue, run  # noqa: E402
-from checking.ignored_paths import drop_ignored  # noqa: E402
-from checking.source_file import SourceFile, read_files  # noqa: E402
+from sushicore.tools.checking.checker import Checker, Issue, run  # noqa: E402
+from sushicore.tools.checking.ignored_paths import drop_ignored  # noqa: E402
+from sushicore.tools.checking.source_file import SourceFile, read_files  # noqa: E402
 
-import settings  # noqa: E402
+from sushicore.tools import repo_settings as settings  # noqa: E402
 
 #: The most words a SKILL.md body may hold, front matter left out.
 K_WORD_BUDGET = 800

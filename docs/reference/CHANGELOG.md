@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-24 — tools: Ran the shared checkers from the sushicore 0.18 package instead of copies under `tools/`, and dropped `tools/skills` from the agnostic paths, since its checker imports sushicore.
 - 2026-11-24 — skills: Replaced every figure of speech in the skills, `claude/` and `sushisystems/` with the literal rule and an example, and defined SOLID with an example per principle (RW-70, `skills/sushiskills/references/solid.md`).
 - 2026-11-24 — claude: Made the session hook print the doctrine, SOLID, skill map, excuses and storage skills verbatim, added the storage rules to the prompt hook and stopped Python and pytest caches in the harness (RW-73, `claude/hooks/`).
 - 2026-11-24 — storage-discipline: Lowered the scratchpad to 20 MB and 1 MB a file, made a download of any size wait for the owner and forbade notes, plans and tool caches in a tree (RW-73, `storage-discipline/SKILL.md`).
@@ -60,28 +61,28 @@
 - 2026-11-05 — tools: Let `check_all.py` pass the findings a repository's `known_findings.toml` allows, failing new and fixed ones so the list only shrinks (RW-42, `checking/known_findings.py`).
 - 2026-11-05 — testing: Removed the 10 s limit on a module's small tests, which a module of 2000 fast tests could never meet; the total is printed and never gates (`SKILL.md`, `test_budget.py`, `K_TEST_TIMES`).
 - 2026-11-05 — testing: Cut the size timeouts to 1 s, 10 s and 120 s per test case, a C++ shard's being its size's timeout times its cases (`SKILL.md`, `tools/tests/conftest.py`).
-- 2026-11-05 — layering: Moved the plain `add_library`, restricted-include and foreign-root rules up from SushiEngine's copy, silent where a repository sets no `K_INCLUDE_DOORS` or `K_FOREIGN_*` (J10a, `tools/layering/check_layering.py`).
+- 2026-11-05 — layering: Moved the plain `add_library`, restricted-include and foreign-root rules, silent where a repository sets no `K_INCLUDE_DOORS` or `K_FOREIGN_*` (J10a, `sushicore.tools.layering.check_layering`).
 - 2026-11-05 — tools: Marked the size of every checker test with `K_TEST_SIZE` instead of a pytest mark, so `tools/tests` runs under `unittest` alone (RW-42, `tools/tests/`).
 - 2026-11-05 — claude: Had every session and subagent load the company-layer skills the repository's `CLAUDE.md` or `AGENTS.md` names, beside the doctrine skill each pairs with (`claude/CLAUDE.md`, `claude/DISPATCH.md`).
 - 2026-11-05 — sushisystems: Made each subject of the Sushi layer its own skill, named by `sushisystems-specific` beside the doctrine skill it pairs with, so its pages load and resolve (`sushisystems/`, `CLAUDE_TEMPLATE.md`).
-- 2026-11-05 — tools: Split the changelog, module-install, design-citation, fold, archive, history and hook tools into pure logic and a shell, so their logic is tested small (RW-42, `tools/hooks/commit_msg.py`, `tools/commits/history.py`).
-- 2026-11-05 — testing: Closed the size checker's blind spot for a `unittest.TestCase` class not named `Test<Thing>` (KI-3, `tools/testing/case_reader.py`).
-- 2026-11-05 — layering: Reported a domain tier missing from `K_TIER_ORDER` instead of crashing in `Layout.rank` (KI-4, `tools/layering/check_layering.py`).
+- 2026-11-05 — tools: Split seven tools into pure logic and a shell, so their logic is tested small (RW-42, `sushicore.tools.hooks.commit_msg`, `sushicore.tools.commits.history`).
+- 2026-11-05 — testing: Closed the size checker's blind spot for a `unittest.TestCase` class not named `Test<Thing>` (KI-3, `sushicore.tools.testing.case_reader`).
+- 2026-11-05 — layering: Reported a domain tier missing from `K_TIER_ORDER` instead of crashing in `Layout.rank` (KI-4, `sushicore.tools.layering.check_layering`).
 - 2026-11-05 — tools: Ran the test suites of `check_all.py` without the variables that point git at a repository, so a commit hook's tests no longer write into its config (KI-5, `suite_environment`).
 - 2026-11-04 — tools: Split the facts, logging, workflow, routing and design tools and `check_all.py` into pure logic and a shell, with one status parser in `design_status.py` (RW-42, `tools/documentation/`).
 - 2026-11-04 — testing: Made the share of each size a reading, never a target: work is accepted on purity, one medium class for the boundary and killed mutants, not on a percentage (RW-42, `SKILL.md`).
 - 2026-11-04 — claude: Let a subagent run the reading commands of a repository's CLI, `backlog next`, `list`, `show` and `design show`, so the backlog rule and the no-build rule hold together (`claude/DISPATCH.md`).
-- 2026-11-04 — testing: Read every `unittest.TestCase` class as a test class and let a class set its own `K_TEST_SIZE`, so a checker test of two sizes runs without pytest (KI-3, `tools/testing/case_reader.py`).
+- 2026-11-04 — testing: Read every `unittest.TestCase` class as a test class and let a class set its own `K_TEST_SIZE`, so a checker test of two sizes runs without pytest (KI-3, `sushicore.tools.testing.case_reader`).
 - 2026-11-04 — tools: Split the layering and agnostic checkers into pure rules and a shell (RW-42, `tools/layering/`).
-- 2026-11-04 — testing: Added `mutate_diff.py`, which mutates each changed Python line once, runs the tests that import the file and prints the survivors (RW-45, `tools/testing/mutate_diff.py`).
+- 2026-11-04 — testing: Added `mutate_diff.py`, which mutates each changed Python line once, runs the tests that import the file and prints the survivors (RW-45, `sushicore.tools.testing.mutate_diff`).
 - 2026-11-04 — tools: Split the test, docs-truth, licence-writer and backlog-trailer checkers into pure rules and a shell, so most of their tests are small (RW-42, `tools/testing/`).
-- 2026-11-04 — tools: Split the size checker into pure rules and a file-reading shell, and moved test-tree discovery to `checking/tests_tree.py` so no checker imports another (RW-42, `tools/testing/check_test_sizes.py`).
+- 2026-11-04 — tools: Split the size checker into pure rules and a file-reading shell, and moved test-tree discovery to `checking/tests_tree.py` so no checker imports another (RW-42, `sushicore.tools.testing.check_test_sizes`).
 - 2026-11-04 — testing: Held the 80% small ratio per module, placed port contract tests in one `<Port>Contract` suite per port, and corrected the tolerance header's source path (RW-35, `SKILL.md`).
 - 2026-11-03 — testing: Rewrote the skill around a test's value and the code's architecture: promise and oracle, forbidden kinds, sizes by what a test touches, derived tolerances, seams first, sharded runs (RW-35, `SKILL.md`).
 - 2026-11-03 — testing: Withdrew the per-commit case cap and the one-test-file-per-header idea (RW-35, `SKILL.md`).
 - 2026-11-03 — testing: Rejected weak-only checks, typed tolerances, sleeps at any size and small cases that reach a thread, file, clock or environment (RW-35, `check_test_value.py`).
 - 2026-11-03 — testing: Removed the case-cap checker; the time reader reads `K_TEST_TIMES` and prints the suite's shape (RW-35, `test_budget.py`).
-- 2026-11-03 — testing: Added a C++ header that derives floating-point tolerances from rounding bounds, with a self-check (RW-35, `tools/testing/support/tolerance.hpp`).
+- 2026-11-03 — testing: Added a C++ header that derives floating-point tolerances from rounding bounds, with a self-check (RW-35, `sushicore.tools.testing.support.tolerance.hpp`).
 - 2026-11-02 — testing: Added fixture, double and numerical-code rules, printed seeds, quarantined tests that keep running and retries only in a test's source (`skills/testing/SKILL.md`).
 - 2026-11-02 — continuous-integration: Ran pre-merge on the changed modules and those above them, shuffled, with sanitizers and fuzz corpora, and reverted a red `main` first (`SKILL.md`).
 - 2026-11-02 — gpu-development: Pointed device kernel tests at the numerical-code rules of `testing` (`skills/gpu-development/SKILL.md`).
@@ -92,9 +93,9 @@
 - 2026-11-02 — multi-agent-work: Replaced waves with a job list that the master agent gives to free subagents in hierarchy order; inline or parallel stays the owner's choice (`SKILL.md`).
 - 2026-11-01 — sushiskills: Stated that a CLI is for complex projects and that a web or Unity project runs without one, with the backlog and design read through the module form (`skills/sushiskills/SKILL.md`).
 - 2026-11-01 — tools: Let `apply_settings.py` write the backlog block for a repository without a CLI alias (`sushisystems/tooling/apply_settings.py`).
-- 2026-11-01 — tools: Dropped the paths below an ignored folder before asking git, so a folder linked outside the repository no longer puts the whole tree back (`tools/checking/ignored_paths.py`).
+- 2026-11-01 — tools: Dropped the paths below an ignored folder before asking git, so a folder linked outside the repository no longer puts the whole tree back (`sushicore.tools.checking.ignored_paths`).
 - 2026-11-01 — testing: Moved SushiTrack, SushiLog, SushiProfiler and SushiDSP onto the shared test options; SushiAI and SushiBLAS are the owner's, SushiRuntime waits for a green gate and SushiEngine for its measured run (RW-36, `77b3f6f`).
-- 2026-10-31 — tools: Made `check_all.py` about five times faster on a long history by reading commits in one git call, caching backlog IDs and pages by object hash, and running the checkers side by side (`tools/check_all.py`).
+- 2026-10-31 — tools: Made `check_all.py` about five times faster on a long history by reading commits in one git call, caching backlog IDs and pages by object hash, and running the checkers side by side (`sushicore.tools.check_all`).
 - 2026-10-31 — sushiskills: Added the default to act on the known step, a CI rule to fix a red run at once, and a Pace section to the global rules (`skills/sushiskills/SKILL.md`).
 - 2026-10-31 — testing: Ran sushitrack on the shared test command and read its first real JUnit file with the budget reader (RW-39, `77b3f6f`).
 - 2026-10-31 — testing: Wrote the shared test command in sushicore with the JUnit file, the budget line and the large guard (RW-38, `e086b04`).
@@ -236,17 +237,17 @@
 - 2026-10-14 — repository-layout: Named a test file `test_<name>` and a benchmark `benchmark_<name>`, keeping `<name>.test.ts` in TypeScript (`TESTS.md`, `check_test_mirror.py`).
 - 2026-10-14 — repository-layout: Made `tests/` a mirror of the source, one test file per unit, with kinds as labels (`TESTS.md`, `SKILL.md`).
 - 2026-10-14 — testing: Replaced the kind folders with labels and put a regression test in its unit's test file (`skills/testing/SKILL.md`).
-- 2026-10-14 — tools: Added the checker that `tests/` mirrors the headers and sources of a repository (`tools/testing/check_test_mirror.py`, `check_all.py`).
+- 2026-10-14 — tools: Added the checker that `tests/` mirrors the headers and sources of a repository (`sushicore.tools.testing.check_test_mirror`, `check_all.py`).
 - 2026-10-14 — python-code-style: Named a test file `<name>_test.py` at its mirrored path (`skills/python-code-style/SKILL.md`, `skills/typescript-code-style/SKILL.md`).
 - 2026-10-14 — performance: Put a benchmark beside its unit's test as `<name>_benchmark.cpp` (`skills/performance/SKILL.md`).
 - 2026-10-14 — multi-agent-work: Sent a dispatch to `claude/DISPATCH.md` and stopped restating the storage rule there (`skills/multi-agent-work/SKILL.md`, `skills/storage-discipline/SKILL.md`, `claude/DISPATCH.md`).
 - 2026-10-14 — cpp-code-style: Kept the switch of a small closed set, as the doctrine's default allows (`skills/cpp-code-style/SKILL.md`).
-- 2026-10-14 — tools: Added the summary of dispatch lines per model and effort (`tools/routing/summarize_dispatches.py`, `skills/model-routing/SKILL.md`).
+- 2026-10-14 — tools: Added the summary of dispatch lines per model and effort (`sushicore.tools.routing.summarize_dispatches`, `skills/model-routing/SKILL.md`).
 - 2026-10-14 — model-routing: Ran the orchestrator of a session without a plan at `low` and gave `sonnet` the band between spec-complete and cross-module work (`skills/model-routing/SKILL.md`).
 - 2026-10-14 — claude: Moved the dispatch block to a file each subagent reads by path and proves it read (`claude/DISPATCH.md`, `claude/CLAUDE.md`, `claude/README.md`).
 - 2026-10-14 — documentation: Moved design documents, agent work and the changelog format to files read only for those tasks (`AGENT_WORK.md`, `CHANGELOG_FORMAT.md`, `SKILL.md`).
 - 2026-10-14 — repository-layout: Moved private headers, internal modules and test folders to files read only for those tasks (`INTERNAL_MODULES.md`, `TESTS.md`, `SKILL.md`).
-- 2026-10-14 — tools: Added the one command that runs every checker and the tests and prints only what failed, and ran it in the workflow (`tools/check_all.py`, `ci.yml`, `skills/project-tools/SKILL.md`).
+- 2026-10-14 — tools: Added the one command that runs every checker and the tests and prints only what failed, and ran it in the workflow (`sushicore.tools.check_all`, `ci.yml`, `skills/project-tools/SKILL.md`).
 - 2026-10-14 — tools: Kept the docs truth checker out of the folders git ignores, so a name found only there is reported (`check_docs_truth.py`, `ignored_folders`).
 - 2026-10-14 — tools: Renamed the shared checker package after what it does (`tools/checking/`).
 - 2026-10-14 — tools: Kept the license writer's listing out of the test output (`test_write_license_block.py`).
@@ -266,7 +267,7 @@
 - 2026-10-12 — project-tools: Named the docs truth checker as the fifth checker and its allow-list as the one configuration file (`skills/project-tools/SKILL.md`).
 - 2026-10-12 — versioning-and-release: Added the reading of the whole manual by a second reviewer before a release and the manual search when a breaking entry is written (`skills/versioning-and-release/SKILL.md`).
 - 2026-10-12 — multi-agent-work: Required the docs truth checker's output in a report on a public change and made the orchestrator correct every page a worker reports (`skills/multi-agent-work/SKILL.md`).
-- 2026-10-12 — tools: Added the checker that reads the manual against the source for stale names, missing paths, uncited examples, history words, length, repeated paragraphs and em dashes (`tools/documentation/check_docs_truth.py`).
+- 2026-10-12 — tools: Added the checker that reads the manual against the source for stale names, missing paths, uncited examples, history words, length, repeated paragraphs and em dashes (`sushicore.tools.documentation.check_docs_truth`).
 - 2026-10-12 — documentation: Added the rules that keep the manual true in the commit that changes the code, replace old text, cap page length and give each fact one home (`skills/documentation/SKILL.md`).
 - 2026-10-11 — cpp-code-style: Added the rule that an acronym keeps its capitals inside a PascalCase name, and changed the examples to `BodyID` and `AssetID` (`SKILL.md`).
 - 2026-10-09 — repository-layout: Added the internal module, the rules of a module's tests, the declared include roots and the single tier table (`skills/repository-layout/SKILL.md`).
@@ -278,12 +279,12 @@
 - 2026-10-08 — multi-agent-work: Pointed model choice at `model-routing` (`skills/multi-agent-work/SKILL.md`, `skills/sushiskills/SKILL.md`, `skills/README.md`).
 - 2026-10-07 — documentation: Named `docs/publish.toml` in the docs tree and accepted it in the layout checker (`skills/documentation/SKILL.md`, `check_docs_layout.py`, `K_DOCS_ENTRIES`).
 - 2026-10-07 — licence: Named Mustafa Garip and Sushi Systems as the copyright holders in the licence and notice files (`LICENSE`, `NOTICE.md`).
-- 2026-10-06 — licence: Restored the three-section license box and named both holders in the copyright line of every source file (`tools/licensing/write_license_block.py`, `tools/documentation/check_source_comments.py`).
+- 2026-10-06 — licence: Restored the three-section license box and named both holders in the copyright line of every source file (`sushicore.tools.licensing.write_license_block`, `sushicore.tools.documentation.check_source_comments`).
 - 2026-10-05 — tools: Stopped reading a `#` line inside a Python string literal as a comment (`check_source_comments.py`, `_python_comment_indexes`).
 - 2026-10-05 — tools: Covered files that are staged and not yet committed in the license block writer (`write_license_block.py`).
 - 2026-10-05 — tools: Covered configure templates, include fragments and indented old boxes in the license block writer, and skipped tracked files that are deleted (`write_license_block.py`).
 - 2026-10-05 — tools: Kept a ported file's upstream lines when the writer runs again without naming them (`write_license_block.py`, `Header.kept_rows`).
-- 2026-10-05 — tools: Added the writer that puts the license block into every tracked source file (`tools/licensing/write_license_block.py`, `skills/project-tools/SKILL.md`, `skills/source-comments/SKILL.md`).
+- 2026-10-05 — tools: Added the writer that puts the license block into every tracked source file (`sushicore.tools.licensing.write_license_block`, `skills/project-tools/SKILL.md`, `skills/source-comments/SKILL.md`).
 - 2026-10-05 — tools: Rejected foreign licence lines in the license block, read byte order marks and encoding lines, and kept reachability inside the manual (`rule_license_block`, `_relative_links`, `_reachable`).
 - 2026-10-05 — multi-agent-work: Moved report acceptance to the global instructions and said where a wave worker's report goes (`skills/multi-agent-work/SKILL.md`, `skills/storage-discipline/SKILL.md`).
 - 2026-10-05 — documentation: Named the required documents and exempted work folders and the archive from index reachability (`skills/documentation/SKILL.md`).

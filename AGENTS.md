@@ -10,5 +10,5 @@ A rule lives in one file; see `docs/CONTRIBUTING.md` before changing one.
 Check before reporting work as finished:
 
 ```
-python tools/check_all.py .
+python -m sushicore.tools check .
 ```

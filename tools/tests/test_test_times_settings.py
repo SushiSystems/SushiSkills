@@ -7,13 +7,10 @@
 from __future__ import annotations
 
 import re
-import sys
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-import settings  # noqa: E402
+from sushicore.tools import repo_settings as settings
 
 K_ROOT = Path(__file__).resolve().parents[2]
 K_SKILL = K_ROOT / "skills" / "testing" / "SKILL.md"

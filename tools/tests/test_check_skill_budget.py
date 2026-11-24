@@ -13,7 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from checking.source_file import SourceFile  # noqa: E402
+from sushicore.tools.checking.source_file import SourceFile  # noqa: E402
 import skills.check_skill_budget as budget  # noqa: E402
 from skills.check_skill_budget import K_WORD_BUDGET, Skill, rule_ceiling_follows, rule_word_budget  # noqa: E402
 

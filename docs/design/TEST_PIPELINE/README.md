@@ -47,7 +47,7 @@ The rules are the `testing` skill. The checkers under `tools/testing/` enforce w
 assertion, only weak checks, literal assertions, sleeps, typed tolerances, a `small` case that
 reaches a thread, a file, the clock or the environment, with each repository adding its own device
 symbols in `K_SMALL_FORBIDDEN_EXTRA`); `check_test_sizes.py` requires a size; `test_budget.py`
-reads a JUnit file and prints the time line with the suite's shape. `tools/testing/support/tolerance.hpp`
+reads a JUnit file and prints the time line with the suite's shape. `sushicore.tools.testing.support.tolerance.hpp`
 derives floating-point tolerances from rounding bounds.
 
 Each repository is reworked in its own work folder: measure, fix how the tests run, build the seams
