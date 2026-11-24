@@ -30,7 +30,6 @@
 | RW-52 | P2 | open | Find a test that makes a device, queue or runtime outside its module's one fixture base | check_test_value.py reports a test source that constructs a device, queue or runtime outside the fixture base, as testing's Running fast rule 3 says |  | `skills/testing/SKILL.md` | 2026-11-05 |
 | RW-55 | P2 | open | Judge a row name by the table the name generator reads, not by the file | check_test_odr passes a SCOPED_TRACE-only table in a file whose generator reads another table's name |  |  | 2026-11-11 |
 | RW-63 | P2 | open | Run the shared checkers' mutation sample in each release of SushiCore | the release step of SushiCore runs a mutation sample and records its survivors |  | `tools/testing/mutate_diff.py` | 2026-11-17 |
-| RW-74 | P3 | open | Replace the figures of speech in the shared tools of SushiCore: rung and one home | summarize_dispatches reads step instead of rung; check_docs_facts, facts and tools README say one location |  | `docs/agent/2026_11_24_LITERAL_WORDING/PLAN.md` | 2026-11-24 |
 
 ## Known issues
 
