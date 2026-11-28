@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-28 — claude: Made a dispatch report's second line name the skills it invoked, and return one that leaves out `sushiskills` or `humanizer` (RW-76, `claude/DISPATCH.md`).
 - 2026-11-28 — backlog: Made a session read `backlog here` before changing a file, close or name each open entry on it, and open at most three entries on its own files (RW-75, `skills/backlog/SKILL.md`).
 - 2026-11-24 — tools: Ran the shared checkers from the sushicore 0.18 package instead of copies under `tools/`, and dropped `tools/skills` from the agnostic paths, since its checker imports sushicore.
 - 2026-11-24 — skills: Replaced every figure of speech in the skills, `claude/` and `sushisystems/` with the literal rule and an example, and defined SOLID with an example per principle (RW-70, `skills/sushiskills/references/solid.md`).

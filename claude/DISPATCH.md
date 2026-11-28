@@ -48,3 +48,9 @@ The first line of your report is exactly:
 `dispatch block read: quartz-harbor-19`
 
 A report without that line is returned unread.
+
+The second line names every skill you invoked for rules 1 and 2, by name:
+
+`skills invoked: sushiskills, humanizer, ...`
+
+A report whose second line leaves out `sushiskills` or `humanizer` is returned.
