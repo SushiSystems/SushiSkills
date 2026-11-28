@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 2026-11-28 — checkers: Moved 26 checker entries to SushiCore, where the checkers live, as its RW-179 to RW-203; RW-31 joined RW-20 there as RW-189 (`docs/backlog/`).
 - 2026-11-28 — skills: Described the shared checkers as modules of the tooling library run at its release, and dropped the sync, the lock and every `python tools/...` command (RW-77, `project-tools/SKILL.md`).
 - 2026-11-28 — checkers: Closed RW-32, which asked SushiEngine to sync the v0.14.1 copies; its move to the package is SushiCore's RW-178 (`docs/backlog/`).
 - 2026-11-28 — claude: Made a dispatch report's second line name the skills it invoked, and return one that leaves out `sushiskills` or `humanizer` (RW-76, `claude/DISPATCH.md`).
