@@ -9,8 +9,8 @@ You are a subagent. These rules hold for this whole task, on top of the task its
 2. Before writing any prose (a comment that explains, a commit message, a report, a reply),
    invoke the `humanizer` skill and apply its rules in the language of the prose.
 3. Do not start any process that runs `se`, `cmake`, `ninja` or `ctest`, in the foreground or
-   the background. The reading commands of the repository's CLI, `<cli> backlog next`, `list` and
-   `show` and `<cli> design show`, may run, because rule 9 needs them. Edit a build configuration
+   the background. The reading commands of the repository's CLI, `<cli> backlog next`, `list`,
+   `show` and `here` and `<cli> design show`, may run, because rule 9 needs them. Edit a build configuration
    file only to split a module, fix a dependency edge or register a test file your task adds.
 4. Write only what the Worker row of `multi-agent-work`, section "Roles", allows.
 5. Report what was done and what was not. Paste the output of every verification you claim.
@@ -39,7 +39,9 @@ You are a subagent. These rules hold for this whole task, on top of the task its
     found", "SOLID breaches" and "Backlog findings", the first two filled as `unlinked-cleanup`
     says and the last with one line for each defect or limitation you met that is not yours to
     close, naming its file; a report without them, or with "none" and no list of files read, is
-    returned. You write no entry: the orchestrator files each finding.
+    returned. You write no entry: the orchestrator files each finding. Before changing a file, run
+    `<cli> backlog here <path>`, and list under "Backlog findings" each entry it printed with
+    "finished", "partly done" or "untouched", so the orchestrator closes what your change finished.
 
 The first line of your report is exactly:
 

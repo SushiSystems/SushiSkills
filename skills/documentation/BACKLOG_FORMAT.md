@@ -80,8 +80,9 @@ may become an issue with `Fix: RW-<n>`, and `backlog promote` opens the work of 
 origin that is not `own` is never the repository's to close, so it is not remaining work whatever
 its workaround.
 
-An open design phase gets one work entry whose `Source` cites its topic; the phase's detail stays
-there. Every design topic whose status is `Open` is cited by at least one entry.
+A design topic's phases are read with the `design` commands and are not copied into the backlog.
+A phase becomes a work entry when its work starts, one entry for the phase, whose `Source` cites
+the topic.
 
 ## A quarantined test
 
@@ -93,8 +94,20 @@ owner and the date it is fixed by. The issue's `Fix` names the work that brings 
 - Read the work to take with `backlog next --json`, never by reading the area files.
 - Add what the work found with `backlog add`, and close what it finished with `backlog close`,
   writing the changelog line it prints.
+- Before changing a file, read its open entries with `backlog here <path>`. A commit that changes
+  the `Source` of an open entry closes it or names it in its `Backlog:` line; the commit-msg hook
+  refuses one that does neither.
+- A commit opens at most three entries on the files it changes. The rest of its own work is
+  finished in it, or kept in the one entry of its work folder.
 - A longer explanation goes in the entry's detail file or in the work folder its `Source` cites.
 - Two branches that took one ID are resolved with `backlog renumber` after the merge.
+
+## Flow and triage
+
+`backlog flow` measures, over a window, the work opened, closed, closed the day it opened, and
+open with a later commit to its `Source`. `backlog stale` lists the work opened more than 14 days
+ago with those commits counted. The owner rules on that list as a whole: keep, reprioritise or
+drop. An agent may propose the rulings; it never drops an entry on its own.
 
 `tools/documentation/check_backlog.py` runs `backlog check`, so a repository's checkers enforce
 every rule above that a tool can see. Whether an entry is still true is the fact check in

@@ -42,7 +42,8 @@ Backlog: none (typo in a comment)
 <!-- fact:end backlog-line -->
 
 - The ID is an entry open in the parent commit or in this one, so the commit that closes an
-  entry still names it. An amend is judged against the parent of the commit it replaces.
+  entry still names it. An open entry on a changed file is closed or named. An amend is judged
+  against the parent of the commit it replaces.
 - A sibling's entry is `<repository> <ID>`, the repository being its folder name.
 - `none` carries a reason in brackets; no words is a refusal. A release closes no entry and says
   so. A plan's job is no reason: it serves the work folder's entry.

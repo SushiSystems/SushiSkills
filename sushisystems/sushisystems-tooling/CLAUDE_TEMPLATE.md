@@ -12,9 +12,11 @@ gives the order of work as commands, not as a pointer to a file.
    from the owner comes first.
 2. A defect or limitation turns up: `<alias> backlog add issue ...` or `<alias> backlog add work ...`
    at once.
-3. Before changing a module: `<alias> design owner <path>`.
+3. Before changing a module: `<alias> design owner <path>`, and `<alias> backlog here <path>` for
+   the open entries on it.
 4. Finishing: `<alias> backlog close <ID>` in the same commit, and the changelog line it prints.
-   The commit message ends with `Backlog: <ID>`, or `Backlog: none (<reason>)`.
+   The commit message ends with `Backlog: <ID>`, or `Backlog: none (<reason>)`; an open entry on a
+   changed file is closed or named there.
 5. Once per clone: `python tools/hooks/install_hooks.py`.
 
 State is read with these commands. It is never read from a markdown file or the git log.

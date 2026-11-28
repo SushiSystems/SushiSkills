@@ -14,6 +14,9 @@ commands, named by the tooling role.
 | What is open, blocked or late in one area? | `<cli> backlog list`, filtered |
 | What waits for the owner? | `<cli> backlog decisions` |
 | What does one entry say? | `<cli> backlog show <ID>` |
+| Which open entries sit on the file I am about to change? | `<cli> backlog here <path>` |
+| Does work close, or pile up? (the owner's) | `<cli> backlog flow` |
+| Which work has outlived its first two weeks? (the owner triages it) | `<cli> backlog stale` |
 | Is the store well-formed? | `<cli> backlog check` |
 | Which entry does my commit serve? | The ID from `backlog next`, or the one `backlog add` printed |
 
