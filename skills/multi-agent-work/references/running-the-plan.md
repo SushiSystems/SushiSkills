@@ -19,7 +19,7 @@ the columns `Job`, `Files`, `Waits on` and `Status`; the status is `todo`, `runn
 
 ## Parallel mode
 
-`python tools/routing/next_jobs.py PLAN.md --free N` prints the ids of up to `N` jobs that may
+`python -m <library>.tools.routing.next_jobs PLAN.md --free N` prints the ids of up to `N` jobs that may
 start now. The orchestrator runs the list like this:
 
 - It decides which subagent takes which job, and hands the jobs out without waiting for any to finish.

@@ -19,7 +19,7 @@ docs/
 | `AGENTS.md`, `CLAUDE.md` | Agent instructions and skill declarations; names the skills the repository follows |
 | the module manifest | The file the workspace tool reads from the root; `module-install` names its contents |
 | `.config/` | Configuration a flag or a key can point a tool at, such as `doxygen/Doxyfile` and `docker/Dockerfile`; its `README.md` has one row per file, naming the tool and the call site that passes the path |
-| `.github/` | The files GitHub finds by their path: workflows, templates, `SECURITY.md` and `CODE_OF_CONDUCT.md`; the last two are the shared tooling library's, copied unchanged by its sync command and edited only there |
+| `.github/` | The files GitHub finds by their path: workflows, templates, `SECURITY.md` and `CODE_OF_CONDUCT.md`; the last two match the shared tooling library's and are edited only there |
 | `cmake/` | Every CMake function and the tier order table |
 | `cli/` | The project CLI package, with its own `pyproject.toml` |
 | `tools/` | Manual checkers; see `project-tools` |

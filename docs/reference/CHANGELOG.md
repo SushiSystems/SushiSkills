@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-11-28 — skills: Described the shared checkers as modules of the tooling library run at its release, and dropped the sync, the lock and every `python tools/...` command (RW-77, `project-tools/SKILL.md`).
+- 2026-11-28 — checkers: Closed RW-32, which asked SushiEngine to sync the v0.14.1 copies; its move to the package is SushiCore's RW-178 (`docs/backlog/`).
 - 2026-11-28 — claude: Made a dispatch report's second line name the skills it invoked, and return one that leaves out `sushiskills` or `humanizer` (RW-76, `claude/DISPATCH.md`).
 - 2026-11-28 — backlog: Made a session read `backlog here` before changing a file, close or name each open entry on it, and open at most three entries on its own files (RW-75, `skills/backlog/SKILL.md`).
 - 2026-11-24 — tools: Ran the shared checkers from the sushicore 0.18 package instead of copies under `tools/`, and dropped `tools/skills` from the agnostic paths, since its checker imports sushicore.

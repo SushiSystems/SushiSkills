@@ -14,7 +14,7 @@ file or command that fills each role at Sushi Systems.
 | CTest call | `CMakeDriver.ctest_run` of `sushicore`: writes JUnit when given a path, passes `--parallel` with the command's job count (bounded by its memory limit when none is given) |
 | Time reader | `tools/testing/test_budget.py`, called by the test command |
 | Exemption file | `tests/budget_exemptions.toml` of the project |
-| C++ tolerance helper | `tools/testing/support/tolerance.hpp`, synced from SushiCore with the shared tools |
+| C++ tolerance helper | `sushicore/tools/testing/support/tolerance.hpp` in the sushicore package |
 | `large` tier and time calibration | the owner's machine (Ryzen 7600X, RTX 3080 Ti); no agent runs the whole tier |
 
 SushiEngine suites are `Small_`, `Medium_`, `Large_`; its `Benchmark_` cases belong to `se bench`

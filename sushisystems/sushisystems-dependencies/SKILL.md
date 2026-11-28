@@ -26,7 +26,7 @@ tests each repository that pins it before a release. `hub pins [--latest]` lists
 when one dependency is pinned at two versions, and it must exit 0, with no dependency pinned at
 two versions, before a release is proposed. `hub bump
 <name> <tag>` visits each repository in dependency order, lowest tier first, runs each
-`check_all.py` and commits nothing. `hub pin <name> <version>` changes one pin without checks.
+repository's `python -m sushicore.tools check .` and commits nothing. `hub pin <name> <version>` changes one pin without checks.
 
 ## Workspace checkouts take precedence
 

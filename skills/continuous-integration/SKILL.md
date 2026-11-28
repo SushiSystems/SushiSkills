@@ -11,7 +11,7 @@ CI runs the local checks on every supported platform. Why: `references/rationale
 
 Read `references/stages.md` before changing a job. A stage runs the tests whose `testing` size fits its budget; no `quarantined` test gates.
 
-- Pre-merge (pull request): `python tools/check_all.py .`, builds, `small` and `medium` tests of
+- Pre-merge (pull request): the check command of `project-tools`, builds, `small` and `medium` tests of
   changed modules and those above, shuffled with a printed seed, also under ASan and UBSan; fuzz
   corpora. 20 min median, 45 max.
 - Post-merge (push to `main`): every module plus TSan, 60 min. Nightly adds fuzzing, coverage,
@@ -37,9 +37,9 @@ Read `references/stages.md` before changing a job. A stage runs the tests whose 
 ## Commits that need no run
 
 A commit pushed straight to `main` that changes only prose ends its subject with `[skip ci]`,
-after `check_all.py` passed locally.
+after the check command passed locally.
 **Not when:** it touches source, a test, a build file, the CLI, a checker, a workflow or a
-manifest; goes through a pull request; or `check_all.py` was not clean.
+manifest; goes through a pull request; or the check command was not clean.
 
 ## When CI fails
 

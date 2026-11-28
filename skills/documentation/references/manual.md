@@ -66,7 +66,7 @@ affects a reader is a known issue in the backlog.
 
 - An id is lower-case words joined by `-`, and unique in the repository. The id identifies the
   fact; a line number or a heading does not.
-- Nobody types a quote's text: `python tools/documentation/facts_cli.py apply` rewrites it from the
+- Nobody types a quote's text: `python -m <library>.tools.documentation.facts_cli apply` rewrites it from the
   fact's location, and the checker fails a quote that differs by one character.
 - A paraphrase's `<!-- follows: ID -->` line is indented when it is in a list item.
 - `facts_cli.py cited-by ID` lists every quote and follow of a fact, `where ID` names its location and

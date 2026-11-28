@@ -47,7 +47,7 @@ Backlog: none (typo in a comment)
 - A sibling's entry is `<repository> <ID>`, the repository being its folder name.
 - `none` carries a reason in brackets; no words is a refusal. A release closes no entry and says
   so. A plan's job is no reason: it serves the work folder's entry.
-- Never skip a hook with `--no-verify`. A repository runs `python tools/hooks/install_hooks.py`
+- Never skip a hook with `--no-verify`. A repository installs the hooks with the tooling library's `install-hooks` command
   once per clone.
 - A commit that changes what a page describes carries the pages, or a `Docs: <page> unchanged
   (<reason>)` line after the `Backlog:` line.

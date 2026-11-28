@@ -56,5 +56,5 @@ Every `REPORT.md` carries one line per dispatch:
 dispatch: <task> — <model> <effort>, <N> turns, <passed|failed, rung R>
 ```
 
-`R`: step number. `python tools/routing/summarize_dispatches.py .` sums them. The matrix changes only from those
+`R`: step number. `python -m <library>.tools.routing.summarize_dispatches .` sums them. The matrix changes only from those
 lines, with a changelog line naming it.

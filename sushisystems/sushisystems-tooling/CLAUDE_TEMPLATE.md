@@ -17,7 +17,7 @@ gives the order of work as commands, not as a pointer to a file.
 4. Finishing: `<alias> backlog close <ID>` in the same commit, and the changelog line it prints.
    The commit message ends with `Backlog: <ID>`, or `Backlog: none (<reason>)`; an open entry on a
    changed file is closed or named there.
-5. Once per clone: `python tools/hooks/install_hooks.py`.
+5. Once per clone: `python -m sushicore.tools install-hooks .`.
 
 State is read with these commands. It is never read from a markdown file or the git log.
 

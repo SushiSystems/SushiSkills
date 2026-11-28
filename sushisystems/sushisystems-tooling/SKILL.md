@@ -14,13 +14,12 @@ The doctrine's tooling skills name roles; this page says which tool serves each 
   sushicore's `docs/reference/BACKLOG.md` and `DESIGN.md`.
 - Build tools: from sushicore (`build_tree`, `build_admission`, `build_gate`, `build_report`).
 - Module manifest: `sushi-module.toml`.
-- Shared checkers' source: SushiCore's `tools/`, at the release the CLI pins. Sync with
-  `python -m sushicore.shared_tools sync ROOT --tag <that release>`, check with
-  `python -m sushicore.shared_tools check ROOT`; `hub bump sushicore <tag>` runs it in every
-  module.
+- Shared checkers: the `sushicore.tools` package, at the release the CLI requires. Run with
+  `python -m sushicore.tools check .`; hooks with `python -m sushicore.tools install-hooks .`.
+  A shared checker module runs as `python -m sushicore.tools.<area>.<checker>`.
 - Documentation host: `docs.sushisystems.io`, named by `docs/publish.toml`.
 
 `tools/settings.py` sets the constants in `references/settings.md`; SushiSkills' own copy is the
 reference. A repository's `CLAUDE.md` carries the block in `CLAUDE_TEMPLATE.md`. A repository
 that adopted the `Backlog:` commit line sets `K_TRAILER_SINCE` to the commit after which it
-applies, and its setup command runs `tools/hooks/install_hooks.py`.
+applies, and its setup command runs `python -m sushicore.tools install-hooks .`.

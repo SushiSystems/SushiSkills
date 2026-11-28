@@ -24,7 +24,7 @@ on a tool call.
   and the instruction to load the skill the skill map names for the task.
 
 `hooks/remind_doctrine.py write` builds both files from those skills. Its test fails when a file
-no longer matches them, so `tools/check_all.py` catches a stale reminder. Run `write` after any
+no longer matches them, so the check command catches a stale reminder. Run `write` after any
 change to one of the five files, and start a new session to read the result.
 
 ## Environment of the harness

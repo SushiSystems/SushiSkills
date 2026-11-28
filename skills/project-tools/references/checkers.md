@@ -39,31 +39,15 @@ def rule_block_ceiling(lines: list[str]) -> Iterator[Finding]:
 
 Nothing else in the checker changes.
 
-## The shared copy in detail
-
-The sync command of the shared tooling library copies the shared files as one release tag holds
-them, never a branch or a working tree, and writes `tools/shared_tools.lock`: the tag, its
-commit and a hash per file. Its check mode lists each file that differs from the lock and exits 1.
-The tag is the library release the repository's CLI pins, so the tools and the library move
-together.
-
-- It runs from the library's package, never from a repository's copy, so a fix to the copier
-  applies on the run that brings it.
-- A shared file whose text no upstream version ever held is a local edit: the copy refuses,
-  writes nothing and names the file, and `--force` overwrites it. Move the edit upstream first,
-  or drop it.
-- A file the repository holds that the library shared once and no longer holds is named as
-  removed upstream. The copy never deletes it; the repository removes it in its own commit.
-
 ## Known findings in detail
 
-`check_all.py` passes the findings an entry of `known_findings.toml` allows. It fails:
+The check command passes the findings an entry of `known_findings.toml` allows. It fails:
 
 - a finding no entry allows;
 - a group found fewer times than its entry says;
 - an entry found no more;
 - an entry whose ID is not open.
 
-`python tools/checking/known_findings.py ROOT --write --backlog <ID>`
-writes the list from the findings of the moment, once, when the tools arrive, and refuses to
+`python -m <library>.tools.checking.known_findings ROOT --write --backlog <ID>`
+writes the list from the findings of the moment, once, when the checkers are adopted, and refuses to
 overwrite one.

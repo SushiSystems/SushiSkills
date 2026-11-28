@@ -17,7 +17,7 @@ per platform is in [`claude/README.md`](../../claude/README.md).
 ## Hooks
 
 In a clone of a repository that carries `tools/hooks/`, run `python -m sushicore.tools install-hooks .`
-once. Git then runs `check_all.py` before each commit and refuses a message without its
+once. Git then runs the checkers before each commit and refuses a message without its
 `Backlog:` line.
 
 ## What a linked install runs

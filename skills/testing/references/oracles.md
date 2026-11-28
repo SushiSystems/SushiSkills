@@ -21,8 +21,8 @@ Strongest and cheapest first. A test uses the first that applies.
 **Tolerances are derived, never typed.** A floating-point comparison that is not exact goes through
 the repository's tolerance helper, which computes `c · f(n) · u · gauge` (for a dot product or GEMM,
 `n · u · Σ|aᵢbᵢ|`) and fails when error over bound exceeds the repository's one threshold. The C++
-helper is `tests/support/tolerance.hpp`, copied from SushiSkills's `tools/testing/support/` as `project-tools`
-gives for shared files. A bare `==` is kept only where the value is copied, not computed, or exactly
+helper is `tests/support/tolerance.hpp`, taken unchanged from the tooling library's
+`tools/testing/support/`. A bare `==` is kept only where the value is copied, not computed, or exactly
 representable, and the name says so. A name does not derive a tolerance: a named constant that holds a
 hand-typed epsilon keeps its name and is defined through the helper.
 

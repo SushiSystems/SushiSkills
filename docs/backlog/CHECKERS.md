@@ -18,7 +18,6 @@
 | RW-21 | P2 | open | Read TypeScript imports in the layering check | `check_layering.py` reports a TypeScript import that crosses a boundary the repository's tier order forbids |  |  | 2026-10-19 |
 | RW-22 | P2 | open | Read C# in the comment, licence and layering checks | `check_source_comments.py` and `write_license_block.py` read `.cs` files, and `check_layering.py` reads a Unity tree's assembly definitions |  |  | 2026-10-19 |
 | RW-31 | P2 | open | Adopt the untested list of SushiDSP in the shared test mirror checker | check_test_mirror.py holds the untested list rule with a test, and SushiDSP takes the shared copy without --keep |  |  | 2026-10-30 |
-| RW-32 | P2 | open | Bring SushiEngine onto the shared tools of SushiCore v0.14.1 | SushiEngine passes check_all with the shared tools synced from SushiCore v0.14.1, as SushiRuntime does |  |  | 2026-10-30 |
 | RW-33 | P2 | open | Turn on the Backlog commit line in each repository after its CI fetches full history | K_TRAILER_SINCE is set and the hooks are installed in each repository that took the shared tools |  |  | 2026-10-30 |
 | RW-43 | P2 | open | Report gtest_discover_tests in a build file that gives no reason for it | a shared checker reports each such call after a base commit, with tests |  | `docs/design/TEST_PIPELINE/README.md` | 2026-11-03 |
 | RW-46 | P2 | open | Give design_status a pure status parser that check_docs_layout reuses | check_docs_layout keeps no copy of the design listing or status parse, and design_status reads no disk in its parser |  |  | 2026-11-04 |
